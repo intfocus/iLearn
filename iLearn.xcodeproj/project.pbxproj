@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		DCA787F51B038ED00049098C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA787F41B038ED00049098C /* main.m */; };
 		DCA787F81B038ED00049098C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA787F71B038ED00049098C /* AppDelegate.m */; };
-		DCA787FB1B038ED00049098C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA787FA1B038ED00049098C /* ViewController.m */; };
+		DCA787FB1B038ED00049098C /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA787FA1B038ED00049098C /* DashboardViewController.m */; };
 		DCA787FE1B038ED00049098C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCA787FC1B038ED00049098C /* Main.storyboard */; };
 		DCA788001B038ED00049098C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCA787FF1B038ED00049098C /* Images.xcassets */; };
 		DCA788031B038ED00049098C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCA788011B038ED00049098C /* LaunchScreen.xib */; };
 		DCA7880F1B038ED00049098C /* iLearnTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA7880E1B038ED00049098C /* iLearnTests.m */; };
+		DCA7881A1B03A40A0049098C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DCA7881C1B03A40A0049098C /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +33,16 @@
 		DCA787F41B038ED00049098C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DCA787F61B038ED00049098C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DCA787F71B038ED00049098C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		DCA787F91B038ED00049098C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		DCA787FA1B038ED00049098C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		DCA787F91B038ED00049098C /* DashboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashboardViewController.h; sourceTree = "<group>"; };
+		DCA787FA1B038ED00049098C /* DashboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashboardViewController.m; sourceTree = "<group>"; };
 		DCA787FD1B038ED00049098C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DCA787FF1B038ED00049098C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DCA788021B038ED00049098C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		DCA788081B038ED00049098C /* iLearnTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iLearnTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA7880D1B038ED00049098C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCA7880E1B038ED00049098C /* iLearnTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iLearnTests.m; sourceTree = "<group>"; };
+		DCA7881B1B03A40A0049098C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DCA7881E1B03A4480049098C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +86,8 @@
 			children = (
 				DCA787F61B038ED00049098C /* AppDelegate.h */,
 				DCA787F71B038ED00049098C /* AppDelegate.m */,
-				DCA787F91B038ED00049098C /* ViewController.h */,
-				DCA787FA1B038ED00049098C /* ViewController.m */,
+				DCA787F91B038ED00049098C /* DashboardViewController.h */,
+				DCA787FA1B038ED00049098C /* DashboardViewController.m */,
 				DCA787FC1B038ED00049098C /* Main.storyboard */,
 				DCA787FF1B038ED00049098C /* Images.xcassets */,
 				DCA788011B038ED00049098C /* LaunchScreen.xib */,
@@ -98,6 +101,7 @@
 			children = (
 				DCA787F31B038ED00049098C /* Info.plist */,
 				DCA787F41B038ED00049098C /* main.m */,
+				DCA7881C1B03A40A0049098C /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -182,6 +186,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = DCA787E61B038ED00049098C;
 			productRefGroup = DCA787F01B038ED00049098C /* Products */;
@@ -200,6 +205,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCA787FE1B038ED00049098C /* Main.storyboard in Resources */,
+				DCA7881A1B03A40A0049098C /* Localizable.strings in Resources */,
 				DCA788031B038ED00049098C /* LaunchScreen.xib in Resources */,
 				DCA788001B038ED00049098C /* Images.xcassets in Resources */,
 			);
@@ -219,7 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCA787FB1B038ED00049098C /* ViewController.m in Sources */,
+				DCA787FB1B038ED00049098C /* DashboardViewController.m in Sources */,
 				DCA787F81B038ED00049098C /* AppDelegate.m in Sources */,
 				DCA787F51B038ED00049098C /* main.m in Sources */,
 			);
@@ -258,6 +264,15 @@
 				DCA788021B038ED00049098C /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		DCA7881C1B03A40A0049098C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCA7881B1B03A40A0049098C /* en */,
+				DCA7881E1B03A4480049098C /* zh-Hans */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -299,7 +314,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -337,7 +352,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -350,7 +365,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = iLearn/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -361,7 +375,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = iLearn/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

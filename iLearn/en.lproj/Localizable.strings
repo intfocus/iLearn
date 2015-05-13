@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  iLearn
+
+  Created by Charlie Hung on 2015/5/13.
+  Copyright (c) 2015 intFocus. All rights reserved.
+*/
+
+DASHBOARD_TITLE = "Dashboard";
+DASHBOARD_COURSE_PACK = "Course Pack";
+DASHBOARD_LECTURE = "Lecture Registration";
+DASHBOARD_REMINDER = "Reminder";
+DASHBOARD_QUESTIONNAIRE = "Questionnaire";
+DASHBOARD_EXAM = "Test";
+DASHBOARD_SERVICE_CALL = "Service Call";

@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  DashboardViewController.h
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/13.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface DashboardViewController : UIViewController
 
 
 @end
