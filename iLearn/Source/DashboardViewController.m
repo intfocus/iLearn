@@ -8,6 +8,8 @@
 
 #import "DashboardViewController.h"
 
+static NSString *const kShowSettingsSegue = @"showSettingsPage";
+
 @interface DashboardViewController ()
 
 // Button Area Views
@@ -70,6 +72,7 @@
 
 - (IBAction)settingsTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
 }
 
 - (IBAction)coursePackTouced:(id)sender {

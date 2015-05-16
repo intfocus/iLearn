@@ -7,9 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8221B072421000EA3A7 /* AppDelegate.m */; };
+		CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8241B072421000EA3A7 /* Constants.m */; };
+		CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8261B072421000EA3A7 /* DashboardViewController.m */; };
+		CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8291B072421000EA3A7 /* SettingsViewController.m */; };
+		CBE0C8301B072483000EA3A7 /* PersonalInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C82F1B072483000EA3A7 /* PersonalInfoViewController.m */; };
+		CBE0C8331B0724A4000EA3A7 /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8321B0724A4000EA3A7 /* QRCodeViewController.m */; };
+		CBE0C8361B0724C5000EA3A7 /* AppInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8351B0724C5000EA3A7 /* AppInfoViewController.m */; };
+		CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C83A1B072DC1000EA3A7 /* bitstream.c */; };
+		CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C83C1B072DC1000EA3A7 /* mask.c */; };
+		CBE0C84C1B072DC2000EA3A7 /* qrencode.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C83E1B072DC1000EA3A7 /* qrencode.c */; };
+		CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8401B072DC1000EA3A7 /* qrinput.c */; };
+		CBE0C84E1B072DC2000EA3A7 /* qrspec.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8421B072DC1000EA3A7 /* qrspec.c */; };
+		CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8441B072DC1000EA3A7 /* rscode.c */; };
+		CBE0C8501B072DC2000EA3A7 /* split.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8461B072DC2000EA3A7 /* split.c */; };
+		CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8491B072DC2000EA3A7 /* UIImage+MDQRCode.m */; };
+		CBE0C8541B073528000EA3A7 /* LicenseUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8531B073528000EA3A7 /* LicenseUtil.m */; };
 		DCA787F51B038ED00049098C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA787F41B038ED00049098C /* main.m */; };
-		DCA787F81B038ED00049098C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA787F71B038ED00049098C /* AppDelegate.m */; };
-		DCA787FB1B038ED00049098C /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA787FA1B038ED00049098C /* DashboardViewController.m */; };
 		DCA787FE1B038ED00049098C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCA787FC1B038ED00049098C /* Main.storyboard */; };
 		DCA788001B038ED00049098C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCA787FF1B038ED00049098C /* Images.xcassets */; };
 		DCA788031B038ED00049098C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCA788011B038ED00049098C /* LaunchScreen.xib */; };
@@ -28,13 +42,41 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CBE0C8211B072421000EA3A7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = "<group>"; };
+		CBE0C8221B072421000EA3A7 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
+		CBE0C8231B072421000EA3A7 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = Source/Constants.h; sourceTree = "<group>"; };
+		CBE0C8241B072421000EA3A7 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Constants.m; path = Source/Constants.m; sourceTree = "<group>"; };
+		CBE0C8251B072421000EA3A7 /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DashboardViewController.h; path = Source/DashboardViewController.h; sourceTree = "<group>"; };
+		CBE0C8261B072421000EA3A7 /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DashboardViewController.m; path = Source/DashboardViewController.m; sourceTree = "<group>"; };
+		CBE0C8281B072421000EA3A7 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		CBE0C8291B072421000EA3A7 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		CBE0C82E1B072483000EA3A7 /* PersonalInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalInfoViewController.h; sourceTree = "<group>"; };
+		CBE0C82F1B072483000EA3A7 /* PersonalInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfoViewController.m; sourceTree = "<group>"; };
+		CBE0C8311B0724A4000EA3A7 /* QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeViewController.h; sourceTree = "<group>"; };
+		CBE0C8321B0724A4000EA3A7 /* QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeViewController.m; sourceTree = "<group>"; };
+		CBE0C8341B0724C5000EA3A7 /* AppInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppInfoViewController.h; sourceTree = "<group>"; };
+		CBE0C8351B0724C5000EA3A7 /* AppInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppInfoViewController.m; sourceTree = "<group>"; };
+		CBE0C83A1B072DC1000EA3A7 /* bitstream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitstream.c; sourceTree = "<group>"; };
+		CBE0C83B1B072DC1000EA3A7 /* bitstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitstream.h; sourceTree = "<group>"; };
+		CBE0C83C1B072DC1000EA3A7 /* mask.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mask.c; sourceTree = "<group>"; };
+		CBE0C83D1B072DC1000EA3A7 /* mask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mask.h; sourceTree = "<group>"; };
+		CBE0C83E1B072DC1000EA3A7 /* qrencode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = qrencode.c; sourceTree = "<group>"; };
+		CBE0C83F1B072DC1000EA3A7 /* qrencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qrencode.h; sourceTree = "<group>"; };
+		CBE0C8401B072DC1000EA3A7 /* qrinput.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = qrinput.c; sourceTree = "<group>"; };
+		CBE0C8411B072DC1000EA3A7 /* qrinput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qrinput.h; sourceTree = "<group>"; };
+		CBE0C8421B072DC1000EA3A7 /* qrspec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = qrspec.c; sourceTree = "<group>"; };
+		CBE0C8431B072DC1000EA3A7 /* qrspec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qrspec.h; sourceTree = "<group>"; };
+		CBE0C8441B072DC1000EA3A7 /* rscode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rscode.c; sourceTree = "<group>"; };
+		CBE0C8451B072DC2000EA3A7 /* rscode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rscode.h; sourceTree = "<group>"; };
+		CBE0C8461B072DC2000EA3A7 /* split.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = split.c; sourceTree = "<group>"; };
+		CBE0C8471B072DC2000EA3A7 /* split.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = split.h; sourceTree = "<group>"; };
+		CBE0C8481B072DC2000EA3A7 /* UIImage+MDQRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+MDQRCode.h"; sourceTree = "<group>"; };
+		CBE0C8491B072DC2000EA3A7 /* UIImage+MDQRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MDQRCode.m"; sourceTree = "<group>"; };
+		CBE0C8521B073528000EA3A7 /* LicenseUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LicenseUtil.h; path = Source/LicenseUtil.h; sourceTree = "<group>"; };
+		CBE0C8531B073528000EA3A7 /* LicenseUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LicenseUtil.m; path = Source/LicenseUtil.m; sourceTree = "<group>"; };
 		DCA787EF1B038ED00049098C /* iLearn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iLearn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA787F31B038ED00049098C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCA787F41B038ED00049098C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		DCA787F61B038ED00049098C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		DCA787F71B038ED00049098C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		DCA787F91B038ED00049098C /* DashboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashboardViewController.h; sourceTree = "<group>"; };
-		DCA787FA1B038ED00049098C /* DashboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashboardViewController.m; sourceTree = "<group>"; };
 		DCA787FD1B038ED00049098C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DCA787FF1B038ED00049098C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DCA788021B038ED00049098C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -63,6 +105,62 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CBE0C8271B072421000EA3A7 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				CBE0C8281B072421000EA3A7 /* SettingsViewController.h */,
+				CBE0C8291B072421000EA3A7 /* SettingsViewController.m */,
+				CBE0C82E1B072483000EA3A7 /* PersonalInfoViewController.h */,
+				CBE0C82F1B072483000EA3A7 /* PersonalInfoViewController.m */,
+				CBE0C8311B0724A4000EA3A7 /* QRCodeViewController.h */,
+				CBE0C8321B0724A4000EA3A7 /* QRCodeViewController.m */,
+				CBE0C8341B0724C5000EA3A7 /* AppInfoViewController.h */,
+				CBE0C8351B0724C5000EA3A7 /* AppInfoViewController.m */,
+			);
+			name = Settings;
+			path = Source/Settings;
+			sourceTree = "<group>";
+		};
+		CBE0C8371B072DC1000EA3A7 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				CBE0C8381B072DC1000EA3A7 /* QR */,
+			);
+			name = Library;
+			path = Source/Library;
+			sourceTree = "<group>";
+		};
+		CBE0C8381B072DC1000EA3A7 /* QR */ = {
+			isa = PBXGroup;
+			children = (
+				CBE0C8391B072DC1000EA3A7 /* libqrencode */,
+				CBE0C8481B072DC2000EA3A7 /* UIImage+MDQRCode.h */,
+				CBE0C8491B072DC2000EA3A7 /* UIImage+MDQRCode.m */,
+			);
+			path = QR;
+			sourceTree = "<group>";
+		};
+		CBE0C8391B072DC1000EA3A7 /* libqrencode */ = {
+			isa = PBXGroup;
+			children = (
+				CBE0C83A1B072DC1000EA3A7 /* bitstream.c */,
+				CBE0C83B1B072DC1000EA3A7 /* bitstream.h */,
+				CBE0C83C1B072DC1000EA3A7 /* mask.c */,
+				CBE0C83D1B072DC1000EA3A7 /* mask.h */,
+				CBE0C83E1B072DC1000EA3A7 /* qrencode.c */,
+				CBE0C83F1B072DC1000EA3A7 /* qrencode.h */,
+				CBE0C8401B072DC1000EA3A7 /* qrinput.c */,
+				CBE0C8411B072DC1000EA3A7 /* qrinput.h */,
+				CBE0C8421B072DC1000EA3A7 /* qrspec.c */,
+				CBE0C8431B072DC1000EA3A7 /* qrspec.h */,
+				CBE0C8441B072DC1000EA3A7 /* rscode.c */,
+				CBE0C8451B072DC2000EA3A7 /* rscode.h */,
+				CBE0C8461B072DC2000EA3A7 /* split.c */,
+				CBE0C8471B072DC2000EA3A7 /* split.h */,
+			);
+			path = libqrencode;
+			sourceTree = "<group>";
+		};
 		DCA787E61B038ED00049098C = {
 			isa = PBXGroup;
 			children = (
@@ -84,10 +182,16 @@
 		DCA787F11B038ED00049098C /* iLearn */ = {
 			isa = PBXGroup;
 			children = (
-				DCA787F61B038ED00049098C /* AppDelegate.h */,
-				DCA787F71B038ED00049098C /* AppDelegate.m */,
-				DCA787F91B038ED00049098C /* DashboardViewController.h */,
-				DCA787FA1B038ED00049098C /* DashboardViewController.m */,
+				CBE0C8371B072DC1000EA3A7 /* Library */,
+				CBE0C8211B072421000EA3A7 /* AppDelegate.h */,
+				CBE0C8221B072421000EA3A7 /* AppDelegate.m */,
+				CBE0C8231B072421000EA3A7 /* Constants.h */,
+				CBE0C8241B072421000EA3A7 /* Constants.m */,
+				CBE0C8251B072421000EA3A7 /* DashboardViewController.h */,
+				CBE0C8261B072421000EA3A7 /* DashboardViewController.m */,
+				CBE0C8521B073528000EA3A7 /* LicenseUtil.h */,
+				CBE0C8531B073528000EA3A7 /* LicenseUtil.m */,
+				CBE0C8271B072421000EA3A7 /* Settings */,
 				DCA787FC1B038ED00049098C /* Main.storyboard */,
 				DCA787FF1B038ED00049098C /* Images.xcassets */,
 				DCA788011B038ED00049098C /* LaunchScreen.xib */,
@@ -225,9 +329,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCA787FB1B038ED00049098C /* DashboardViewController.m in Sources */,
-				DCA787F81B038ED00049098C /* AppDelegate.m in Sources */,
+				CBE0C8541B073528000EA3A7 /* LicenseUtil.m in Sources */,
+				CBE0C8301B072483000EA3A7 /* PersonalInfoViewController.m in Sources */,
+				CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */,
 				DCA787F51B038ED00049098C /* main.m in Sources */,
+				CBE0C8501B072DC2000EA3A7 /* split.c in Sources */,
+				CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */,
+				CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */,
+				CBE0C84E1B072DC2000EA3A7 /* qrspec.c in Sources */,
+				CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */,
+				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
+				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
+				CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */,
+				CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */,
+				CBE0C8361B0724C5000EA3A7 /* AppInfoViewController.m in Sources */,
+				CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */,
+				CBE0C84C1B072DC2000EA3A7 /* qrencode.c in Sources */,
+				CBE0C8331B0724A4000EA3A7 /* QRCodeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +551,7 @@
 				DCA788141B038ED00049098C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DCA788151B038ED00049098C /* Build configuration list for PBXNativeTarget "iLearnTests" */ = {
 			isa = XCConfigurationList;
@@ -441,6 +560,7 @@
 				DCA788171B038ED00049098C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
