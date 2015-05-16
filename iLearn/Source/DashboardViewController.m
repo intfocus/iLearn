@@ -7,7 +7,9 @@
 //
 
 #import "DashboardViewController.h"
+#import "ListTableViewController.h"
 
+static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 @interface DashboardViewController ()
@@ -60,6 +62,14 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     // Dispose of any resources that can be recreated.
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:kShowQuestionnaireSegue]) {
+        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        listVC.listType = ListViewTypeQuestionnaire;
+    }
+}
+
 #pragma mark - Helper Functions
 
 - (void)setupBorderOfView:(UIView*)view {
@@ -89,6 +99,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (IBAction)questionnaireTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self performSegueWithIdentifier:kShowQuestionnaireSegue sender:nil];
 }
 
 - (IBAction)examTouched:(id)sender {
