@@ -6,13 +6,16 @@
   Copyright (c) 2015 intFocus. All rights reserved.
 */
 
+COMMON_CONTENT = "contents";
+COMMON_SUBMIT = "Submit";
+
 DASHBOARD_TITLE = "Dashboard";
 DASHBOARD_COURSE_PACK = "Course Pack";
 DASHBOARD_LECTURE = "Lecture Registration";
 DASHBOARD_REMINDER = "Reminder";
 DASHBOARD_QUESTIONNAIRE = "Questionnaire";
 DASHBOARD_EXAM = "Test";
-DASHBOARD_SERVICE_CALL = "Service Call";
+DASHBOARD_SERVICE_CALL = "Service Call: ";
 
 SETTINGS_TITLE = "Settings";
 SETTINGS_BUTTON_CLOSE = "Close";

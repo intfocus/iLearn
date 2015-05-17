@@ -8,9 +8,11 @@
 
 #import "DashboardViewController.h"
 #import "ListTableViewController.h"
+#import "QRCodeViewController.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
+static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 
 @interface DashboardViewController ()
 
@@ -29,6 +31,8 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 @property (weak, nonatomic) IBOutlet UILabel *examLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
+@property (weak, nonatomic) IBOutlet UIButton *qrCodeButton;
 
 @end
 
@@ -38,7 +42,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    NSString *serviceCallNumber = @"400-400-400";
+    NSString *serviceCallNumber = @"400 400 400";
 
     // Setup label contents
     self.title = NSLocalizedString(@"DASHBOARD_TITLE", nil);
@@ -47,14 +51,12 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     self.reminderLabel.text = NSLocalizedString(@"DASHBOARD_REMINDER", nil);
     self.questionnaireLabel.text = NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil);
     self.examLabel.text = NSLocalizedString(@"DASHBOARD_EXAM", nil);
-    self.serviceCallLabel.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), serviceCallNumber];
+    self.serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), serviceCallNumber];
+    self.qrCodeButton.titleLabel.text = NSLocalizedString(@"SETTINGS_PERSONAL_QRCODE", nil);
 
-    // Setup border of button area views
-    [self setupBorderOfView:_coursePackView];
-    [self setupBorderOfView:_lectureView];
-    [self setupBorderOfView:_reminderView];
-    [self setupBorderOfView:_questionnaireView];
-    [self setupBorderOfView:_examView];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
+
+    [self setupAvatarImageView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,14 +70,21 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
         ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeQuestionnaire;
     }
+    else if ([segue.identifier isEqualToString:kShowQRCodeSegue]) {
+        QRCodeViewController* qrCodeVC = (QRCodeViewController*)segue.destinationViewController;
+        qrCodeVC.showCloseButton = YES;
+    }
 }
 
 #pragma mark - Helper Functions
 
-- (void)setupBorderOfView:(UIView*)view {
-    view.layer.cornerRadius = 10.0;
-    view.layer.borderWidth = 2.0;
-    view.layer.borderColor = [[UIColor darkGrayColor] CGColor];
+- (void)setupAvatarImageView
+{
+    CGFloat width = self.avatarImageView.frame.size.width;
+    [self.avatarImageView.layer setCornerRadius:width/2.0];
+    [self.avatarImageView.layer setBorderColor:[UIColor whiteColor].CGColor];
+    [self.avatarImageView.layer setBorderWidth:2.0];
+    [self.avatarImageView setClipsToBounds:YES];
 }
 
 #pragma mark - IBActions
@@ -104,6 +113,11 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (IBAction)examTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (IBAction)qrCodeTouched:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self performSegueWithIdentifier:kShowQRCodeSegue sender:nil];
 }
 
 @end

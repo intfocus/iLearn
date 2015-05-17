@@ -11,6 +11,7 @@
 #import "DetailViewController.h"
 #import "QuestionnaireUtil.h"
 
+static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
 
 static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
@@ -33,6 +34,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
             break;
         case ListViewTypeQuestionnaire:
             self.contents = [QuestionnaireUtil loadQuestionaires];
+            self.title = NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil);
             break;
         default:
             break;
@@ -133,6 +135,8 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
     NSLog(@"didSelectActionButtonOfCell:");
     NSLog(@"indexPath.row: %d", indexPath.row);
+
+    [self performSegueWithIdentifier:kShowSubjectSegue sender:nil];
 }
 
 @end

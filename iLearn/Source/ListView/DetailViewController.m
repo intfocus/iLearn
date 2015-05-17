@@ -7,6 +7,7 @@
 //
 
 #import "DetailViewController.h"
+#import "Constants.h"
 
 @interface DetailViewController ()
 
@@ -20,8 +21,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    [self.actionButton.layer setCornerRadius:10.0];
-    [self.contentView.layer setCornerRadius:10.0];
+    [self.actionButton.layer setCornerRadius:15.0];
+
+    [self.contentView.layer setBorderWidth:1.0];
+
+    UIColor *borderColor = RGBCOLOR(190.0, 190.0, 190.0);
+    [self.contentView.layer setBorderColor:borderColor.CGColor];
 
     self.titleLabel.text = _titleString;
     self.descLabel.text = _descString;

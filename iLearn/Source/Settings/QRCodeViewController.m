@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *qrCodeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *accountLabel;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 
 @end
 
@@ -34,6 +35,8 @@
 
     NSString *accountString = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"SETTINGS_PERSONAL_ACCOUNT", nil), [LicenseUtil userAccount]];
     self.accountLabel.text = accountString;
+
+    self.closeButton.hidden = !_showCloseButton;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,5 +53,9 @@
  // Pass the selected object to the new view controller.
  }
  */
+
+- (IBAction)closeTouched:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end

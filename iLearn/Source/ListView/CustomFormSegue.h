@@ -1,5 +1,5 @@
 //
-//  QRCodeViewController.h
+//  CustomFormSegue.h
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/16.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QRCodeViewController : UIViewController
-
-@property (assign, nonatomic) BOOL showCloseButton;
+@interface CustomFormSegue : UIStoryboardSegue <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning>
 
 @end

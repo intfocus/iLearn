@@ -14,6 +14,10 @@
 		CB7BD7F01B07CDAA002C6DFB /* ListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7BD7E91B07CDAA002C6DFB /* ListTableViewCell.m */; };
 		CB7BD7F11B07CDAA002C6DFB /* ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7BD7EB1B07CDAA002C6DFB /* ListTableViewController.m */; };
 		CB7BD7F21B07CDAA002C6DFB /* QuestionnaireCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7BD7ED1B07CDAA002C6DFB /* QuestionnaireCell.m */; };
+		CB7BD7F61B0873B1002C6DFB /* SubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7BD7F51B0873B1002C6DFB /* SubjectViewController.m */; };
+		CB7BD7F91B0874DE002C6DFB /* SubjectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7BD7F81B0874DE002C6DFB /* SubjectCollectionViewCell.m */; };
+		CB7BD7FD1B08A2DB002C6DFB /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7BD7FC1B08A2DB002C6DFB /* FXBlurView.m */; };
+		CB7BD8001B08A53F002C6DFB /* CustomFormSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7BD7FF1B08A53F002C6DFB /* CustomFormSegue.m */; };
 		CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8221B072421000EA3A7 /* AppDelegate.m */; };
 		CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8241B072421000EA3A7 /* Constants.m */; };
 		CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8261B072421000EA3A7 /* DashboardViewController.m */; };
@@ -62,6 +66,14 @@
 		CB7BD7EB1B07CDAA002C6DFB /* ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListTableViewController.m; sourceTree = "<group>"; };
 		CB7BD7EC1B07CDAA002C6DFB /* QuestionnaireCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionnaireCell.h; sourceTree = "<group>"; };
 		CB7BD7ED1B07CDAA002C6DFB /* QuestionnaireCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionnaireCell.m; sourceTree = "<group>"; };
+		CB7BD7F41B0873B1002C6DFB /* SubjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubjectViewController.h; sourceTree = "<group>"; };
+		CB7BD7F51B0873B1002C6DFB /* SubjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubjectViewController.m; sourceTree = "<group>"; };
+		CB7BD7F71B0874DE002C6DFB /* SubjectCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubjectCollectionViewCell.h; sourceTree = "<group>"; };
+		CB7BD7F81B0874DE002C6DFB /* SubjectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubjectCollectionViewCell.m; sourceTree = "<group>"; };
+		CB7BD7FB1B08A2DB002C6DFB /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		CB7BD7FC1B08A2DB002C6DFB /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
+		CB7BD7FE1B08A53F002C6DFB /* CustomFormSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFormSegue.h; sourceTree = "<group>"; };
+		CB7BD7FF1B08A53F002C6DFB /* CustomFormSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFormSegue.m; sourceTree = "<group>"; };
 		CBE0C8211B072421000EA3A7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = "<group>"; };
 		CBE0C8221B072421000EA3A7 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
 		CBE0C8231B072421000EA3A7 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = Source/Constants.h; sourceTree = "<group>"; };
@@ -128,6 +140,8 @@
 		CB7BD7E31B07CDAA002C6DFB /* ListView */ = {
 			isa = PBXGroup;
 			children = (
+				CB7BD7FE1B08A53F002C6DFB /* CustomFormSegue.h */,
+				CB7BD7FF1B08A53F002C6DFB /* CustomFormSegue.m */,
 				CB7BD7E41B07CDAA002C6DFB /* CustomSegue.h */,
 				CB7BD7E51B07CDAA002C6DFB /* CustomSegue.m */,
 				CB7BD7E61B07CDAA002C6DFB /* DetailViewController.h */,
@@ -141,6 +155,27 @@
 			);
 			name = ListView;
 			path = Source/ListView;
+			sourceTree = "<group>";
+		};
+		CB7BD7F31B087391002C6DFB /* SubjectView */ = {
+			isa = PBXGroup;
+			children = (
+				CB7BD7F41B0873B1002C6DFB /* SubjectViewController.h */,
+				CB7BD7F51B0873B1002C6DFB /* SubjectViewController.m */,
+				CB7BD7F71B0874DE002C6DFB /* SubjectCollectionViewCell.h */,
+				CB7BD7F81B0874DE002C6DFB /* SubjectCollectionViewCell.m */,
+			);
+			name = SubjectView;
+			path = Source/SubjectView;
+			sourceTree = "<group>";
+		};
+		CB7BD7FA1B08A2DB002C6DFB /* FXBlurView */ = {
+			isa = PBXGroup;
+			children = (
+				CB7BD7FB1B08A2DB002C6DFB /* FXBlurView.h */,
+				CB7BD7FC1B08A2DB002C6DFB /* FXBlurView.m */,
+			);
+			path = FXBlurView;
 			sourceTree = "<group>";
 		};
 		CBE0C8271B072421000EA3A7 /* Settings */ = {
@@ -162,6 +197,7 @@
 		CBE0C8371B072DC1000EA3A7 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				CB7BD7FA1B08A2DB002C6DFB /* FXBlurView */,
 				CBE0C8381B072DC1000EA3A7 /* QR */,
 			);
 			name = Library;
@@ -232,6 +268,7 @@
 				CBE0C8531B073528000EA3A7 /* LicenseUtil.m */,
 				CB7BD7DC1B07BCAB002C6DFB /* QuestionnaireUtil.h */,
 				CB7BD7DD1B07BCAB002C6DFB /* QuestionnaireUtil.m */,
+				CB7BD7F31B087391002C6DFB /* SubjectView */,
 				CB7BD7E31B07CDAA002C6DFB /* ListView */,
 				CBE0C8271B072421000EA3A7 /* Settings */,
 				DCA787FC1B038ED00049098C /* Main.storyboard */,
@@ -375,9 +412,11 @@
 				CBE0C8541B073528000EA3A7 /* LicenseUtil.m in Sources */,
 				CBE0C8301B072483000EA3A7 /* PersonalInfoViewController.m in Sources */,
 				CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */,
+				CB7BD7FD1B08A2DB002C6DFB /* FXBlurView.m in Sources */,
 				CB7BD7F21B07CDAA002C6DFB /* QuestionnaireCell.m in Sources */,
 				CB7BD7F11B07CDAA002C6DFB /* ListTableViewController.m in Sources */,
 				DCA787F51B038ED00049098C /* main.m in Sources */,
+				CB7BD8001B08A53F002C6DFB /* CustomFormSegue.m in Sources */,
 				CBE0C8501B072DC2000EA3A7 /* split.c in Sources */,
 				CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */,
 				CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */,
@@ -387,8 +426,10 @@
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
 				CB7BD7EE1B07CDAA002C6DFB /* CustomSegue.m in Sources */,
+				CB7BD7F91B0874DE002C6DFB /* SubjectCollectionViewCell.m in Sources */,
 				CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */,
 				CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */,
+				CB7BD7F61B0873B1002C6DFB /* SubjectViewController.m in Sources */,
 				CB7BD7EF1B07CDAA002C6DFB /* DetailViewController.m in Sources */,
 				CBE0C8361B0724C5000EA3A7 /* AppInfoViewController.m in Sources */,
 				CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */,

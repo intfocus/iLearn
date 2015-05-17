@@ -1,15 +1,15 @@
 //
-//  CustomSegue.m
+//  CustomFormSegue.m
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/16.
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
-#import "CustomSegue.h"
+#import "CustomFormSegue.h"
 #import "FXBlurView.h"
 
-@implementation CustomSegue
+@implementation CustomFormSegue
 
 -(void)perform {
 
@@ -36,17 +36,17 @@
     UIViewController* fromVC = (UIViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 
     FXBlurView *blurView = [[FXBlurView alloc] initWithFrame:fromVC.view.bounds];
-    blurView.underlyingView = fromVC.view;
+    blurView.underlyingView = inView;
     blurView.tintColor = [UIColor clearColor];
     blurView.updateInterval = 1;
     blurView.blurRadius = 10.f;
     blurView.alpha = 0.f;
-    blurView.frame = fromVC.view.bounds;
+    blurView.frame = inView.bounds;
 
     [inView addSubview:blurView];
     [inView addSubview:toVC.view];
 
-    [toVC.view setFrame:CGRectMake(0, 0, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
+    [toVC.view setFrame:CGRectMake(242, 74, 540, 620)];
     toVC.view.alpha = 0.0;
 
     [UIView animateWithDuration:0.25f
