@@ -18,7 +18,7 @@
 
 @end
 
-@interface ListTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, ListTableViewCellDelegate>
+@interface ListTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ListTableViewCellDelegate>
 
 @property (assign, nonatomic) ListViewType listType;
 

@@ -20,7 +20,7 @@
 {
     [super awakeFromNib];
 
-    [self.bgView.layer setCornerRadius:10.0];
+//    [self.bgView.layer setCornerRadius:10.0];
     [self.actionButton.layer setCornerRadius:10.0];
 }
 

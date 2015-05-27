@@ -11,6 +11,9 @@
 #import "QRCodeViewController.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
+static NSString *const kShowExamSegue = @"showExamPage";
+static NSString *const kShowRegistrationSegue = @"showRegistrationPage";
+static NSString *const kShowLectureSegue = @"showLecturePage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 
@@ -70,6 +73,18 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
         ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeQuestionnaire;
     }
+    else if ([segue.identifier isEqualToString:kShowExamSegue]) {
+        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        listVC.listType = ListViewTypeExam;
+    }
+    else if ([segue.identifier isEqualToString:kShowRegistrationSegue]) {
+        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        listVC.listType = ListViewTypeRegistration;
+    }
+    else if ([segue.identifier isEqualToString:kShowLectureSegue]) {
+        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        listVC.listType = ListViewTypeLecture;
+    }
     else if ([segue.identifier isEqualToString:kShowQRCodeSegue]) {
         QRCodeViewController* qrCodeVC = (QRCodeViewController*)segue.destinationViewController;
         qrCodeVC.showCloseButton = YES;
@@ -94,12 +109,14 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
     [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
 }
 
-- (IBAction)coursePackTouced:(id)sender {
+- (IBAction)registrationTouced:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self performSegueWithIdentifier:kShowRegistrationSegue sender:nil];
 }
 
 - (IBAction)lectureTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self performSegueWithIdentifier:kShowLectureSegue sender:nil];
 }
 
 - (IBAction)reminderTouched:(id)sender {
@@ -113,6 +130,7 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 
 - (IBAction)examTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self performSegueWithIdentifier:kShowExamSegue sender:nil];
 }
 
 - (IBAction)qrCodeTouched:(id)sender {

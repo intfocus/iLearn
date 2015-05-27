@@ -67,4 +67,11 @@ static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionVie
 
 #pragma mark - UICollectionViewDelegate
 
+#pragma mark - UIAction
+
+- (IBAction)logoButtonTouched:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 @end

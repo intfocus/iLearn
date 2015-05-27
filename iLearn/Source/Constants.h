@@ -13,6 +13,8 @@
 typedef NS_ENUM(NSUInteger, ListViewType) {
     ListViewTypeExam,
     ListViewTypeQuestionnaire,
+    ListViewTypeRegistration,
+    ListViewTypeLecture,
 };
 
 extern NSString *const FakeAccount;

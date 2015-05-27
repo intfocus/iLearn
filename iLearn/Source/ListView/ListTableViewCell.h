@@ -11,7 +11,7 @@
 
 @interface ListTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) UITableViewController<ListTableViewCellDelegate> *delegate;
+@property (weak, nonatomic) UIViewController<ListTableViewCellDelegate> *delegate;
 
 - (void)actionTouched;
 - (void)infoTouched;
