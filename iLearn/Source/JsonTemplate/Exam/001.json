@@ -1,0 +1,101 @@
+{
+  "exam_id": 1233,
+  "exam_name": "oblp2_落地考1",
+  "submit": 0,
+  "status": 1,
+  "type": 0,
+  "begin": 22241241,
+  "end": 244124124,
+  "expire_time": 1433606400,
+  "ans_type": 1,
+  "description": "這是第一個 exam",
+  "location": 0,
+  "questions": [
+    {
+      "id": 1,
+      "description": "this is an example of 多選",
+      "level": 1,
+      "type": 3,
+      "selectors": [
+        {
+          "id": "A",
+          "content": "first option"
+        },
+        {
+          "id": "B",
+          "content": "second option"
+        },
+        {
+          "id": "C",
+          "content": "third option"
+        },
+        {
+          "id": "D",
+          "content": "fourth option"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "memo": "題目答案的說明"
+    },
+    {
+      "id": 2,
+      "description": "this is an example of 單選",
+      "level": 1,
+      "type": 2,
+      "selectors": [
+        {
+          "id": "A",
+          "content": "first option"
+        },
+        {
+          "id": "B",
+          "content": "second option"
+        },
+        {
+          "id": "C",
+          "content": "third option"
+        },
+        {
+          "id": "D",
+          "content": "fourth option"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "memo": "題目答案的說明"
+    },
+    {
+      "id": 3,
+      "description": "this is an example of 是非題",
+      "level": 1,
+      "type": 1,
+      "selectors": [
+        {
+          "id": "A",
+          "content": "first option"
+        },
+        {
+          "id": "B",
+          "content": "second option"
+        },
+        {
+          "id": "C",
+          "content": "third option"
+        },
+        {
+          "id": "D",
+          "content": "fourth option"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "memo": "題目答案的說明"
+    }
+  ]
+}

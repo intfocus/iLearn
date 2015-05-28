@@ -10,6 +10,7 @@
 #import "QuestionnaireCell.h"
 #import "DetailViewController.h"
 #import "QuestionnaireUtil.h"
+#import "ExamUtil.h"
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
@@ -18,6 +19,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 @interface ListTableViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) NSArray *contents;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
@@ -38,19 +40,6 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    switch (_listType) {
-//        case ListViewTypeExam:
-//            break;
-        case ListViewTypeQuestionnaire:
-            self.contents = [QuestionnaireUtil loadQuestionaires];
-            self.title = NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil);
-            break;
-        default:
-            self.contents = [QuestionnaireUtil loadQuestionaires];
-            self.title = NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil);
-            break;
-    }
-
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
     [_avatarImageView.layer setCornerRadius:width/2.0];
@@ -58,7 +47,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     [_avatarImageView.layer setBorderWidth:2.0];
     _avatarImageView.clipsToBounds = YES;
 
-    [self adjustSelectedItemInPanel];
+    [self refreshContent];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,8 +62,10 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
 
         switch (_listType) {
-//            case ListViewTypeExam:
-//                break;
+            case ListViewTypeExam:
+                detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
+                detailVC.descString = [ExamUtil descFromContent:sender];
+                break;
             case ListViewTypeQuestionnaire:
                 detailVC.titleString = [[QuestionnaireUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
                 detailVC.descString = [QuestionnaireUtil descFromContent:sender];
@@ -92,7 +83,23 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (void)refreshContent
 {
+    switch (_listType) {
+        case ListViewTypeExam:
+            self.contents = [ExamUtil loadExams];
+            self.titleLabel.text = NSLocalizedString(@"LIST_EXAM", nil);
+            break;
+        case ListViewTypeQuestionnaire:
+            self.contents = [QuestionnaireUtil loadQuestionaires];
+            self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
+            break;
+        default:
+            self.contents = [QuestionnaireUtil loadQuestionaires];
+            self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
+            break;
+    }
+
     [self adjustSelectedItemInPanel];
+    [self.tableView reloadData];
 }
 
 - (void)adjustSelectedItemInPanel
@@ -135,9 +142,9 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (_listType) {
-//        case ListViewTypeExam:
-//            return nil;
-//            break;
+        case ListViewTypeExam:
+            return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
+            break;
         case ListViewTypeQuestionnaire:
             return [self tableView:tableView cellForQuestionnaireRowAtIndexPath:indexPath];
             break;
@@ -167,6 +174,27 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     return cell;
 }
 
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    QuestionnaireCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
+    cell.delegate = self;
+
+    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+
+    cell.titleLabel.text = [ExamUtil titleFromContent:content];
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY/MM/dd"];
+    NSInteger epochTime = [ExamUtil expirationDateFromContent:content];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:epochTime];
+    NSString *expirationDateString = [formatter stringFromDate:date];
+
+    cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
+
+    return cell;
+}
+
+
 #pragma mark - UITableViewDelegate
 
 - (void)didSelectInfoButtonOfCell:(ListTableViewCell*)cell
@@ -178,6 +206,8 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
 
+    [ExamUtil parseContentIntoDB:content];
+
     [self performSegueWithIdentifier:kShowDetailSegue sender:content];
 }
 
@@ -187,6 +217,8 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
     NSLog(@"didSelectActionButtonOfCell:");
     NSLog(@"indexPath.row: %d", indexPath.row);
+
+
 
     [self performSegueWithIdentifier:kShowSubjectSegue sender:nil];
 }
@@ -223,10 +255,6 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (IBAction)settingsButtonTouched:(id)sender {
     NSLog(@"settingsButtonTouched");
-}
-
-- (IBAction)switchButtonTouched:(id)sender {
-    NSLog(@"switchButtonTouched");
 }
 
 - (IBAction)syncButtonTouched:(id)sender {

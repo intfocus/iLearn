@@ -21,6 +21,9 @@ extern NSString *const FakeAccount;
 
 extern NSString *const CacheFolder;
 extern NSString *const QuestionnaireFolder;
+extern NSString *const ExamFolder;
+
+extern NSString *const CommonFileName;
 
 extern NSString *const QuestionnaireTitle;
 extern NSString *const QuestionnaireDesc;
@@ -30,3 +33,15 @@ extern NSString *const QuestionnaireQuestions;
 extern NSString *const QuestionnaireQuestionTitle;
 extern NSString *const QuestionnaireQuestionAnswers;
 extern NSString *const QuestionnaireQuestionAnswerTitle;
+
+extern NSString *const ExamId;
+extern NSString *const ExamTitle;
+extern NSString *const ExamDesc;
+extern NSString *const ExamExpirationDate;
+extern NSString *const ExamStatus;
+extern NSString *const ExamType;
+extern NSString *const ExamAnsType;
+extern NSString *const ExamQuestions;
+extern NSString *const ExamQuestionTitle;
+extern NSString *const ExamQuestionAnswers;
+extern NSString *const ExamQuestionAnswerTitle;
