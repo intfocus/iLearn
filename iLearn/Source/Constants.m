@@ -32,8 +32,15 @@ NSString *const ExamExpirationDate = @"expire_time";
 NSString *const ExamStatus = @"status";
 NSString *const ExamType = @"type";
 NSString *const ExamAnsType = @"ans_type";
+
 NSString *const ExamQuestions = @"questions";
+NSString *const ExamQuestionId = @"id";
 NSString *const ExamQuestionTitle = @"description";
-NSString *const ExamQuestionAnswers = @"selectors";
-NSString *const ExamQuestionAnswerId = @"id";
-NSString *const ExamQuestionAnswerTitle = @"content";
+NSString *const ExamQuestionLevel = @"level";
+NSString *const ExamQuestionType = @"type";
+NSString *const ExamQuestionAnswer = @"answer";
+NSString *const ExamQuestionNote = @"memo";
+
+NSString *const ExamQuestionOptions = @"selectors";
+NSString *const ExamQuestionOptionId = @"id";
+NSString *const ExamQuestionOptionTitle = @"content";

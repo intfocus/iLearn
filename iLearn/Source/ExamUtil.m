@@ -96,19 +96,76 @@
         }
     }
 
-    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+    if (![fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
 
-    if ([db open]) {
+        if ([db open]) {
 
-        [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id TEXT, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT)"];
+            [self parseInfoOfContent:content intoDB:db];
+            [self parseSubjectsOfContent:content intoDB:db];
 
-        NSDate *now = [NSDate date];
+            [db close];
+        }
+    }
+}
 
-        [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, expire_time, ans_type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], @((int)[now timeIntervalSince1970]), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc]];
++ (void)parseInfoOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
+{
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT)"];
+
+    NSDate *now = [NSDate date];
+
+    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, expire_time, ans_type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], @((int)[now timeIntervalSince1970]), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc]];
+}
+
++ (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
+{
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS subject (id INTEGER PRIMARY KEY AUTOINCREMENT, subject_id INTEGER, desc TEXT, level INTEGER, type INTEGER, memo TEXT, answer TEXT, selected_answer TEXT)"];
+
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS option (id INTEGER PRIMARY KEY AUTOINCREMENT, option_id INTEGER, subject_id INTEGER, seq INTEGER, desc TEXT)"];
+
+    NSMutableArray *subjects = [content[ExamQuestions] mutableCopy];
+
+    while ([subjects count]) {
+
+        int index = arc4random_uniform([subjects count]);
+        NSDictionary *subject = subjects[index];
+
+        [self parseSubjectContent:subject intoDB:db];
+        [subjects removeObject:subject];
+    }
+
+}
+
++ (void)parseSubjectContent:(NSDictionary*)subjectContent intoDB:(FMDatabase*)db
+{
+    NSNumber *subjectId = subjectContent[ExamQuestionId];
+
+    NSArray *answers = subjectContent[ExamQuestionAnswer];
+    NSMutableString *answer = [NSMutableString string];
+
+    for (NSString *answerId in answers) {
+
+        [answer appendString:answerId];
+        if (![answerId isEqualToString:[answers lastObject]]) {
+            [answer appendString:@"+"];
+        }
+    }
+
+    [db executeUpdate:@"INSERT INTO subject (subject_id, desc, level, type, memo, answer) VALUES (?, ?, ?, ?, ?, ?)", subjectId, subjectContent[ExamQuestionTitle], subjectContent[ExamQuestionLevel], subjectContent[ExamQuestionType], subjectContent[ExamQuestionNote], answer];
 
 
+    NSMutableArray *options = [subjectContent[ExamQuestionOptions] mutableCopy];
+    int seq = 0;
 
-        [db close];
+    while ([options count]) {
+
+        int index = arc4random_uniform([options count]);
+        NSDictionary *option = options[index];
+
+        [db executeUpdate:@"INSERT INTO option (option_id, subject_id, seq, desc) VALUES (?, ?, ?, ?)", option[ExamQuestionOptionId], subjectId, @(seq++), option[ExamQuestionOptionTitle]];
+
+        [options removeObject:option];
     }
 }
 

@@ -41,7 +41,15 @@ extern NSString *const ExamExpirationDate;
 extern NSString *const ExamStatus;
 extern NSString *const ExamType;
 extern NSString *const ExamAnsType;
+
 extern NSString *const ExamQuestions;
+extern NSString *const ExamQuestionId;
 extern NSString *const ExamQuestionTitle;
-extern NSString *const ExamQuestionAnswers;
-extern NSString *const ExamQuestionAnswerTitle;
+extern NSString *const ExamQuestionLevel;
+extern NSString *const ExamQuestionType;
+extern NSString *const ExamQuestionAnswer;
+extern NSString *const ExamQuestionNote;
+
+extern NSString *const ExamQuestionOptions;
+extern NSString *const ExamQuestionOptionId;
+extern NSString *const ExamQuestionOptionTitle;
