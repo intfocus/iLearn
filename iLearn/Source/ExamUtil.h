@@ -11,9 +11,15 @@
 @interface ExamUtil : NSObject
 
 + (NSArray*)loadExams;
++ (NSString*)jsonStringOfContent:(NSDictionary*)content;
 + (NSString*)titleFromContent:(NSDictionary*)content;
 + (NSString*)descFromContent:(NSDictionary*)content;
 + (NSInteger)expirationDateFromContent:(NSDictionary*)content;
+
++ (NSString*)examFolderPath;
++ (NSString*)examDBPathOfFile:(NSString*)fileName;
+
 + (void)parseContentIntoDB:(NSDictionary*)content;
++ (NSDictionary*)examContentFromDBFile:(NSString*)dbPath;
 
 @end

@@ -43,6 +43,22 @@
     }
 }
 
++ (NSString*)jsonStringOfContent:(NSDictionary*)content
+{
+    NSString *jsonString;
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:content options:NSJSONWritingPrettyPrinted error:&error];
+
+    if (!error) {
+        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+    else {
+        NSLog(@"Parse content of jsonDic failed");
+    }
+
+    return jsonString;
+}
+
 + (NSString*)fileName:(NSString*)fullName
 {
     NSRange range = [fullName rangeOfString:@"."];
@@ -76,11 +92,24 @@
     return basePath;
 }
 
-+ (void)parseContentIntoDB:(NSDictionary*)content
++ (NSString*)examFolderPath
 {
     NSString *docPath = [self applicationDocumentsDirectory];
     NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
-    NSString *dbPath = [NSString stringWithFormat:@"%@/%@/%@.db", docPath, ExamFolder, content[CommonFileName]];
+
+    return examPath;
+}
+
++ (NSString*)examDBPathOfFile:(NSString*)fileName
+{
+    NSString *dbPath = [NSString stringWithFormat:@"%@/%@.db", [self examFolderPath], fileName];
+    return dbPath;
+}
+
++ (void)parseContentIntoDB:(NSDictionary*)content
+{
+    NSString *examPath = [self examFolderPath];
+    NSString *dbPath = [self examDBPathOfFile:content[CommonFileName]];
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
@@ -106,6 +135,12 @@
 
             [db close];
         }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        NSLog(@"DB file already exist: %@", dbPath);
     }
 }
 
@@ -167,6 +202,97 @@
 
         [options removeObject:option];
     }
+}
+
++ (NSDictionary*)examContentFromDBFile:(NSString*)dbPath
+{
+    NSMutableDictionary *content = [NSMutableDictionary dictionary];
+
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            [content addEntriesFromDictionary:[self examInfoFromDB:db]];
+            content[ExamQuestions] = [self examSubjectsFromDB:db];
+            
+            [db close];
+        }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        NSLog(@"Not DB file at the path: %@", dbPath);
+    }
+
+    return content;
+}
+
++ (NSDictionary*)examInfoFromDB:(FMDatabase*)db
+{
+    NSMutableDictionary *content = [NSMutableDictionary dictionary];
+
+    FMResultSet *result = [db executeQuery:@"SELECT * FROM info LIMIT 1"];
+
+    while ([result next]) {
+        content[ExamId] = @([result intForColumn:@"exam_id"]);
+        content[ExamTitle] = [result stringForColumn:@"exam_name"];
+        content[ExamStatus] = @([result intForColumn:@"status"]);
+        content[ExamType] = @([result intForColumn:@"type"]);
+        content[ExamBeginDate] = @([result intForColumn:@"begin"]);
+        content[ExamExpirationDate] = @([result intForColumn:@"expire_time"]);
+        content[ExamAnsType] = @([result intForColumn:@"ans_type"]);
+        content[ExamDesc] = [result stringForColumn:@"description"];
+    }
+
+    return content;
+}
+
++ (NSMutableArray*)examSubjectsFromDB:(FMDatabase*)db
+{
+    NSMutableArray *questions = [NSMutableArray array];
+
+    FMResultSet *result = [db executeQuery:@"SELECT * FROM subject"];
+
+    while ([result next]) {
+
+        NSMutableDictionary *content = [NSMutableDictionary dictionary];
+
+        NSNumber *subjectId = @([result intForColumn:@"subject_id"]);
+
+        content[ExamQuestionId] = subjectId;
+        content[ExamQuestionTitle] = [result stringForColumn:@"desc"];
+        content[ExamQuestionLevel] = @([result intForColumn:@"level"]);
+        content[ExamQuestionType] = @([result intForColumn:@"type"]);
+        content[ExamQuestionNote] = [result stringForColumn:@"memo"];
+        content[ExamQuestionAnswer] = [result stringForColumn:@"answer"];
+
+        NSMutableArray *options = [NSMutableArray array];
+
+        FMResultSet *optionResult = [db executeQuery:@"SELECT * FROM option WHERE subject_id = ?", subjectId];
+
+        while ([optionResult next]) {
+
+            NSMutableDictionary *option = [NSMutableDictionary dictionary];
+
+            option[ExamQuestionOptionId] = [optionResult stringForColumn:@"option_id"];
+            option[ExamQuestionOptionSeq] = @([optionResult intForColumn:@"seq"]);
+            option[ExamQuestionOptionTitle] = [optionResult stringForColumn:@"desc"];
+
+            [options addObject:option];
+        }
+
+        content[ExamQuestionOptions] = options;
+
+        [questions addObject:content];
+    }
+
+    return questions;
 }
 
 @end

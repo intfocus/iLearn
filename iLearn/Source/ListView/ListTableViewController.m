@@ -10,6 +10,7 @@
 #import "QuestionnaireCell.h"
 #import "DetailViewController.h"
 #import "QuestionnaireUtil.h"
+#import "SubjectViewController.h"
 #import "ExamUtil.h"
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
@@ -29,6 +30,8 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 @property (weak, nonatomic) IBOutlet UIView *lectureView;
 @property (weak, nonatomic) IBOutlet UIView *questionnaireView;
 @property (weak, nonatomic) IBOutlet UIView *examView;
+
+
 
 
 @end
@@ -75,6 +78,17 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
                 detailVC.descString = [QuestionnaireUtil descFromContent:sender];
                 break;
         }
+    }
+    else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
+        UINavigationController *navController = segue.destinationViewController;
+        UIViewController *viewController = navController.topViewController;
+
+        if ([viewController isKindOfClass:[SubjectViewController class]]) {
+            SubjectViewController *subjectVC = (SubjectViewController*)viewController;
+
+            subjectVC.examContent = sender;
+        }
+
     }
 
 }
@@ -218,9 +232,13 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSLog(@"didSelectActionButtonOfCell:");
     NSLog(@"indexPath.row: %d", indexPath.row);
 
+    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
 
+    NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
+    NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
+    NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
 
-    [self performSegueWithIdentifier:kShowSubjectSegue sender:nil];
+    [self performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
 }
 
 #pragma mark - IBAction

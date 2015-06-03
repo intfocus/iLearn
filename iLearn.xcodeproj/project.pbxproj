@@ -41,6 +41,7 @@
 		DC3F8EE81B17551E0007AC56 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = DC3F8EE11B17551E0007AC56 /* FMDatabaseQueue.m */; };
 		DC3F8EE91B17551E0007AC56 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC3F8EE41B17551E0007AC56 /* FMResultSet.m */; };
 		DC3F8EEB1B176A140007AC56 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DC3F8EEA1B176A140007AC56 /* libsqlite3.0.dylib */; };
+		DC5C4F9B1B1F82F4007C83C9 /* QuestionOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C4F9A1B1F82F4007C83C9 /* QuestionOptionCell.m */; };
 		DCA787F51B038ED00049098C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA787F41B038ED00049098C /* main.m */; };
 		DCA787FE1B038ED00049098C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCA787FC1B038ED00049098C /* Main.storyboard */; };
 		DCA788001B038ED00049098C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCA787FF1B038ED00049098C /* Images.xcassets */; };
@@ -127,6 +128,8 @@
 		DC3F8EE31B17551E0007AC56 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
 		DC3F8EE41B17551E0007AC56 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		DC3F8EEA1B176A140007AC56 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		DC5C4F991B1F82F4007C83C9 /* QuestionOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionOptionCell.h; sourceTree = "<group>"; };
+		DC5C4F9A1B1F82F4007C83C9 /* QuestionOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionOptionCell.m; sourceTree = "<group>"; };
 		DCA787EF1B038ED00049098C /* iLearn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iLearn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA787F31B038ED00049098C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCA787F41B038ED00049098C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -186,6 +189,8 @@
 				CB7BD7F51B0873B1002C6DFB /* SubjectViewController.m */,
 				CB7BD7F71B0874DE002C6DFB /* SubjectCollectionViewCell.h */,
 				CB7BD7F81B0874DE002C6DFB /* SubjectCollectionViewCell.m */,
+				DC5C4F991B1F82F4007C83C9 /* QuestionOptionCell.h */,
+				DC5C4F9A1B1F82F4007C83C9 /* QuestionOptionCell.m */,
 			);
 			name = SubjectView;
 			path = Source/SubjectView;
@@ -469,6 +474,7 @@
 				CB7BD7DE1B07BCAB002C6DFB /* QuestionnaireUtil.m in Sources */,
 				DC3F8EE71B17551E0007AC56 /* FMDatabasePool.m in Sources */,
 				CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */,
+				DC5C4F9B1B1F82F4007C83C9 /* QuestionOptionCell.m in Sources */,
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
 				CB7BD7EE1B07CDAA002C6DFB /* CustomSegue.m in Sources */,

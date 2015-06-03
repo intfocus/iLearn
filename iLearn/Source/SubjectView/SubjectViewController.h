@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SubjectViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SubjectViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
+
+@property (strong, nonatomic) NSDictionary *examContent;
 
 @end
