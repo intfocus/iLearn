@@ -25,15 +25,24 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @interface SubjectViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *answeredTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *unansweredTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *answeredLabel;
-@property (weak, nonatomic) IBOutlet UILabel *unansweredLabel;
+@property (weak, nonatomic) IBOutlet UILabel *leftStatusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *rightStatusLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *subjectCollectionView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *submitButton;
 
+
+@property (weak, nonatomic) IBOutlet UIView *questionView;
 @property (weak, nonatomic) IBOutlet UILabel *questionTitleLabel;
 @property (weak, nonatomic) IBOutlet UITableView *questionTableView;
+
+@property (weak, nonatomic) IBOutlet UIView *correctionView;
+@property (weak, nonatomic) IBOutlet UILabel *correctionTitleLabel;
+@property (weak, nonatomic) IBOutlet UITableView *correctionTableView;
+@property (weak, nonatomic) IBOutlet UILabel *correctionNoteLabel;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *questionToCorrectionSpaceConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerTableViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionTableViewHeightConstraint;
 
 @property (strong, nonatomic) NSMutableArray *cellStatus;
 @property (assign, nonatomic) NSUInteger selectedCellIndex;
@@ -59,6 +68,16 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
 
     self.selectedCellIndex = 0;
+    [self updateOptionContents];
+
+    BOOL isCorrectionHidden = YES;
+
+    if (isCorrectionHidden) {
+        CGFloat correctionViewHeight = _correctionView.frame.size.height;
+
+        _correctionView.hidden = YES;
+        _questionToCorrectionSpaceConstraint.constant = -correctionViewHeight;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,6 +94,26 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)updateOptionContents
+{
+    NSDictionary *selectedQuestion = _examContent[ExamQuestions][_selectedCellIndex];
+    NSString *questionTitle = selectedQuestion[ExamQuestionTitle];
+    NSString *title = [NSString stringWithFormat:@"%d.  %@", _selectedCellIndex+1, questionTitle];
+
+    _questionTitleLabel.text = title;
+    _correctionTitleLabel.text = title;
+
+    NSString *correctionNote = selectedQuestion[ExamQuestionNote];
+    _correctionNoteLabel.text = correctionNote;
+
+    [_questionTableView reloadData];
+    [_correctionTableView reloadData];
+
+    CGFloat height = _questionTableView.contentSize.height;
+    _answerTableViewHeightConstraint.constant = height;
+    _correctionTableViewHeightConstraint.constant = height;
+}
 
 #pragma mark - UICollectionViewDataSource
 
@@ -108,7 +147,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [collectionView reloadItemsAtIndexPaths:@[indexPath]];
 
     self.selectedCellIndex = indexPath.row;
-    [_questionTableView reloadData];
+    [self updateOptionContents];
 }
 
 #pragma mark - UITableViewDataSource
@@ -128,7 +167,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSArray *options = selectedQuestion[ExamQuestionOptions];
     NSDictionary *option = options[indexPath.row];
 
-    cell.seqLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
+    cell.seqLabel.text = [NSString stringWithFormat:@"%c", (indexPath.row+1)+64];
     cell.titleLabel.text = option[ExamQuestionOptionTitle];
 
     return cell;

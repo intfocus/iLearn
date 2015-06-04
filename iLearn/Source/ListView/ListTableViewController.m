@@ -219,9 +219,6 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSLog(@"indexPath.row: %d", indexPath.row);
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
-
-    [ExamUtil parseContentIntoDB:content];
-
     [self performSegueWithIdentifier:kShowDetailSegue sender:content];
 }
 
@@ -233,12 +230,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSLog(@"indexPath.row: %d", indexPath.row);
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
-
-    NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
-    NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
-    NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
-
-    [self performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
+    [self enterExamPageForContent:content];
 }
 
 #pragma mark - IBAction
@@ -277,6 +269,18 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (IBAction)syncButtonTouched:(id)sender {
     NSLog(@"syncButtonTouched");
+}
+
+- (void)enterExamPageForContent:(NSDictionary*)content
+{
+    [ExamUtil parseContentIntoDB:content];
+
+    NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
+
+    NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
+    NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
+
+    [self performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
 }
 
 @end
