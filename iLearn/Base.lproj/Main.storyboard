@@ -1367,7 +1367,7 @@
                                         <rect key="frame" x="12" y="12" width="648" height="603"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMY-rs-cXw" userLabel="Correction View">
-                                                <rect key="frame" x="0.0" y="199" width="648" height="247"/>
+                                                <rect key="frame" x="0.0" y="254" width="648" height="247"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11.  您对本次培训过程中的课程时间安排是否满意？" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Em3-A5-WVH">
                                                         <rect key="frame" x="12" y="30" width="624" height="27"/>
@@ -1375,7 +1375,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="xew-gk-jKw">
+                                                    <tableView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="xew-gk-jKw">
                                                         <rect key="frame" x="0.0" y="75" width="648" height="100"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
@@ -1383,7 +1383,7 @@
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="tTJ-Hh-aKf"/>
                                                         </constraints>
                                                         <prototypes>
-                                                            <tableViewCell contentMode="scaleToFill" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="QuestionAnswerCell" rowHeight="60" id="vRU-d2-MJM" customClass="QuestionOptionCell">
+                                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="QuestionAnswerCell" rowHeight="60" id="vRU-d2-MJM" customClass="QuestionOptionCell">
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vRU-d2-MJM" id="W4T-Bi-Qjr">
                                                                     <autoresizingMask key="autoresizingMask"/>
@@ -1413,8 +1413,8 @@
                                                                     <variation key="default">
                                                                         <mask key="constraints">
                                                                             <exclude reference="SH9-Xe-Tn5"/>
-                                                                            <exclude reference="wiC-26-ewL"/>
                                                                             <exclude reference="Tmf-xB-39t"/>
+                                                                            <exclude reference="wiC-26-ewL"/>
                                                                         </mask>
                                                                     </variation>
                                                                 </tableViewCellContentView>
@@ -1463,7 +1463,7 @@
                                                 </variation>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="StQ-0r-mDJ" userLabel="Answer View">
-                                                <rect key="frame" x="0.0" y="0.0" width="648" height="187"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="648" height="242"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11.  您对本次培训过程中的课程时间安排是否满意？" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1c-xl-6cG">
                                                         <rect key="frame" x="12" y="30" width="624" height="27"/>
@@ -1471,7 +1471,7 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="dW8-OP-YM2">
+                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="dW8-OP-YM2">
                                                         <rect key="frame" x="0.0" y="73" width="648" height="90"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
@@ -1524,9 +1524,22 @@
                                                             <outlet property="delegate" destination="bAD-er-vf6" id="B8w-lQ-9vw"/>
                                                         </connections>
                                                     </tableView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Qv-N0-IC5">
+                                                        <rect key="frame" x="274" y="187" width="100" height="39"/>
+                                                        <color key="backgroundColor" red="0.1019607843" green="0.72941176470000002" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="100" id="DWa-Ow-SR1"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                                        <state key="normal" title="下一题">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
+                                                    <constraint firstItem="7Qv-N0-IC5" firstAttribute="top" secondItem="dW8-OP-YM2" secondAttribute="bottom" constant="24" id="3j7-Yv-WRk"/>
                                                     <constraint firstItem="b1c-xl-6cG" firstAttribute="top" secondItem="StQ-0r-mDJ" secondAttribute="top" constant="34" id="5KK-Tj-mDZ"/>
                                                     <constraint firstItem="dW8-OP-YM2" firstAttribute="top" secondItem="b1c-xl-6cG" secondAttribute="bottom" constant="16" id="DFb-qV-8JN"/>
                                                     <constraint firstAttribute="trailing" secondItem="b1c-xl-6cG" secondAttribute="trailing" constant="12" id="FGB-4S-I4P"/>
@@ -1534,11 +1547,15 @@
                                                     <constraint firstItem="b1c-xl-6cG" firstAttribute="top" secondItem="StQ-0r-mDJ" secondAttribute="top" constant="30" id="Kab-bl-DUr"/>
                                                     <constraint firstAttribute="bottom" secondItem="dW8-OP-YM2" secondAttribute="bottom" constant="24" id="N4p-Oi-Lyg"/>
                                                     <constraint firstItem="b1c-xl-6cG" firstAttribute="leading" secondItem="StQ-0r-mDJ" secondAttribute="leading" constant="22" id="NEh-TO-ee2"/>
+                                                    <constraint firstAttribute="bottom" secondItem="7Qv-N0-IC5" secondAttribute="bottom" constant="16" id="S1j-d3-cyV"/>
+                                                    <constraint firstAttribute="centerX" secondItem="7Qv-N0-IC5" secondAttribute="centerX" id="bCA-1H-fSx"/>
+                                                    <constraint firstItem="7Qv-N0-IC5" firstAttribute="leading" secondItem="StQ-0r-mDJ" secondAttribute="leading" constant="20" id="exG-NH-8NW"/>
                                                     <constraint firstAttribute="trailing" secondItem="dW8-OP-YM2" secondAttribute="trailing" id="fru-aa-XE7"/>
                                                     <constraint firstItem="b1c-xl-6cG" firstAttribute="leading" secondItem="StQ-0r-mDJ" secondAttribute="leading" constant="12" id="jwV-77-a6T"/>
                                                     <constraint firstItem="dW8-OP-YM2" firstAttribute="leading" secondItem="StQ-0r-mDJ" secondAttribute="leading" id="mib-HH-hyb"/>
                                                     <constraint firstAttribute="trailing" secondItem="b1c-xl-6cG" secondAttribute="trailing" constant="255" id="wee-c1-quJ"/>
                                                     <constraint firstAttribute="bottom" secondItem="b1c-xl-6cG" secondAttribute="bottom" constant="170" id="xe0-iG-ofh"/>
+                                                    <constraint firstAttribute="trailing" secondItem="7Qv-N0-IC5" secondAttribute="trailing" constant="20" id="yY9-Jt-IRr"/>
                                                 </constraints>
                                                 <variation key="default">
                                                     <mask key="constraints">
@@ -1546,6 +1563,9 @@
                                                         <exclude reference="NEh-TO-ee2"/>
                                                         <exclude reference="wee-c1-quJ"/>
                                                         <exclude reference="xe0-iG-ofh"/>
+                                                        <exclude reference="N4p-Oi-Lyg"/>
+                                                        <exclude reference="exG-NH-8NW"/>
+                                                        <exclude reference="yY9-Jt-IRr"/>
                                                     </mask>
                                                 </variation>
                                             </view>

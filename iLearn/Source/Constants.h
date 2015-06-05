@@ -49,9 +49,12 @@ extern NSString *const ExamQuestionTitle;
 extern NSString *const ExamQuestionLevel;
 extern NSString *const ExamQuestionType;
 extern NSString *const ExamQuestionAnswer;
+extern NSString *const ExamQuestionAnswerBySeq;
 extern NSString *const ExamQuestionNote;
+extern NSString *const ExamQuestionAnswered;
 
 extern NSString *const ExamQuestionOptions;
 extern NSString *const ExamQuestionOptionId;
 extern NSString *const ExamQuestionOptionTitle;
 extern NSString *const ExamQuestionOptionSeq;
+extern NSString *const ExamQuestionOptionSelected;

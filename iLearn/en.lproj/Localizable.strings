@@ -31,3 +31,7 @@ SETTINGS_APPLICATION_VERSION = "Version";
 LIST_EXAM = "Exam";
 LIST_QUESTIONNAIRE = "Questionnaire";
 LIST_DETAIL = "detail";
+
+EXAM_ANSWERED_TEMPLATE = "Answered: %lld";
+EXAM_UNANSWERED_TEMPLATE = "Answered: %lld";
+EXAM_CORRECTION_TEMPLATE = "Answer: %@. %@.";

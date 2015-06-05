@@ -40,9 +40,13 @@ NSString *const ExamQuestionTitle = @"description";
 NSString *const ExamQuestionLevel = @"level";
 NSString *const ExamQuestionType = @"type";
 NSString *const ExamQuestionAnswer = @"answer";
+NSString *const ExamQuestionAnswerBySeq = @"answer_by_seq";
 NSString *const ExamQuestionNote = @"memo";
+NSString *const ExamQuestionAnswered = @"answered";
 
 NSString *const ExamQuestionOptions = @"selectors";
 NSString *const ExamQuestionOptionId = @"id";
 NSString *const ExamQuestionOptionTitle = @"content";
 NSString *const ExamQuestionOptionSeq = @"seq";
+NSString *const ExamQuestionOptionSelected = @"selected";
+

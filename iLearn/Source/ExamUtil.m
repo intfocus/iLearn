@@ -61,13 +61,7 @@
 
 + (NSString*)fileName:(NSString*)fullName
 {
-    NSRange range = [fullName rangeOfString:@"."];
-    if (range.location != NSNotFound) {
-        return [fullName substringToIndex:range.location];
-    }
-    else {
-        return fullName;
-    }
+    return [[fullName lastPathComponent] stringByDeletingPathExtension];
 }
 
 + (NSString*)titleFromContent:(NSDictionary*)content
@@ -157,7 +151,7 @@
 {
     [db executeUpdate:@"CREATE TABLE IF NOT EXISTS subject (id INTEGER PRIMARY KEY AUTOINCREMENT, subject_id INTEGER, desc TEXT, level INTEGER, type INTEGER, memo TEXT, answer TEXT, selected_answer TEXT)"];
 
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS option (id INTEGER PRIMARY KEY AUTOINCREMENT, option_id INTEGER, subject_id INTEGER, seq INTEGER, desc TEXT)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS option (id INTEGER PRIMARY KEY AUTOINCREMENT, option_id INTEGER, subject_id INTEGER, seq INTEGER, desc TEXT, selected INTEGER DEFAULT 0)"];
 
     NSMutableArray *subjects = [content[ExamQuestions] mutableCopy];
 
@@ -177,15 +171,7 @@
     NSNumber *subjectId = subjectContent[ExamQuestionId];
 
     NSArray *answers = subjectContent[ExamQuestionAnswer];
-    NSMutableString *answer = [NSMutableString string];
-
-    for (NSString *answerId in answers) {
-
-        [answer appendString:answerId];
-        if (![answerId isEqualToString:[answers lastObject]]) {
-            [answer appendString:@"+"];
-        }
-    }
+    NSString *answer = [answers componentsJoinedByString:@"+"];
 
     [db executeUpdate:@"INSERT INTO subject (subject_id, desc, level, type, memo, answer) VALUES (?, ?, ?, ?, ?, ?)", subjectId, subjectContent[ExamQuestionTitle], subjectContent[ExamQuestionLevel], subjectContent[ExamQuestionType], subjectContent[ExamQuestionNote], answer];
 
@@ -211,7 +197,6 @@
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
 
-
     if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
         FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
 
@@ -219,7 +204,8 @@
 
             [content addEntriesFromDictionary:[self examInfoFromDB:db]];
             content[ExamQuestions] = [self examSubjectsFromDB:db];
-            
+            content[CommonFileName] = [[dbPath lastPathComponent] stringByDeletingPathExtension];
+
             [db close];
         }
         else {
@@ -227,7 +213,7 @@
         }
     }
     else {
-        NSLog(@"Not DB file at the path: %@", dbPath);
+        NSLog(@"No DB file at the path: %@", dbPath);
     }
 
     return content;
@@ -270,29 +256,74 @@
         content[ExamQuestionLevel] = @([result intForColumn:@"level"]);
         content[ExamQuestionType] = @([result intForColumn:@"type"]);
         content[ExamQuestionNote] = [result stringForColumn:@"memo"];
-        content[ExamQuestionAnswer] = [result stringForColumn:@"answer"];
+
+        NSArray *answers = [[result stringForColumn:@"answer"] componentsSeparatedByString:@"+"];
+        NSMutableArray *answersBySeq = [NSMutableArray array];
+        content[ExamQuestionAnswer] = answers;
 
         NSMutableArray *options = [NSMutableArray array];
 
         FMResultSet *optionResult = [db executeQuery:@"SELECT * FROM option WHERE subject_id = ?", subjectId];
 
+        NSInteger answered = 0;
+
         while ([optionResult next]) {
 
             NSMutableDictionary *option = [NSMutableDictionary dictionary];
 
-            option[ExamQuestionOptionId] = [optionResult stringForColumn:@"option_id"];
-            option[ExamQuestionOptionSeq] = @([optionResult intForColumn:@"seq"]);
+            NSString *optionId = [optionResult stringForColumn:@"option_id"];
+            option[ExamQuestionOptionId] = optionId;
+            NSNumber *optionSeq = @([optionResult intForColumn:@"seq"]);
+            option[ExamQuestionOptionSeq] = optionSeq;
             option[ExamQuestionOptionTitle] = [optionResult stringForColumn:@"desc"];
+            option[ExamQuestionOptionSelected] = @([optionResult intForColumn:@"selected"]);
+
+            if ([option[ExamQuestionOptionSelected] isEqualToNumber:@(1)]) {
+                answered = 1;
+            }
+
+            if ([answers containsObject:optionId]) {
+                [answersBySeq addObject:optionSeq];
+            }
 
             [options addObject:option];
         }
 
         content[ExamQuestionOptions] = options;
+        content[ExamQuestionAnswerBySeq] = answersBySeq;
+        content[ExamQuestionAnswered] = @(answered);
 
         [questions addObject:content];
     }
 
     return questions;
+}
+
++ (void)setOptionSelected:(BOOL)selected withSubjectId:(NSString*)subjectId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath
+{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            BOOL updateSuccess = [db executeUpdate:@"UPDATE option SET selected=? WHERE subject_id=? AND option_id=?", @(selected), subjectId, optionId];
+
+            if (!updateSuccess) {
+                NSLog(@"UPDATE FAILED! optionId: %@, subjectId: %@, selected: %d", optionId, subjectId, selected);
+            }
+
+            [db close];
+        }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        NSLog(@"Not DB file at the path: %@", dbPath);
+    }
 }
 
 @end
