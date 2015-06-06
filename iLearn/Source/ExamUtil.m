@@ -140,7 +140,7 @@
 
 + (void)parseInfoOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1)"];
 
     NSDate *now = [NSDate date];
 
@@ -323,6 +323,99 @@
     }
     else {
         NSLog(@"Not DB file at the path: %@", dbPath);
+    }
+}
+
++ (void)setExamSubmittedwithDBPath:(NSString*)dbPath
+{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            [db executeUpdate:@"UPDATE info SET submit=1"];
+
+            [db close];
+        }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        NSLog(@"Not DB file at the path: %@", dbPath);
+    }
+}
+
++ (NSInteger)examScoreOfDBPath:(NSString*)dbPath
+{
+    NSInteger score = -1;
+
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            score = [db intForQuery:@"SELECT score FROM info LIMIT 1"];
+
+            if (score == -1) {
+                score = [self calculateExamScoreOfDB:db];
+            }
+
+            [db close];
+        }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        NSLog(@"Not DB file at the path: %@", dbPath);
+    }
+    return score;
+}
+
++ (NSInteger)calculateExamScoreOfDB:(FMDatabase*)db
+{
+    [self updateSelectedAnswersOfSubjectsInDB:db];
+
+    NSInteger totalSubjectCount = [db intForQuery:@"SELECT COUNT(*) FROM subject"];
+    NSInteger correctCount = [db intForQuery:@"SELECT COUNT(*) FROM subject WHERE answer=selected_answer"];
+
+    NSInteger score = (float)correctCount/(float)totalSubjectCount * 100.0;
+
+    [db executeUpdate:@"UPDATE info SET score=?", @(score)];
+
+    return score;
+}
+
++ (void)updateSelectedAnswersOfSubjectsInDB:(FMDatabase*)db
+{
+    FMResultSet *subjects = [db executeQuery:@"SELECT * FROM subject"];
+
+    while ([subjects next]) {
+
+        NSString *subjectId = [subjects stringForColumn:@"subject_id"];
+
+        FMResultSet *options = [db executeQuery:@"SELECT * FROM option WHERE subject_id=? AND selected=1", subjectId];
+        NSMutableArray *selectedAnswers = [NSMutableArray array];
+
+        while ([options next]) {
+            NSString *optionId = [options stringForColumn:@"option_id"];
+            [selectedAnswers addObject:optionId];
+        }
+
+        [selectedAnswers sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            return [obj1 compare:obj2 options:0];
+        }];
+
+        NSString *selectedAnswerString = [selectedAnswers componentsJoinedByString:@"+"];
+
+        [db executeUpdate:@"UPDATE subject SET selected_answer=? WHERE subject_id=?", selectedAnswerString, subjectId];
     }
 }
 

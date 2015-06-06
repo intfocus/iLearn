@@ -1526,7 +1526,7 @@
                                                     </tableView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Qv-N0-IC5">
                                                         <rect key="frame" x="274" y="187" width="100" height="39"/>
-                                                        <color key="backgroundColor" red="0.1019607843" green="0.72941176470000002" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="backgroundColor" red="0.10588235294117647" green="0.6470588235294118" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="100" id="DWa-Ow-SR1"/>
                                                         </constraints>
@@ -1535,6 +1535,9 @@
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="nextButtonTouched:" destination="bAD-er-vf6" eventType="touchUpInside" id="d3q-Kq-0io"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1677,8 +1680,40 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="1wQ-8j-r2C">
-                        <barButtonItem key="rightBarButtonItem" title="Submit" id="RQ6-Rv-LpU">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="JGB-gr-e1v">
+                            <view key="customView" contentMode="scaleToFill" id="hhg-uT-tyx">
+                                <rect key="frame" x="0.0" y="0.0" width="227" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Mr-yy-OcF">
+                                        <rect key="frame" x="147" y="-1" width="80" height="36"/>
+                                        <color key="backgroundColor" red="0.1058823529" green="0.64705882349999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="80" id="FXq-eI-aVr"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="submitButtonTouched:" destination="bAD-er-vf6" eventType="touchUpInside" id="66l-o4-gGR"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="6Mr-yy-OcF" firstAttribute="leading" secondItem="hhg-uT-tyx" secondAttribute="leading" id="DQs-OX-LzO"/>
+                                    <constraint firstAttribute="trailing" secondItem="6Mr-yy-OcF" secondAttribute="trailing" id="Fog-FC-gXh"/>
+                                    <constraint firstAttribute="trailing" secondItem="6Mr-yy-OcF" secondAttribute="trailing" id="PHH-l8-v1z"/>
+                                    <constraint firstAttribute="centerY" secondItem="6Mr-yy-OcF" secondAttribute="centerY" id="yby-ph-INX"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="DQs-OX-LzO"/>
+                                        <exclude reference="Fog-FC-gXh"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -1689,13 +1724,14 @@
                         <outlet property="correctionTitleLabel" destination="Em3-A5-WVH" id="04U-MJ-HZa"/>
                         <outlet property="correctionView" destination="vMY-rs-cXw" id="Lyw-6Z-gAA"/>
                         <outlet property="leftStatusLabel" destination="gMo-TC-yfP" id="bXK-wX-y7T"/>
+                        <outlet property="nextButton" destination="7Qv-N0-IC5" id="n8c-JS-Jjc"/>
                         <outlet property="questionTableView" destination="dW8-OP-YM2" id="sdF-qe-5ej"/>
                         <outlet property="questionTitleLabel" destination="b1c-xl-6cG" id="x6I-Y7-CnN"/>
                         <outlet property="questionToCorrectionSpaceConstraint" destination="6t4-nj-xAp" id="wI9-uR-5nP"/>
                         <outlet property="questionView" destination="StQ-0r-mDJ" id="jK3-MH-1mk"/>
                         <outlet property="rightStatusLabel" destination="MhQ-xV-AAl" id="sR7-0r-Bw3"/>
                         <outlet property="subjectCollectionView" destination="i07-i1-GTv" id="YvV-jf-FYt"/>
-                        <outlet property="submitButton" destination="RQ6-Rv-LpU" id="q7i-iM-Jk2"/>
+                        <outlet property="submitButton" destination="6Mr-yy-OcF" id="Hul-v0-9Dt"/>
                         <outlet property="titleLabel" destination="DYW-q9-w7I" id="A9S-12-ekB"/>
                     </connections>
                 </viewController>

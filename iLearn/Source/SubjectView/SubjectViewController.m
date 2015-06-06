@@ -30,7 +30,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UILabel *leftStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *rightStatusLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *subjectCollectionView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *submitButton;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
 
 
 @property (weak, nonatomic) IBOutlet UIView *questionView;
@@ -50,6 +50,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (assign, nonatomic) NSUInteger selectedCellIndex;
 @property (strong, nonatomic) NSMutableArray *selectedRowsOfSubject;
 
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
+
 @end
 
 @implementation SubjectViewController
@@ -61,7 +63,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSString *titleString = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil), NSLocalizedString(@"COMMON_CONTENT", nil)];
     self.title = titleString;
 
-    self.submitButton.title = NSLocalizedString(@"COMMON_SUBMIT", nil);
+    [self.submitButton setTitle:NSLocalizedString(@"COMMON_SUBMIT", nil) forState:UIControlStateNormal];
 
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
 
@@ -77,6 +79,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         }
     }
     [self updateStringLabels];
+    [self updateSubmitButtonStatus];
 
     self.selectedCellIndex = 0;
     [self updateSelections];
@@ -120,9 +123,11 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     SubjectCollectionViewCell *cell = (SubjectCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:kSubjectCollectionCellIdentifier forIndexPath:indexPath];
 
     cell.numberLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
+    cell.numberLabel.textColor = [UIColor blackColor];
 
     if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
-        cell.backgroundColor = [UIColor greenColor];
+        cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+        cell.numberLabel.textColor = [UIColor whiteColor];
     }
     else {
         cell.backgroundColor = [UIColor lightGrayColor];
@@ -135,10 +140,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self saveSelections];
-    self.selectedCellIndex = indexPath.row;
-    [self updateSelections];
-    [self updateOptionContents];
+    if (indexPath.row != _selectedCellIndex) {
+        [self changeSubjectToIndex:indexPath.row];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -163,7 +167,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     // Set cell background color when answering
     UIView *backgroundView = [UIView new];
-    backgroundView.backgroundColor = [UIColor greenColor];
+    backgroundView.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
     cell.selectedBackgroundView = backgroundView;
 
     if (tableView == _questionTableView && [_selectedRowsOfSubject containsObject:@(indexPath.row)]) {
@@ -177,7 +181,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
     else if (tableView == _correctionTableView) {
         if ([answersBySeq containsObject:@(indexPath.row)]) {
-            cell.backgroundColor = [UIColor greenColor];
+            cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
         }
         else {
             cell.backgroundColor = [UIColor whiteColor];
@@ -249,6 +253,19 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     CGFloat height = _questionTableView.contentSize.height;
     _answerTableViewHeightConstraint.constant = height;
     _correctionTableViewHeightConstraint.constant = height;
+
+    _nextButton.hidden = _selectedCellIndex == [_cellStatus count]-1? YES: NO;
+}
+
+- (void)updateSubmitButtonStatus
+{
+    for (NSNumber *status in _cellStatus) {
+        if ([status isEqualToNumber:@(CellStatusNone)]) {
+            _submitButton.hidden = YES;
+            return;
+        }
+    }
+    _submitButton.hidden = NO;
 }
 
 - (void)saveSelections
@@ -290,6 +307,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     // Update answered/unanswered status
     [self updateStringLabels];
+    [self updateSubmitButtonStatus];
 }
 
 - (void)updateStringLabels
@@ -316,11 +334,39 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     return numberOfAnsweredSubjects;
 }
 
+- (void)changeSubjectToIndex:(NSInteger)index
+{
+    [self saveSelections];
+    self.selectedCellIndex = index;
+    [self updateSelections];
+    [self updateOptionContents];
+}
+
 #pragma mark - UIAction
 
 - (IBAction)logoButtonTouched:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)nextButtonTouched:(id)sender
+{
+    NSInteger nextIndex = _selectedCellIndex + 1;
+    if (nextIndex < [_cellStatus count]) {
+        [self changeSubjectToIndex:nextIndex];
+    }
+}
+
+- (IBAction)submitButtonTouched:(id)sender {
+    [self saveSelections];
+
+    NSString *fileName = _examContent[CommonFileName];
+    NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+
+    [ExamUtil setExamSubmittedwithDBPath:dbPath];
+    NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
+
+    NSLog(@"score: %lld", (long long)score);
 }
 
 @end

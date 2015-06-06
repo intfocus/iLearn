@@ -23,4 +23,7 @@
 + (NSDictionary*)examContentFromDBFile:(NSString*)dbPath;
 + (void)setOptionSelected:(BOOL)selected withSubjectId:(NSString*)subjectId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath;
 
++ (void)setExamSubmittedwithDBPath:(NSString*)dbPath;
++ (NSInteger)examScoreOfDBPath:(NSString*)dbPath;
+
 @end
