@@ -11,6 +11,7 @@
 @interface ExamUtil : NSObject
 
 + (NSArray*)loadExams;
++ (NSArray*)loadExamsFromCache;
 + (NSString*)jsonStringOfContent:(NSDictionary*)content;
 + (NSString*)titleFromContent:(NSDictionary*)content;
 + (NSString*)descFromContent:(NSDictionary*)content;

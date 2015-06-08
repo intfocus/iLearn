@@ -8,6 +8,7 @@
 
 #include "Constants.h"
 
+NSString *const ServiceNumber = @"400 400 500";
 NSString *const FakeAccount = @"A1234567";
 
 NSString *const CacheFolder = @"JsonTemplate";
@@ -25,14 +26,17 @@ NSString *const QuestionnaireQuestionTitle = @"title";
 NSString *const QuestionnaireQuestionAnswers = @"answers";
 NSString *const QuestionnaireQuestionAnswerTitle = @"title";
 
+NSString *const Exams = @"exams";
 NSString *const ExamId = @"exam_id";
 NSString *const ExamTitle = @"exam_name";
 NSString *const ExamDesc = @"description";
-NSString *const ExamBeginDate = @"begin_time";
+NSString *const ExamBeginDate = @"begin";
+NSString *const ExamEndDate = @"end";
 NSString *const ExamExpirationDate = @"expire_time";
 NSString *const ExamStatus = @"status";
 NSString *const ExamType = @"type";
 NSString *const ExamAnsType = @"ans_type";
+NSString *const ExamCached = @"exist_in_local";
 
 NSString *const ExamQuestions = @"questions";
 NSString *const ExamQuestionId = @"id";

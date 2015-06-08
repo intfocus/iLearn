@@ -11,5 +11,6 @@
 @interface LicenseUtil : NSObject
 
 + (NSString*)userAccount;
++ (NSString*)serviceNumber;
 
 @end

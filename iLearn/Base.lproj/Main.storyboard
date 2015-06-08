@@ -657,7 +657,7 @@
             <objects>
                 <tableViewController id="17A-wM-gTZ" userLabel="Settings View Controller" customClass="SettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="5QT-fc-aus">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections/>
@@ -760,7 +760,7 @@
                                         <color key="textColor" red="0.094117647060000004" green="0.42352941179999998" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Charlie" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gAD-yw-5iW">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Charlie" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gAD-yw-5iW">
                                         <rect key="frame" x="104" y="98" width="128" height="27"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1228,15 +1228,20 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="avartarImageView" destination="UEl-qc-PWX" id="UcU-r7-WfG"/>
                         <outlet property="avatarImageView" destination="UEl-qc-PWX" id="d1D-yb-BO9"/>
                         <outlet property="examView" destination="Xly-RA-A3Q" id="0To-pC-EjL"/>
                         <outlet property="lectureView" destination="C4q-iD-jN5" id="eH9-7P-kwv"/>
+                        <outlet property="onlineStatusLabel" destination="qon-zQ-1Wa" id="FkH-1X-Hhr"/>
                         <outlet property="questionnaireView" destination="E1y-8H-iuN" id="8lw-8f-Ftq"/>
                         <outlet property="registrationView" destination="9Ha-Iw-g0X" id="bIQ-cB-k6t"/>
+                        <outlet property="serviceCallLabel" destination="xWj-MQ-U7W" id="tPN-Xv-N7z"/>
                         <outlet property="tableView" destination="Vdp-2M-Ivd" id="yY4-SD-rvi"/>
                         <outlet property="titleLabel" destination="RB5-YX-SPW" id="2t1-hO-UNv"/>
+                        <outlet property="userNameLabel" destination="gAD-yw-5iW" id="Ugk-1m-VVD"/>
                         <segue destination="40s-fu-er0" kind="custom" identifier="showDetailPage" customClass="CustomFormSegue" id="2Kf-0y-Ydo"/>
                         <segue destination="nos-Oh-mYF" kind="presentation" identifier="showSubjectPage" id="ggZ-QR-l21"/>
+                        <segue destination="Oih-kI-vh4" kind="presentation" identifier="showSettingsPage" id="Ln2-yb-tlo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NNq-lP-OaR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1730,6 +1735,7 @@
                         <outlet property="questionToCorrectionSpaceConstraint" destination="6t4-nj-xAp" id="wI9-uR-5nP"/>
                         <outlet property="questionView" destination="StQ-0r-mDJ" id="jK3-MH-1mk"/>
                         <outlet property="rightStatusLabel" destination="MhQ-xV-AAl" id="sR7-0r-Bw3"/>
+                        <outlet property="serviceCallLabel" destination="Q6U-aQ-H0d" id="hXK-ai-G06"/>
                         <outlet property="subjectCollectionView" destination="i07-i1-GTv" id="YvV-jf-FYt"/>
                         <outlet property="submitButton" destination="6Mr-yy-OcF" id="Hul-v0-9Dt"/>
                         <outlet property="titleLabel" destination="DYW-q9-w7I" id="A9S-12-ekB"/>
@@ -1873,7 +1879,7 @@
             <objects>
                 <tableViewController id="udU-EA-e8q" customClass="PersonalInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Vlh-k7-Hw1">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections/>
@@ -1956,18 +1962,18 @@
                         <viewControllerLayoutGuide type="bottom" id="bgh-qF-fE8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4BY-Dq-V2S">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Img_Logo" translatesAutoresizingMaskIntoConstraints="NO" id="WwE-3m-Ks7">
-                                <rect key="frame" x="190" y="150" width="160" height="160"/>
+                                <rect key="frame" x="432" y="224" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="FvD-sh-mTn"/>
                                     <constraint firstAttribute="width" constant="160" id="XHS-NZ-GiB"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version: 1.0.1001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCp-qm-y3r">
-                                <rect key="frame" x="36" y="342" width="468" height="24"/>
+                                <rect key="frame" x="36" y="416" width="952" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <color key="textColor" red="0.094117647060000004" green="0.42352941179999998" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -2006,7 +2012,8 @@
         <image name="img_registration" width="157" height="115"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Upl-6b-LTb"/>
         <segue reference="8NI-S9-Sdh"/>
+        <segue reference="Upl-6b-LTb"/>
+        <segue reference="Ln2-yb-tlo"/>
     </inferredMetricsTieBreakers>
 </document>

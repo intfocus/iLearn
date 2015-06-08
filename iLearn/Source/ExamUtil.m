@@ -14,8 +14,55 @@
 
 + (NSArray*)loadExams
 {
-    NSString *resPath = [[NSBundle mainBundle] resourcePath];
-    NSString *path = [NSString stringWithFormat:@"%@/%@/%@/", resPath, CacheFolder, ExamFolder];
+    NSMutableArray *exams = [NSMutableArray array];
+    NSMutableArray *examIds = [NSMutableArray array];
+
+    NSString *jsonPath = [NSString stringWithFormat:@"%@/%@", [self examFolderPathInBundle], @"Exam.json"];
+
+    BOOL fileExist = [[NSFileManager defaultManager] fileExistsAtPath:jsonPath];
+
+    if (fileExist) {
+
+        NSData *contentData = [NSData dataWithContentsOfFile:jsonPath];
+        NSError *jsonError;
+
+        NSDictionary *content = [NSJSONSerialization JSONObjectWithData:contentData options:NSJSONReadingMutableContainers error:&jsonError];
+        [exams addObjectsFromArray:content[Exams]];
+
+        for (NSDictionary *exam in content[Exams]) {
+            [examIds addObject:exam[ExamId]];
+        }
+    }
+
+    NSArray *cachedExams = [self loadExamsFromCache];
+
+    for (NSDictionary *exam in cachedExams) {
+        if (![examIds containsObject:exam[ExamId]]) {
+            [exams addObject:exam];
+        }
+    }
+
+    for (NSMutableDictionary *exam in exams) {
+        NSString *examId = exam[ExamId];
+
+        NSString *jsonPath = [NSString stringWithFormat:@"%@/%@.json", [self examFolderPathInBundle], examId];
+
+        BOOL fileExist = [[NSFileManager defaultManager] fileExistsAtPath:jsonPath];
+
+        if (fileExist) {
+            [exam setObject:@1 forKey:ExamCached];
+        }
+        else {
+            [exam setObject:@0 forKey:ExamCached];
+        }
+    }
+
+    return exams;
+}
+
++ (NSArray*)loadExamsFromCache
+{
+    NSString *path = [self examFolderPathInBundle];
     NSError *error;
 
     NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:&error];
@@ -24,6 +71,10 @@
         NSMutableArray *contents = [NSMutableArray array];
 
         for (NSString *file in files) {
+            if ([file isEqualToString:@"Exam.json"]) {
+                continue;
+            }
+
             NSString *filePath = [NSString stringWithFormat:@"%@/%@", path, file];
             NSData *contentData = [NSData dataWithContentsOfFile:filePath];
             NSError *jsonError;
@@ -86,6 +137,14 @@
     return basePath;
 }
 
++ (NSString*)examFolderPathInBundle
+{
+    NSString *resPath = [[NSBundle mainBundle] resourcePath];
+    NSString *path = [NSString stringWithFormat:@"%@/%@/%@/", resPath, CacheFolder, ExamFolder];
+
+    return path;
+}
+
 + (NSString*)examFolderPath
 {
     NSString *docPath = [self applicationDocumentsDirectory];
@@ -142,9 +201,7 @@
 {
     [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1)"];
 
-    NSDate *now = [NSDate date];
-
-    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, expire_time, ans_type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], @((int)[now timeIntervalSince1970]), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc]];
+    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], content[ExamBeginDate], content[ExamEndDate], content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc]];
 }
 
 + (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
@@ -231,6 +288,7 @@
         content[ExamStatus] = @([result intForColumn:@"status"]);
         content[ExamType] = @([result intForColumn:@"type"]);
         content[ExamBeginDate] = @([result intForColumn:@"begin"]);
+        content[ExamEndDate] = @([result intForColumn:@"end"]);
         content[ExamExpirationDate] = @([result intForColumn:@"expire_time"]);
         content[ExamAnsType] = @([result intForColumn:@"ans_type"]);
         content[ExamDesc] = [result stringForColumn:@"description"];
@@ -386,7 +444,7 @@
     NSInteger totalSubjectCount = [db intForQuery:@"SELECT COUNT(*) FROM subject"];
     NSInteger correctCount = [db intForQuery:@"SELECT COUNT(*) FROM subject WHERE answer=selected_answer"];
 
-    NSInteger score = (float)correctCount/(float)totalSubjectCount * 100.0;
+    NSInteger score = (float)correctCount/(float)totalSubjectCount * 100.0 + 0.5;
 
     [db executeUpdate:@"UPDATE info SET score=?", @(score)];
 

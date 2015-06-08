@@ -11,28 +11,31 @@
 #import "DetailViewController.h"
 #import "QuestionnaireUtil.h"
 #import "SubjectViewController.h"
+#import "LicenseUtil.h"
 #import "ExamUtil.h"
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
+static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 @interface ListTableViewController ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) NSArray *contents;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 
-
 @property (weak, nonatomic) IBOutlet UIView *registrationView;
 @property (weak, nonatomic) IBOutlet UIView *lectureView;
 @property (weak, nonatomic) IBOutlet UIView *questionnaireView;
 @property (weak, nonatomic) IBOutlet UIView *examView;
-
-
-
 
 @end
 
@@ -49,6 +52,10 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     [_avatarImageView.layer setBorderColor:[UIColor whiteColor].CGColor];
     [_avatarImageView.layer setBorderWidth:2.0];
     _avatarImageView.clipsToBounds = YES;
+
+    _userNameLabel.text = [LicenseUtil userAccount];
+
+    _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
 
     [self refreshContent];
 }
@@ -265,6 +272,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (IBAction)settingsButtonTouched:(id)sender {
     NSLog(@"settingsButtonTouched");
+    [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
 }
 
 - (IBAction)syncButtonTouched:(id)sender {

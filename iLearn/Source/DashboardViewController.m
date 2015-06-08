@@ -9,6 +9,7 @@
 #import "DashboardViewController.h"
 #import "ListTableViewController.h"
 #import "QRCodeViewController.h"
+#include "LicenseUtil.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowExamSegue = @"showExamPage";
@@ -45,8 +46,6 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    NSString *serviceCallNumber = @"400 400 400";
-
     // Setup label contents
     self.title = NSLocalizedString(@"DASHBOARD_TITLE", nil);
     self.coursePackLabel.text = NSLocalizedString(@"DASHBOARD_COURSE_PACK", nil);
@@ -54,7 +53,7 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
     self.reminderLabel.text = NSLocalizedString(@"DASHBOARD_REMINDER", nil);
     self.questionnaireLabel.text = NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil);
     self.examLabel.text = NSLocalizedString(@"DASHBOARD_EXAM", nil);
-    self.serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), serviceCallNumber];
+    self.serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
     self.qrCodeButton.titleLabel.text = NSLocalizedString(@"SETTINGS_PERSONAL_QRCODE", nil);
 
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];

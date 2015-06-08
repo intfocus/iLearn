@@ -10,6 +10,7 @@
 #import "SubjectCollectionViewCell.h"
 #import "QuestionOptionCell.h"
 #import "Constants.h"
+#import "LicenseUtil.h"
 #import "ExamUtil.h"
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
@@ -26,12 +27,13 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 @interface SubjectViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *leftStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *rightStatusLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *subjectCollectionView;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
-
 
 @property (weak, nonatomic) IBOutlet UIView *questionView;
 @property (weak, nonatomic) IBOutlet UILabel *questionTitleLabel;
@@ -52,6 +54,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
+@property (strong, nonatomic) NSTimer *timeLeftTimer;
+@property (strong, nonatomic) NSTimer *timeOutTimer;
+
 @end
 
 @implementation SubjectViewController
@@ -60,8 +65,23 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    NSString *titleString = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil), NSLocalizedString(@"COMMON_CONTENT", nil)];
-    self.title = titleString;
+//    NSString *titleString = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil), NSLocalizedString(@"COMMON_CONTENT", nil)];
+    self.title = _examContent[ExamTitle];
+
+    _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
+
+    NSNumber *endTime = _examContent[ExamEndDate];
+
+    if (endTime) {
+        [self updateTimeLeft];
+
+        self.timeLeftTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimeLeft) userInfo:nil repeats:YES];
+
+        NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] integerValue]];
+        NSTimeInterval timeLeft = [endDate timeIntervalSinceNow];
+
+        self.timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:timeLeft target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
+    }
 
     [self.submitButton setTitle:NSLocalizedString(@"COMMON_SUBMIT", nil) forState:UIControlStateNormal];
 
@@ -342,10 +362,47 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [self updateOptionContents];
 }
 
+- (void)updateTimeLeft
+{
+    NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] integerValue]];
+    NSInteger timeLeft = [endDate timeIntervalSinceNow];
+
+    if (timeLeft < 0) {
+        timeLeft = 0;
+    }
+
+    NSInteger minute = timeLeft / 60;
+    NSInteger second = timeLeft % 60;
+
+    self.navigationItem.title = [NSString stringWithFormat:@"%lld:%02lld", (long long)minute, (long long)second];
+}
+
+- (void)timeOut
+{
+    [self submit];
+}
+
+- (void)submit
+{
+    [_timeLeftTimer invalidate];
+    [_timeOutTimer invalidate];
+
+    [self saveSelections];
+
+    NSString *fileName = _examContent[CommonFileName];
+    NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+
+    [ExamUtil setExamSubmittedwithDBPath:dbPath];
+    NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
+
+    NSLog(@"score: %lld", (long long)score);
+}
+
 #pragma mark - UIAction
 
 - (IBAction)logoButtonTouched:(id)sender
 {
+    [self saveSelections];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -357,16 +414,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
 }
 
-- (IBAction)submitButtonTouched:(id)sender {
-    [self saveSelections];
-
-    NSString *fileName = _examContent[CommonFileName];
-    NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
-
-    [ExamUtil setExamSubmittedwithDBPath:dbPath];
-    NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
-
-    NSLog(@"score: %lld", (long long)score);
+- (IBAction)submitButtonTouched:(id)sender
+{
+    [self submit];
 }
 
 @end

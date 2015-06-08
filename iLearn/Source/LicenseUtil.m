@@ -16,4 +16,9 @@
     return FakeAccount;
 }
 
++ (NSString*)serviceNumber
+{
+    return ServiceNumber;
+}
+
 @end
