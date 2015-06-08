@@ -57,6 +57,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (strong, nonatomic) NSTimer *timeLeftTimer;
 @property (strong, nonatomic) NSTimer *timeOutTimer;
 
+@property (assign, nonatomic) BOOL isAnswerMode;
+
 @end
 
 @implementation SubjectViewController
@@ -66,26 +68,36 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     // Do any additional setup after loading the view.
 
 //    NSString *titleString = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil), NSLocalizedString(@"COMMON_CONTENT", nil)];
+
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
+
     self.title = _examContent[ExamTitle];
 
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
 
-    NSNumber *endTime = _examContent[ExamEndDate];
+    NSNumber *score = _examContent[ExamScore];
 
-    if (endTime) {
-        [self updateTimeLeft];
+    if (score != nil && [score integerValue] != -1) {
+        self.isAnswerMode = YES;
+    }
+    else {
+        self.isAnswerMode = NO;
 
-        self.timeLeftTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimeLeft) userInfo:nil repeats:YES];
+        NSNumber *endTime = _examContent[ExamEndDate];
 
-        NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] integerValue]];
-        NSTimeInterval timeLeft = [endDate timeIntervalSinceNow];
+        if (endTime) {
+            [self updateTimeLeft];
 
-        self.timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:timeLeft target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
+            self.timeLeftTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimeLeft) userInfo:nil repeats:YES];
+
+            NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] integerValue]];
+            NSTimeInterval timeLeft = [endDate timeIntervalSinceNow];
+
+            self.timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:timeLeft target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
+        }
     }
 
     [self.submitButton setTitle:NSLocalizedString(@"COMMON_SUBMIT", nil) forState:UIControlStateNormal];
-
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
 
     // Setup CellStatus (answered, normal, correct, wrong...)
     self.cellStatus = [NSMutableArray array];
@@ -105,9 +117,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [self updateSelections];
     [self updateOptionContents];
 
-    BOOL isCorrectionHidden = NO;
-
-    if (isCorrectionHidden) {
+    if (!_isAnswerMode) { // Hide the answer view
         CGFloat correctionViewHeight = _correctionView.frame.size.height;
 
         _correctionView.hidden = YES;
@@ -145,12 +155,26 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     cell.numberLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
     cell.numberLabel.textColor = [UIColor blackColor];
 
-    if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
-        cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
-        cell.numberLabel.textColor = [UIColor whiteColor];
+    if (_isAnswerMode) {
+
+        NSDictionary *subjectContent = _examContent[ExamQuestions][indexPath.row];
+
+        if ([subjectContent[ExamQuestionCorrect] isEqualToNumber:@1]) {
+            cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+            cell.numberLabel.textColor = [UIColor whiteColor];
+        }
+        else {
+            cell.backgroundColor = [UIColor redColor];
+        }
     }
     else {
-        cell.backgroundColor = [UIColor lightGrayColor];
+        if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
+            cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+            cell.numberLabel.textColor = [UIColor whiteColor];
+        }
+        else {
+            cell.backgroundColor = [UIColor lightGrayColor];
+        }
     }
 
     return cell;
@@ -185,21 +209,30 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     cell.seqLabel.text = [NSString stringWithFormat:@"%c", (indexPath.row+1)+64];
     cell.titleLabel.text = option[ExamQuestionOptionTitle];
 
-    // Set cell background color when answering
-    UIView *backgroundView = [UIView new];
-    backgroundView.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
-    cell.selectedBackgroundView = backgroundView;
-
-    if (tableView == _questionTableView && [_selectedRowsOfSubject containsObject:@(indexPath.row)]) {
-        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    }
-
-    // Set cell background color when correcting
-    NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
     if (tableView == _questionTableView) {
+        // Set cell background color when answering
+        UIView *backgroundView = [UIView new];
 
+        BOOL correct = [selectedQuestion[ExamQuestionCorrect] boolValue];
+
+        if (_isAnswerMode && !correct) {
+            backgroundView.backgroundColor = [UIColor redColor];
+        }
+        else {
+            backgroundView.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+        }
+        cell.selectedBackgroundView = backgroundView;
+
+        if ([_selectedRowsOfSubject containsObject:@(indexPath.row)]) {
+            [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        
+//        cell.userInteractionEnabled = !_isAnswerMode;
     }
     else if (tableView == _correctionTableView) {
+        // Set cell background color of correction
+        NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
+
         if ([answersBySeq containsObject:@(indexPath.row)]) {
             cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
         }
@@ -251,7 +284,27 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     NSDictionary *selectedQuestion = _examContent[ExamQuestions][_selectedCellIndex];
     NSString *questionTitle = selectedQuestion[ExamQuestionTitle];
-    NSString *title = [NSString stringWithFormat:@"%d.  %@", _selectedCellIndex+1, questionTitle];
+    NSNumber *questionType = selectedQuestion[ExamQuestionType];
+    NSString *typeString;
+
+    switch ([questionType integerValue]) {
+        case ExamSubjectTypeTrueFalse:
+            typeString = NSLocalizedString(@"EXAM_TYPE_TRUE_FALSE", Nil);
+            _questionTableView.allowsMultipleSelection = NO;
+            break;
+        case ExamSubjectTypeSingle:
+            typeString = NSLocalizedString(@"EXAM_TYPE_SINGLE", Nil);
+            _questionTableView.allowsMultipleSelection = NO;
+            break;
+        case ExamSubjectTypeMultiple:
+            typeString = NSLocalizedString(@"EXAM_TYPE_MULTIPLE", Nil);
+            _questionTableView.allowsMultipleSelection = YES;
+            break;
+        default:
+            break;
+    }
+
+    NSString *title = [NSString stringWithFormat:@"%d.%@ %@", _selectedCellIndex+1, typeString, questionTitle];
 
     _questionTitleLabel.text = title;
     _correctionTitleLabel.text = title;
@@ -290,6 +343,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)saveSelections
 {
+    if (_isAnswerMode) {
+        return;
+    }
+
     NSMutableDictionary *subject = _examContent[ExamQuestions][_selectedCellIndex];
     NSString *subjectId = subject[ExamQuestionId];
     NSString *fileName = _examContent[CommonFileName];
@@ -332,14 +389,50 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateStringLabels
 {
-    NSInteger numberOfSubjects = [_cellStatus count];
-    NSInteger numberOfAnsweredSubjects = [self numberOfAnsweredSubjects];
+    if (_isAnswerMode) {
+        NSInteger numberOfSubjects = [_examContent[ExamQuestions] count];
+        NSInteger numberOfCorrectSubjects = [self numberOfCorrectSubjects];
 
-    NSString *answeredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_ANSWERED_TEMPLATE", nil), numberOfAnsweredSubjects];
-    _leftStatusLabel.text = answeredString;
+        NSString *correctString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_CORRECT_TEMPLATE", nil), numberOfCorrectSubjects];
+        NSString *correctNumberString = [NSString stringWithFormat:@"%lld", (long long)numberOfCorrectSubjects];
+        NSRange correctNumberRange = [correctString rangeOfString:correctNumberString];
 
-    NSString *unansweredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNANSWERED_TEMPLATE", nil), numberOfSubjects-numberOfAnsweredSubjects];
-    _rightStatusLabel.text = unansweredString;
+        NSMutableAttributedString *correctAttrString = [[NSMutableAttributedString alloc] initWithString:correctString];
+        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(27.0, 165.0, 158.0)} range:correctNumberRange];
+
+        _leftStatusLabel.attributedText = correctAttrString;
+
+        NSString *wrongString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_WRONG_TEMPLATE", nil), numberOfSubjects-numberOfCorrectSubjects];
+        NSString *wrongNumberString = [NSString stringWithFormat:@"%lld", (long long)(numberOfSubjects-numberOfCorrectSubjects)];
+        NSRange wrongNumberRange = [wrongString rangeOfString:wrongNumberString];
+
+        NSMutableAttributedString *wrongAttrString = [[NSMutableAttributedString alloc] initWithString:wrongString];
+        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor redColor]} range:wrongNumberRange];
+
+        _rightStatusLabel.attributedText = wrongAttrString;
+    }
+    else {
+        NSInteger numberOfSubjects = [_cellStatus count];
+        NSInteger numberOfAnsweredSubjects = [self numberOfAnsweredSubjects];
+
+        NSString *answeredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_ANSWERED_TEMPLATE", nil), numberOfAnsweredSubjects];
+        NSString *answeredNumberString = [NSString stringWithFormat:@"%lld", (long long)numberOfAnsweredSubjects];
+        NSRange answeredNumberRange = [answeredString rangeOfString:answeredNumberString];
+
+        NSMutableAttributedString *answeredAttrString = [[NSMutableAttributedString alloc] initWithString:answeredString];
+        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(27.0, 165.0, 158.0)} range:answeredNumberRange];
+
+        _leftStatusLabel.attributedText = answeredAttrString;
+
+        NSString *unansweredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNANSWERED_TEMPLATE", nil), numberOfSubjects-numberOfAnsweredSubjects];
+        NSString *unansweredNumberString = [NSString stringWithFormat:@"%lld", (long long)(numberOfSubjects-numberOfAnsweredSubjects)];
+        NSRange unansweredNumberRange = [unansweredString rangeOfString:unansweredNumberString];
+
+        NSMutableAttributedString *unansweredAttrString = [[NSMutableAttributedString alloc] initWithString:unansweredString];
+        [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor]} range:unansweredNumberRange];
+
+        _rightStatusLabel.attributedText = unansweredAttrString;
+    }
 }
 
 - (NSInteger)numberOfAnsweredSubjects
@@ -352,6 +445,18 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         }
     }
     return numberOfAnsweredSubjects;
+}
+
+- (NSInteger)numberOfCorrectSubjects
+{
+    NSInteger numberOfCorrectSubjects = 0;
+
+    for (NSDictionary *subject in _examContent[ExamQuestions]) {
+        if ([subject[ExamQuestionCorrect] isEqualToNumber:@(1)]) {
+            numberOfCorrectSubjects++;
+        }
+    }
+    return numberOfCorrectSubjects;
 }
 
 - (void)changeSubjectToIndex:(NSInteger)index
@@ -396,6 +501,20 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
 
     NSLog(@"score: %lld", (long long)score);
+
+    NSString *scoreString = [NSString stringWithFormat:@"得分：%d分", score];
+
+    UIAlertController *alertControllor = [UIAlertController alertControllerWithTitle:@"提交成功" message:scoreString preferredStyle:UIAlertControllerStyleAlert];
+
+    __weak id weakSelf = self;
+
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+    }];
+
+    [alertControllor addAction:action];
+
+    [self presentViewController:alertControllor animated:YES completion:nil];
 }
 
 #pragma mark - UIAction

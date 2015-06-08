@@ -34,9 +34,12 @@ NSString *const ExamBeginDate = @"begin";
 NSString *const ExamEndDate = @"end";
 NSString *const ExamExpirationDate = @"expire_time";
 NSString *const ExamStatus = @"status";
+NSString *const ExamSubmitted = @"submit";
 NSString *const ExamType = @"type";
 NSString *const ExamAnsType = @"ans_type";
 NSString *const ExamCached = @"exist_in_local";
+NSString *const ExamPassword = @"pwd";
+NSString *const ExamScore = @"score";
 
 NSString *const ExamQuestions = @"questions";
 NSString *const ExamQuestionId = @"id";
@@ -47,6 +50,7 @@ NSString *const ExamQuestionAnswer = @"answer";
 NSString *const ExamQuestionAnswerBySeq = @"answer_by_seq";
 NSString *const ExamQuestionNote = @"memo";
 NSString *const ExamQuestionAnswered = @"answered";
+NSString *const ExamQuestionCorrect = @"correct";
 
 NSString *const ExamQuestionOptions = @"selectors";
 NSString *const ExamQuestionOptionId = @"id";

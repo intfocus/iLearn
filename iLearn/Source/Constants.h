@@ -17,6 +17,12 @@ typedef NS_ENUM(NSUInteger, ListViewType) {
     ListViewTypeLecture,
 };
 
+typedef NS_ENUM(NSUInteger, ExamSubjectType) {
+    ExamSubjectTypeTrueFalse = 1,
+    ExamSubjectTypeSingle,
+    ExamSubjectTypeMultiple,
+};
+
 extern NSString *const ServiceNumber;
 extern NSString *const FakeAccount;
 
@@ -43,9 +49,12 @@ extern NSString *const ExamBeginDate;
 extern NSString *const ExamEndDate;
 extern NSString *const ExamExpirationDate;
 extern NSString *const ExamStatus;
+extern NSString *const ExamSubmitted;
 extern NSString *const ExamType;
 extern NSString *const ExamAnsType;
 extern NSString *const ExamCached;
+extern NSString *const ExamPassword;
+extern NSString *const ExamScore;
 
 extern NSString *const ExamQuestions;
 extern NSString *const ExamQuestionId;
@@ -56,6 +65,7 @@ extern NSString *const ExamQuestionAnswer;
 extern NSString *const ExamQuestionAnswerBySeq;
 extern NSString *const ExamQuestionNote;
 extern NSString *const ExamQuestionAnswered;
+extern NSString *const ExamQuestionCorrect;
 
 extern NSString *const ExamQuestionOptions;
 extern NSString *const ExamQuestionOptionId;

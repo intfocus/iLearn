@@ -60,6 +60,11 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     [self refreshContent];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self refreshContent];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -211,6 +216,46 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSString *expirationDateString = [formatter stringFromDate:date];
 
     cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
+
+    if ([content[ExamCached] isEqualToNumber:@1]) {
+
+        NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:[ExamUtil startDateFromContent:content]];
+        NSDate *now = [NSDate date];
+
+        if ([startDate laterDate:now] == startDate) { // Exam is not start yet
+            cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_STARTED", nil);
+            [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_NOT_STARTDED", nil) forState:UIControlStateNormal];
+            cell.actionButton.enabled = NO;
+        }
+        else {
+            NSNumber *score = content[ExamScore];
+
+            if (score != nil && [score integerValue] != -1) {
+                // Score was calculated, test was submitted but may not success
+
+                NSNumber *submitted = content[ExamSubmitted];
+
+                if ([submitted isEqualToNumber:@1]) {
+                    cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_SUBMITTED", nil);
+                    [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];
+                }
+                else {
+                    cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_SUBMITTED", nil);
+                    [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_SUBMIT", nil) forState:UIControlStateNormal];
+                }
+
+            }
+            else {
+                cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_TESTING", nil);
+                [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
+            }
+
+        }
+    }
+    else {
+        cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_DOWNLOADED", nil);
+        [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_DOWNLOAD", nil) forState:UIControlStateNormal];
+    }
 
     return cell;
 }

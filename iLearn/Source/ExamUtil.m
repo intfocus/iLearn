@@ -17,6 +17,16 @@
     NSMutableArray *exams = [NSMutableArray array];
     NSMutableArray *examIds = [NSMutableArray array];
 
+    // Add Cached Exams first
+    NSArray *cachedExams = [self loadExamsFromCache];
+
+    [exams addObjectsFromArray:cachedExams];
+
+    for (NSDictionary *exam in cachedExams) {
+        [examIds addObject:exam[ExamId]];
+    }
+
+    // Add Exams from Exam.json, if exam's ExamId already added, use the cached version (may be content of DB or JSON)
     NSString *jsonPath = [NSString stringWithFormat:@"%@/%@", [self examFolderPathInBundle], @"Exam.json"];
 
     BOOL fileExist = [[NSFileManager defaultManager] fileExistsAtPath:jsonPath];
@@ -25,23 +35,17 @@
 
         NSData *contentData = [NSData dataWithContentsOfFile:jsonPath];
         NSError *jsonError;
-
         NSDictionary *content = [NSJSONSerialization JSONObjectWithData:contentData options:NSJSONReadingMutableContainers error:&jsonError];
-        [exams addObjectsFromArray:content[Exams]];
 
         for (NSDictionary *exam in content[Exams]) {
-            [examIds addObject:exam[ExamId]];
+
+            if (![examIds containsObject:exam[ExamId]]) {
+                [exams addObject:exam];
+            }
         }
     }
 
-    NSArray *cachedExams = [self loadExamsFromCache];
-
-    for (NSDictionary *exam in cachedExams) {
-        if (![examIds containsObject:exam[ExamId]]) {
-            [exams addObject:exam];
-        }
-    }
-
+    // Check for exam is cached or not
     for (NSMutableDictionary *exam in exams) {
         NSString *examId = exam[ExamId];
 
@@ -57,6 +61,8 @@
         }
     }
 
+    NSLog(@"exams: %@", [self jsonStringOfContent:exams]);
+
     return exams;
 }
 
@@ -65,13 +71,25 @@
     NSString *path = [self examFolderPathInBundle];
     NSError *error;
 
-    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:&error];
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+
+    NSArray *files = [fileMgr contentsOfDirectoryAtPath:path error:&error];
 
     if (!error) {
         NSMutableArray *contents = [NSMutableArray array];
 
         for (NSString *file in files) {
             if ([file isEqualToString:@"Exam.json"]) {
+                continue;
+            }
+
+            NSString *examName = [self fileName:file];
+            NSString *dbPath = [self examDBPathOfFile:examName];
+
+            // Use the info from DB
+            if ([fileMgr fileExistsAtPath:dbPath]) {
+                NSDictionary *examInfo = [self examInfoFromDBFile:dbPath];
+                [contents addObject:examInfo];
                 continue;
             }
 
@@ -128,6 +146,11 @@
 + (NSInteger)expirationDateFromContent:(NSDictionary*)content
 {
     return [content[ExamExpirationDate] integerValue];
+}
+
++ (NSInteger)startDateFromContent:(NSDictionary*)content
+{
+    return [content[ExamBeginDate] integerValue];
 }
 
 + (NSString *)applicationDocumentsDirectory
@@ -199,9 +222,9 @@
 
 + (void)parseInfoOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT)"];
 
-    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], content[ExamBeginDate], content[ExamEndDate], content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc]];
+    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], content[ExamBeginDate], content[ExamEndDate], content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
 }
 
 + (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
@@ -276,6 +299,34 @@
     return content;
 }
 
++ (NSDictionary*)examInfoFromDBFile:(NSString*)dbPath
+{
+    NSMutableDictionary *content = [NSMutableDictionary dictionary];
+
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            [content addEntriesFromDictionary:[self examInfoFromDB:db]];
+            content[CommonFileName] = [[dbPath lastPathComponent] stringByDeletingPathExtension];
+
+            [db close];
+        }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        NSLog(@"No DB file at the path: %@", dbPath);
+    }
+    
+    return content;
+}
+
 + (NSDictionary*)examInfoFromDB:(FMDatabase*)db
 {
     NSMutableDictionary *content = [NSMutableDictionary dictionary];
@@ -292,6 +343,9 @@
         content[ExamExpirationDate] = @([result intForColumn:@"expire_time"]);
         content[ExamAnsType] = @([result intForColumn:@"ans_type"]);
         content[ExamDesc] = [result stringForColumn:@"description"];
+        content[ExamPassword] = [result stringForColumn:@"password"];
+        content[ExamScore] = @([result intForColumn:@"score"]);
+        content[ExamSubmitted] = @([result intForColumn:@"submit"]);
     }
 
     return content;
@@ -314,6 +368,12 @@
         content[ExamQuestionLevel] = @([result intForColumn:@"level"]);
         content[ExamQuestionType] = @([result intForColumn:@"type"]);
         content[ExamQuestionNote] = [result stringForColumn:@"memo"];
+
+        NSString *selecteAnswer = [result stringForColumn:@"selected_answer"];
+
+        if (selecteAnswer != nil) {
+            content[ExamQuestionCorrect] = [selecteAnswer isEqualToString:[result stringForColumn:@"answer"]]? @1: @0;
+        }
 
         NSArray *answers = [[result stringForColumn:@"answer"] componentsSeparatedByString:@"+"];
         NSMutableArray *answersBySeq = [NSMutableArray array];

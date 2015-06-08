@@ -10,6 +10,7 @@
   "ans_type": 1,
   "description": "這是第三個 exam",
   "location": 0,
+  "pwd": "1234",
   "questions": [
     {
       "id": 1,

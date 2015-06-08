@@ -4,12 +4,13 @@
   "submit": 0,
   "status": 1,
   "type": 0,
-  "begin": 22241241,
-  "end": 244124124,
-  "expire_time": 1433606400,
+  "begin": 1435238496,
+  "end": 1435238896,
+  "expire_time": 1435248496,
   "ans_type": 1,
   "description": "這是第一個 exam",
   "location": 0,
+  "pwd": "1234",
   "questions": [
     {
       "id": 1,
