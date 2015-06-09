@@ -1,0 +1,52 @@
+/* 
+  Localizable.strings
+  iLearn
+
+  Created by Charlie Hung on 2015/5/13.
+  Copyright (c) 2015 intFocus. All rights reserved.
+*/
+
+COMMON_CONTENT = "contents";
+COMMON_SUBMIT = "Submit";
+
+DASHBOARD_TITLE = "Dashboard";
+DASHBOARD_COURSE_PACK = "Course Pack";
+DASHBOARD_LECTURE = "Lecture Registration";
+DASHBOARD_REMINDER = "Reminder";
+DASHBOARD_QUESTIONNAIRE = "Questionnaire";
+DASHBOARD_EXAM = "Test";
+DASHBOARD_SERVICE_CALL = "Service Call: ";
+
+SETTINGS_TITLE = "Settings";
+SETTINGS_BUTTON_CLOSE = "Close";
+SETTINGS_PERSONAL_TITLE = "Personal Settings";
+SETTINGS_APPLICATION_TITLE = "System Settings";
+SETTINGS_PERSONAL_INFO = "Personal Information";
+SETTINGS_PERSONAL_ACCOUNT = "Account";
+SETTINGS_PERSONAL_QRCODE = "Sign-in QR code";
+SETTINGS_APPLICATION_CLEAN_CACHE = "Clean cache";
+SETTINGS_APPLICATION_ABOUT = "Version Information";
+SETTINGS_APPLICATION_VERSION = "Version";
+
+LIST_EXAM = "Exam";
+LIST_QUESTIONNAIRE = "Questionnaire";
+LIST_DETAIL = "detail";
+LIST_STATUS_NOT_DOWNLOADED = "Not Downloaded";
+LIST_STATUS_NOT_STARTED = "Not Started";
+LIST_STATUS_TESTING = "Testing";
+LIST_STATUS_NOT_SUBMITTED = "Not Submitted";
+LIST_STATUS_SUBMITTED = "Submitted";
+LIST_BUTTON_DOWNLOAD = "Download";
+LIST_BUTTON_NOT_STARTDED = "Not Started";
+LIST_BUTTON_START_TESTING = "Start Testing";
+LIST_BUTTON_SUBMIT = "Submit";
+LIST_BUTTON_VIEW_RESULT = "View Result";
+
+EXAM_ANSWERED_TEMPLATE = "Answered: %lld";
+EXAM_UNANSWERED_TEMPLATE = "Unanswered: %lld";
+EXAM_CORRECT_TEMPLATE = "Correct: %lld";
+EXAM_WRONG_TEMPLATE = "Wrong: %lld";
+EXAM_CORRECTION_TEMPLATE = "Answer: %@. %@.";
+EXAM_TYPE_TRUE_FALSE = "(True/False)";
+EXAM_TYPE_SINGLE = "(Single)";
+EXAM_TYPE_MULTIPLE = "(Multiple)";
