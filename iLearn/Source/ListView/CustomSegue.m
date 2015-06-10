@@ -36,12 +36,19 @@
     UIViewController* fromVC = (UIViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 
     FXBlurView *blurView = [[FXBlurView alloc] initWithFrame:fromVC.view.bounds];
-    blurView.underlyingView = fromVC.view;
+
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        blurView.underlyingView = fromVC.view;
+    }
+    else {
+        blurView.underlyingView = inView;
+    }
+
     blurView.tintColor = [UIColor clearColor];
     blurView.updateInterval = 1;
     blurView.blurRadius = 10.f;
     blurView.alpha = 0.f;
-    blurView.frame = fromVC.view.bounds;
+    blurView.frame = CGRectMake(0, 0, fromVC.view.frame.size.width, fromVC.view.frame.size.height);
 
     [inView addSubview:blurView];
     [inView addSubview:toVC.view];

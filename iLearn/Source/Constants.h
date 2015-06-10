@@ -17,6 +17,11 @@ typedef NS_ENUM(NSUInteger, ListViewType) {
     ListViewTypeLecture,
 };
 
+typedef NS_ENUM(NSUInteger, ExamTypes) {
+    ExamTypesPractice = 0,
+    ExamTypesFormal,
+};
+
 typedef NS_ENUM(NSUInteger, ExamSubjectType) {
     ExamSubjectTypeTrueFalse = 1,
     ExamSubjectTypeSingle,
@@ -55,6 +60,7 @@ extern NSString *const ExamAnsType;
 extern NSString *const ExamCached;
 extern NSString *const ExamPassword;
 extern NSString *const ExamScore;
+extern NSString *const ExamOpened;
 
 extern NSString *const ExamQuestions;
 extern NSString *const ExamQuestionId;

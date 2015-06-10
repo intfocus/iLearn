@@ -15,6 +15,7 @@
 
 - (void)didSelectInfoButtonOfCell:(ListTableViewCell*)cell;
 - (void)didSelectActionButtonOfCell:(ListTableViewCell*)cell;
+- (void)didSelectQRCodeButtonOfCell:(ListTableViewCell*)cell;
 
 @end
 

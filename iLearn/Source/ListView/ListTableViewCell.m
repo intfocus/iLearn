@@ -31,4 +31,12 @@
     }
 }
 
+- (void)qrCodeTouched
+{
+    if ([self.delegate respondsToSelector:@selector(didSelectQRCodeButtonOfCell:)]) {
+
+        [self.delegate didSelectQRCodeButtonOfCell:self];
+    }
+}
+
 @end

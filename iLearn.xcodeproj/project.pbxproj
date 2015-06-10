@@ -34,6 +34,7 @@
 		CBE0C8501B072DC2000EA3A7 /* split.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8461B072DC2000EA3A7 /* split.c */; };
 		CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8491B072DC2000EA3A7 /* UIImage+MDQRCode.m */; };
 		CBE0C8541B073528000EA3A7 /* LicenseUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8531B073528000EA3A7 /* LicenseUtil.m */; };
+		CBE427CF1B28D303001FCA1F /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE427CE1B28D303001FCA1F /* PasswordViewController.m */; };
 		DC3F8ED81B174BDE0007AC56 /* ExamUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DC3F8ED71B174BDE0007AC56 /* ExamUtil.m */; };
 		DC3F8EE51B17551E0007AC56 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DC3F8EDB1B17551E0007AC56 /* FMDatabase.m */; };
 		DC3F8EE61B17551E0007AC56 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DC3F8EDD1B17551E0007AC56 /* FMDatabaseAdditions.m */; };
@@ -114,6 +115,8 @@
 		CBE0C8491B072DC2000EA3A7 /* UIImage+MDQRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MDQRCode.m"; sourceTree = "<group>"; };
 		CBE0C8521B073528000EA3A7 /* LicenseUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LicenseUtil.h; path = Source/LicenseUtil.h; sourceTree = "<group>"; };
 		CBE0C8531B073528000EA3A7 /* LicenseUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LicenseUtil.m; path = Source/LicenseUtil.m; sourceTree = "<group>"; };
+		CBE427CD1B28D303001FCA1F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
+		CBE427CE1B28D303001FCA1F /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		DC3F8ED61B174BDE0007AC56 /* ExamUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExamUtil.h; path = Source/ExamUtil.h; sourceTree = "<group>"; };
 		DC3F8ED71B174BDE0007AC56 /* ExamUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExamUtil.m; path = Source/ExamUtil.m; sourceTree = "<group>"; };
 		DC3F8EDA1B17551E0007AC56 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
@@ -169,6 +172,8 @@
 				CB7BD7FF1B08A53F002C6DFB /* CustomFormSegue.m */,
 				CB7BD7E41B07CDAA002C6DFB /* CustomSegue.h */,
 				CB7BD7E51B07CDAA002C6DFB /* CustomSegue.m */,
+				CBE427CD1B28D303001FCA1F /* PasswordViewController.h */,
+				CBE427CE1B28D303001FCA1F /* PasswordViewController.m */,
 				CB7BD7E61B07CDAA002C6DFB /* DetailViewController.h */,
 				CB7BD7E71B07CDAA002C6DFB /* DetailViewController.m */,
 				CB7BD7E81B07CDAA002C6DFB /* ListTableViewCell.h */,
@@ -482,6 +487,7 @@
 				CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */,
 				CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */,
 				CB7BD7F61B0873B1002C6DFB /* SubjectViewController.m in Sources */,
+				CBE427CF1B28D303001FCA1F /* PasswordViewController.m in Sources */,
 				CB7BD7EF1B07CDAA002C6DFB /* DetailViewController.m in Sources */,
 				DC3F8ED81B174BDE0007AC56 /* ExamUtil.m in Sources */,
 				DC3F8EE81B17551E0007AC56 /* FMDatabaseQueue.m in Sources */,

@@ -140,12 +140,20 @@
 
 + (NSString*)descFromContent:(NSDictionary*)content
 {
-    return content[ExamDesc];
+    NSNumber *start = content[ExamBeginDate];
+    NSDate *beginDate = [NSDate dateWithTimeIntervalSince1970:[start longLongValue]];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY/MM/dd HH:mm"];
+    NSString *beginTimeString = [formatter stringFromDate:beginDate];
+    NSString *beginString = [NSString stringWithFormat:NSLocalizedString(@"LIST_BEGIN_DATE_TEMPLATE", nil), beginTimeString];
+    NSString *descString = [NSString stringWithFormat:@"%@\n%@", beginString, content[ExamDesc]];
+
+    return descString;
 }
 
-+ (NSInteger)expirationDateFromContent:(NSDictionary*)content
++ (NSInteger)endDateFromContent:(NSDictionary*)content
 {
-    return [content[ExamExpirationDate] integerValue];
+    return [content[ExamEndDate] integerValue];
 }
 
 + (NSInteger)startDateFromContent:(NSDictionary*)content
@@ -224,7 +232,18 @@
 {
     [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT)"];
 
-    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], content[ExamBeginDate], content[ExamEndDate], content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
+    NSNumber *beginDate = content[ExamBeginDate];
+    NSNumber *endDate = content[ExamEndDate];
+
+    NSInteger duration = [endDate integerValue] - [beginDate integerValue];
+
+    NSDate *now = [NSDate date];
+    NSDate *deadline = [now dateByAddingTimeInterval:duration];
+
+    NSInteger nowInteger = [now timeIntervalSince1970];
+    NSInteger deadlineInteger = [deadline timeIntervalSince1970];
+
+    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], @(nowInteger), @(deadlineInteger), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
 }
 
 + (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
@@ -346,6 +365,7 @@
         content[ExamPassword] = [result stringForColumn:@"password"];
         content[ExamScore] = @([result intForColumn:@"score"]);
         content[ExamSubmitted] = @([result intForColumn:@"submit"]);
+        content[ExamOpened] = @(1);
     }
 
     return content;
@@ -501,12 +521,14 @@
 {
     [self updateSelectedAnswersOfSubjectsInDB:db];
 
+    NSInteger nowInteger = [[NSDate date] timeIntervalSince1970];
+
     NSInteger totalSubjectCount = [db intForQuery:@"SELECT COUNT(*) FROM subject"];
     NSInteger correctCount = [db intForQuery:@"SELECT COUNT(*) FROM subject WHERE answer=selected_answer"];
 
     NSInteger score = (float)correctCount/(float)totalSubjectCount * 100.0 + 0.5;
 
-    [db executeUpdate:@"UPDATE info SET score=?", @(score)];
+    [db executeUpdate:@"UPDATE info SET score=?, end=?", @(score), @(nowInteger)];
 
     return score;
 }
