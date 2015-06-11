@@ -258,7 +258,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
                 NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
 
                 scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
-                NSLog(@"score: %lld", (long long)scoreInt);
+//                NSLog(@"score: %lld", (long long)scoreInt);
             }
         }
 
@@ -377,7 +377,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSNumber *examScore = content[ExamScore];
     NSString *userAccount = [LicenseUtil userAccount];
 
-    NSString *qrCodeString = [NSString stringWithFormat:@"%@+%@+%@", userAccount, examId, examScore];
+    NSString *qrCodeString = [NSString stringWithFormat:@"iLearn+%@+%@+%@", userAccount, examId, examScore];
     UIImage *qrCodeImage = [UIImage mdQRCodeForString:qrCodeString size:200.0];
 
     [self performSegueWithIdentifier:kShowScoreQRCode sender:qrCodeImage];
@@ -422,6 +422,30 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSLog(@"syncButtonTouched");
 }
 
+- (IBAction)scanButtonTouched:(id)sender {
+    if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
+        static QRCodeReaderViewController *reader = nil;
+        static dispatch_once_t onceToken;
+
+        dispatch_once(&onceToken, ^{
+            reader                        = [QRCodeReaderViewController new];
+            reader.modalPresentationStyle = UIModalPresentationFormSheet;
+        });
+        reader.delegate = self;
+
+        [reader setCompletionWithBlock:^(NSString *resultAsString) {
+            NSLog(@"Completion with result: %@", resultAsString);
+        }];
+
+        [self presentViewController:reader animated:YES completion:NULL];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Reader not supported by the current device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+}
+
 - (void)enterExamPageForContent:(NSDictionary*)content
 {
     [ExamUtil parseContentIntoDB:content];
@@ -432,6 +456,31 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
 
     [self performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
+}
+
+#pragma mark - QRCodeReader Delegate Methods
+
+- (void)reader:(QRCodeReaderViewController *)reader didScanResult:(NSString *)result
+{
+    NSArray *components = [result componentsSeparatedByString:@"+"];
+
+    if ([components count] != 4 || ![components[0] isEqualToString:@"iLearn"]) {
+        return;
+    }
+
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"LIST_SCORE_SCAN_RESULT_TEMPLATE", nil), components[1], components[2], components[3]];
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LIST_SCORE_SCAN_RESULT", nil) message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"COMMON_CLOSE", nil) otherButtonTitles:nil];
+    [alert show];
+
+    NSString *savedResult = [@[components[1], components[2], components[3]] componentsJoinedByString:@"+"];
+
+    [ExamUtil saveScannedResultIntoDB:savedResult];
+}
+
+- (void)readerDidCancel:(QRCodeReaderViewController *)reader
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end

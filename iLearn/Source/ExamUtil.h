@@ -28,4 +28,7 @@
 + (void)setExamSubmittedwithDBPath:(NSString*)dbPath;
 + (NSInteger)examScoreOfDBPath:(NSString*)dbPath;
 
++ (void)saveScannedResultIntoDB:(NSString*)result;
++ (NSArray*)unsubmittedScannedResults;
+
 @end

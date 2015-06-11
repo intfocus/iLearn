@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Constants.h"
+#import "QRCodeReaderViewController.h"
 
 @class ListTableViewCell;
 
@@ -19,7 +20,7 @@
 
 @end
 
-@interface ListTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ListTableViewCellDelegate>
+@interface ListTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ListTableViewCellDelegate, QRCodeReaderDelegate>
 
 @property (assign, nonatomic) ListViewType listType;
 

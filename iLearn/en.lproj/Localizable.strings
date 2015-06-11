@@ -8,6 +8,7 @@
 
 COMMON_CONTENT = "contents";
 COMMON_SUBMIT = "Submit";
+COMMON_CLOSE = "Close";
 
 DASHBOARD_TITLE = "Dashboard";
 DASHBOARD_COURSE_PACK = "Course Pack";
@@ -48,7 +49,8 @@ LIST_BUTTON_VIEW_RESULT = "View Result";
 LIST_BUTTON_QRCODE = "Score QRcode";
 LIST_SCORE_TITLE = "Score: ";
 LIST_SCORE_TEMPLATE = "%lld";
-
+LIST_SCORE_SCAN_RESULT = "Scan Result";
+LIST_SCORE_SCAN_RESULT_TEMPLATE = "User: %@\nExamId: %@\nScore: %@";
 
 EXAM_ANSWERED_TEMPLATE = "Answered: %lld";
 EXAM_UNANSWERED_TEMPLATE = "Unanswered: %lld";

@@ -181,20 +181,6 @@
     NSString *docPath = [self applicationDocumentsDirectory];
     NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
 
-    return examPath;
-}
-
-+ (NSString*)examDBPathOfFile:(NSString*)fileName
-{
-    NSString *dbPath = [NSString stringWithFormat:@"%@/%@.db", [self examFolderPath], fileName];
-    return dbPath;
-}
-
-+ (void)parseContentIntoDB:(NSDictionary*)content
-{
-    NSString *examPath = [self examFolderPath];
-    NSString *dbPath = [self examDBPathOfFile:content[CommonFileName]];
-
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
 
@@ -208,6 +194,22 @@
             NSLog(@"Create folder %@ failed with error: %@", examPath, createFolderError);
         }
     }
+
+    return examPath;
+}
+
++ (NSString*)examDBPathOfFile:(NSString*)fileName
+{
+    NSString *dbPath = [NSString stringWithFormat:@"%@/%@.db", [self examFolderPath], fileName];
+    return dbPath;
+}
+
++ (void)parseContentIntoDB:(NSDictionary*)content
+{
+    NSString *dbPath = [self examDBPathOfFile:content[CommonFileName]];
+
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
 
     if (![fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
         FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
@@ -460,7 +462,7 @@
         }
     }
     else {
-        NSLog(@"Not DB file at the path: %@", dbPath);
+        NSLog(@"No DB file at the path: %@", dbPath);
     }
 }
 
@@ -483,7 +485,7 @@
         }
     }
     else {
-        NSLog(@"Not DB file at the path: %@", dbPath);
+        NSLog(@"No DB file at the path: %@", dbPath);
     }
 }
 
@@ -512,7 +514,7 @@
         }
     }
     else {
-        NSLog(@"Not DB file at the path: %@", dbPath);
+        NSLog(@"No DB file at the path: %@", dbPath);
     }
     return score;
 }
@@ -557,6 +559,44 @@
 
         [db executeUpdate:@"UPDATE subject SET selected_answer=? WHERE subject_id=?", selectedAnswerString, subjectId];
     }
+}
+
++ (NSString*)scanResultDBPath
+{
+    NSString *dbPath = [NSString stringWithFormat:@"%@/scan.db", [self examFolderPath]];
+    return dbPath;
+}
+
++ (void)saveScannedResultIntoDB:(NSString*)result
+{
+    NSString *dbPath = [self scanResultDBPath];
+    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+    if ([db open]) {
+        [db executeUpdate:@"CREATE TABLE IF NOT EXISTS result(result TEXT PRIMARY KEY, submit INTEGER DEFAULT 0)"];
+        [db executeUpdate:@"INSERT INTO result (result) VALUES (?)", result];
+        [db close];
+    }
+}
+
++ (NSArray*)unsubmittedScannedResults
+{
+    NSMutableArray *unsubmittedResults = [NSMutableArray array];
+
+    NSString *dbPath = [self scanResultDBPath];
+    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+    if ([db open]) {
+        FMResultSet *unsubmitted = [db executeQuery:@"SELECT result FROM result WHERE submit = 0"];
+
+        while ([unsubmitted next]) {
+            [unsubmittedResults addObject:[unsubmitted stringForColumn:@"result"]];
+        }
+
+        [db close];
+    }
+
+    return unsubmittedResults;
 }
 
 @end
