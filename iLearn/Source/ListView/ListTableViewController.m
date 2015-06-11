@@ -12,13 +12,16 @@
 #import "PasswordViewController.h"
 #import "QuestionnaireUtil.h"
 #import "SubjectViewController.h"
+#import "ScoreQRCodeViewController.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
+#import "UIImage+MDQRCode.h"
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
 static NSString *const kShowPasswordSegue = @"showPasswordPage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
+static NSString *const kShowScoreQRCode = @"showScoreQRCode";
 
 static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
@@ -116,9 +119,12 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
             subjectVC.examContent = sender;
         }
-
     }
+    else if ([segue.identifier isEqualToString:kShowScoreQRCode]) {
 
+        ScoreQRCodeViewController *scoreQRCodeVC = segue.destinationViewController;
+        scoreQRCodeVC.scoreQRCodeImage = sender;
+    }
 }
 
 #pragma mark - UI Adjustment
@@ -281,12 +287,12 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
                 }
                 else {
                     cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_SUBMITTED", nil);
+                    cell.qrCodeButton.hidden = NO;
                 }
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];
 
                 cell.scoreTitleLabel.hidden = NO;
                 cell.scoreLabel.hidden = NO;
-                cell.qrCodeButton.hidden = NO;
 
                 cell.scoreTitleLabel.text = NSLocalizedString(@"LIST_SCORE_TITLE", nil);
 
@@ -360,7 +366,21 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (void)didSelectQRCodeButtonOfCell:(ListTableViewCell*)cell
 {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+
     NSLog(@"didSelectQRCodeButtonOfCell:");
+    NSLog(@"indexPath.row: %d", indexPath.row);
+
+    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+
+    NSString *examId = content[ExamId];
+    NSNumber *examScore = content[ExamScore];
+    NSString *userAccount = [LicenseUtil userAccount];
+
+    NSString *qrCodeString = [NSString stringWithFormat:@"%@+%@+%@", userAccount, examId, examScore];
+    UIImage *qrCodeImage = [UIImage mdQRCodeForString:qrCodeString size:200.0];
+
+    [self performSegueWithIdentifier:kShowScoreQRCode sender:qrCodeImage];
 }
 
 #pragma mark - IBAction

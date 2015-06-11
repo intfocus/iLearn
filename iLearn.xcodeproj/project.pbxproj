@@ -34,6 +34,7 @@
 		CBE0C8501B072DC2000EA3A7 /* split.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8461B072DC2000EA3A7 /* split.c */; };
 		CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8491B072DC2000EA3A7 /* UIImage+MDQRCode.m */; };
 		CBE0C8541B073528000EA3A7 /* LicenseUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8531B073528000EA3A7 /* LicenseUtil.m */; };
+		CBE3D4101B29B964002BB3B1 /* ScoreQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3D40F1B29B964002BB3B1 /* ScoreQRCodeViewController.m */; };
 		CBE427CF1B28D303001FCA1F /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE427CE1B28D303001FCA1F /* PasswordViewController.m */; };
 		DC3F8ED81B174BDE0007AC56 /* ExamUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DC3F8ED71B174BDE0007AC56 /* ExamUtil.m */; };
 		DC3F8EE51B17551E0007AC56 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DC3F8EDB1B17551E0007AC56 /* FMDatabase.m */; };
@@ -115,6 +116,8 @@
 		CBE0C8491B072DC2000EA3A7 /* UIImage+MDQRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MDQRCode.m"; sourceTree = "<group>"; };
 		CBE0C8521B073528000EA3A7 /* LicenseUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LicenseUtil.h; path = Source/LicenseUtil.h; sourceTree = "<group>"; };
 		CBE0C8531B073528000EA3A7 /* LicenseUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LicenseUtil.m; path = Source/LicenseUtil.m; sourceTree = "<group>"; };
+		CBE3D40E1B29B964002BB3B1 /* ScoreQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreQRCodeViewController.h; sourceTree = "<group>"; };
+		CBE3D40F1B29B964002BB3B1 /* ScoreQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreQRCodeViewController.m; sourceTree = "<group>"; };
 		CBE427CD1B28D303001FCA1F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
 		CBE427CE1B28D303001FCA1F /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		DC3F8ED61B174BDE0007AC56 /* ExamUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExamUtil.h; path = Source/ExamUtil.h; sourceTree = "<group>"; };
@@ -182,6 +185,8 @@
 				CB7BD7EB1B07CDAA002C6DFB /* ListTableViewController.m */,
 				CB7BD7EC1B07CDAA002C6DFB /* QuestionnaireCell.h */,
 				CB7BD7ED1B07CDAA002C6DFB /* QuestionnaireCell.m */,
+				CBE3D40E1B29B964002BB3B1 /* ScoreQRCodeViewController.h */,
+				CBE3D40F1B29B964002BB3B1 /* ScoreQRCodeViewController.m */,
 			);
 			name = ListView;
 			path = Source/ListView;
@@ -490,6 +495,7 @@
 				CBE427CF1B28D303001FCA1F /* PasswordViewController.m in Sources */,
 				CB7BD7EF1B07CDAA002C6DFB /* DetailViewController.m in Sources */,
 				DC3F8ED81B174BDE0007AC56 /* ExamUtil.m in Sources */,
+				CBE3D4101B29B964002BB3B1 /* ScoreQRCodeViewController.m in Sources */,
 				DC3F8EE81B17551E0007AC56 /* FMDatabaseQueue.m in Sources */,
 				CBE0C8361B0724C5000EA3A7 /* AppInfoViewController.m in Sources */,
 				CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */,
