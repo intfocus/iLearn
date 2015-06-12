@@ -27,6 +27,11 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 @property (weak, nonatomic) IBOutlet UIView *questionnaireView;
 @property (weak, nonatomic) IBOutlet UIView *examView;
 
+@property (weak, nonatomic) IBOutlet UIButton *registrationButton;
+@property (weak, nonatomic) IBOutlet UIButton *lectureButton;
+@property (weak, nonatomic) IBOutlet UIButton *questionnaireButton;
+@property (weak, nonatomic) IBOutlet UIButton *examButton;
+
 // Button Labels
 @property (weak, nonatomic) IBOutlet UILabel *coursePackLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lectureLabel;
@@ -45,6 +50,10 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+
+    _registrationButton.enabled = NO;
+    _lectureButton.enabled = NO;
+    _questionnaireButton.enabled = NO;
 
     // Setup label contents
     self.title = NSLocalizedString(@"DASHBOARD_TITLE", nil);

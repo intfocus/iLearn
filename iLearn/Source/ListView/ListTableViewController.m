@@ -27,6 +27,12 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 @interface ListTableViewController ()
 
+@property (weak, nonatomic) IBOutlet UIButton *registrationButton;
+@property (weak, nonatomic) IBOutlet UIButton *lectureButton;
+@property (weak, nonatomic) IBOutlet UIButton *questionnaireButton;
+@property (weak, nonatomic) IBOutlet UIButton *examButton;
+
+
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
@@ -50,6 +56,10 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+
+    _registrationButton.enabled = NO;
+    _lectureButton.enabled = NO;
+    _questionnaireButton.enabled = NO;
 
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
@@ -391,24 +401,36 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (IBAction)registrationButtonTouched:(id)sender {
     NSLog(@"registrationButtonTouched");
+    if (_listType == ListViewTypeRegistration) {
+        return;
+    }
     self.listType = ListViewTypeRegistration;
     [self refreshContent];
 }
 
 - (IBAction)lectureButtonTouched:(id)sender {
     NSLog(@"lectureButtonTouched");
+    if (_listType == ListViewTypeLecture) {
+        return;
+    }
     self.listType = ListViewTypeLecture;
     [self refreshContent];
 }
 
 - (IBAction)questionnaireButtonTouched:(id)sender {
     NSLog(@"questionnaireButtonTouched");
+    if (_listType == ListViewTypeQuestionnaire) {
+        return;
+    }
     self.listType = ListViewTypeQuestionnaire;
     [self refreshContent];
 }
 
 - (IBAction)examButtonTouched:(id)sender {
     NSLog(@"examButtonTouched");
+    if (_listType == ListViewTypeExam) {
+        return;
+    }
     self.listType = ListViewTypeExam;
     [self refreshContent];
 }
