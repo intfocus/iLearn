@@ -140,12 +140,20 @@
 
 + (NSString*)descFromContent:(NSDictionary*)content
 {
-    return content[ExamDesc];
+    NSNumber *start = content[ExamBeginDate];
+    NSDate *beginDate = [NSDate dateWithTimeIntervalSince1970:[start longLongValue]];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY/MM/dd HH:mm"];
+    NSString *beginTimeString = [formatter stringFromDate:beginDate];
+    NSString *beginString = [NSString stringWithFormat:NSLocalizedString(@"LIST_BEGIN_DATE_TEMPLATE", nil), beginTimeString];
+    NSString *descString = [NSString stringWithFormat:@"%@\n%@", beginString, content[ExamDesc]];
+
+    return descString;
 }
 
-+ (NSInteger)expirationDateFromContent:(NSDictionary*)content
++ (NSInteger)endDateFromContent:(NSDictionary*)content
 {
-    return [content[ExamExpirationDate] integerValue];
+    return [content[ExamEndDate] integerValue];
 }
 
 + (NSInteger)startDateFromContent:(NSDictionary*)content
@@ -173,20 +181,6 @@
     NSString *docPath = [self applicationDocumentsDirectory];
     NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
 
-    return examPath;
-}
-
-+ (NSString*)examDBPathOfFile:(NSString*)fileName
-{
-    NSString *dbPath = [NSString stringWithFormat:@"%@/%@.db", [self examFolderPath], fileName];
-    return dbPath;
-}
-
-+ (void)parseContentIntoDB:(NSDictionary*)content
-{
-    NSString *examPath = [self examFolderPath];
-    NSString *dbPath = [self examDBPathOfFile:content[CommonFileName]];
-
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
 
@@ -200,6 +194,22 @@
             NSLog(@"Create folder %@ failed with error: %@", examPath, createFolderError);
         }
     }
+
+    return examPath;
+}
+
++ (NSString*)examDBPathOfFile:(NSString*)fileName
+{
+    NSString *dbPath = [NSString stringWithFormat:@"%@/%@.db", [self examFolderPath], fileName];
+    return dbPath;
+}
+
++ (void)parseContentIntoDB:(NSDictionary*)content
+{
+    NSString *dbPath = [self examDBPathOfFile:content[CommonFileName]];
+
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
 
     if (![fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
         FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
@@ -224,7 +234,18 @@
 {
     [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT)"];
 
-    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], content[ExamBeginDate], content[ExamEndDate], content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
+    NSNumber *beginDate = content[ExamBeginDate];
+    NSNumber *endDate = content[ExamEndDate];
+
+    NSInteger duration = [endDate integerValue] - [beginDate integerValue];
+
+    NSDate *now = [NSDate date];
+    NSDate *deadline = [now dateByAddingTimeInterval:duration];
+
+    NSInteger nowInteger = [now timeIntervalSince1970];
+    NSInteger deadlineInteger = [deadline timeIntervalSince1970];
+
+    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], @(nowInteger), @(deadlineInteger), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
 }
 
 + (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
@@ -346,6 +367,7 @@
         content[ExamPassword] = [result stringForColumn:@"password"];
         content[ExamScore] = @([result intForColumn:@"score"]);
         content[ExamSubmitted] = @([result intForColumn:@"submit"]);
+        content[ExamOpened] = @(1);
     }
 
     return content;
@@ -440,7 +462,7 @@
         }
     }
     else {
-        NSLog(@"Not DB file at the path: %@", dbPath);
+        NSLog(@"No DB file at the path: %@", dbPath);
     }
 }
 
@@ -463,7 +485,7 @@
         }
     }
     else {
-        NSLog(@"Not DB file at the path: %@", dbPath);
+        NSLog(@"No DB file at the path: %@", dbPath);
     }
 }
 
@@ -492,7 +514,7 @@
         }
     }
     else {
-        NSLog(@"Not DB file at the path: %@", dbPath);
+        NSLog(@"No DB file at the path: %@", dbPath);
     }
     return score;
 }
@@ -501,12 +523,14 @@
 {
     [self updateSelectedAnswersOfSubjectsInDB:db];
 
+    NSInteger nowInteger = [[NSDate date] timeIntervalSince1970];
+
     NSInteger totalSubjectCount = [db intForQuery:@"SELECT COUNT(*) FROM subject"];
     NSInteger correctCount = [db intForQuery:@"SELECT COUNT(*) FROM subject WHERE answer=selected_answer"];
 
     NSInteger score = (float)correctCount/(float)totalSubjectCount * 100.0 + 0.5;
 
-    [db executeUpdate:@"UPDATE info SET score=?", @(score)];
+    [db executeUpdate:@"UPDATE info SET score=?, end=?", @(score), @(nowInteger)];
 
     return score;
 }
@@ -535,6 +559,44 @@
 
         [db executeUpdate:@"UPDATE subject SET selected_answer=? WHERE subject_id=?", selectedAnswerString, subjectId];
     }
+}
+
++ (NSString*)scanResultDBPath
+{
+    NSString *dbPath = [NSString stringWithFormat:@"%@/scan.db", [self examFolderPath]];
+    return dbPath;
+}
+
++ (void)saveScannedResultIntoDB:(NSString*)result
+{
+    NSString *dbPath = [self scanResultDBPath];
+    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+    if ([db open]) {
+        [db executeUpdate:@"CREATE TABLE IF NOT EXISTS result(result TEXT PRIMARY KEY, submit INTEGER DEFAULT 0)"];
+        [db executeUpdate:@"INSERT INTO result (result) VALUES (?)", result];
+        [db close];
+    }
+}
+
++ (NSArray*)unsubmittedScannedResults
+{
+    NSMutableArray *unsubmittedResults = [NSMutableArray array];
+
+    NSString *dbPath = [self scanResultDBPath];
+    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+    if ([db open]) {
+        FMResultSet *unsubmitted = [db executeQuery:@"SELECT result FROM result WHERE submit = 0"];
+
+        while ([unsubmitted next]) {
+            [unsubmittedResults addObject:[unsubmitted stringForColumn:@"result"]];
+        }
+
+        [db close];
+    }
+
+    return unsubmittedResults;
 }
 
 @end

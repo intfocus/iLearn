@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Constants.h"
+#import "QRCodeReaderViewController.h"
 
 @class ListTableViewCell;
 
@@ -15,10 +16,11 @@
 
 - (void)didSelectInfoButtonOfCell:(ListTableViewCell*)cell;
 - (void)didSelectActionButtonOfCell:(ListTableViewCell*)cell;
+- (void)didSelectQRCodeButtonOfCell:(ListTableViewCell*)cell;
 
 @end
 
-@interface ListTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ListTableViewCellDelegate>
+@interface ListTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ListTableViewCellDelegate, QRCodeReaderDelegate>
 
 @property (assign, nonatomic) ListViewType listType;
 

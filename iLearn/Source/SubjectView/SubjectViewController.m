@@ -79,6 +79,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     if (score != nil && [score integerValue] != -1) {
         self.isAnswerMode = YES;
+        _questionTableView.userInteractionEnabled = NO;
     }
     else {
         self.isAnswerMode = NO;
@@ -164,7 +165,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
             cell.numberLabel.textColor = [UIColor whiteColor];
         }
         else {
-            cell.backgroundColor = [UIColor redColor];
+            cell.backgroundColor = RGBCOLOR(200.0, 0.0, 10.0);
         }
     }
     else {
@@ -216,7 +217,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         BOOL correct = [selectedQuestion[ExamQuestionCorrect] boolValue];
 
         if (_isAnswerMode && !correct) {
-            backgroundView.backgroundColor = [UIColor redColor];
+            backgroundView.backgroundColor = RGBCOLOR(200.0, 0.0, 10.0);
         }
         else {
             backgroundView.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
@@ -332,13 +333,18 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateSubmitButtonStatus
 {
-    for (NSNumber *status in _cellStatus) {
-        if ([status isEqualToNumber:@(CellStatusNone)]) {
-            _submitButton.hidden = YES;
-            return;
-        }
+    if (_isAnswerMode) {
+        _submitButton.hidden = YES;
     }
-    _submitButton.hidden = NO;
+    else {
+        for (NSNumber *status in _cellStatus) {
+            if ([status isEqualToNumber:@(CellStatusNone)]) {
+                _submitButton.hidden = YES;
+                return;
+            }
+        }
+        _submitButton.hidden = NO;
+    }
 }
 
 - (void)saveSelections
@@ -396,18 +402,22 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSString *correctString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_CORRECT_TEMPLATE", nil), numberOfCorrectSubjects];
         NSString *correctNumberString = [NSString stringWithFormat:@"%lld", (long long)numberOfCorrectSubjects];
         NSRange correctNumberRange = [correctString rangeOfString:correctNumberString];
+        NSRange correctTextRange = NSMakeRange(0, correctNumberRange.location);
 
         NSMutableAttributedString *correctAttrString = [[NSMutableAttributedString alloc] initWithString:correctString];
-        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(27.0, 165.0, 158.0)} range:correctNumberRange];
+        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:correctTextRange];
+        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(27.0, 165.0, 158.0), NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:correctNumberRange];
 
         _leftStatusLabel.attributedText = correctAttrString;
 
         NSString *wrongString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_WRONG_TEMPLATE", nil), numberOfSubjects-numberOfCorrectSubjects];
         NSString *wrongNumberString = [NSString stringWithFormat:@"%lld", (long long)(numberOfSubjects-numberOfCorrectSubjects)];
         NSRange wrongNumberRange = [wrongString rangeOfString:wrongNumberString];
+        NSRange wrongTextRange = NSMakeRange(0, wrongNumberRange.location);
 
         NSMutableAttributedString *wrongAttrString = [[NSMutableAttributedString alloc] initWithString:wrongString];
-        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor redColor]} range:wrongNumberRange];
+        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:wrongTextRange];
+        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(200.0, 0.0, 10.0), NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:wrongNumberRange];
 
         _rightStatusLabel.attributedText = wrongAttrString;
     }
@@ -418,18 +428,22 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSString *answeredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_ANSWERED_TEMPLATE", nil), numberOfAnsweredSubjects];
         NSString *answeredNumberString = [NSString stringWithFormat:@"%lld", (long long)numberOfAnsweredSubjects];
         NSRange answeredNumberRange = [answeredString rangeOfString:answeredNumberString];
+        NSRange answeredTextRange = NSMakeRange(0, answeredNumberRange.location);
 
         NSMutableAttributedString *answeredAttrString = [[NSMutableAttributedString alloc] initWithString:answeredString];
-        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(27.0, 165.0, 158.0)} range:answeredNumberRange];
+        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:answeredTextRange];
+        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(27.0, 165.0, 158.0), NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:answeredNumberRange];
 
         _leftStatusLabel.attributedText = answeredAttrString;
 
         NSString *unansweredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNANSWERED_TEMPLATE", nil), numberOfSubjects-numberOfAnsweredSubjects];
         NSString *unansweredNumberString = [NSString stringWithFormat:@"%lld", (long long)(numberOfSubjects-numberOfAnsweredSubjects)];
         NSRange unansweredNumberRange = [unansweredString rangeOfString:unansweredNumberString];
+        NSRange unansweredTextRange = NSMakeRange(0, unansweredNumberRange.location);
 
         NSMutableAttributedString *unansweredAttrString = [[NSMutableAttributedString alloc] initWithString:unansweredString];
-        [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor]} range:unansweredNumberRange];
+        [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:unansweredTextRange];
+        [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:unansweredNumberRange];
 
         _rightStatusLabel.attributedText = unansweredAttrString;
     }
@@ -497,7 +511,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSString *fileName = _examContent[CommonFileName];
     NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
 
-    [ExamUtil setExamSubmittedwithDBPath:dbPath];
+//    [ExamUtil setExamSubmittedwithDBPath:dbPath];
     NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
 
     NSLog(@"score: %lld", (long long)score);
@@ -519,7 +533,13 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 #pragma mark - UIAction
 
-- (IBAction)logoButtonTouched:(id)sender
+//- (IBAction)logoButtonTouched:(id)sender
+//{
+//    [self saveSelections];
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//}
+
+- (IBAction)backButtonTouched:(id)sender
 {
     [self saveSelections];
     [self dismissViewControllerAnimated:YES completion:nil];

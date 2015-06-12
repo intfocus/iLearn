@@ -15,5 +15,6 @@
 
 - (void)actionTouched;
 - (void)infoTouched;
+- (void)qrCodeTouched;
 
 @end

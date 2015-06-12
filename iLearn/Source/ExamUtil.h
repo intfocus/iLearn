@@ -15,7 +15,7 @@
 + (NSString*)jsonStringOfContent:(NSDictionary*)content;
 + (NSString*)titleFromContent:(NSDictionary*)content;
 + (NSString*)descFromContent:(NSDictionary*)content;
-+ (NSInteger)expirationDateFromContent:(NSDictionary*)content;
++ (NSInteger)endDateFromContent:(NSDictionary*)content;
 + (NSInteger)startDateFromContent:(NSDictionary*)content;
 
 + (NSString*)examFolderPath;
@@ -27,5 +27,8 @@
 
 + (void)setExamSubmittedwithDBPath:(NSString*)dbPath;
 + (NSInteger)examScoreOfDBPath:(NSString*)dbPath;
+
++ (void)saveScannedResultIntoDB:(NSString*)result;
++ (NSArray*)unsubmittedScannedResults;
 
 @end

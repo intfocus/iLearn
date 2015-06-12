@@ -8,6 +8,7 @@
 
 COMMON_CONTENT = "contents";
 COMMON_SUBMIT = "Submit";
+COMMON_CLOSE = "Close";
 
 DASHBOARD_TITLE = "Dashboard";
 DASHBOARD_COURSE_PACK = "Course Pack";
@@ -31,16 +32,25 @@ SETTINGS_APPLICATION_VERSION = "Version";
 LIST_EXAM = "Exam";
 LIST_QUESTIONNAIRE = "Questionnaire";
 LIST_DETAIL = "detail";
+LIST_BEGIN_DATE_TEMPLATE = "Start time: %@";
+LIST_END_DATE_TEMPLATE = "End time: %@";
 LIST_STATUS_NOT_DOWNLOADED = "Not Downloaded";
 LIST_STATUS_NOT_STARTED = "Not Started";
+LIST_STATUS_ENDED = "Ended";
 LIST_STATUS_TESTING = "Testing";
 LIST_STATUS_NOT_SUBMITTED = "Not Submitted";
 LIST_STATUS_SUBMITTED = "Submitted";
 LIST_BUTTON_DOWNLOAD = "Download";
+LIST_BUTTON_ENDED = "Ended";
 LIST_BUTTON_NOT_STARTDED = "Not Started";
 LIST_BUTTON_START_TESTING = "Start Testing";
 LIST_BUTTON_SUBMIT = "Submit";
 LIST_BUTTON_VIEW_RESULT = "View Result";
+LIST_BUTTON_QRCODE = "Score QRcode";
+LIST_SCORE_TITLE = "Score: ";
+LIST_SCORE_TEMPLATE = "%lld";
+LIST_SCORE_SCAN_RESULT = "Scan Result";
+LIST_SCORE_SCAN_RESULT_TEMPLATE = "User: %@\nExamId: %@\nScore: %@";
 
 EXAM_ANSWERED_TEMPLATE = "Answered: %lld";
 EXAM_UNANSWERED_TEMPLATE = "Unanswered: %lld";

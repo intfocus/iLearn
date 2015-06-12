@@ -9,18 +9,29 @@
 #import "ListTableViewController.h"
 #import "QuestionnaireCell.h"
 #import "DetailViewController.h"
+#import "PasswordViewController.h"
 #import "QuestionnaireUtil.h"
 #import "SubjectViewController.h"
+#import "ScoreQRCodeViewController.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
+#import "UIImage+MDQRCode.h"
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
+static NSString *const kShowPasswordSegue = @"showPasswordPage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
+static NSString *const kShowScoreQRCode = @"showScoreQRCode";
 
 static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 @interface ListTableViewController ()
+
+@property (weak, nonatomic) IBOutlet UIButton *registrationButton;
+@property (weak, nonatomic) IBOutlet UIButton *lectureButton;
+@property (weak, nonatomic) IBOutlet UIButton *questionnaireButton;
+@property (weak, nonatomic) IBOutlet UIButton *examButton;
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -45,6 +56,10 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+
+    _registrationButton.enabled = NO;
+    _lectureButton.enabled = NO;
+    _questionnaireButton.enabled = NO;
 
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
@@ -91,6 +106,20 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
                 break;
         }
     }
+    if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
+
+        PasswordViewController *detailVC = (PasswordViewController*)segue.destinationViewController;
+
+        if (_listType == ListViewTypeExam) {
+                detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
+                detailVC.descString = [ExamUtil descFromContent:sender];
+                detailVC.password = sender[ExamPassword];
+                __weak id weakSelf = self;
+                detailVC.callback = ^(void){
+                    [weakSelf enterExamPageForContent:sender];
+                };
+        }
+    }
     else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
         UINavigationController *navController = segue.destinationViewController;
         UIViewController *viewController = navController.topViewController;
@@ -100,9 +129,12 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
             subjectVC.examContent = sender;
         }
-
     }
+    else if ([segue.identifier isEqualToString:kShowScoreQRCode]) {
 
+        ScoreQRCodeViewController *scoreQRCodeVC = segue.destinationViewController;
+        scoreQRCodeVC.scoreQRCodeImage = sender;
+    }
 }
 
 #pragma mark - UI Adjustment
@@ -211,24 +243,49 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY/MM/dd"];
-    NSInteger epochTime = [ExamUtil expirationDateFromContent:content];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:epochTime];
-    NSString *expirationDateString = [formatter stringFromDate:date];
+    NSInteger epochTime = [ExamUtil endDateFromContent:content];
+    NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:epochTime];
+    NSString *endDateString = [formatter stringFromDate:endDate];
 
-    cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
+    cell.expirationDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"LIST_END_DATE_TEMPLATE", nil), endDateString];
+
+    cell.scoreTitleLabel.hidden = YES;
+    cell.scoreLabel.hidden = YES;
+    cell.qrCodeButton.hidden = YES;
 
     if ([content[ExamCached] isEqualToNumber:@1]) {
 
-        NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:[ExamUtil startDateFromContent:content]];
         NSDate *now = [NSDate date];
+        NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:[ExamUtil startDateFromContent:content]];
+        NSInteger scoreInt = -1;
 
-        if ([startDate laterDate:now] == startDate) { // Exam is not start yet
+        if ([endDate laterDate:now] == now) { // Exam is ended
+
+            NSNumber *score = content[ExamScore];
+
+            if (score == nil || [score isEqualToNumber:@(-1)]) { // Not calculated score yet
+                NSString *fileName = content[CommonFileName];
+                NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+
+                scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
+//                NSLog(@"score: %lld", (long long)scoreInt);
+            }
+        }
+
+
+        if ([startDate laterDate:now] == startDate) { // Exam is not started yet
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_STARTED", nil);
-            [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_NOT_STARTDED", nil) forState:UIControlStateNormal];
-            cell.actionButton.enabled = NO;
+            [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
         }
         else {
-            NSNumber *score = content[ExamScore];
+            NSNumber *score;
+
+            if (scoreInt == -1) {
+                score = content[ExamScore];
+            }
+            else {
+                score = @(scoreInt);
+            }
 
             if (score != nil && [score integerValue] != -1) {
                 // Score was calculated, test was submitted but may not success
@@ -237,13 +294,26 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
                 if ([submitted isEqualToNumber:@1]) {
                     cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_SUBMITTED", nil);
-                    [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];
                 }
                 else {
                     cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_SUBMITTED", nil);
-                    [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_SUBMIT", nil) forState:UIControlStateNormal];
+                    cell.qrCodeButton.hidden = NO;
                 }
+                [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];
 
+                cell.scoreTitleLabel.hidden = NO;
+                cell.scoreLabel.hidden = NO;
+
+                cell.scoreTitleLabel.text = NSLocalizedString(@"LIST_SCORE_TITLE", nil);
+
+                NSString *strScore = [NSString stringWithFormat:@"%lld", [score longLongValue]];
+                NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"LIST_SCORE_TEMPLATE", nil), [score longLongValue]];
+                NSMutableAttributedString *scoreAttrString = [[NSMutableAttributedString alloc] initWithString:scoreString];
+                NSRange scoreRange = [scoreString rangeOfString:strScore];
+                [scoreAttrString addAttributes:@{NSForegroundColorAttributeName: RGBCOLOR(200.0, 0.0, 10.0)} range:scoreRange];
+                cell.scoreLabel.attributedText = scoreAttrString;
+
+                cell.qrCodeButton.titleLabel.text = NSLocalizedString(@"LIST_BUTTON_QRCODE", nil);
             }
             else {
                 cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_TESTING", nil);
@@ -253,8 +323,18 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         }
     }
     else {
-        cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_DOWNLOADED", nil);
-        [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_DOWNLOAD", nil) forState:UIControlStateNormal];
+
+        NSDate *now = [NSDate date];
+
+        if ([endDate laterDate:now] == now) { // Exam is ended
+            cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_ENDED", nil);
+            [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_ENDED", nil) forState:UIControlStateNormal];
+            cell.actionButton.enabled = NO;
+        }
+        else {
+            cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_DOWNLOADED", nil);
+            [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_DOWNLOAD", nil) forState:UIControlStateNormal];
+        }
     }
 
     return cell;
@@ -282,7 +362,35 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSLog(@"indexPath.row: %d", indexPath.row);
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
-    [self enterExamPageForContent:content];
+
+    NSNumber *examType = content[ExamType];
+    NSNumber *examOpened = content[ExamOpened];
+
+    if ([examType isEqualToNumber:@(ExamTypesFormal)] && ![examOpened isEqualToNumber:@1]) {
+        [self performSegueWithIdentifier:kShowPasswordSegue sender:content];
+    }
+    else {
+        [self enterExamPageForContent:content];
+    }
+}
+
+- (void)didSelectQRCodeButtonOfCell:(ListTableViewCell*)cell
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+
+    NSLog(@"didSelectQRCodeButtonOfCell:");
+    NSLog(@"indexPath.row: %d", indexPath.row);
+
+    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+
+    NSString *examId = content[ExamId];
+    NSNumber *examScore = content[ExamScore];
+    NSString *userAccount = [LicenseUtil userAccount];
+
+    NSString *qrCodeString = [NSString stringWithFormat:@"iLearn+%@+%@+%@", userAccount, examId, examScore];
+    UIImage *qrCodeImage = [UIImage mdQRCodeForString:qrCodeString size:200.0];
+
+    [self performSegueWithIdentifier:kShowScoreQRCode sender:qrCodeImage];
 }
 
 #pragma mark - IBAction
@@ -293,24 +401,36 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (IBAction)registrationButtonTouched:(id)sender {
     NSLog(@"registrationButtonTouched");
+    if (_listType == ListViewTypeRegistration) {
+        return;
+    }
     self.listType = ListViewTypeRegistration;
     [self refreshContent];
 }
 
 - (IBAction)lectureButtonTouched:(id)sender {
     NSLog(@"lectureButtonTouched");
+    if (_listType == ListViewTypeLecture) {
+        return;
+    }
     self.listType = ListViewTypeLecture;
     [self refreshContent];
 }
 
 - (IBAction)questionnaireButtonTouched:(id)sender {
     NSLog(@"questionnaireButtonTouched");
+    if (_listType == ListViewTypeQuestionnaire) {
+        return;
+    }
     self.listType = ListViewTypeQuestionnaire;
     [self refreshContent];
 }
 
 - (IBAction)examButtonTouched:(id)sender {
     NSLog(@"examButtonTouched");
+    if (_listType == ListViewTypeExam) {
+        return;
+    }
     self.listType = ListViewTypeExam;
     [self refreshContent];
 }
@@ -324,6 +444,30 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSLog(@"syncButtonTouched");
 }
 
+- (IBAction)scanButtonTouched:(id)sender {
+    if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
+        static QRCodeReaderViewController *reader = nil;
+        static dispatch_once_t onceToken;
+
+        dispatch_once(&onceToken, ^{
+            reader                        = [QRCodeReaderViewController new];
+            reader.modalPresentationStyle = UIModalPresentationFormSheet;
+        });
+        reader.delegate = self;
+
+        [reader setCompletionWithBlock:^(NSString *resultAsString) {
+            NSLog(@"Completion with result: %@", resultAsString);
+        }];
+
+        [self presentViewController:reader animated:YES completion:NULL];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Reader not supported by the current device" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+}
+
 - (void)enterExamPageForContent:(NSDictionary*)content
 {
     [ExamUtil parseContentIntoDB:content];
@@ -334,6 +478,31 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
 
     [self performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
+}
+
+#pragma mark - QRCodeReader Delegate Methods
+
+- (void)reader:(QRCodeReaderViewController *)reader didScanResult:(NSString *)result
+{
+    NSArray *components = [result componentsSeparatedByString:@"+"];
+
+    if ([components count] != 4 || ![components[0] isEqualToString:@"iLearn"]) {
+        return;
+    }
+
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"LIST_SCORE_SCAN_RESULT_TEMPLATE", nil), components[1], components[2], components[3]];
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LIST_SCORE_SCAN_RESULT", nil) message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"COMMON_CLOSE", nil) otherButtonTitles:nil];
+    [alert show];
+
+    NSString *savedResult = [@[components[1], components[2], components[3]] componentsJoinedByString:@"+"];
+
+    [ExamUtil saveScannedResultIntoDB:savedResult];
+}
+
+- (void)readerDidCancel:(QRCodeReaderViewController *)reader
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end
