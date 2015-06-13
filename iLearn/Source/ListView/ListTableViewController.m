@@ -31,7 +31,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 @property (weak, nonatomic) IBOutlet UIButton *lectureButton;
 @property (weak, nonatomic) IBOutlet UIButton *questionnaireButton;
 @property (weak, nonatomic) IBOutlet UIButton *examButton;
-
+@property (weak, nonatomic) IBOutlet UIButton *settingsButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -60,6 +60,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     _registrationButton.enabled = NO;
     _lectureButton.enabled = NO;
     _questionnaireButton.enabled = NO;
+    _settingsButton.enabled = NO;
 
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
