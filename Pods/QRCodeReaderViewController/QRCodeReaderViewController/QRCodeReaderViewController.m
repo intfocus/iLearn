@@ -37,8 +37,6 @@
 
 @property (copy, nonatomic) void (^completionBlock) (NSString *);
 
-@property (strong, nonatomic) NSDate *lastDate;
-
 @end
 
 @implementation QRCodeReaderViewController
@@ -85,7 +83,7 @@
     self.startScanningAtLoad  = startScanningAtLoad;
 
     if (cancelTitle == nil) {
-      cancelTitle = NSLocalizedString(@"COMMON_CLOSE", @"Close");
+      cancelTitle = NSLocalizedString(@"Cancel", @"Cancel");
     }
 
     [self setupUIComponentsWithCancelButtonTitle:cancelTitle];
@@ -98,15 +96,6 @@
     __weak typeof(self) weakSelf = self;
 
     [codeReader setCompletionWithBlock:^(NSString *resultAsString) {
-
-        NSDate *now = [NSDate date];
-
-        if ([now timeIntervalSinceDate:weakSelf.lastDate] < 5) {
-            return;
-        }
-
-        weakSelf.lastDate = now;
-
       if (weakSelf.completionBlock != nil) {
         weakSelf.completionBlock(resultAsString);
       }
@@ -147,8 +136,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-
-    self.switchCameraButton.hidden = YES;
 
   if (_startScanningAtLoad) {
     [self startScanning];
