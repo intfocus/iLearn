@@ -12,5 +12,6 @@
 
 + (NSString*)userAccount;
 + (NSString*)serviceNumber;
++ (NSString*)userId;
 
 @end

@@ -10,6 +10,7 @@
 
 NSString *const ServiceNumber = @"400 400 400";
 NSString *const FakeAccount = @"A1234567";
+NSString *const FakeId = @"1";
 
 NSString *const CacheFolder = @"JsonTemplate";
 NSString *const QuestionnaireFolder = @"Questionnaire";
@@ -41,6 +42,7 @@ NSString *const ExamCached = @"exist_in_local";
 NSString *const ExamPassword = @"pwd";
 NSString *const ExamScore = @"score";
 NSString *const ExamOpened = @"opened";
+NSString *const ExamUserId = @"user_id";
 
 NSString *const ExamQuestions = @"questions";
 NSString *const ExamQuestionId = @"id";
@@ -52,6 +54,13 @@ NSString *const ExamQuestionAnswerBySeq = @"answer_by_seq";
 NSString *const ExamQuestionNote = @"memo";
 NSString *const ExamQuestionAnswered = @"answered";
 NSString *const ExamQuestionCorrect = @"correct";
+
+NSString *const ExamQuestionResult = @"result";
+NSString *const ExamQuestionResultId = @"problem_id";
+NSString *const ExamQuestionResultType = @"type";
+NSString *const ExamQuestionResultSelected = @"selected_answer";
+NSString *const ExamQuestionResultCorrect = @"result";
+NSString *const ExamQuestionResultScore = @"score";
 
 NSString *const ExamQuestionOptions = @"selectors";
 NSString *const ExamQuestionOptionId = @"id";

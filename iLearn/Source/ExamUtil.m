@@ -8,7 +8,10 @@
 
 #import "ExamUtil.h"
 #import "Constants.h"
+#import "LicenseUtil.h"
 #import "FMDB.h"
+
+static const BOOL inDeveloping = NO;
 
 @implementation ExamUtil
 
@@ -27,7 +30,7 @@
     }
 
     // Add Exams from Exam.json, if exam's ExamId already added, use the cached version (may be content of DB or JSON)
-    NSString *jsonPath = [NSString stringWithFormat:@"%@/%@", [self examFolderPathInBundle], @"Exam.json"];
+    NSString *jsonPath = [NSString stringWithFormat:@"%@/%@", [self examSourceFolderPath], @"Exam.json"];
 
     BOOL fileExist = [[NSFileManager defaultManager] fileExistsAtPath:jsonPath];
 
@@ -49,7 +52,7 @@
     for (NSMutableDictionary *exam in exams) {
         NSString *examId = exam[ExamId];
 
-        NSString *jsonPath = [NSString stringWithFormat:@"%@/%@.json", [self examFolderPathInBundle], examId];
+        NSString *jsonPath = [NSString stringWithFormat:@"%@/%@.json", [self examSourceFolderPath], examId];
 
         BOOL fileExist = [[NSFileManager defaultManager] fileExistsAtPath:jsonPath];
 
@@ -68,7 +71,7 @@
 
 + (NSArray*)loadExamsFromCache
 {
-    NSString *path = [self examFolderPathInBundle];
+    NSString *path = [self examSourceFolderPath];
     NSError *error;
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
@@ -168,15 +171,7 @@
     return basePath;
 }
 
-+ (NSString*)examFolderPathInBundle
-{
-    NSString *resPath = [[NSBundle mainBundle] resourcePath];
-    NSString *path = [NSString stringWithFormat:@"%@/%@/%@/", resPath, CacheFolder, ExamFolder];
-
-    return path;
-}
-
-+ (NSString*)examFolderPath
++ (NSString*)examFolderPathInDocument
 {
     NSString *docPath = [self applicationDocumentsDirectory];
     NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
@@ -194,13 +189,31 @@
             NSLog(@"Create folder %@ failed with error: %@", examPath, createFolderError);
         }
     }
-
+    
     return examPath;
+}
+
++ (NSString*)examFolderPathInBundle
+{
+    NSString *resPath = [[NSBundle mainBundle] resourcePath];
+    NSString *path = [NSString stringWithFormat:@"%@/%@/%@/", resPath, CacheFolder, ExamFolder];
+
+    return path;
+}
+
++ (NSString*)examSourceFolderPath
+{
+    if (inDeveloping) {
+        return [self examFolderPathInBundle];
+    }
+    else {
+        return [self examFolderPathInDocument];
+    }
 }
 
 + (NSString*)examDBPathOfFile:(NSString*)fileName
 {
-    NSString *dbPath = [NSString stringWithFormat:@"%@/%@.db", [self examFolderPath], fileName];
+    NSString *dbPath = [NSString stringWithFormat:@"%@/%@.db", [self examFolderPathInDocument], fileName];
     return dbPath;
 }
 
@@ -314,7 +327,7 @@
         }
     }
     else {
-        NSLog(@"No DB file at the path: %@", dbPath);
+//        NSLog(@"No DB file at the path: %@", dbPath);
     }
 
     return content;
@@ -342,7 +355,7 @@
         }
     }
     else {
-        NSLog(@"No DB file at the path: %@", dbPath);
+//        NSLog(@"No DB file at the path: %@", dbPath);
     }
     
     return content;
@@ -514,7 +527,7 @@
         }
     }
     else {
-        NSLog(@"No DB file at the path: %@", dbPath);
+//        NSLog(@"No DB file at the path: %@", dbPath);
     }
     return score;
 }
@@ -563,7 +576,7 @@
 
 + (NSString*)scanResultDBPath
 {
-    NSString *dbPath = [NSString stringWithFormat:@"%@/scan.db", [self examFolderPath]];
+    NSString *dbPath = [NSString stringWithFormat:@"%@/scan.db", [self examFolderPathInDocument]];
     return dbPath;
 }
 
@@ -597,6 +610,94 @@
     }
 
     return unsubmittedResults;
+}
+
++ (void)generateExamUploadJsonOfDBPath:(NSString*)dbPath
+{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+
+        NSString *outputPath;
+        NSMutableDictionary *jsonDic = [NSMutableDictionary dictionary];
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            NSNumber *examId = @([db intForQuery:@"SELECT exam_id FROM info"]);
+            NSNumber *userId = @([[LicenseUtil userId] integerValue]);
+            NSNumber *score = @([db intForQuery:@"SELECT score FROM info"]);
+
+            outputPath = [NSString stringWithFormat:@"%@/%@.result", [self examFolderPathInDocument], examId];
+
+            jsonDic[ExamId] = examId;
+            jsonDic[ExamUserId] = userId;
+            jsonDic[ExamScore] = score;
+
+            NSMutableArray *resultArray = [NSMutableArray array];
+
+            FMResultSet *subjects = [db executeQuery:@"SELECT * FROM subject"];
+
+            while ([subjects next]) {
+
+                NSMutableDictionary *subjectDic = [NSMutableDictionary dictionary];
+
+                NSNumber *subjectId = @([subjects intForColumn:@"subject_id"]);
+                NSNumber *subjectType = @([subjects intForColumn:@"type"]);
+                NSString *answer = [subjects stringForColumn:@"answer"];
+                NSString *selectedAnswer = [subjects stringForColumn:@"selected_answer"];
+                NSNumber *subjectResult = [answer isEqualToString:selectedAnswer]? @1: @0;
+                NSArray *selectedAnsArray = [selectedAnswer componentsSeparatedByString:@"+"];
+
+                subjectDic[ExamQuestionResultId] = subjectId;
+                subjectDic[ExamQuestionResultType] = subjectType;
+                subjectDic[ExamQuestionResultSelected] = selectedAnsArray;
+                subjectDic[ExamQuestionResultCorrect] = subjectResult;
+
+                [resultArray addObject:subjectDic];
+            }
+
+            jsonDic[ExamQuestionResult] = resultArray;
+
+            [db close];
+        }
+
+        NSLog(@"jsonDic: %@", jsonDic);
+
+        NSError *jsonError;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDic options:0 error:&jsonError];
+
+        if (!jsonError) {
+
+            NSError *error;
+            [fileMgr removeItemAtPath:outputPath error:&error];
+            [jsonData writeToFile:outputPath atomically:YES];
+        }
+        else {
+            NSLog(@"Error in serialize jsonDic, ERROR: %@", jsonError);
+        }
+
+    }
+}
+
++ (NSArray*)resultFiles
+{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSString *examPath = [self examFolderPathInDocument];
+
+    NSArray *files = [fileMgr contentsOfDirectoryAtPath:examPath error:nil];
+    NSMutableArray *results = [NSMutableArray array];
+
+    for (NSString *file in files) {
+        NSString *extension = [file pathExtension];
+        if ([extension isEqualToString:@"result"]) {
+            NSString *path = [NSString stringWithFormat:@"%@/%@", examPath, file];
+            [results addObject:path];
+        }
+    }
+
+    return results;
 }
 
 @end

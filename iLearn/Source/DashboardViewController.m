@@ -9,7 +9,7 @@
 #import "DashboardViewController.h"
 #import "ListTableViewController.h"
 #import "QRCodeViewController.h"
-#include "LicenseUtil.h"
+#import "LicenseUtil.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowExamSegue = @"showExamPage";

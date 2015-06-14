@@ -51,6 +51,7 @@ LIST_SCORE_TITLE = "Score: ";
 LIST_SCORE_TEMPLATE = "%lld";
 LIST_SCORE_SCAN_RESULT = "Scan Result";
 LIST_SCORE_SCAN_RESULT_TEMPLATE = "User: %@\nExamId: %@\nScore: %@";
+LIST_SYNCING = "Syncing";
 
 EXAM_ANSWERED_TEMPLATE = "Answered: %lld";
 EXAM_UNANSWERED_TEMPLATE = "Unanswered: %lld";

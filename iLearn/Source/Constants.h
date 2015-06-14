@@ -30,6 +30,7 @@ typedef NS_ENUM(NSUInteger, ExamSubjectType) {
 
 extern NSString *const ServiceNumber;
 extern NSString *const FakeAccount;
+extern NSString *const FakeId;
 
 extern NSString *const CacheFolder;
 extern NSString *const QuestionnaireFolder;
@@ -61,6 +62,7 @@ extern NSString *const ExamCached;
 extern NSString *const ExamPassword;
 extern NSString *const ExamScore;
 extern NSString *const ExamOpened;
+extern NSString *const ExamUserId;
 
 extern NSString *const ExamQuestions;
 extern NSString *const ExamQuestionId;
@@ -72,6 +74,13 @@ extern NSString *const ExamQuestionAnswerBySeq;
 extern NSString *const ExamQuestionNote;
 extern NSString *const ExamQuestionAnswered;
 extern NSString *const ExamQuestionCorrect;
+
+extern NSString *const ExamQuestionResult;
+extern NSString *const ExamQuestionResultId;
+extern NSString *const ExamQuestionResultType;
+extern NSString *const ExamQuestionResultSelected;
+extern NSString *const ExamQuestionResultCorrect;
+extern NSString *const ExamQuestionResultScore;
 
 extern NSString *const ExamQuestionOptions;
 extern NSString *const ExamQuestionOptionId;
