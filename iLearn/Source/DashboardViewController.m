@@ -9,7 +9,7 @@
 #import "DashboardViewController.h"
 #import "ListTableViewController.h"
 #import "QRCodeViewController.h"
-#include "LicenseUtil.h"
+#import "LicenseUtil.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowExamSegue = @"showExamPage";
@@ -31,6 +31,7 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 @property (weak, nonatomic) IBOutlet UIButton *lectureButton;
 @property (weak, nonatomic) IBOutlet UIButton *questionnaireButton;
 @property (weak, nonatomic) IBOutlet UIButton *examButton;
+@property (weak, nonatomic) IBOutlet UIButton *settingsButton;
 
 // Button Labels
 @property (weak, nonatomic) IBOutlet UILabel *coursePackLabel;
@@ -54,6 +55,7 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
     _registrationButton.enabled = NO;
     _lectureButton.enabled = NO;
     _questionnaireButton.enabled = NO;
+    _settingsButton.enabled = NO;
 
     // Setup label contents
     self.title = NSLocalizedString(@"DASHBOARD_TITLE", nil);

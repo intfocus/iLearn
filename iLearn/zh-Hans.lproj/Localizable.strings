@@ -51,6 +51,7 @@ LIST_SCORE_TITLE = "得分：";
 LIST_SCORE_TEMPLATE = "%lld 分";
 LIST_SCORE_SCAN_RESULT = "扫描结果";
 LIST_SCORE_SCAN_RESULT_TEMPLATE = "考生：%@\n考试编号：%@\n得分：%@ 分";
+LIST_SYNCING = "同步中";
 
 EXAM_ANSWERED_TEMPLATE = "已答：%lld";
 EXAM_UNANSWERED_TEMPLATE = "未答：%lld";

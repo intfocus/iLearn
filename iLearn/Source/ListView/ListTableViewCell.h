@@ -9,9 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "ListTableViewController.h"
 
+typedef NS_ENUM(NSUInteger, ListTableViewCellAction) {
+    ListTableViewCellActionView,
+    ListTableViewCellActionDownload,
+};
+
 @interface ListTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) UIViewController<ListTableViewCellDelegate> *delegate;
+@property (assign, nonatomic) ListTableViewCellAction actionButtonType;
 
 - (void)actionTouched;
 - (void)infoTouched;

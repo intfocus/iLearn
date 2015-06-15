@@ -21,4 +21,9 @@
     return ServiceNumber;
 }
 
++ (NSString*)userId
+{
+    return FakeId;
+}
+
 @end

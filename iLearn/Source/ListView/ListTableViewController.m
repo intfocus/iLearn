@@ -16,6 +16,7 @@
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
 #import "UIImage+MDQRCode.h"
+#import <MBProgressHUD.h>
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
@@ -27,11 +28,13 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 @interface ListTableViewController ()
 
+@property (strong, nonatomic) ConnectionManager *connectionManager;
+
 @property (weak, nonatomic) IBOutlet UIButton *registrationButton;
 @property (weak, nonatomic) IBOutlet UIButton *lectureButton;
 @property (weak, nonatomic) IBOutlet UIButton *questionnaireButton;
 @property (weak, nonatomic) IBOutlet UIButton *examButton;
-
+@property (weak, nonatomic) IBOutlet UIButton *settingsButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -48,6 +51,9 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 @property (weak, nonatomic) IBOutlet UIView *questionnaireView;
 @property (weak, nonatomic) IBOutlet UIView *examView;
 
+@property (assign, nonatomic) BOOL hasAutoSynced;
+@property (strong, nonatomic) MBProgressHUD *progressHUD;
+
 @end
 
 
@@ -60,6 +66,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     _registrationButton.enabled = NO;
     _lectureButton.enabled = NO;
     _questionnaireButton.enabled = NO;
+    _settingsButton.enabled = NO;
 
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
@@ -72,12 +79,18 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
 
-    [self refreshContent];
+    self.connectionManager = [[ConnectionManager alloc] init];
+    _connectionManager.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [self refreshContent];
+
+    if (!_hasAutoSynced) {
+        _hasAutoSynced = YES;
+        [self syncData];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -138,6 +151,32 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 }
 
 #pragma mark - UI Adjustment
+
+- (void)syncData
+{
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+
+    NSArray *resultFiles = [ExamUtil resultFiles];
+
+    for (NSString *resultPath in resultFiles) {
+        [_connectionManager uploadExamResultWithPath:resultPath];
+    }
+
+    [self downloadExams];
+}
+
+- (void)downloadExams
+{
+    [_connectionManager downloadExamsForUser:[LicenseUtil userId]];
+}
+
+- (void)downloadExamId:(NSString*)examId
+{
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    [_connectionManager downloadExamWithId:examId];
+}
 
 - (void)refreshContent
 {
@@ -268,6 +307,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
                 NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
 
                 scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
+                [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
 //                NSLog(@"score: %lld", (long long)scoreInt);
             }
         }
@@ -276,6 +316,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         if ([startDate laterDate:now] == startDate) { // Exam is not started yet
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_STARTED", nil);
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
+            cell.actionButtonType = ListTableViewCellActionView;
         }
         else {
             NSNumber *score;
@@ -300,6 +341,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
                     cell.qrCodeButton.hidden = NO;
                 }
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];
+                cell.actionButtonType = ListTableViewCellActionView;
 
                 cell.scoreTitleLabel.hidden = NO;
                 cell.scoreLabel.hidden = NO;
@@ -318,6 +360,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
             else {
                 cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_TESTING", nil);
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
+                cell.actionButtonType = ListTableViewCellActionView;
             }
 
         }
@@ -334,6 +377,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         else {
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_DOWNLOADED", nil);
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_DOWNLOAD", nil) forState:UIControlStateNormal];
+            cell.actionButtonType = ListTableViewCellActionDownload;
         }
     }
 
@@ -363,14 +407,22 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
 
-    NSNumber *examType = content[ExamType];
-    NSNumber *examOpened = content[ExamOpened];
+        if (cell.actionButtonType == ListTableViewCellActionDownload) {
 
-    if ([examType isEqualToNumber:@(ExamTypesFormal)] && ![examOpened isEqualToNumber:@1]) {
-        [self performSegueWithIdentifier:kShowPasswordSegue sender:content];
-    }
-    else {
-        [self enterExamPageForContent:content];
+            NSString *examId = [NSString stringWithFormat:@"%@", content[ExamId]];
+            [self downloadExamId:examId];
+        }
+        else if (cell.actionButtonType == ListTableViewCellActionView) {
+
+        NSNumber *examType = content[ExamType];
+        NSNumber *examOpened = content[ExamOpened];
+
+        if ([examType isEqualToNumber:@(ExamTypesFormal)] && ![examOpened isEqualToNumber:@1]) {
+            [self performSegueWithIdentifier:kShowPasswordSegue sender:content];
+        }
+        else {
+            [self enterExamPageForContent:content];
+        }
     }
 }
 
@@ -442,6 +494,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (IBAction)syncButtonTouched:(id)sender {
     NSLog(@"syncButtonTouched");
+    [self syncData];
 }
 
 - (IBAction)scanButtonTouched:(id)sender {
@@ -503,6 +556,34 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 - (void)readerDidCancel:(QRCodeReaderViewController *)reader
 {
     [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - ConnectionManagerDelegate
+
+- (void)connectionManagerDidDownloadExamsForUser:(NSString *)userId withError:(NSError *)error
+{
+    [_progressHUD hide:YES];
+
+    if (!error) {
+        [self refreshContent];
+    }
+}
+
+- (void)connectionManagerDidDownloadExam:(NSString *)examId withError:(NSError *)error
+{
+    [_progressHUD hide:YES];
+
+    if (!error) {
+        [self refreshContent];
+    }
+}
+
+- (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error
+{
+    if (!error) {
+        NSString *dbPath = [ExamUtil examDBPathOfFile:examId];
+        [ExamUtil setExamSubmittedwithDBPath:dbPath];
+    }
 }
 
 @end

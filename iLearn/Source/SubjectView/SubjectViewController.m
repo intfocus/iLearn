@@ -513,6 +513,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 //    [ExamUtil setExamSubmittedwithDBPath:dbPath];
     NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
+    [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
 
     NSLog(@"score: %lld", (long long)score);
 

@@ -18,7 +18,8 @@
 + (NSInteger)endDateFromContent:(NSDictionary*)content;
 + (NSInteger)startDateFromContent:(NSDictionary*)content;
 
-+ (NSString*)examFolderPath;
++ (NSString*)examSourceFolderPath;
++ (NSString*)examFolderPathInDocument;
 + (NSString*)examDBPathOfFile:(NSString*)fileName;
 
 + (void)parseContentIntoDB:(NSDictionary*)content;
@@ -27,8 +28,11 @@
 
 + (void)setExamSubmittedwithDBPath:(NSString*)dbPath;
 + (NSInteger)examScoreOfDBPath:(NSString*)dbPath;
++ (void)generateExamUploadJsonOfDBPath:(NSString*)dbPath;
 
 + (void)saveScannedResultIntoDB:(NSString*)result;
 + (NSArray*)unsubmittedScannedResults;
+
++ (NSArray*)resultFiles;
 
 @end
