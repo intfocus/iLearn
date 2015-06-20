@@ -62,7 +62,10 @@ static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Download Exams of UserId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", userId, (long long)operation.response.statusCode, operation.responseString, error);
-            
+
+            NSFileManager *fileMgr = [NSFileManager defaultManager];
+            [fileMgr removeItemAtPath:outputPathTmp error:nil];
+
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadExamsForUser:withError:)]) {
                 [_delegate connectionManagerDidDownloadExamsForUser:userId withError:error];
             }
@@ -121,7 +124,13 @@ static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest
 
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
 
-        AFHTTPRequestOperation *op = [manager PUT:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestUrl]];
+
+        request.HTTPMethod = @"PUT";
+        NSData *bodyData = [NSData dataWithContentsOfFile:resultPath];
+        request.HTTPBody = bodyData;
+
+        AFHTTPRequestOperation *op = [manager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
             [fileMgr removeItemAtPath:resultPath error:nil];
 
@@ -138,10 +147,9 @@ static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest
             }
 
         }];
-
-        op.inputStream = [NSInputStream inputStreamWithFileAtPath:resultPath];
+        op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+        [op start];
     }
-
 }
 
 @end
