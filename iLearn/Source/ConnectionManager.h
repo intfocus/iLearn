@@ -13,6 +13,7 @@
 - (void)connectionManagerDidDownloadExamsForUser:(NSString*)userId withError:(NSError*)error;
 - (void)connectionManagerDidDownloadExam:(NSString*)examId withError:(NSError*)error;
 - (void)connectionManagerDidUploadExamResult:(NSString*)examId withError:(NSError*)error;
+- (void)connectionManagerDidUploadExamScannedResult:(NSString*)result withError:(NSError*)error;
 
 @end
 
@@ -24,5 +25,6 @@
 - (void)downloadExamsForUser:(NSString*)userId;
 - (void)downloadExamWithId:(NSString*)examId;
 - (void)uploadExamResultWithPath:(NSString*)resultPath;
+- (void)uploadExamScannedResult:(NSString*)result;
 
 @end

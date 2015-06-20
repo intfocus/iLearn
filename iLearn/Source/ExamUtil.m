@@ -599,6 +599,17 @@ static const BOOL inDeveloping = NO;
     }
 }
 
++ (void)setScannedResultSubmitted:(NSString*)result
+{
+    NSString *dbPath = [self scanResultDBPath];
+    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+    if ([db open]) {
+        [db executeUpdate:@"UPDATE result SET submit=1 WHERE result=?", result];
+        [db close];
+    }
+}
+
 + (NSArray*)unsubmittedScannedResults
 {
     NSMutableArray *unsubmittedResults = [NSMutableArray array];

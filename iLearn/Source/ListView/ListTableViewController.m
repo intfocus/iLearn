@@ -54,6 +54,9 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 @property (assign, nonatomic) BOOL hasAutoSynced;
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
 
+@property (strong, nonatomic) NSMutableArray *unsubmittedExamResults;
+@property (strong, nonatomic) NSMutableArray *unsubmittedExamScannedResults;
+
 @end
 
 
@@ -157,16 +160,31 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
 
+    self.unsubmittedExamResults = [[ExamUtil resultFiles] mutableCopy];
+    self.unsubmittedExamScannedResults = [[ExamUtil unsubmittedScannedResults] mutableCopy];
+
     [self downloadExams];
     [self syncExamResults];
+    [self syncScannedExamResults];
 }
 
 - (void)syncExamResults
 {
-    NSArray *resultFiles = [ExamUtil resultFiles];
-    NSString *filePath = [resultFiles firstObject];
+    NSString *filePath = [_unsubmittedExamResults firstObject];
+
     if (filePath) {
-        [_connectionManager uploadExamResultWithPath:[resultFiles firstObject]];
+        [_unsubmittedExamResults removeObjectAtIndex:0];
+        [_connectionManager uploadExamResultWithPath:filePath];
+    }
+}
+
+- (void)syncScannedExamResults
+{
+    NSString *scannedResult = [_unsubmittedExamScannedResults firstObject];
+
+    if (scannedResult) {
+        [_unsubmittedExamScannedResults removeObjectAtIndex:0];
+        [_connectionManager uploadExamScannedResult:scannedResult];
     }
 }
 
@@ -589,9 +607,17 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         NSString *dbPath = [ExamUtil examDBPathOfFile:examId];
         [ExamUtil setExamSubmittedwithDBPath:dbPath];
 
-        [self syncExamResults];
         [self refreshContent];
     }
+    [self syncExamResults];
+}
+
+- (void)connectionManagerDidUploadExamScannedResult:(NSString *)result withError:(NSError *)error
+{
+    if (!error) {
+        [ExamUtil setScannedResultSubmitted:result];
+    }
+    [self syncScannedExamResults];
 }
 
 @end

@@ -31,6 +31,7 @@
 + (void)generateExamUploadJsonOfDBPath:(NSString*)dbPath;
 
 + (void)saveScannedResultIntoDB:(NSString*)result;
++ (void)setScannedResultSubmitted:(NSString*)result;
 + (NSArray*)unsubmittedScannedResults;
 
 + (NSArray*)resultFiles;
