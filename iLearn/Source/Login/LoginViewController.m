@@ -67,6 +67,7 @@
 //#import "MainViewController.h"
 //#import "SKSplashIcon.h"
 // #import "M13Checkbox.h"
+#import "LicenseUtil.h"
 
 @interface LoginViewController ()
 // i18n controls
@@ -422,11 +423,25 @@
 
 // pragm mark - 进入主界面
 -(void)enterMainViewController{
-    // 这里最好换成import，不要用NSClassFromString
-    UIViewController *mainView = [[NSClassFromString(@"MainViewController") alloc] initWithNibName:@"MainViewController" bundle:nil];
-    //MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
-    UIWindow *window = self.view.window;
-    window.rootViewController = mainView;
+//    // 这里最好换成import，不要用NSClassFromString
+//    UIViewController *mainView = [[NSClassFromString(@"MainViewController") alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    //MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
+//    UIWindow *window = self.view.window;
+//    window.rootViewController = mainView;
+
+    // Charlie 2015/06/20
+    // TODO: Save userAccount & userId
+    NSString *userAccount = _fieldUser.text;
+    NSString *userId = @"1";
+    [LicenseUtil saveUserAccount:userAccount];
+    [LicenseUtil saveUserId:userId];
+
+    // TODO: Use the following code to link to Main storyboard
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+
+    UIViewController *dashboardViewController = [mainStoryboard instantiateInitialViewController];
+    [self presentViewController:dashboardViewController animated:YES completion:nil];
+
 }
 
 
