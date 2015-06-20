@@ -53,6 +53,15 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 @property (weak, nonatomic) IBOutlet UITableView *notificationTableView;
 @property (strong, nonatomic) NSMutableArray *notificationList;
 
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *weekdayLabel;
+
+
+@property (strong, nonatomic) NSDateFormatter *timeFormatter;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSDateFormatter *weekdayFormatter;
+
 @end
 
 @implementation DashboardViewController
@@ -78,8 +87,13 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
 
+    [self setupClockTimer];
+    [self updateClock];
+
     [self setupAvatarImageView];
     [self reloadNotifications];
+
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -149,6 +163,46 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [self.notificationList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
 
     [_notificationTableView reloadData];
+}
+
+- (void)setupClockTimer
+{
+    self.timeFormatter = [[NSDateFormatter alloc] init];
+    [_timeFormatter setDateFormat:@"HH:mm"];
+
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    [_dateFormatter setDateFormat:@"yyyy/MM/dd"];
+
+    self.weekdayFormatter = [[NSDateFormatter alloc] init];
+    [_weekdayFormatter setDateFormat:@"EEEE"];
+
+    NSDate *now = [NSDate date];
+    NSInteger timeInterval = [now timeIntervalSince1970];
+    NSInteger nextMinuteInterval = ((timeInterval / 60) + 1) * 60;
+    NSDate *fireDate = [NSDate dateWithTimeIntervalSince1970:nextMinuteInterval];
+
+    NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                              interval:60
+                                                target:self
+                                              selector:@selector(updateClock)
+                                              userInfo:nil
+                                               repeats:YES];
+
+    NSRunLoop *currentRunLoop = [NSRunLoop currentRunLoop];
+    [currentRunLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+}
+
+- (void)updateClock
+{
+    NSDate *now = [NSDate date];
+
+    NSString *timeString = [_timeFormatter stringFromDate:now];
+    NSString *dateString = [_dateFormatter stringFromDate:now];
+    NSString *weekdayString = [_weekdayFormatter stringFromDate:now];
+
+    _timeLabel.text = timeString;
+    _dateLabel.text = dateString;
+    _weekdayLabel.text = weekdayString;
 }
 
 #pragma mark - IBActions

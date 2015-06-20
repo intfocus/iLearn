@@ -623,6 +623,7 @@
                         <outlet property="avatarImageView" destination="rTV-0F-pp5" id="Hqf-hn-Xad"/>
                         <outlet property="coursePackLabel" destination="FAm-Iz-zJd" id="Auw-MY-nQI"/>
                         <outlet property="coursePackView" destination="NNy-iE-j85" id="9xn-lS-Xgy"/>
+                        <outlet property="dateLabel" destination="1NW-UW-uoH" id="m8R-uh-u1R"/>
                         <outlet property="examButton" destination="KKx-eH-vmn" id="DVO-zq-1If"/>
                         <outlet property="examLabel" destination="19L-zy-FAM" id="gza-96-0SP"/>
                         <outlet property="examView" destination="xX1-Yf-rZw" id="Iej-Bf-qPU"/>
@@ -637,6 +638,8 @@
                         <outlet property="registrationButton" destination="LQe-Jn-Bsg" id="ewm-PO-6pA"/>
                         <outlet property="serviceCallLabel" destination="oGZ-ZF-1QM" id="GEM-ll-WOx"/>
                         <outlet property="settingsButton" destination="8kk-fB-2X8" id="UTy-QK-O4g"/>
+                        <outlet property="timeLabel" destination="0Bw-ot-y5m" id="4s2-TZ-UkN"/>
+                        <outlet property="weekdayLabel" destination="ZPf-Qn-6aP" id="v3F-CN-pmN"/>
                         <segue destination="Oih-kI-vh4" kind="presentation" identifier="showSettingsPage" modalPresentationStyle="formSheet" id="cdG-99-dp3"/>
                         <segue destination="xLb-DC-uSA" kind="presentation" identifier="showQRCodePage" modalPresentationStyle="formSheet" id="Upl-6b-LTb"/>
                         <segue destination="MOd-D3-0KC" kind="presentation" identifier="showQuestionnairePage" id="F6u-05-96u"/>
