@@ -54,6 +54,9 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 @property (assign, nonatomic) BOOL hasAutoSynced;
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
 
+@property (strong, nonatomic) NSMutableArray *unsubmittedExamResults;
+@property (strong, nonatomic) NSMutableArray *unsubmittedExamScannedResults;
+
 @end
 
 
@@ -157,13 +160,32 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
 
-    NSArray *resultFiles = [ExamUtil resultFiles];
-
-    for (NSString *resultPath in resultFiles) {
-        [_connectionManager uploadExamResultWithPath:resultPath];
-    }
+    self.unsubmittedExamResults = [[ExamUtil resultFiles] mutableCopy];
+    self.unsubmittedExamScannedResults = [[ExamUtil unsubmittedScannedResults] mutableCopy];
 
     [self downloadExams];
+    [self syncExamResults];
+    [self syncScannedExamResults];
+}
+
+- (void)syncExamResults
+{
+    NSString *filePath = [_unsubmittedExamResults firstObject];
+
+    if (filePath) {
+        [_unsubmittedExamResults removeObjectAtIndex:0];
+        [_connectionManager uploadExamResultWithPath:filePath];
+    }
+}
+
+- (void)syncScannedExamResults
+{
+    NSString *scannedResult = [_unsubmittedExamScannedResults firstObject];
+
+    if (scannedResult) {
+        [_unsubmittedExamScannedResults removeObjectAtIndex:0];
+        [_connectionManager uploadExamScannedResult:scannedResult];
+    }
 }
 
 - (void)downloadExams
@@ -312,6 +334,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
             }
         }
 
+        cell.actionButton.enabled = YES;
 
         if ([startDate laterDate:now] == startDate) { // Exam is not started yet
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_STARTED", nil);
@@ -437,9 +460,9 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
     NSString *examId = content[ExamId];
     NSNumber *examScore = content[ExamScore];
-    NSString *userAccount = [LicenseUtil userAccount];
+    NSString *userId = [LicenseUtil userId];
 
-    NSString *qrCodeString = [NSString stringWithFormat:@"iLearn+%@+%@+%@", userAccount, examId, examScore];
+    NSString *qrCodeString = [NSString stringWithFormat:@"iLearn+%@+%@+%@", userId, examId, examScore];
     UIImage *qrCodeImage = [UIImage mdQRCodeForString:qrCodeString size:200.0];
 
     [self performSegueWithIdentifier:kShowScoreQRCode sender:qrCodeImage];
@@ -583,7 +606,18 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     if (!error) {
         NSString *dbPath = [ExamUtil examDBPathOfFile:examId];
         [ExamUtil setExamSubmittedwithDBPath:dbPath];
+
+        [self refreshContent];
     }
+    [self syncExamResults];
+}
+
+- (void)connectionManagerDidUploadExamScannedResult:(NSString *)result withError:(NSError *)error
+{
+    if (!error) {
+        [ExamUtil setScannedResultSubmitted:result];
+    }
+    [self syncScannedExamResults];
 }
 
 @end

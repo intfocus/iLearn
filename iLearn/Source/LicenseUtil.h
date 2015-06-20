@@ -10,8 +10,10 @@
 
 @interface LicenseUtil : NSObject
 
++ (void)saveUserAccount:(NSString*)userAccount;
 + (NSString*)userAccount;
-+ (NSString*)serviceNumber;
++ (void)saveUserId:(NSString*)userId;
 + (NSString*)userId;
++ (NSString*)serviceNumber;
 
 @end

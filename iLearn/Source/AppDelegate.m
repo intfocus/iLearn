@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "Constants.h"
+#import "LoginViewController.h"
 
 @interface AppDelegate ()
 
@@ -18,6 +19,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    [self.window setRootViewController:loginViewController];
 
     [[UINavigationBar appearance] setBarTintColor:RGBCOLOR(220.0, 220.0, 220.0)];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];

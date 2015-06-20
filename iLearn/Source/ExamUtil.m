@@ -82,7 +82,12 @@ static const BOOL inDeveloping = NO;
         NSMutableArray *contents = [NSMutableArray array];
 
         for (NSString *file in files) {
-            if ([file isEqualToString:@"Exam.json"]) {
+
+            NSString *fileExtension = [file pathExtension];
+            if (![fileExtension isEqualToString:@"json"]) {
+                continue;
+            }
+            else if ([file isEqualToString:@"Exam.json"]) {
                 continue;
             }
 
@@ -263,31 +268,33 @@ static const BOOL inDeveloping = NO;
 
 + (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS subject (id INTEGER PRIMARY KEY AUTOINCREMENT, subject_id INTEGER, desc TEXT, level INTEGER, type INTEGER, memo TEXT, answer TEXT, selected_answer TEXT)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS subject (id INTEGER PRIMARY KEY AUTOINCREMENT, subject_id INTEGER, desc TEXT, level INTEGER, type INTEGER, score FLOAT, memo TEXT, answer TEXT, selected_answer TEXT)"];
 
     [db executeUpdate:@"CREATE TABLE IF NOT EXISTS option (id INTEGER PRIMARY KEY AUTOINCREMENT, option_id INTEGER, subject_id INTEGER, seq INTEGER, desc TEXT, selected INTEGER DEFAULT 0)"];
 
     NSMutableArray *subjects = [content[ExamQuestions] mutableCopy];
+    NSInteger subjectCount = [subjects count];
 
     while ([subjects count]) {
 
         int index = arc4random_uniform([subjects count]);
         NSDictionary *subject = subjects[index];
 
-        [self parseSubjectContent:subject intoDB:db];
+        [self parseSubjectContent:subject count:subjectCount intoDB:db];
         [subjects removeObject:subject];
     }
 
 }
 
-+ (void)parseSubjectContent:(NSDictionary*)subjectContent intoDB:(FMDatabase*)db
++ (void)parseSubjectContent:(NSDictionary*)subjectContent count:(NSInteger)count intoDB:(FMDatabase*)db
 {
     NSNumber *subjectId = subjectContent[ExamQuestionId];
+    NSNumber *scorePerSubject = @(100.0/count);
 
     NSArray *answers = subjectContent[ExamQuestionAnswer];
     NSString *answer = [answers componentsJoinedByString:@"+"];
 
-    [db executeUpdate:@"INSERT INTO subject (subject_id, desc, level, type, memo, answer) VALUES (?, ?, ?, ?, ?, ?)", subjectId, subjectContent[ExamQuestionTitle], subjectContent[ExamQuestionLevel], subjectContent[ExamQuestionType], subjectContent[ExamQuestionNote], answer];
+    [db executeUpdate:@"INSERT INTO subject (subject_id, desc, level, type, score, memo, answer) VALUES (?, ?, ?, ?, ?, ?, ?)", subjectId, subjectContent[ExamQuestionTitle], subjectContent[ExamQuestionLevel], subjectContent[ExamQuestionType], scorePerSubject, subjectContent[ExamQuestionNote], answer];
 
 
     NSMutableArray *options = [subjectContent[ExamQuestionOptions] mutableCopy];
@@ -592,6 +599,17 @@ static const BOOL inDeveloping = NO;
     }
 }
 
++ (void)setScannedResultSubmitted:(NSString*)result
+{
+    NSString *dbPath = [self scanResultDBPath];
+    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+    if ([db open]) {
+        [db executeUpdate:@"UPDATE result SET submit=1 WHERE result=?", result];
+        [db close];
+    }
+}
+
 + (NSArray*)unsubmittedScannedResults
 {
     NSMutableArray *unsubmittedResults = [NSMutableArray array];
@@ -649,11 +667,13 @@ static const BOOL inDeveloping = NO;
                 NSString *selectedAnswer = [subjects stringForColumn:@"selected_answer"];
                 NSNumber *subjectResult = [answer isEqualToString:selectedAnswer]? @1: @0;
                 NSArray *selectedAnsArray = [selectedAnswer componentsSeparatedByString:@"+"];
+                NSNumber *score = @([subjects doubleForColumn:@"score"]);
 
                 subjectDic[ExamQuestionResultId] = subjectId;
                 subjectDic[ExamQuestionResultType] = subjectType;
                 subjectDic[ExamQuestionResultSelected] = selectedAnsArray;
                 subjectDic[ExamQuestionResultCorrect] = subjectResult;
+                subjectDic[ExamQuestionResultScore] = score;
 
                 [resultArray addObject:subjectDic];
             }

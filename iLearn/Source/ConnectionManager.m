@@ -61,8 +61,11 @@ static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
-            NSLog(@"Download Exams of UserId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", userId, (long long)operation.response.statusCode, operation.responseString, error);
-            
+            NSLog(@"Download Exams of UserId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", userId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
+
+            NSFileManager *fileMgr = [NSFileManager defaultManager];
+            [fileMgr removeItemAtPath:outputPathTmp error:nil];
+
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadExamsForUser:withError:)]) {
                 [_delegate connectionManagerDidDownloadExamsForUser:userId withError:error];
             }
@@ -96,7 +99,7 @@ static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
-            NSLog(@"Download ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, error);
+            NSLog(@"Download ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
 
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadExam:withError:)]) {
                 [_delegate connectionManagerDidDownloadExam:examId withError:error];
@@ -121,7 +124,13 @@ static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest
 
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
 
-        AFHTTPRequestOperation *op = [manager PUT:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestUrl]];
+
+        request.HTTPMethod = @"PUT";
+        NSData *bodyData = [NSData dataWithContentsOfFile:resultPath];
+        request.HTTPBody = bodyData;
+
+        AFHTTPRequestOperation *op = [manager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
             [fileMgr removeItemAtPath:resultPath error:nil];
 
@@ -131,17 +140,47 @@ static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
-            NSLog(@"Upload result of ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, error);
+            NSLog(@"Upload result of ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
 
             if ([_delegate respondsToSelector:@selector(connectionManagerDidUploadExamResult:withError:)]) {
                 [_delegate connectionManagerDidUploadExamResult:examId withError:error];
             }
 
         }];
-
-        op.inputStream = [NSInputStream inputStreamWithFileAtPath:resultPath];
+        op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+        [op start];
     }
+}
 
+- (void)uploadExamScannedResult:(NSString*)result
+{
+    if ([result length]) {
+
+        NSArray *components = [result componentsSeparatedByString:@"+"];
+        NSString *userId = components[0];
+        NSString *examId = components[1];
+        NSString *score = components[2];
+
+        NSString *requestUrl = [NSString stringWithFormat:@"%@/user/%@/result/%@/offline", kServerAddress, userId, examId];
+        NSDictionary *parameters = @{@"score": score};
+
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
+
+        AFHTTPRequestOperation *op = [manager POST:requestUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+            if ([_delegate respondsToSelector:@selector(connectionManagerDidUploadExamScannedResult:withError:)]) {
+                [_delegate connectionManagerDidUploadExamScannedResult:result withError:nil];
+            }
+
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+            NSLog(@"Upload Scanned Exam Result: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", result, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
+
+            if ([_delegate respondsToSelector:@selector(connectionManagerDidUploadExamScannedResult:withError:)]) {
+                [_delegate connectionManagerDidUploadExamScannedResult:result withError:error];
+            }
+        }];
+    }
 }
 
 @end

@@ -10,6 +10,9 @@
 #import "ListTableViewController.h"
 #import "QRCodeViewController.h"
 #import "LicenseUtil.h"
+#import "NotificationViewController.h"
+#import "const.h"
+#import "FileUtils.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowExamSegue = @"showExamPage";
@@ -17,6 +20,8 @@ static NSString *const kShowRegistrationSegue = @"showRegistrationPage";
 static NSString *const kShowLectureSegue = @"showLecturePage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 static NSString *const kShowQRCodeSegue = @"showQRCodePage";
+
+static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifier";
 
 @interface DashboardViewController ()
 
@@ -32,6 +37,7 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 @property (weak, nonatomic) IBOutlet UIButton *questionnaireButton;
 @property (weak, nonatomic) IBOutlet UIButton *examButton;
 @property (weak, nonatomic) IBOutlet UIButton *settingsButton;
+@property (weak, nonatomic) IBOutlet UIButton *notificationButton;
 
 // Button Labels
 @property (weak, nonatomic) IBOutlet UILabel *coursePackLabel;
@@ -43,6 +49,18 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UIButton *qrCodeButton;
+
+@property (weak, nonatomic) IBOutlet UITableView *notificationTableView;
+@property (strong, nonatomic) NSMutableArray *notificationList;
+
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *weekdayLabel;
+
+
+@property (strong, nonatomic) NSDateFormatter *timeFormatter;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSDateFormatter *weekdayFormatter;
 
 @end
 
@@ -69,7 +87,13 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
 
+    [self setupClockTimer];
+    [self updateClock];
+
     [self setupAvatarImageView];
+    [self reloadNotifications];
+
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,6 +136,75 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
     [self.avatarImageView setClipsToBounds:YES];
 }
 
+// Charlie 2015/06/20
+// TODO: Notification data loading (from server or cached data)
+
+- (void)reloadNotifications
+{
+    NSString *cachePath = [FileUtils getPathName:NOTIFICATION_DIRNAME FileName:NOTIFICATION_CACHE];
+    NSError *error;
+    NSMutableDictionary *notificationDatas = [NSMutableDictionary dictionary];
+
+    // 读取本地cache
+    NSString *cacheContent = [NSString stringWithContentsOfFile:cachePath usedEncoding:NULL error:&error];
+    NSLog(@"notifications cache read");
+    if(!error) {
+        // 解析为json数组
+        notificationDatas = [NSJSONSerialization JSONObjectWithData:[cacheContent dataUsingEncoding:NSUTF8StringEncoding]
+                                                            options:NSJSONReadingMutableContainers
+                                                              error:&error];
+        NSLog(@"notifications cache parse into json");
+    }
+
+    self.notificationList = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
+
+    // 公告通知按created_date升序
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:YES];
+    [self.notificationList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+
+    [_notificationTableView reloadData];
+}
+
+- (void)setupClockTimer
+{
+    self.timeFormatter = [[NSDateFormatter alloc] init];
+    [_timeFormatter setDateFormat:@"HH:mm"];
+
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    [_dateFormatter setDateFormat:@"yyyy/MM/dd"];
+
+    self.weekdayFormatter = [[NSDateFormatter alloc] init];
+    [_weekdayFormatter setDateFormat:@"EEEE"];
+
+    NSDate *now = [NSDate date];
+    NSInteger timeInterval = [now timeIntervalSince1970];
+    NSInteger nextMinuteInterval = ((timeInterval / 60) + 1) * 60;
+    NSDate *fireDate = [NSDate dateWithTimeIntervalSince1970:nextMinuteInterval];
+
+    NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                              interval:60
+                                                target:self
+                                              selector:@selector(updateClock)
+                                              userInfo:nil
+                                               repeats:YES];
+
+    NSRunLoop *currentRunLoop = [NSRunLoop currentRunLoop];
+    [currentRunLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+}
+
+- (void)updateClock
+{
+    NSDate *now = [NSDate date];
+
+    NSString *timeString = [_timeFormatter stringFromDate:now];
+    NSString *dateString = [_dateFormatter stringFromDate:now];
+    NSString *weekdayString = [_weekdayFormatter stringFromDate:now];
+
+    _timeLabel.text = timeString;
+    _dateLabel.text = dateString;
+    _weekdayLabel.text = weekdayString;
+}
+
 #pragma mark - IBActions
 
 - (IBAction)settingsTouched:(id)sender {
@@ -146,6 +239,42 @@ static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 - (IBAction)qrCodeTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     [self performSegueWithIdentifier:kShowQRCodeSegue sender:nil];
+}
+
+#pragma mark - UITableViewDataSource
+
+// Charlie 2015/06/20
+// TODO: Adjust notificationi list content
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [_notificationList count];
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNotificationCellIdentifier];
+
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNotificationCellIdentifier];
+    }
+
+    NSInteger cellIndex = indexPath.row;
+
+    if (cellIndex < [self.notificationList count]) {
+        NSMutableDictionary *currentDict = [self.notificationList objectAtIndex:cellIndex];
+        cell.textLabel.text = currentDict[NOTIFICATION_FIELD_TITLE];
+    }
+
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NotificationViewController *notificationVC = [[NotificationViewController alloc] init];
+    [self presentViewController:notificationVC animated:YES completion:nil];
 }
 
 @end
