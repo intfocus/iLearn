@@ -15,8 +15,8 @@
 + (NSString*)jsonStringOfContent:(NSDictionary*)content;
 + (NSString*)titleFromContent:(NSDictionary*)content;
 + (NSString*)descFromContent:(NSDictionary*)content;
-+ (NSInteger)endDateFromContent:(NSDictionary*)content;
-+ (NSInteger)startDateFromContent:(NSDictionary*)content;
++ (long long)endDateFromContent:(NSDictionary*)content;
++ (long long)startDateFromContent:(NSDictionary*)content;
 
 + (NSString*)examSourceFolderPath;
 + (NSString*)examFolderPathInDocument;

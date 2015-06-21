@@ -304,7 +304,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY/MM/dd"];
-    NSInteger epochTime = [ExamUtil endDateFromContent:content];
+    long long epochTime = [ExamUtil endDateFromContent:content];
     NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:epochTime];
     NSString *endDateString = [formatter stringFromDate:endDate];
 

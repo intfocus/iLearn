@@ -159,14 +159,14 @@ static const BOOL inDeveloping = NO;
     return descString;
 }
 
-+ (NSInteger)endDateFromContent:(NSDictionary*)content
++ (long long)endDateFromContent:(NSDictionary*)content
 {
-    return [content[ExamEndDate] integerValue];
+    return [content[ExamEndDate] longLongValue];
 }
 
-+ (NSInteger)startDateFromContent:(NSDictionary*)content
++ (long long)startDateFromContent:(NSDictionary*)content
 {
-    return [content[ExamBeginDate] integerValue];
+    return [content[ExamBeginDate] longLongValue];
 }
 
 + (NSString *)applicationDocumentsDirectory
@@ -255,13 +255,13 @@ static const BOOL inDeveloping = NO;
     NSNumber *beginDate = content[ExamBeginDate];
     NSNumber *endDate = content[ExamEndDate];
 
-    NSInteger duration = [endDate integerValue] - [beginDate integerValue];
+    long long duration = [endDate integerValue] - [beginDate integerValue];
 
     NSDate *now = [NSDate date];
     NSDate *deadline = [now dateByAddingTimeInterval:duration];
 
-    NSInteger nowInteger = [now timeIntervalSince1970];
-    NSInteger deadlineInteger = [deadline timeIntervalSince1970];
+    long long nowInteger = [now timeIntervalSince1970];
+    long long deadlineInteger = [deadline timeIntervalSince1970];
 
     [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], @(nowInteger), @(deadlineInteger), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
 }
@@ -379,9 +379,9 @@ static const BOOL inDeveloping = NO;
         content[ExamTitle] = [result stringForColumn:@"exam_name"];
         content[ExamStatus] = @([result intForColumn:@"status"]);
         content[ExamType] = @([result intForColumn:@"type"]);
-        content[ExamBeginDate] = @([result intForColumn:@"begin"]);
-        content[ExamEndDate] = @([result intForColumn:@"end"]);
-        content[ExamExpirationDate] = @([result intForColumn:@"expire_time"]);
+        content[ExamBeginDate] = @([result longLongIntForColumn:@"begin"]);
+        content[ExamEndDate] = @([result longLongIntForColumn:@"end"]);
+        content[ExamExpirationDate] = @([result longLongIntForColumn:@"expire_time"]);
         content[ExamAnsType] = @([result intForColumn:@"ans_type"]);
         content[ExamDesc] = [result stringForColumn:@"description"];
         content[ExamPassword] = [result stringForColumn:@"password"];
