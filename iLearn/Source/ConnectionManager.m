@@ -11,7 +11,7 @@
 #import "LicenseUtil.h"
 #import <AFNetworking.h>
 
-static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest/api/v1";
+static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/api/v1";
 
 @interface ConnectionManager ()
 
