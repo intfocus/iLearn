@@ -37,6 +37,7 @@ NSString *const ExamExpirationDate = @"expire_time";
 NSString *const ExamStatus = @"status";
 NSString *const ExamSubmitted = @"submit";
 NSString *const ExamType = @"type";
+NSString *const ExamLocation = @"location";
 NSString *const ExamAnsType = @"ans_type";
 NSString *const ExamCached = @"exist_in_local";
 NSString *const ExamPassword = @"password";

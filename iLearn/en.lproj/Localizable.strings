@@ -9,6 +9,7 @@
 COMMON_CONTENT = "contents";
 COMMON_SUBMIT = "Submit";
 COMMON_CLOSE = "Close";
+COMMON_OK = "OK";
 
 DASHBOARD_TITLE = "Dashboard";
 DASHBOARD_COURSE_PACK = "Course Pack";
@@ -52,6 +53,7 @@ LIST_SCORE_TEMPLATE = "%lld";
 LIST_SCORE_SCAN_RESULT = "Scan Result";
 LIST_SCORE_SCAN_RESULT_TEMPLATE = "User: %@\nExamId: %@\nScore: %@";
 LIST_SYNCING = "Syncing";
+LIST_LOADING = "Loading";
 
 EXAM_ANSWERED_TEMPLATE = "Answered: %lld";
 EXAM_UNANSWERED_TEMPLATE = "Unanswered: %lld";
@@ -61,3 +63,7 @@ EXAM_CORRECTION_TEMPLATE = "Answer: %@. %@.";
 EXAM_TYPE_TRUE_FALSE = "(True/False)";
 EXAM_TYPE_SINGLE = "(Single)";
 EXAM_TYPE_MULTIPLE = "(Multiple)";
+EXAM_WRONG_PASSWORD_TITLE = "Wrong Password";
+EXAM_WRONG_PASSWORD_MESSAGE = "Please enter again";
+EXAM_SCORE_TITLE = "Score";
+EXAM_SCORE_TEMPLATE = "Score: %lld";

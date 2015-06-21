@@ -11,7 +11,7 @@
 #import "LicenseUtil.h"
 #import <AFNetworking.h>
 
-static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest/api/v1";
+static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/api/v1";
 
 @interface ConnectionManager ()
 
@@ -100,6 +100,9 @@ static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Download ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
+            
+            NSFileManager *fileMgr = [NSFileManager defaultManager];
+            [fileMgr moveItemAtPath:outputPathTmp toPath:outputPath error:&error];
 
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadExam:withError:)]) {
                 [_delegate connectionManagerDidDownloadExam:examId withError:error];
@@ -180,6 +183,8 @@ static NSString *const kServerAddress = @"http://elnprd.chinacloudapp.cn/phptest
                 [_delegate connectionManagerDidUploadExamScannedResult:result withError:error];
             }
         }];
+
+        op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     }
 }
 

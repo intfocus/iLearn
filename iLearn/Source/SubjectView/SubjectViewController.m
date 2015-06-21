@@ -12,6 +12,7 @@
 #import "Constants.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
+#import <MBProgressHUD.h>
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
 
@@ -91,7 +92,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
             self.timeLeftTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimeLeft) userInfo:nil repeats:YES];
 
-            NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] integerValue]];
+            NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] longLongValue]];
             NSTimeInterval timeLeft = [endDate timeIntervalSinceNow];
 
             self.timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:timeLeft target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
@@ -155,6 +156,14 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     cell.numberLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
     cell.numberLabel.textColor = [UIColor blackColor];
+
+    if (indexPath.row == _selectedCellIndex) {
+        [cell.layer setBorderColor:[UIColor yellowColor].CGColor];
+        [cell.layer setBorderWidth:4.0];
+    }
+    else {
+        [cell.layer setBorderWidth:0.0];
+    }
 
     if (_isAnswerMode) {
 
@@ -249,14 +258,12 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didSelectRowAtIndexPath");
     [_selectedRowsOfSubject addObject:@(indexPath.row)];
     [self updateSubjectsStatus];
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didDeselectRowAtIndexPath");
     [_selectedRowsOfSubject removeObject:@(indexPath.row)];
     [self updateSubjectsStatus];
 }
@@ -475,15 +482,21 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)changeSubjectToIndex:(NSInteger)index
 {
+    NSIndexPath *originalIndex = [NSIndexPath indexPathForRow:_selectedCellIndex inSection:0];
+    NSIndexPath *nextIndex = [NSIndexPath indexPathForRow:index inSection:0];
+
+    NSArray *reloadCollectionCells = @[originalIndex, nextIndex];
+
     [self saveSelections];
     self.selectedCellIndex = index;
     [self updateSelections];
     [self updateOptionContents];
+    [_subjectCollectionView reloadItemsAtIndexPaths:reloadCollectionCells];
 }
 
 - (void)updateTimeLeft
 {
-    NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] integerValue]];
+    NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] longLongValue]];
     NSInteger timeLeft = [endDate timeIntervalSinceNow];
 
     if (timeLeft < 0) {
@@ -506,30 +519,31 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [_timeLeftTimer invalidate];
     [_timeOutTimer invalidate];
 
-    [self saveSelections];
+    __weak SubjectViewController *weakSelf = self;
 
-    NSString *fileName = _examContent[CommonFileName];
-    NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
 
-//    [ExamUtil setExamSubmittedwithDBPath:dbPath];
-    NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
-    [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
-    NSLog(@"score: %lld", (long long)score);
+        [self saveSelections];
 
-    NSString *scoreString = [NSString stringWithFormat:@"得分：%d分", score];
+        NSString *fileName = _examContent[CommonFileName];
+        NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
 
-    UIAlertController *alertControllor = [UIAlertController alertControllerWithTitle:@"提交成功" message:scoreString preferredStyle:UIAlertControllerStyleAlert];
+        NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
 
-    __weak id weakSelf = self;
+        [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
 
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [weakSelf dismissViewControllerAnimated:YES completion:nil];
-    }];
+        NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
 
-    [alertControllor addAction:action];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
-    [self presentViewController:alertControllor animated:YES completion:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:YES];
+            [alert show];
+        });
+    });
 }
 
 #pragma mark - UIAction
@@ -557,6 +571,13 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 - (IBAction)submitButtonTouched:(id)sender
 {
     [self submit];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

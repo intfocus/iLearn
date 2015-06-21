@@ -55,6 +55,10 @@
             self.callback();
         }];
     }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_WRONG_PASSWORD_TITLE", nil) message:NSLocalizedString(@"EXAM_WRONG_PASSWORD_MESSAGE", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification

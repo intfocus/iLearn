@@ -1438,8 +1438,8 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UrA-BP-nOB">
-                                                            <rect key="frame" x="17" y="8" width="15.5" height="33.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="UrA-BP-nOB">
+                                                            <rect key="frame" x="4" y="4" width="42" height="42"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -1450,8 +1450,18 @@
                                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="centerY" secondItem="UrA-BP-nOB" secondAttribute="centerY" id="882-WN-WBD"/>
+                                                    <constraint firstAttribute="bottom" secondItem="UrA-BP-nOB" secondAttribute="bottom" constant="4" id="94h-xQ-oyH"/>
+                                                    <constraint firstItem="UrA-BP-nOB" firstAttribute="top" secondItem="cE6-xh-04a" secondAttribute="top" constant="4" id="L2e-5O-CC6"/>
+                                                    <constraint firstAttribute="trailing" secondItem="UrA-BP-nOB" secondAttribute="trailing" constant="4" id="cUY-Ir-Wb1"/>
+                                                    <constraint firstItem="UrA-BP-nOB" firstAttribute="leading" secondItem="cE6-xh-04a" secondAttribute="leading" constant="4" id="iz6-Ob-wnK"/>
                                                     <constraint firstAttribute="centerX" secondItem="UrA-BP-nOB" secondAttribute="centerX" id="jt9-6y-bmh"/>
                                                 </constraints>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="882-WN-WBD"/>
+                                                        <exclude reference="jt9-6y-bmh"/>
+                                                    </mask>
+                                                </variation>
                                                 <connections>
                                                     <outlet property="numberLabel" destination="UrA-BP-nOB" id="P4C-Be-aT0"/>
                                                 </connections>

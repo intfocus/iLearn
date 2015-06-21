@@ -7,6 +7,7 @@
 //
 
 #import "LicenseUtil.h"
+#import "ExamUtil.h"
 #import "Constants.h"
 
 static NSString *const kUserAccount = @"UserAccount";
@@ -33,6 +34,7 @@ static NSString *const kUserId = @"UserId";
     if ([userAccount length]) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:userAccount forKey:kUserAccount];
+        [userDefaults synchronize];
     }
 }
 
@@ -54,7 +56,13 @@ static NSString *const kUserId = @"UserId";
 {
     if ([userId length]) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:userId forKey:kUserId];
+        NSString *savedUserId = [userDefaults stringForKey:kUserId];
+
+        if (![savedUserId isEqualToString:userId]) {
+            [ExamUtil cleanExamFolder];
+            [userDefaults setObject:userId forKey:kUserId];
+            [userDefaults synchronize];
+        }
     }
 }
 

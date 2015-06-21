@@ -159,14 +159,14 @@ static const BOOL inDeveloping = NO;
     return descString;
 }
 
-+ (NSInteger)endDateFromContent:(NSDictionary*)content
++ (long long)endDateFromContent:(NSDictionary*)content
 {
-    return [content[ExamEndDate] integerValue];
+    return [content[ExamEndDate] longLongValue];
 }
 
-+ (NSInteger)startDateFromContent:(NSDictionary*)content
++ (long long)startDateFromContent:(NSDictionary*)content
 {
-    return [content[ExamBeginDate] integerValue];
+    return [content[ExamBeginDate] longLongValue];
 }
 
 + (NSString *)applicationDocumentsDirectory
@@ -250,20 +250,20 @@ static const BOOL inDeveloping = NO;
 
 + (void)parseInfoOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, location INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT)"];
 
     NSNumber *beginDate = content[ExamBeginDate];
     NSNumber *endDate = content[ExamEndDate];
 
-    NSInteger duration = [endDate integerValue] - [beginDate integerValue];
+    long long duration = [endDate integerValue] - [beginDate integerValue];
 
     NSDate *now = [NSDate date];
     NSDate *deadline = [now dateByAddingTimeInterval:duration];
 
-    NSInteger nowInteger = [now timeIntervalSince1970];
-    NSInteger deadlineInteger = [deadline timeIntervalSince1970];
+    long long nowInteger = [now timeIntervalSince1970];
+    long long deadlineInteger = [deadline timeIntervalSince1970];
 
-    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], @(nowInteger), @(deadlineInteger), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
+    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, location, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], content[ExamLocation], @(nowInteger), @(deadlineInteger), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
 }
 
 + (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
@@ -275,6 +275,8 @@ static const BOOL inDeveloping = NO;
     NSMutableArray *subjects = [content[ExamQuestions] mutableCopy];
     NSInteger subjectCount = [subjects count];
 
+    [db beginTransaction];
+
     while ([subjects count]) {
 
         int index = arc4random_uniform([subjects count]);
@@ -284,6 +286,7 @@ static const BOOL inDeveloping = NO;
         [subjects removeObject:subject];
     }
 
+    [db commit];
 }
 
 + (void)parseSubjectContent:(NSDictionary*)subjectContent count:(NSInteger)count intoDB:(FMDatabase*)db
@@ -379,9 +382,10 @@ static const BOOL inDeveloping = NO;
         content[ExamTitle] = [result stringForColumn:@"exam_name"];
         content[ExamStatus] = @([result intForColumn:@"status"]);
         content[ExamType] = @([result intForColumn:@"type"]);
-        content[ExamBeginDate] = @([result intForColumn:@"begin"]);
-        content[ExamEndDate] = @([result intForColumn:@"end"]);
-        content[ExamExpirationDate] = @([result intForColumn:@"expire_time"]);
+        content[ExamLocation] = @([result intForColumn:@"location"]);
+        content[ExamBeginDate] = @([result longLongIntForColumn:@"begin"]);
+        content[ExamEndDate] = @([result longLongIntForColumn:@"end"]);
+        content[ExamExpirationDate] = @([result longLongIntForColumn:@"expire_time"]);
         content[ExamAnsType] = @([result intForColumn:@"ans_type"]);
         content[ExamDesc] = [result stringForColumn:@"description"];
         content[ExamPassword] = [result stringForColumn:@"password"];
@@ -559,6 +563,8 @@ static const BOOL inDeveloping = NO;
 {
     FMResultSet *subjects = [db executeQuery:@"SELECT * FROM subject"];
 
+    [db beginTransaction];
+
     while ([subjects next]) {
 
         NSString *subjectId = [subjects stringForColumn:@"subject_id"];
@@ -579,6 +585,8 @@ static const BOOL inDeveloping = NO;
 
         [db executeUpdate:@"UPDATE subject SET selected_answer=? WHERE subject_id=?", selectedAnswerString, subjectId];
     }
+
+    [db commit];
 }
 
 + (NSString*)scanResultDBPath
@@ -594,9 +602,23 @@ static const BOOL inDeveloping = NO;
 
     if ([db open]) {
         [db executeUpdate:@"CREATE TABLE IF NOT EXISTS result(result TEXT PRIMARY KEY, submit INTEGER DEFAULT 0)"];
-        [db executeUpdate:@"INSERT INTO result (result) VALUES (?)", result];
+
+        if (![self scannedResult:result savedInDB:db]) {
+            [db executeUpdate:@"INSERT INTO result (result) VALUES (?)", result];
+        }
+        else {
+            NSLog(@"Scanned result: %@ has been saved", result);
+        }
+
         [db close];
     }
+}
+
++ (BOOL)scannedResult:(NSString*)result savedInDB:(FMDatabase*)db
+{
+    NSString *savedResult = [db stringForQuery:@"SELECT result FROM result WHERE result=?", result];
+    BOOL saved = [savedResult length]? YES: NO;
+    return saved;
 }
 
 + (void)setScannedResultSubmitted:(NSString*)result
@@ -615,16 +637,19 @@ static const BOOL inDeveloping = NO;
     NSMutableArray *unsubmittedResults = [NSMutableArray array];
 
     NSString *dbPath = [self scanResultDBPath];
-    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
 
-    if ([db open]) {
-        FMResultSet *unsubmitted = [db executeQuery:@"SELECT result FROM result WHERE submit = 0"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:dbPath]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
 
-        while ([unsubmitted next]) {
-            [unsubmittedResults addObject:[unsubmitted stringForColumn:@"result"]];
+        if ([db open]) {
+            FMResultSet *unsubmitted = [db executeQuery:@"SELECT result FROM result WHERE submit = 0"];
+
+            while ([unsubmitted next]) {
+                [unsubmittedResults addObject:[unsubmitted stringForColumn:@"result"]];
+            }
+            
+            [db close];
         }
-
-        [db close];
     }
 
     return unsubmittedResults;
@@ -718,6 +743,19 @@ static const BOOL inDeveloping = NO;
     }
 
     return results;
+}
+
++ (void)cleanExamFolder
+{
+    NSString *examPath = [self examFolderPathInDocument];
+
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSError *error;
+    [fileMgr removeItemAtPath:examPath error:&error];
+
+    if (error) {
+        NSLog(@"Delete exam folder FAILED with ERROR: %@", [error localizedDescription]);
+    }
 }
 
 @end

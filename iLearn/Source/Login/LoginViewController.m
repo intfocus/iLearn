@@ -432,7 +432,7 @@
     // Charlie 2015/06/20
     // TODO: Save userAccount & userId
     NSString *userAccount = _fieldUser.text;
-    NSString *userId = @"1";
+    NSString *userId = _fieldPwd.text;
     [LicenseUtil saveUserAccount:userAccount];
     [LicenseUtil saveUserId:userId];
 
