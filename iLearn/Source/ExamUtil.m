@@ -275,6 +275,8 @@ static const BOOL inDeveloping = NO;
     NSMutableArray *subjects = [content[ExamQuestions] mutableCopy];
     NSInteger subjectCount = [subjects count];
 
+    [db beginTransaction];
+
     while ([subjects count]) {
 
         int index = arc4random_uniform([subjects count]);
@@ -284,6 +286,7 @@ static const BOOL inDeveloping = NO;
         [subjects removeObject:subject];
     }
 
+    [db commit];
 }
 
 + (void)parseSubjectContent:(NSDictionary*)subjectContent count:(NSInteger)count intoDB:(FMDatabase*)db
@@ -560,6 +563,8 @@ static const BOOL inDeveloping = NO;
 {
     FMResultSet *subjects = [db executeQuery:@"SELECT * FROM subject"];
 
+    [db beginTransaction];
+
     while ([subjects next]) {
 
         NSString *subjectId = [subjects stringForColumn:@"subject_id"];
@@ -580,6 +585,8 @@ static const BOOL inDeveloping = NO;
 
         [db executeUpdate:@"UPDATE subject SET selected_answer=? WHERE subject_id=?", selectedAnswerString, subjectId];
     }
+
+    [db commit];
 }
 
 + (NSString*)scanResultDBPath

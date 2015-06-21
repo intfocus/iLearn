@@ -550,14 +550,24 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (void)enterExamPageForContent:(NSDictionary*)content
 {
-    [ExamUtil parseContentIntoDB:content];
+    __weak ListTableViewController *weakSelf = self;
 
-    NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
 
-    NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
-    NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [ExamUtil parseContentIntoDB:content];
 
-    [self performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
+        NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
+
+        NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
+        NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:YES];
+            [weakSelf performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
+        });
+    });
 }
 
 #pragma mark - QRCodeReader Delegate Methods

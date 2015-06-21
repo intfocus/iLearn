@@ -56,7 +56,7 @@
         }];
     }
     else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXMA_WRONG_PASSWORD_TITLE", nil) message:NSLocalizedString(@"EXMA_WRONG_PASSWORD_MESSAGE", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_WRONG_PASSWORD_TITLE", nil) message:NSLocalizedString(@"EXAM_WRONG_PASSWORD_MESSAGE", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
         [alert show];
     }
 }
