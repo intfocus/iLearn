@@ -156,6 +156,14 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     cell.numberLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
     cell.numberLabel.textColor = [UIColor blackColor];
 
+    if (indexPath.row == _selectedCellIndex) {
+        [cell.layer setBorderColor:[UIColor yellowColor].CGColor];
+        [cell.layer setBorderWidth:4.0];
+    }
+    else {
+        [cell.layer setBorderWidth:0.0];
+    }
+
     if (_isAnswerMode) {
 
         NSDictionary *subjectContent = _examContent[ExamQuestions][indexPath.row];
@@ -475,10 +483,16 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)changeSubjectToIndex:(NSInteger)index
 {
+    NSIndexPath *originalIndex = [NSIndexPath indexPathForRow:_selectedCellIndex inSection:0];
+    NSIndexPath *nextIndex = [NSIndexPath indexPathForRow:index inSection:0];
+
+    NSArray *reloadCollectionCells = @[originalIndex, nextIndex];
+
     [self saveSelections];
     self.selectedCellIndex = index;
     [self updateSelections];
     [self updateOptionContents];
+    [_subjectCollectionView reloadItemsAtIndexPaths:reloadCollectionCells];
 }
 
 - (void)updateTimeLeft
