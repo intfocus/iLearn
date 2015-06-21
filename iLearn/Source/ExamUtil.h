@@ -21,6 +21,7 @@
 + (NSString*)examSourceFolderPath;
 + (NSString*)examFolderPathInDocument;
 + (NSString*)examDBPathOfFile:(NSString*)fileName;
++ (void)cleanExamFolder;
 
 + (void)parseContentIntoDB:(NSDictionary*)content;
 + (NSDictionary*)examContentFromDBFile:(NSString*)dbPath;

@@ -615,16 +615,19 @@ static const BOOL inDeveloping = NO;
     NSMutableArray *unsubmittedResults = [NSMutableArray array];
 
     NSString *dbPath = [self scanResultDBPath];
-    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
 
-    if ([db open]) {
-        FMResultSet *unsubmitted = [db executeQuery:@"SELECT result FROM result WHERE submit = 0"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:dbPath]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
 
-        while ([unsubmitted next]) {
-            [unsubmittedResults addObject:[unsubmitted stringForColumn:@"result"]];
+        if ([db open]) {
+            FMResultSet *unsubmitted = [db executeQuery:@"SELECT result FROM result WHERE submit = 0"];
+
+            while ([unsubmitted next]) {
+                [unsubmittedResults addObject:[unsubmitted stringForColumn:@"result"]];
+            }
+            
+            [db close];
         }
-
-        [db close];
     }
 
     return unsubmittedResults;
@@ -718,6 +721,19 @@ static const BOOL inDeveloping = NO;
     }
 
     return results;
+}
+
++ (void)cleanExamFolder
+{
+    NSString *examPath = [self examFolderPathInDocument];
+
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSError *error;
+    [fileMgr removeItemAtPath:examPath error:&error];
+
+    if (error) {
+        NSLog(@"Delete exam folder FAILED with ERROR: %@", [error localizedDescription]);
+    }
 }
 
 @end

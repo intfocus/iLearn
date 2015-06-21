@@ -100,6 +100,9 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Download ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
+            
+            NSFileManager *fileMgr = [NSFileManager defaultManager];
+            [fileMgr moveItemAtPath:outputPathTmp toPath:outputPath error:&error];
 
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadExam:withError:)]) {
                 [_delegate connectionManagerDidDownloadExam:examId withError:error];
