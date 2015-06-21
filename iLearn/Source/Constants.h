@@ -22,6 +22,11 @@ typedef NS_ENUM(NSUInteger, ExamTypes) {
     ExamTypesFormal,
 };
 
+typedef NS_ENUM(NSUInteger, ExamLocations) {
+    ExamLocationsOnline = 0,
+    ExamLocationsOnsite,
+};
+
 typedef NS_ENUM(NSUInteger, ExamSubjectType) {
     ExamSubjectTypeTrueFalse = 1,
     ExamSubjectTypeSingle,
@@ -57,6 +62,7 @@ extern NSString *const ExamExpirationDate;
 extern NSString *const ExamStatus;
 extern NSString *const ExamSubmitted;
 extern NSString *const ExamType;
+extern NSString *const ExamLocation;
 extern NSString *const ExamAnsType;
 extern NSString *const ExamCached;
 extern NSString *const ExamPassword;

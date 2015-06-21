@@ -250,7 +250,7 @@ static const BOOL inDeveloping = NO;
 
 + (void)parseInfoOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, location INTEGER, begin INTEGER, end INTEGER, expire_time INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT)"];
 
     NSNumber *beginDate = content[ExamBeginDate];
     NSNumber *endDate = content[ExamEndDate];
@@ -263,7 +263,7 @@ static const BOOL inDeveloping = NO;
     long long nowInteger = [now timeIntervalSince1970];
     long long deadlineInteger = [deadline timeIntervalSince1970];
 
-    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], @(nowInteger), @(deadlineInteger), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
+    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, location, begin, end, expire_time, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], content[ExamLocation], @(nowInteger), @(deadlineInteger), content[ExamExpirationDate], content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
 }
 
 + (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
@@ -379,6 +379,7 @@ static const BOOL inDeveloping = NO;
         content[ExamTitle] = [result stringForColumn:@"exam_name"];
         content[ExamStatus] = @([result intForColumn:@"status"]);
         content[ExamType] = @([result intForColumn:@"type"]);
+        content[ExamLocation] = @([result intForColumn:@"location"]);
         content[ExamBeginDate] = @([result longLongIntForColumn:@"begin"]);
         content[ExamEndDate] = @([result longLongIntForColumn:@"end"]);
         content[ExamExpirationDate] = @([result longLongIntForColumn:@"expire_time"]);

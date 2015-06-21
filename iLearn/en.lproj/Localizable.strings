@@ -9,6 +9,7 @@
 COMMON_CONTENT = "contents";
 COMMON_SUBMIT = "Submit";
 COMMON_CLOSE = "Close";
+COMMON_OK = "OK";
 
 DASHBOARD_TITLE = "Dashboard";
 DASHBOARD_COURSE_PACK = "Course Pack";
@@ -61,3 +62,5 @@ EXAM_CORRECTION_TEMPLATE = "Answer: %@. %@.";
 EXAM_TYPE_TRUE_FALSE = "(True/False)";
 EXAM_TYPE_SINGLE = "(Single)";
 EXAM_TYPE_MULTIPLE = "(Multiple)";
+EXMA_WRONG_PASSWORD_TITLE = "Wrong Password";
+EXMA_WRONG_PASSWORD_MESSAGE = "Please enter again";

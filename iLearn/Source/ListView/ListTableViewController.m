@@ -438,9 +438,13 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         else if (cell.actionButtonType == ListTableViewCellActionView) {
 
         NSNumber *examType = content[ExamType];
+        NSNumber *examLocation = content[ExamLocation];
         NSNumber *examOpened = content[ExamOpened];
 
-        if ([examType isEqualToNumber:@(ExamTypesFormal)] && ![examOpened isEqualToNumber:@1]) {
+        if ([examType isEqualToNumber:@(ExamTypesFormal)] &&
+            [examLocation isEqualToNumber:@(ExamLocationsOnsite)] &&
+            ![examOpened isEqualToNumber:@1]) {
+
             [self performSegueWithIdentifier:kShowPasswordSegue sender:content];
         }
         else {
