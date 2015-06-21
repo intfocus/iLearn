@@ -57,6 +57,8 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 @property (strong, nonatomic) NSMutableArray *unsubmittedExamResults;
 @property (strong, nonatomic) NSMutableArray *unsubmittedExamScannedResults;
 
+@property (strong, nonatomic) NSString *lastScannedResult;
+
 @end
 
 
@@ -415,7 +417,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
     NSLog(@"didSelectInfoButtonOfCell:");
-    NSLog(@"indexPath.row: %d", indexPath.row);
+    NSLog(@"indexPath.row: %ld", (long)indexPath.row);
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
     [self performSegueWithIdentifier:kShowDetailSegue sender:content];
@@ -426,7 +428,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
     NSLog(@"didSelectActionButtonOfCell:");
-    NSLog(@"indexPath.row: %d", indexPath.row);
+    NSLog(@"indexPath.row: %ld", (long)indexPath.row);
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
 
@@ -458,7 +460,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
     NSLog(@"didSelectQRCodeButtonOfCell:");
-    NSLog(@"indexPath.row: %d", indexPath.row);
+    NSLog(@"indexPath.row: %ld", (long)indexPath.row);
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
 
@@ -530,14 +532,14 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         static dispatch_once_t onceToken;
 
         dispatch_once(&onceToken, ^{
-            reader                        = [QRCodeReaderViewController new];
+            reader = [[QRCodeReaderViewController alloc] initWithCancelButtonTitle:NSLocalizedString(@"COMMON_CLOSE", nil)];
             reader.modalPresentationStyle = UIModalPresentationFormSheet;
         });
         reader.delegate = self;
 
-        [reader setCompletionWithBlock:^(NSString *resultAsString) {
-            NSLog(@"Completion with result: %@", resultAsString);
-        }];
+//        [reader setCompletionWithBlock:^(NSString *resultAsString) {
+//            NSLog(@"Completion with result: %@", resultAsString);
+//        }];
 
         [self presentViewController:reader animated:YES completion:NULL];
     }
@@ -574,6 +576,11 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (void)reader:(QRCodeReaderViewController *)reader didScanResult:(NSString *)result
 {
+    if ([_lastScannedResult isEqualToString:result]) {
+        return;
+    }
+
+    self.lastScannedResult = result;
     NSArray *components = [result componentsSeparatedByString:@"+"];
 
     if ([components count] != 4 || ![components[0] isEqualToString:@"iLearn"]) {

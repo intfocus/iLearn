@@ -602,9 +602,23 @@ static const BOOL inDeveloping = NO;
 
     if ([db open]) {
         [db executeUpdate:@"CREATE TABLE IF NOT EXISTS result(result TEXT PRIMARY KEY, submit INTEGER DEFAULT 0)"];
-        [db executeUpdate:@"INSERT INTO result (result) VALUES (?)", result];
+
+        if (![self scannedResult:result savedInDB:db]) {
+            [db executeUpdate:@"INSERT INTO result (result) VALUES (?)", result];
+        }
+        else {
+            NSLog(@"Scanned result: %@ has been saved", result);
+        }
+
         [db close];
     }
+}
+
++ (BOOL)scannedResult:(NSString*)result savedInDB:(FMDatabase*)db
+{
+    NSString *savedResult = [db stringForQuery:@"SELECT result FROM result WHERE result=?", result];
+    BOOL saved = [savedResult length]? YES: NO;
+    return saved;
 }
 
 + (void)setScannedResultSubmitted:(NSString*)result

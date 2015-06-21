@@ -183,6 +183,8 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadExamScannedResult:result withError:error];
             }
         }];
+
+        op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     }
 }
 
