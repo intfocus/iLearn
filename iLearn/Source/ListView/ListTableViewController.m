@@ -26,6 +26,8 @@ static NSString *const kShowScoreQRCode = @"showScoreQRCode";
 
 static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
+static const NSInteger kMinScanInterval = 3;
+
 @interface ListTableViewController ()
 
 @property (strong, nonatomic) ConnectionManager *connectionManager;
@@ -58,6 +60,8 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 @property (strong, nonatomic) NSMutableArray *unsubmittedExamScannedResults;
 
 @property (strong, nonatomic) NSString *lastScannedResult;
+@property (assign, nonatomic) long long lastScanDate;
+@property (weak, nonatomic) UIAlertView *lastAlertView;
 
 @end
 
@@ -537,10 +541,6 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         });
         reader.delegate = self;
 
-//        [reader setCompletionWithBlock:^(NSString *resultAsString) {
-//            NSLog(@"Completion with result: %@", resultAsString);
-//        }];
-
         [self presentViewController:reader animated:YES completion:NULL];
     }
     else {
@@ -576,11 +576,29 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (void)reader:(QRCodeReaderViewController *)reader didScanResult:(NSString *)result
 {
+    NSDate *now = [NSDate date];
+    NSTimeInterval nowInterval = [now timeIntervalSince1970];
+
+    if (nowInterval - _lastScanDate < kMinScanInterval) {
+        return;
+    }
+
+    _lastScanDate = nowInterval;
+
     if ([_lastScannedResult isEqualToString:result]) {
+
+        if (_lastAlertView) {
+            [_lastAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        }
+
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LIST_SCORE_SCANNED_TITLE", nil) message:NSLocalizedString(@"LIST_SCORE_SCANNED_MESSAGE", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"COMMON_CLOSE", nil) otherButtonTitles:nil];
+        self.lastAlertView = alert;
+        [alert show];
         return;
     }
 
     self.lastScannedResult = result;
+
     NSArray *components = [result componentsSeparatedByString:@"+"];
 
     if ([components count] != 4 || ![components[0] isEqualToString:@"iLearn"]) {
@@ -589,7 +607,12 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"LIST_SCORE_SCAN_RESULT_TEMPLATE", nil), components[1], components[2], components[3]];
 
+    if (_lastAlertView) {
+        [_lastAlertView dismissWithClickedButtonIndex:0 animated:YES];
+    }
+
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LIST_SCORE_SCAN_RESULT", nil) message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"COMMON_CLOSE", nil) otherButtonTitles:nil];
+    self.lastAlertView = alert;
     [alert show];
 
     NSString *savedResult = [@[components[1], components[2], components[3]] componentsJoinedByString:@"+"];
@@ -599,7 +622,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (void)readerDidCancel:(QRCodeReaderViewController *)reader
 {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - ConnectionManagerDelegate
