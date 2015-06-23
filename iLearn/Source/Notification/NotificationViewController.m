@@ -50,22 +50,21 @@
 #import "DateUtils.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
+#import "ApiUtils.h"
 #import "ExtendNslogfunctionality.h"
 //#import "MainViewController.h"
 
 
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableViewOne;   // 通告列表图
-@property (weak, nonatomic) IBOutlet UITableView *tableViewTwo;   // 预告列表图-全部
-@property (weak, nonatomic) IBOutlet UITableView *tableViewThree; // 预告列表图-按月
+@property (weak, nonatomic) IBOutlet UITableView *tableViewTwo;   // 预告列表图
 
-@property (weak, nonatomic) IBOutlet UITextView *notificationZone;  // 显示预告
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;  // 预告显示布局-按月/
 @property (weak, nonatomic) IBOutlet UIView *viewCalendar;                // 全部显示时，会隐藏掉日历控件
 @property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemTMP;
 @property (strong, nonatomic) NSMutableDictionary *dataList; // 通告预告混合数据
-@property (strong, nonatomic) NSMutableArray *dataListOne; // 通告数据列表
-@property (strong, nonatomic) NSMutableArray *dataListTwo; // 预告数据列表
+@property (strong, nonatomic) NSMutableArray *dataListOne;   // 通告数据列表
+@property (strong, nonatomic) NSMutableArray *dataListTwo;   // 预告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwoDate; // 预告列表日期去重，为日历控件加效果时使用
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
 
@@ -73,7 +72,6 @@
 
 @implementation NotificationViewController
 @synthesize tableViewOne;
-@synthesize notificationZone;
 @synthesize dataListOne;
 @synthesize dataListTwo;
 @synthesize dataListTwoDate;
@@ -97,10 +95,6 @@
     self.tableViewTwo.delegate   = self;
     self.tableViewTwo.dataSource = self;
     self.tableViewTwo.tag = NotificationTableViewTWO;
-    self.tableViewTwo.alpha = 0;
-    self.tableViewThree.delegate   = self;
-    self.tableViewThree.dataSource = self;
-    self.tableViewThree.tag = NotificationTableViewTHREE;
 
     // 日历控件
     [self configCalendar];
@@ -131,7 +125,7 @@
                                                            target:self
                                                            action:@selector(toggleShowLeftBar:)];
     self.barItemTMP.possibleTitles = [NSSet setWithObjects:@"<<", @">>", nil];
-    self.navigationItem.rightBarButtonItem = self.barItemTMP;
+//    self.navigationItem.rightBarButtonItem = self.barItemTMP;
 }
 
 /**
@@ -159,7 +153,7 @@
 //        [self.barItemTMP setTitle:@"<<"];
 //        
 //    }
-
+//    
 }
 
 - (void)configCalendar {
@@ -186,13 +180,9 @@
             while(currentMonthIndex <= 0){
                 currentMonthIndex += 12;
             }
-            NSString *monthText = [[NSString alloc] init];
-            if([APP_LANG isEqual: @"zh-CN"])
-                monthText = [NSString stringWithFormat:@"%ld月", (long)(currentMonthIndex - 1)];
-            else
-                monthText = [[dateFormatter standaloneMonthSymbols][currentMonthIndex - 1] capitalizedString];
+            NSString *monthText = [[dateFormatter standaloneMonthSymbols][currentMonthIndex - 1] capitalizedString];
             
-            return [NSString stringWithFormat:@"%ld年%@", (long)comps.year, monthText];
+            return [NSString stringWithFormat:@"%@/%ld", monthText, comps.year];
         };
         
     }
@@ -220,27 +210,21 @@
 - (IBAction)actionSegmentControlClick:(id)sender {
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0: { // 按月
-            self.calendarHeightConstraint.constant = 1;
-            [self.view sendSubviewToBack:self.tableViewTwo];
-            [self.view bringSubviewToFront:self.viewCalendar];
-            [self.view bringSubviewToFront:self.calendarMenuView];
-            [self.view bringSubviewToFront:self.calendarContentView];
+            self.calendarHeightConstraint.constant = 430;
             [UIView animateWithDuration:.5
                              animations:^{
                                  self.viewCalendar.alpha = 1;
-                                 self.tableViewThree.alpha = 1;
-                                 self.tableViewTwo.alpha = 0;
                                  [self.view layoutIfNeeded];
                              }];
         }
             break;
         case 1: { // 全部
+            self.dataListTwo = self.dataList[NOTIFICATION_FIELD_HDDATA];
+            [self.tableViewTwo reloadData];
             self.calendarHeightConstraint.constant = 0;
             [UIView animateWithDuration:.5
                              animations:^{
                                  self.viewCalendar.alpha = 0;
-                                 self.tableViewThree.alpha = 0;
-                                 self.tableViewTwo.alpha = 1;
                                  [self.view layoutIfNeeded];
                              }];
         }
@@ -253,52 +237,7 @@
 #pragma mark - Utils
 
 - (void)dealWithData {
-    // 服务器获取成功则写入cache,否则读取cache
-    NSString *cachePath = [FileUtils getPathName:NOTIFICATION_DIRNAME FileName:NOTIFICATION_CACHE];
-
-    // 从服务器端获取[公告通知], 不判断网络环境，获取不到则取本地cache
-    NSString *deptID = @"1";
-    NSString *currentDate = [DateUtils dateToStr:[NSDate date] Format:DATE_SIMPLE_FORMAT];
-    NSString *notifiction_url = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", NOTIFICATION_URL_PATH, NOTIFICATION_PARAM_DEPTID, deptID, NOTIFICATION_PARAM_DATESTR, currentDate];
-    NSLog(@"%@", notifiction_url);
-    NSString *response = [HttpUtils httpGet: notifiction_url];
-    NSError *error;
-    // 确保该实例可以被读取
-    NSMutableDictionary *notificationDatas = [[NSMutableDictionary alloc] init];
-    notificationDatas = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
-    NSErrorPrint(error, @"http get notifications and convert into json.");
-
-    // 情况一: 服务器获取公告通知成功
-    if(!error) {
-        // 有时文件属性原因，能写入但无法读取
-        // 先删除文件再写入
-        if([FileUtils checkFileExist:cachePath isDir:false])
-            [FileUtils removeFile:cachePath];
-        
-        // 写入本地作为cache
-        [response writeToFile:cachePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-        NSErrorPrint(error, @"notifications cache write");
-        
-        // 情况二: 如果缓存文件存在则读取
-    } else if([FileUtils checkFileExist:cachePath isDir:false]) {
-        NSErrorPrint(error, @"http get notifications list");
-        
-        // 读取本地cache
-        NSLog(@"%@", cachePath);
-        NSString *cacheContent = [NSString stringWithContentsOfFile:cachePath usedEncoding:NULL error:&error];
-        NSErrorPrint(error, @"notifications cache read");
-        if(!error) {
-            // 解析为json数组
-            notificationDatas = [NSJSONSerialization JSONObjectWithData:[cacheContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                options:NSJSONReadingMutableContainers
-                                                                  error:&error];
-            NSErrorPrint(error, @"notifications cache parse into json");
-        }
-        // 情况三:
-    } else {
-        NSLog(@"<# HttpGET and cache all failed!>");
-    }
-
+    NSMutableDictionary *notificationDatas = [ApiUtils notifications];
 
     // 通告、预告的判断区别在于occur_date字段是否为空, 或NSNULL
     NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
@@ -364,10 +303,9 @@
     NSString *dateStr = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
     NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
     NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
-
     NSMutableArray *array = self.dataList[NOTIFICATION_FIELD_HDDATA];
     self.dataListTwo = [NSMutableArray arrayWithArray:[array filteredArrayUsingPredicate:filter]];
-    [self.tableViewThree reloadData];
+    [self.tableViewTwo reloadData];
 }
 
 #pragma mark - Transition examples
@@ -406,7 +344,7 @@
             count = [self.dataListOne count];
             break;
         case NotificationTableViewTWO:
-        case NotificationTableViewTHREE:
+        //case NotificationTableViewTHREE:
             count = [self.dataListTwo count];
             break;
 
@@ -434,7 +372,8 @@
         }
             break;
         case NotificationTableViewTWO:
-        case NotificationTableViewTHREE: {
+        //case NotificationTableViewTHREE:
+        {
             currentDict = [self.dataListTwo objectAtIndex:cellIndex];
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_OCCURDATE]];
         }
@@ -470,7 +409,7 @@
             width = self.view.bounds.size.width - width;
             break;
         case NotificationTableViewTWO:
-        case NotificationTableViewTHREE:
+        //case NotificationTableViewTHREE:
             currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
             break;
 

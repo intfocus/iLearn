@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9E68D22279AD2B12DB817E6E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E92B1ED4A0E3997FEF469AD5 /* libPods.a */; };
+		C4357C451B39701F00854524 /* ApiUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C431B39701E00854524 /* ApiUtils.m */; };
+		C4357C4A1B39706300854524 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C491B39706300854524 /* User.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
 		CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2BAB121B348C9800D523EB /* LoginViewController.xib */; };
 		CB2BAB1C1B348C9800D523EB /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB151B348C9800D523EB /* NotificationCell.m */; };
@@ -74,6 +76,10 @@
 
 /* Begin PBXFileReference section */
 		A5051085F083B61256CF0478 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C4357C431B39701E00854524 /* ApiUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiUtils.m; sourceTree = "<group>"; };
+		C4357C441B39701E00854524 /* ApiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiUtils.h; sourceTree = "<group>"; };
+		C4357C481B39706300854524 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		C4357C491B39706300854524 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		CB2BAB111B348C9800D523EB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		CB2BAB121B348C9800D523EB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -207,6 +213,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C4357C461B39706300854524 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C4357C471B39706300854524 /* User */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C4357C471B39706300854524 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				C4357C481B39706300854524 /* User.h */,
+				C4357C491B39706300854524 /* User.m */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		CB2BAB0F1B348C9800D523EB /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -235,6 +258,7 @@
 		CB2BAB201B348D1A00D523EB /* iSearchShared */ = {
 			isa = PBXGroup;
 			children = (
+				C4357C461B39706300854524 /* Models */,
 				CB2BAB231B348D6E00D523EB /* Common */,
 				CB2BAB271B348D6E00D523EB /* Utils */,
 			);
@@ -255,6 +279,8 @@
 		CB2BAB271B348D6E00D523EB /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				C4357C431B39701E00854524 /* ApiUtils.m */,
+				C4357C441B39701E00854524 /* ApiUtils.h */,
 				CB2BAB281B348D6E00D523EB /* DatabaseUtils.h */,
 				CB2BAB291B348D6E00D523EB /* DatabaseUtils.m */,
 				CB2BAB2A1B348D6E00D523EB /* DateUtils.h */,
@@ -617,6 +643,7 @@
 				CB7BD7DE1B07BCAB002C6DFB /* QuestionnaireUtil.m in Sources */,
 				CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */,
 				CB2BAB3D1B348D6E00D523EB /* LogUtils.m in Sources */,
+				C4357C451B39701F00854524 /* ApiUtils.m in Sources */,
 				DC5C4F9B1B1F82F4007C83C9 /* QuestionOptionCell.m in Sources */,
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
@@ -627,6 +654,7 @@
 				CB2BAB3F1B348D6E00D523EB /* ViewUtils.m in Sources */,
 				CB2BAB3E1B348D6E00D523EB /* PopupView.m in Sources */,
 				CB7BD7F91B0874DE002C6DFB /* SubjectCollectionViewCell.m in Sources */,
+				C4357C4A1B39706300854524 /* User.m in Sources */,
 				CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */,
 				CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */,
 				CB7BD7F61B0873B1002C6DFB /* SubjectViewController.m in Sources */,
