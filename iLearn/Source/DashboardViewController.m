@@ -13,6 +13,7 @@
 #import "NotificationViewController.h"
 #import "const.h"
 #import "FileUtils.h"
+#import "ApiUtils.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowExamSegue = @"showExamPage";
@@ -141,21 +142,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (void)reloadNotifications
 {
-    NSString *cachePath = [FileUtils getPathName:NOTIFICATION_DIRNAME FileName:NOTIFICATION_CACHE];
-    NSError *error;
-    NSMutableDictionary *notificationDatas = [NSMutableDictionary dictionary];
-
-    // 读取本地cache
-    NSString *cacheContent = [NSString stringWithContentsOfFile:cachePath usedEncoding:NULL error:&error];
-    NSLog(@"notifications cache read");
-    if(!error) {
-        // 解析为json数组
-        notificationDatas = [NSJSONSerialization JSONObjectWithData:[cacheContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                            options:NSJSONReadingMutableContainers
-                                                              error:&error];
-        NSLog(@"notifications cache parse into json");
-    }
-
+    NSMutableDictionary *notificationDatas = [ApiUtils notifications];
     self.notificationList = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
 
     // 公告通知按created_date升序
