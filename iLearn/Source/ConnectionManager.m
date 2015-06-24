@@ -10,6 +10,7 @@
 #import "ExamUtil.h"
 #import "LicenseUtil.h"
 #import <AFNetworking.h>
+#import "ExtendNSLogFunctionality.h"
 
 static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/api/v1";
 
@@ -42,6 +43,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
     if (userId != nil) {
 
         NSString *requestUrl = [NSString stringWithFormat:@"%@/user/%@/exam", kServerAddress, userId];
+        NSLog(@"%@", requestUrl);
         NSString *outputPath = [NSString stringWithFormat:@"%@/%@", [ExamUtil examFolderPathInDocument], @"Exam.json"];
         NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@", [ExamUtil examFolderPathInDocument], @"Exam.json.tmp"];
 
