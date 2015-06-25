@@ -402,7 +402,7 @@
 -(void)enterMainViewController{
     
     NSString *userAccount = self.user.loginUserName;
-    NSString *userId = self.user.deptID;
+    NSString *userId = self.user.ID;
     [LicenseUtil saveUserAccount:userAccount];
     [LicenseUtil saveUserId:userId];
     
