@@ -21,6 +21,7 @@ static NSString *const kShowRegistrationSegue = @"showRegistrationPage";
 static NSString *const kShowLectureSegue = @"showLecturePage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 static NSString *const kShowQRCodeSegue = @"showQRCodePage";
+static NSString *const kShowNotificationSegue = @"showNotificationPage";
 
 static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifier";
 
@@ -120,10 +121,15 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
         ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeLecture;
     }
+    else if ([segue.identifier isEqualToString:kShowNotificationSegue]) {
+        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        listVC.listType = ListViewTypeNotification;
+    }
     else if ([segue.identifier isEqualToString:kShowQRCodeSegue]) {
         QRCodeViewController* qrCodeVC = (QRCodeViewController*)segue.destinationViewController;
         qrCodeVC.showCloseButton = YES;
     }
+
 }
 
 #pragma mark - Helper Functions
@@ -260,8 +266,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NotificationViewController *notificationVC = [[NotificationViewController alloc] init];
-    [self presentViewController:notificationVC animated:YES completion:nil];
+    [self performSegueWithIdentifier:kShowNotificationSegue sender:nil];
 }
 
 @end

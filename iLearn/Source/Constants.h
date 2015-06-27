@@ -15,6 +15,7 @@ typedef NS_ENUM(NSUInteger, ListViewType) {
     ListViewTypeQuestionnaire,
     ListViewTypeRegistration,
     ListViewTypeLecture,
+    ListViewTypeNotification
 };
 
 typedef NS_ENUM(NSUInteger, ExamTypes) {

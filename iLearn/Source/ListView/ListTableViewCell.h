@@ -7,12 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ListTableViewController.h"
 
 typedef NS_ENUM(NSUInteger, ListTableViewCellAction) {
     ListTableViewCellActionView,
     ListTableViewCellActionDownload,
 };
+
+@class ListTableViewCell;
+
+@protocol ListTableViewCellDelegate <NSObject>
+
+- (void)didSelectInfoButtonOfCell:(ListTableViewCell*)cell;
+- (void)didSelectActionButtonOfCell:(ListTableViewCell*)cell;
+- (void)didSelectQRCodeButtonOfCell:(ListTableViewCell*)cell;
+
+@end
 
 @interface ListTableViewCell : UITableViewCell
 

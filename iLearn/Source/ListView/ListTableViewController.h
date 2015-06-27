@@ -8,20 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Constants.h"
-#import "QRCodeReaderViewController.h"
-#import "ConnectionManager.h"
+#import "ContentViewController.h"
 
-@class ListTableViewCell;
-
-@protocol ListTableViewCellDelegate <NSObject>
-
-- (void)didSelectInfoButtonOfCell:(ListTableViewCell*)cell;
-- (void)didSelectActionButtonOfCell:(ListTableViewCell*)cell;
-- (void)didSelectQRCodeButtonOfCell:(ListTableViewCell*)cell;
-
-@end
-
-@interface ListTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ListTableViewCellDelegate, QRCodeReaderDelegate, ConnectionManagerDelegate>
+@interface ListTableViewController : UIViewController
 
 @property (assign, nonatomic) ListViewType listType;
 

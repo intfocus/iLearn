@@ -64,7 +64,7 @@ static const BOOL inDeveloping = NO;
         }
     }
 
-    NSLog(@"exams: %@", [self jsonStringOfContent:exams]);
+//    NSLog(@"exams: %@", [self jsonStringOfContent:exams]);
 
     return exams;
 }
