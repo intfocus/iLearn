@@ -226,8 +226,9 @@ static const NSInteger kMinScanInterval = 3;
         NSDate *now = [NSDate date];
         NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:[ExamUtil startDateFromContent:content]];
         NSInteger scoreInt = -1;
+        ExamTypes examType = [content[ExamType] integerValue];
 
-        if ([endDate laterDate:now] == now) { // Exam is ended
+        if ([endDate laterDate:now] == now && examType == ExamTypesFormal) { // Exam is ended
 
             NSNumber *score = content[ExamScore];
 
@@ -281,8 +282,9 @@ static const NSInteger kMinScanInterval = 3;
                 NSString *strScore = [NSString stringWithFormat:@"%lld", [score longLongValue]];
                 NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"LIST_SCORE_TEMPLATE", nil), [score longLongValue]];
                 NSMutableAttributedString *scoreAttrString = [[NSMutableAttributedString alloc] initWithString:scoreString];
+                [scoreAttrString addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]} range:NSMakeRange(0, [scoreString length])];
                 NSRange scoreRange = [scoreString rangeOfString:strScore];
-                [scoreAttrString addAttributes:@{NSForegroundColorAttributeName: RGBCOLOR(200.0, 0.0, 10.0)} range:scoreRange];
+                [scoreAttrString addAttributes:@{NSForegroundColorAttributeName: ILDarkRed} range:scoreRange];
                 cell.scoreLabel.attributedText = scoreAttrString;
 
                 cell.qrCodeButton.titleLabel.text = NSLocalizedString(@"LIST_BUTTON_QRCODE", nil);

@@ -70,7 +70,7 @@ typedef NS_ENUM(NSUInteger, TableRow) {
 
     switch (indexPath.row) {
         case TableRowAccount:
-            cell.textLabel.text = NSLocalizedString(@"SETTINGS_PERSONAL_ACCOUNT", nil);
+            cell.textLabel.text = NSLocalizedString(@"COMMON_ACCOUNT", nil);
             cell.detailTextLabel.text = [LicenseUtil userAccount];
             break;
         default:

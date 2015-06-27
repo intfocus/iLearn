@@ -33,7 +33,7 @@
     self.qrCodeImageView.image = qrCodeImage;
     self.qrCodeImageView.backgroundColor = RGBCOLOR(230.0, 230.0, 230.0);
 
-    NSString *accountString = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"SETTINGS_PERSONAL_ACCOUNT", nil), [LicenseUtil userAccount]];
+    NSString *accountString = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"COMMON_ACCOUNT", nil), [LicenseUtil userAccount]];
     self.accountLabel.text = accountString;
 
     self.closeButton.hidden = !_showCloseButton;

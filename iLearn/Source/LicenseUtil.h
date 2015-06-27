@@ -14,6 +14,8 @@
 + (NSString*)userAccount;
 + (void)saveUserId:(NSString*)userId;
 + (NSString*)userId;
++ (NSString*)userName;
++ (void)saveUserName:(NSString*)userName;
 + (NSString*)serviceNumber;
 
 @end
