@@ -7,7 +7,7 @@
 //
 
 #import "DashboardViewController.h"
-#import "ListTableViewController.h"
+#import "ListViewController.h"
 #import "QRCodeViewController.h"
 #import "LicenseUtil.h"
 #import "NotificationViewController.h"
@@ -106,23 +106,23 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:kShowQuestionnaireSegue]) {
-        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeQuestionnaire;
     }
     else if ([segue.identifier isEqualToString:kShowExamSegue]) {
-        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeExam;
     }
     else if ([segue.identifier isEqualToString:kShowRegistrationSegue]) {
-        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeRegistration;
     }
     else if ([segue.identifier isEqualToString:kShowLectureSegue]) {
-        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeLecture;
     }
     else if ([segue.identifier isEqualToString:kShowNotificationSegue]) {
-        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeNotification;
     }
     else if ([segue.identifier isEqualToString:kShowQRCodeSegue]) {
@@ -215,8 +215,9 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [self performSegueWithIdentifier:kShowLectureSegue sender:nil];
 }
 
-- (IBAction)reminderTouched:(id)sender {
+- (IBAction)notificationTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self performSegueWithIdentifier:kShowNotificationSegue sender:nil];
 }
 
 - (IBAction)questionnaireTouched:(id)sender {

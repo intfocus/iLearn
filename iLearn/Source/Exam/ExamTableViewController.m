@@ -16,7 +16,7 @@
 #import "ExamUtil.h"
 #import "UIImage+MDQRCode.h"
 #import <MBProgressHUD.h>
-#import "ListTableViewController.h"
+#import "ListViewController.h"
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
@@ -78,35 +78,20 @@ static const NSInteger kMinScanInterval = 3;
     if ([segue.identifier isEqualToString:kShowDetailSegue]) {
 
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
-
-        switch (_listType) {
-            case ListViewTypeExam:
-                detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
-                detailVC.descString = [ExamUtil descFromContent:sender];
-                break;
-            case ListViewTypeQuestionnaire:
-                detailVC.titleString = [[QuestionnaireUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
-                detailVC.descString = [QuestionnaireUtil descFromContent:sender];
-                break;
-            default:
-                detailVC.titleString = [[QuestionnaireUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
-                detailVC.descString = [QuestionnaireUtil descFromContent:sender];
-                break;
-        }
+        detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
+        detailVC.descString = [ExamUtil descFromContent:sender];
     }
     if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
 
         PasswordViewController *detailVC = (PasswordViewController*)segue.destinationViewController;
 
-        if (_listType == ListViewTypeExam) {
-                detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
-                detailVC.descString = [ExamUtil descFromContent:sender];
-                detailVC.password = sender[ExamPassword];
-                __weak id weakSelf = self;
-                detailVC.callback = ^(void){
-                    [weakSelf enterExamPageForContent:sender];
-                };
-        }
+        detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
+        detailVC.descString = [ExamUtil descFromContent:sender];
+        detailVC.password = sender[ExamPassword];
+        __weak id weakSelf = self;
+        detailVC.callback = ^(void){
+            [weakSelf enterExamPageForContent:sender];
+        };
     }
     else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
         UINavigationController *navController = segue.destinationViewController;
@@ -174,18 +159,7 @@ static const NSInteger kMinScanInterval = 3;
 
 - (void)refreshContent
 {
-    switch (_listType) {
-        case ListViewTypeExam:
-            self.contents = [ExamUtil loadExams];
-            break;
-        case ListViewTypeQuestionnaire:
-            self.contents = [QuestionnaireUtil loadQuestionaires];
-            break;
-        default:
-            self.contents = [QuestionnaireUtil loadQuestionaires];
-            break;
-    }
-
+    self.contents = [ExamUtil loadExams];
     [self.tableView reloadData];
 }
 
@@ -203,42 +177,32 @@ static const NSInteger kMinScanInterval = 3;
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (_listType) {
-        case ListViewTypeExam:
-            return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
-            break;
-        case ListViewTypeQuestionnaire:
-            return [self tableView:tableView cellForQuestionnaireRowAtIndexPath:indexPath];
-            break;
-        default:
-            return [self tableView:tableView cellForQuestionnaireRowAtIndexPath:indexPath];
-            break;
-    }
+    return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForQuestionnaireRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    QuestionnaireCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
-    cell.delegate = self;
-
-    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
-
-    cell.titleLabel.text = [QuestionnaireUtil titleFromContent:content];
-
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYY/MM/dd"];
-    NSInteger epochTime = [QuestionnaireUtil expirationDateFromContent:content];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:epochTime];
-    NSString *expirationDateString = [formatter stringFromDate:date];
-
-    cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
-
-    return cell;
-}
+//- (UITableViewCell*)tableView:(UITableView *)tableView cellForQuestionnaireRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
+//    cell.delegate = self;
+//
+//    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+//
+//    cell.titleLabel.text = [QuestionnaireUtil titleFromContent:content];
+//
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"YYYY/MM/dd"];
+//    NSInteger epochTime = [QuestionnaireUtil expirationDateFromContent:content];
+//    NSDate *date = [NSDate dateWithTimeIntervalSince1970:epochTime];
+//    NSString *expirationDateString = [formatter stringFromDate:date];
+//
+//    cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
+//
+//    return cell;
+//}
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    QuestionnaireCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
+    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
     cell.delegate = self;
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
@@ -282,7 +246,7 @@ static const NSInteger kMinScanInterval = 3;
         if ([startDate laterDate:now] == startDate) { // Exam is not started yet
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_STARTED", nil);
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
-            cell.actionButtonType = ListTableViewCellActionView;
+            cell.actionButtonType = ContentTableViewCellActionView;
         }
         else {
             NSNumber *score;
@@ -307,7 +271,7 @@ static const NSInteger kMinScanInterval = 3;
                     cell.qrCodeButton.hidden = NO;
                 }
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];
-                cell.actionButtonType = ListTableViewCellActionView;
+                cell.actionButtonType = ContentTableViewCellActionView;
 
                 cell.scoreTitleLabel.hidden = NO;
                 cell.scoreLabel.hidden = NO;
@@ -326,7 +290,7 @@ static const NSInteger kMinScanInterval = 3;
             else {
                 cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_TESTING", nil);
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
-                cell.actionButtonType = ListTableViewCellActionView;
+                cell.actionButtonType = ContentTableViewCellActionView;
             }
 
         }
@@ -343,7 +307,7 @@ static const NSInteger kMinScanInterval = 3;
         else {
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_DOWNLOADED", nil);
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_DOWNLOAD", nil) forState:UIControlStateNormal];
-            cell.actionButtonType = ListTableViewCellActionDownload;
+            cell.actionButtonType = ContentTableViewCellActionDownload;
         }
     }
 
@@ -358,7 +322,7 @@ static const NSInteger kMinScanInterval = 3;
     return 120.0;
 }
 
-- (void)didSelectInfoButtonOfCell:(ListTableViewCell*)cell
+- (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
@@ -369,7 +333,7 @@ static const NSInteger kMinScanInterval = 3;
     [self performSegueWithIdentifier:kShowDetailSegue sender:content];
 }
 
-- (void)didSelectActionButtonOfCell:(ListTableViewCell*)cell
+- (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
@@ -378,12 +342,12 @@ static const NSInteger kMinScanInterval = 3;
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
 
-        if (cell.actionButtonType == ListTableViewCellActionDownload) {
+        if (cell.actionButtonType == ContentTableViewCellActionDownload) {
 
             NSString *examId = [NSString stringWithFormat:@"%@", content[ExamId]];
             [self downloadExamId:examId];
         }
-        else if (cell.actionButtonType == ListTableViewCellActionView) {
+        else if (cell.actionButtonType == ContentTableViewCellActionView) {
 
         NSNumber *examType = content[ExamType];
         NSNumber *examLocation = content[ExamLocation];
@@ -401,7 +365,7 @@ static const NSInteger kMinScanInterval = 3;
     }
 }
 
-- (void)didSelectQRCodeButtonOfCell:(ListTableViewCell*)cell
+- (void)didSelectQRCodeButtonOfCell:(ContentTableViewCell*)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "JTCalendar.h"
 //#import "RightSideViewController.h"
-#import "ListTableViewController.h"
+#import "ListViewController.h"
 
 @interface NotificationViewController : ContentViewController<JTCalendarDataSource, ContentViewProtocal>
 

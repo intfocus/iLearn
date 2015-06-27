@@ -18,10 +18,10 @@
 @end
 
 
-@class ListTableViewController;
+@class ListViewController;
 
 @interface ContentViewController : UIViewController
 
-@property (weak, nonatomic) ListTableViewController *listViewController;
+@property (weak, nonatomic) ListViewController *listViewController;
 
 @end

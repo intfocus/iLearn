@@ -10,11 +10,9 @@
 #import "Constants.h"
 #import "QRCodeReaderViewController.h"
 #import "ConnectionManager.h"
-#import "QuestionnaireCell.h"
+#import "ExamTabelViewCell.h"
 #import "ContentViewController.h"
 
-@interface ExamTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ListTableViewCellDelegate, QRCodeReaderDelegate, ConnectionManagerDelegate>
-
-@property (assign, nonatomic) ListViewType listType;
+@interface ExamTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate, QRCodeReaderDelegate, ConnectionManagerDelegate>
 
 @end

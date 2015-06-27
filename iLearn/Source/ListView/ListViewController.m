@@ -1,19 +1,19 @@
 //
-//  ListTableViewController.m
+//  ListViewController.m
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/16.
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
-#import "ListTableViewController.h"
+#import "ListViewController.h"
 #import "LicenseUtil.h"
 #import "ExamTableViewController.h"
 #import "NotificationViewController.h"
 
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
-@interface ListTableViewController ()
+@interface ListViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *registrationView;
 @property (weak, nonatomic) IBOutlet UIView *lectureView;
@@ -45,7 +45,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 @end
 
 
-@implementation ListTableViewController
+@implementation ListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

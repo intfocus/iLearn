@@ -30,13 +30,13 @@
 		CB7BD7F91B0874DE002C6DFB /* SubjectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7BD7F81B0874DE002C6DFB /* SubjectCollectionViewCell.m */; };
 		CBC976901B3C6F0A006C104F /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768C1B3C6F0A006C104F /* DetailViewController.m */; };
 		CBC976911B3C6F0A006C104F /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768D1B3C6F0A006C104F /* PasswordViewController.m */; };
-		CBC976921B3C6F0A006C104F /* QuestionnaireCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768E1B3C6F0A006C104F /* QuestionnaireCell.m */; };
+		CBC976921B3C6F0A006C104F /* ExamTabelViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768E1B3C6F0A006C104F /* ExamTabelViewCell.m */; };
 		CBC976931B3C6F0A006C104F /* ScoreQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768F1B3C6F0A006C104F /* ScoreQRCodeViewController.m */; };
 		CBC976961B3C6F81006C104F /* ExamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976951B3C6F81006C104F /* ExamTableViewController.m */; };
 		CBC976B11B3E78AA006C104F /* CustomFormSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976AA1B3E78AA006C104F /* CustomFormSegue.m */; };
 		CBC976B21B3E78AA006C104F /* CustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976AC1B3E78AA006C104F /* CustomSegue.m */; };
-		CBC976B31B3E78AA006C104F /* ListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976AE1B3E78AA006C104F /* ListTableViewCell.m */; };
-		CBC976B41B3E78AA006C104F /* ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976B01B3E78AA006C104F /* ListTableViewController.m */; };
+		CBC976B31B3E78AA006C104F /* ContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976AE1B3E78AA006C104F /* ContentTableViewCell.m */; };
+		CBC976B41B3E78AA006C104F /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976B01B3E78AA006C104F /* ListViewController.m */; };
 		CBC976B71B3E7A52006C104F /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976B61B3E7A52006C104F /* ContentViewController.m */; };
 		CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8221B072421000EA3A7 /* AppDelegate.m */; };
 		CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8241B072421000EA3A7 /* Constants.m */; };
@@ -119,11 +119,11 @@
 		CB7BD7F81B0874DE002C6DFB /* SubjectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubjectCollectionViewCell.m; sourceTree = "<group>"; };
 		CBC976881B3C6F0A006C104F /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		CBC976891B3C6F0A006C104F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
-		CBC9768A1B3C6F0A006C104F /* QuestionnaireCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionnaireCell.h; sourceTree = "<group>"; };
+		CBC9768A1B3C6F0A006C104F /* ExamTabelViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamTabelViewCell.h; sourceTree = "<group>"; };
 		CBC9768B1B3C6F0A006C104F /* ScoreQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreQRCodeViewController.h; sourceTree = "<group>"; };
 		CBC9768C1B3C6F0A006C104F /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		CBC9768D1B3C6F0A006C104F /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
-		CBC9768E1B3C6F0A006C104F /* QuestionnaireCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionnaireCell.m; sourceTree = "<group>"; };
+		CBC9768E1B3C6F0A006C104F /* ExamTabelViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamTabelViewCell.m; sourceTree = "<group>"; };
 		CBC9768F1B3C6F0A006C104F /* ScoreQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreQRCodeViewController.m; sourceTree = "<group>"; };
 		CBC976941B3C6F81006C104F /* ExamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamTableViewController.h; sourceTree = "<group>"; };
 		CBC976951B3C6F81006C104F /* ExamTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamTableViewController.m; sourceTree = "<group>"; };
@@ -131,10 +131,10 @@
 		CBC976AA1B3E78AA006C104F /* CustomFormSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFormSegue.m; sourceTree = "<group>"; };
 		CBC976AB1B3E78AA006C104F /* CustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSegue.h; sourceTree = "<group>"; };
 		CBC976AC1B3E78AA006C104F /* CustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSegue.m; sourceTree = "<group>"; };
-		CBC976AD1B3E78AA006C104F /* ListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListTableViewCell.h; sourceTree = "<group>"; };
-		CBC976AE1B3E78AA006C104F /* ListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListTableViewCell.m; sourceTree = "<group>"; };
-		CBC976AF1B3E78AA006C104F /* ListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListTableViewController.h; sourceTree = "<group>"; };
-		CBC976B01B3E78AA006C104F /* ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListTableViewController.m; sourceTree = "<group>"; };
+		CBC976AD1B3E78AA006C104F /* ContentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentTableViewCell.h; sourceTree = "<group>"; };
+		CBC976AE1B3E78AA006C104F /* ContentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentTableViewCell.m; sourceTree = "<group>"; };
+		CBC976AF1B3E78AA006C104F /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
+		CBC976B01B3E78AA006C104F /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
 		CBC976B51B3E7A52006C104F /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		CBC976B61B3E7A52006C104F /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
 		CBE0C8211B072421000EA3A7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = "<group>"; };
@@ -326,10 +326,10 @@
 			children = (
 				CBC976941B3C6F81006C104F /* ExamTableViewController.h */,
 				CBC976951B3C6F81006C104F /* ExamTableViewController.m */,
+				CBC9768A1B3C6F0A006C104F /* ExamTabelViewCell.h */,
+				CBC9768E1B3C6F0A006C104F /* ExamTabelViewCell.m */,
 				CBC976881B3C6F0A006C104F /* DetailViewController.h */,
 				CBC9768C1B3C6F0A006C104F /* DetailViewController.m */,
-				CBC9768A1B3C6F0A006C104F /* QuestionnaireCell.h */,
-				CBC9768E1B3C6F0A006C104F /* QuestionnaireCell.m */,
 				CBC976891B3C6F0A006C104F /* PasswordViewController.h */,
 				CBC9768D1B3C6F0A006C104F /* PasswordViewController.m */,
 				CBC9768B1B3C6F0A006C104F /* ScoreQRCodeViewController.h */,
@@ -346,12 +346,12 @@
 				CBC976AA1B3E78AA006C104F /* CustomFormSegue.m */,
 				CBC976AB1B3E78AA006C104F /* CustomSegue.h */,
 				CBC976AC1B3E78AA006C104F /* CustomSegue.m */,
-				CBC976AD1B3E78AA006C104F /* ListTableViewCell.h */,
-				CBC976AE1B3E78AA006C104F /* ListTableViewCell.m */,
-				CBC976AF1B3E78AA006C104F /* ListTableViewController.h */,
-				CBC976B01B3E78AA006C104F /* ListTableViewController.m */,
+				CBC976AF1B3E78AA006C104F /* ListViewController.h */,
+				CBC976B01B3E78AA006C104F /* ListViewController.m */,
 				CBC976B51B3E7A52006C104F /* ContentViewController.h */,
 				CBC976B61B3E7A52006C104F /* ContentViewController.m */,
+				CBC976AD1B3E78AA006C104F /* ContentTableViewCell.h */,
+				CBC976AE1B3E78AA006C104F /* ContentTableViewCell.m */,
 			);
 			name = ListView;
 			path = Source/ListView;
@@ -646,7 +646,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBE0C8541B073528000EA3A7 /* LicenseUtil.m in Sources */,
-				CBC976B31B3E78AA006C104F /* ListTableViewCell.m in Sources */,
+				CBC976B31B3E78AA006C104F /* ContentTableViewCell.m in Sources */,
 				CBC976B21B3E78AA006C104F /* CustomSegue.m in Sources */,
 				CBE0C8301B072483000EA3A7 /* PersonalInfoViewController.m in Sources */,
 				CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */,
@@ -664,7 +664,7 @@
 				CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */,
 				CB2BAB3D1B348D6E00D523EB /* LogUtils.m in Sources */,
 				C4357C451B39701F00854524 /* ApiUtils.m in Sources */,
-				CBC976921B3C6F0A006C104F /* QuestionnaireCell.m in Sources */,
+				CBC976921B3C6F0A006C104F /* ExamTabelViewCell.m in Sources */,
 				DC5C4F9B1B1F82F4007C83C9 /* QuestionOptionCell.m in Sources */,
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
 				CBC976901B3C6F0A006C104F /* DetailViewController.m in Sources */,
@@ -690,7 +690,7 @@
 				CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */,
 				CBE0C84C1B072DC2000EA3A7 /* qrencode.c in Sources */,
 				CBE0C8331B0724A4000EA3A7 /* QRCodeViewController.m in Sources */,
-				CBC976B41B3E78AA006C104F /* ListTableViewController.m in Sources */,
+				CBC976B41B3E78AA006C104F /* ListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

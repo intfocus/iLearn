@@ -1,5 +1,5 @@
 //
-//  ListTableViewController.h
+//  ListViewController.h
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/16.
@@ -10,7 +10,7 @@
 #import "Constants.h"
 #import "ContentViewController.h"
 
-@interface ListTableViewController : UIViewController
+@interface ListViewController : UIViewController
 
 @property (assign, nonatomic) ListViewType listType;
 
