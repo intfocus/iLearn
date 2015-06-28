@@ -15,7 +15,6 @@
 #import <MBProgressHUD.h>
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
-
 static NSString *const kQuestionOptionCellIdentifier = @"QuestionAnswerCell";
 
 typedef NS_ENUM(NSUInteger, CellStatus) {
@@ -65,6 +64,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
+@property (strong, nonatomic) NSDate *examEndDate;
 @property (strong, nonatomic) NSTimer *timeLeftTimer;
 @property (strong, nonatomic) NSTimer *timeOutTimer;
 
@@ -108,15 +108,15 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     else {
         self.isAnswerMode = NO;
 
-        NSNumber *endTime = _examContent[ExamEndDate];
+        NSNumber *endTime = _examContent[ExamExamEnd];
 
         if (endTime) {
             [self updateTimeLeft];
 
             self.timeLeftTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimeLeft) userInfo:nil repeats:YES];
 
-            NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] longLongValue]];
-            NSTimeInterval timeLeft = [endDate timeIntervalSinceNow];
+            self.examEndDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamExamEnd] longLongValue]];
+            NSTimeInterval timeLeft = [_examEndDate timeIntervalSinceNow];
 
             self.timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:timeLeft target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
         }
@@ -522,8 +522,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateTimeLeft
 {
-    NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] longLongValue]];
-    NSInteger timeLeft = [endDate timeIntervalSinceNow];
+    NSInteger timeLeft = [_examEndDate timeIntervalSinceNow];
 
     if (timeLeft < 0) {
         timeLeft = 0;

@@ -228,17 +228,28 @@ static const NSInteger kMinScanInterval = 3;
         NSInteger scoreInt = -1;
         ExamTypes examType = [content[ExamType] integerValue];
 
-        if ([endDate laterDate:now] == now && examType == ExamTypesFormal) { // Exam is ended
+        NSDate *examStartDate = nil;
+        NSDate *examEndDate = nil;
 
-            NSNumber *score = content[ExamScore];
+        if (content[ExamExamStart]) {
+            examStartDate = [NSDate dateWithTimeIntervalSince1970:[content[ExamExamStart] longLongValue]];
+        }
 
-            if (score == nil || [score isEqualToNumber:@(-1)]) { // Not calculated score yet
-                NSString *fileName = content[CommonFileName];
-                NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+        if (content[ExamExamEnd]) {
+            examEndDate = [NSDate dateWithTimeIntervalSince1970:[content[ExamExamEnd] longLongValue]];
 
-                scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
-                [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
-//                NSLog(@"score: %lld", (long long)scoreInt);
+            if ([examEndDate laterDate:now] == now && examType == ExamTypesFormal) { // Exam was started but ended now
+
+                NSNumber *score = content[ExamScore];
+
+                if (score == nil || [score isEqualToNumber:@(-1)]) { // Not calculated score yet
+                    NSString *fileName = content[CommonFileName];
+                    NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+
+                    scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
+                    [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+                    // NSLog(@"score: %lld", (long long)scoreInt);
+                }
             }
         }
 
@@ -249,7 +260,12 @@ static const NSInteger kMinScanInterval = 3;
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
             cell.actionButtonType = ContentTableViewCellActionView;
         }
-        else {
+        else if ([endDate laterDate:now] == now && examStartDate != nil) { // Exam is ended and not start answering
+            cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_ENDED", nil);
+            [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_ENDED", nil) forState:UIControlStateNormal];
+            cell.actionButton.enabled = NO;
+        }
+        else { // Exam is started
             NSNumber *score;
 
             if (scoreInt == -1) {
@@ -290,6 +306,7 @@ static const NSInteger kMinScanInterval = 3;
                 cell.qrCodeButton.titleLabel.text = NSLocalizedString(@"LIST_BUTTON_QRCODE", nil);
             }
             else {
+                // Not start testing or testing
                 cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_TESTING", nil);
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
                 cell.actionButtonType = ContentTableViewCellActionView;
