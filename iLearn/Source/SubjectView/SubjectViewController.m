@@ -15,7 +15,6 @@
 #import <MBProgressHUD.h>
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
-
 static NSString *const kQuestionOptionCellIdentifier = @"QuestionAnswerCell";
 
 typedef NS_ENUM(NSUInteger, CellStatus) {
@@ -31,6 +30,12 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *userNameTitle;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *userAccountTitle;
+@property (weak, nonatomic) IBOutlet UILabel *userAccountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *answerCardLabel;
 @property (weak, nonatomic) IBOutlet UILabel *leftStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *rightStatusLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *subjectCollectionView;
@@ -39,11 +44,15 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UIView *questionView;
 @property (weak, nonatomic) IBOutlet UILabel *questionTitleLabel;
 @property (weak, nonatomic) IBOutlet UITableView *questionTableView;
+@property (weak, nonatomic) IBOutlet UIView *questionTypeView;
+@property (weak, nonatomic) IBOutlet UILabel *questionTypeLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *correctionView;
 @property (weak, nonatomic) IBOutlet UILabel *correctionTitleLabel;
 @property (weak, nonatomic) IBOutlet UITableView *correctionTableView;
 @property (weak, nonatomic) IBOutlet UILabel *correctionNoteLabel;
+@property (weak, nonatomic) IBOutlet UIView *correctionTypeView;
+@property (weak, nonatomic) IBOutlet UILabel *correctionTypeLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *questionToCorrectionSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerTableViewHeightConstraint;
@@ -55,6 +64,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
+@property (strong, nonatomic) NSDate *examEndDate;
 @property (strong, nonatomic) NSTimer *timeLeftTimer;
 @property (strong, nonatomic) NSTimer *timeOutTimer;
 
@@ -72,28 +82,41 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
 
-    self.title = _examContent[ExamTitle];
+    _titleLabel.text = _examContent[ExamTitle];
+    _typeLabel.text = NSLocalizedString(@"LIST_EXAM", nil);
+    _userAccountTitle.text = NSLocalizedString(@"COMMON_ACCOUNT", nil);
+    _userAccountLabel.text = [LicenseUtil userAccount];
+    _userNameTitle.text = NSLocalizedString(@"COMMON_NAME", nil);
+    _userNameLabel.text = [LicenseUtil userName];
 
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
 
+    [_questionTypeView.layer setCornerRadius:5.0];
+    [_correctionTypeView.layer setCornerRadius:5.0];
+
     NSNumber *score = _examContent[ExamScore];
+
+    ExamTypes examType = [_examContent[ExamType] integerValue];
 
     if (score != nil && [score integerValue] != -1) {
         self.isAnswerMode = YES;
         _questionTableView.userInteractionEnabled = NO;
     }
+    else if (examType == ExamTypesPractice) {
+        self.isAnswerMode = NO;
+    }
     else {
         self.isAnswerMode = NO;
 
-        NSNumber *endTime = _examContent[ExamEndDate];
+        NSNumber *endTime = _examContent[ExamExamEnd];
 
         if (endTime) {
             [self updateTimeLeft];
 
             self.timeLeftTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimeLeft) userInfo:nil repeats:YES];
 
-            NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] longLongValue]];
-            NSTimeInterval timeLeft = [endDate timeIntervalSinceNow];
+            self.examEndDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamExamEnd] longLongValue]];
+            NSTimeInterval timeLeft = [_examEndDate timeIntervalSinceNow];
 
             self.timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:timeLeft target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
         }
@@ -170,11 +193,11 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSDictionary *subjectContent = _examContent[ExamQuestions][indexPath.row];
 
         if ([subjectContent[ExamQuestionCorrect] isEqualToNumber:@1]) {
-            cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+            cell.backgroundColor = ILGreen;
             cell.numberLabel.textColor = [UIColor whiteColor];
         }
         else {
-            cell.backgroundColor = RGBCOLOR(200.0, 0.0, 10.0);
+            cell.backgroundColor = ILRed;
         }
     }
     else {
@@ -226,10 +249,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         BOOL correct = [selectedQuestion[ExamQuestionCorrect] boolValue];
 
         if (_isAnswerMode && !correct) {
-            backgroundView.backgroundColor = RGBCOLOR(200.0, 0.0, 10.0);
+            backgroundView.backgroundColor = ILRed;
         }
         else {
-            backgroundView.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+            backgroundView.backgroundColor = ILGreen;
         }
         cell.selectedBackgroundView = backgroundView;
 
@@ -244,7 +267,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
 
         if ([answersBySeq containsObject:@(indexPath.row)]) {
-            cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+            cell.backgroundColor = ILGreen;
         }
         else {
             cell.backgroundColor = [UIColor whiteColor];
@@ -312,7 +335,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
             break;
     }
 
-    NSString *title = [NSString stringWithFormat:@"%d.%@ %@", _selectedCellIndex+1, typeString, questionTitle];
+    _questionTypeLabel.text = typeString;
+    _correctionTypeLabel.text = typeString;
+
+    NSString *title = [NSString stringWithFormat:@"%d. %@", _selectedCellIndex+1, questionTitle];
 
     _questionTitleLabel.text = title;
     _correctionTitleLabel.text = title;
@@ -413,7 +439,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         NSMutableAttributedString *correctAttrString = [[NSMutableAttributedString alloc] initWithString:correctString];
         [correctAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:correctTextRange];
-        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(27.0, 165.0, 158.0), NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:correctNumberRange];
+        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:ILGreen, NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:correctNumberRange];
 
         _leftStatusLabel.attributedText = correctAttrString;
 
@@ -424,7 +450,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         NSMutableAttributedString *wrongAttrString = [[NSMutableAttributedString alloc] initWithString:wrongString];
         [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:wrongTextRange];
-        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(200.0, 0.0, 10.0), NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:wrongNumberRange];
+        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:ILRed, NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:wrongNumberRange];
 
         _rightStatusLabel.attributedText = wrongAttrString;
     }
@@ -496,8 +522,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateTimeLeft
 {
-    NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamEndDate] longLongValue]];
-    NSInteger timeLeft = [endDate timeIntervalSinceNow];
+    NSInteger timeLeft = [_examEndDate timeIntervalSinceNow];
 
     if (timeLeft < 0) {
         timeLeft = 0;
@@ -506,7 +531,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSInteger minute = timeLeft / 60;
     NSInteger second = timeLeft % 60;
 
-    self.navigationItem.title = [NSString stringWithFormat:@"%lld:%02lld", (long long)minute, (long long)second];
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"EXAM_TIME_TEMPLATE", nil), (long long)minute, (long long)second];
 }
 
 - (void)timeOut

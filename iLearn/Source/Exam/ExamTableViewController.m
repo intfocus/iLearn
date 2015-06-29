@@ -1,13 +1,12 @@
 //
-//  ListTableViewController.m
+//  ExamTableViewController.m
 //  iLearn
 //
-//  Created by Charlie Hung on 2015/5/16.
+//  Created by Charlie Hung on 2015/6/26.
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
-#import "ListTableViewController.h"
-#import "QuestionnaireCell.h"
+#import "ExamTableViewController.h"
 #import "DetailViewController.h"
 #import "PasswordViewController.h"
 #import "QuestionnaireUtil.h"
@@ -17,6 +16,7 @@
 #import "ExamUtil.h"
 #import "UIImage+MDQRCode.h"
 #import <MBProgressHUD.h>
+#import "ListViewController.h"
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
@@ -28,30 +28,12 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 static const NSInteger kMinScanInterval = 3;
 
-@interface ListTableViewController ()
+@interface ExamTableViewController ()
 
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) ConnectionManager *connectionManager;
 
-@property (weak, nonatomic) IBOutlet UIButton *registrationButton;
-@property (weak, nonatomic) IBOutlet UIButton *lectureButton;
-@property (weak, nonatomic) IBOutlet UIButton *questionnaireButton;
-@property (weak, nonatomic) IBOutlet UIButton *examButton;
-@property (weak, nonatomic) IBOutlet UIButton *settingsButton;
-
-@property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
-@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
-@property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
-
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) NSArray *contents;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
-
-@property (weak, nonatomic) IBOutlet UIView *registrationView;
-@property (weak, nonatomic) IBOutlet UIView *lectureView;
-@property (weak, nonatomic) IBOutlet UIView *questionnaireView;
-@property (weak, nonatomic) IBOutlet UIView *examView;
 
 @property (assign, nonatomic) BOOL hasAutoSynced;
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
@@ -66,27 +48,11 @@ static const NSInteger kMinScanInterval = 3;
 @end
 
 
-@implementation ListTableViewController
+@implementation ExamTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-
-    _registrationButton.enabled = NO;
-    _lectureButton.enabled = NO;
-    _questionnaireButton.enabled = NO;
-    _settingsButton.enabled = NO;
-
-    // Setup avatar image view
-    CGFloat width = _avatarImageView.frame.size.width;
-    [_avatarImageView.layer setCornerRadius:width/2.0];
-    [_avatarImageView.layer setBorderColor:[UIColor whiteColor].CGColor];
-    [_avatarImageView.layer setBorderWidth:2.0];
-    _avatarImageView.clipsToBounds = YES;
-
-    _userNameLabel.text = [LicenseUtil userAccount];
-
-    _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
 
     self.connectionManager = [[ConnectionManager alloc] init];
     _connectionManager.delegate = self;
@@ -112,35 +78,20 @@ static const NSInteger kMinScanInterval = 3;
     if ([segue.identifier isEqualToString:kShowDetailSegue]) {
 
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
-
-        switch (_listType) {
-            case ListViewTypeExam:
-                detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
-                detailVC.descString = [ExamUtil descFromContent:sender];
-                break;
-            case ListViewTypeQuestionnaire:
-                detailVC.titleString = [[QuestionnaireUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
-                detailVC.descString = [QuestionnaireUtil descFromContent:sender];
-                break;
-            default:
-                detailVC.titleString = [[QuestionnaireUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
-                detailVC.descString = [QuestionnaireUtil descFromContent:sender];
-                break;
-        }
+        detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
+        detailVC.descString = [ExamUtil descFromContent:sender];
     }
     if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
 
         PasswordViewController *detailVC = (PasswordViewController*)segue.destinationViewController;
 
-        if (_listType == ListViewTypeExam) {
-                detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
-                detailVC.descString = [ExamUtil descFromContent:sender];
-                detailVC.password = sender[ExamPassword];
-                __weak id weakSelf = self;
-                detailVC.callback = ^(void){
-                    [weakSelf enterExamPageForContent:sender];
-                };
-        }
+        detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
+        detailVC.descString = [ExamUtil descFromContent:sender];
+        detailVC.password = sender[ExamPassword];
+        __weak id weakSelf = self;
+        detailVC.callback = ^(void){
+            [weakSelf enterExamPageForContent:sender];
+        };
     }
     else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
         UINavigationController *navController = segue.destinationViewController;
@@ -163,7 +114,7 @@ static const NSInteger kMinScanInterval = 3;
 
 - (void)syncData
 {
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
 
     self.unsubmittedExamResults = [[ExamUtil resultFiles] mutableCopy];
@@ -201,55 +152,15 @@ static const NSInteger kMinScanInterval = 3;
 
 - (void)downloadExamId:(NSString*)examId
 {
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
     [_connectionManager downloadExamWithId:examId];
 }
 
 - (void)refreshContent
 {
-    switch (_listType) {
-        case ListViewTypeExam:
-            self.contents = [ExamUtil loadExams];
-            self.titleLabel.text = NSLocalizedString(@"LIST_EXAM", nil);
-            break;
-        case ListViewTypeQuestionnaire:
-            self.contents = [QuestionnaireUtil loadQuestionaires];
-            self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
-            break;
-        default:
-            self.contents = [QuestionnaireUtil loadQuestionaires];
-            self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
-            break;
-    }
-
-    [self adjustSelectedItemInPanel];
+    self.contents = [ExamUtil loadExams];
     [self.tableView reloadData];
-}
-
-- (void)adjustSelectedItemInPanel
-{
-    _examView.backgroundColor = [UIColor clearColor];
-    _questionnaireView.backgroundColor = [UIColor clearColor];
-    _lectureView.backgroundColor = [UIColor clearColor];
-    _registrationView.backgroundColor = [UIColor clearColor];
-
-    switch (_listType) {
-        case ListViewTypeExam:
-            _examView.backgroundColor = RGBCOLOR(26.0, 78.0, 132.0);
-            break;
-        case ListViewTypeLecture:
-            _lectureView.backgroundColor = RGBCOLOR(26.0, 78.0, 132.0);
-            break;
-        case ListViewTypeQuestionnaire:
-            _questionnaireView.backgroundColor = RGBCOLOR(26.0, 78.0, 132.0);
-            break;
-        case ListViewTypeRegistration:
-            _registrationView.backgroundColor = RGBCOLOR(26.0, 78.0, 132.0);
-            break;
-        default:
-            break;
-    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -266,42 +177,32 @@ static const NSInteger kMinScanInterval = 3;
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (_listType) {
-        case ListViewTypeExam:
-            return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
-            break;
-        case ListViewTypeQuestionnaire:
-            return [self tableView:tableView cellForQuestionnaireRowAtIndexPath:indexPath];
-            break;
-        default:
-            return [self tableView:tableView cellForQuestionnaireRowAtIndexPath:indexPath];
-            break;
-    }
+    return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForQuestionnaireRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    QuestionnaireCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
-    cell.delegate = self;
-
-    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
-
-    cell.titleLabel.text = [QuestionnaireUtil titleFromContent:content];
-
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYY/MM/dd"];
-    NSInteger epochTime = [QuestionnaireUtil expirationDateFromContent:content];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:epochTime];
-    NSString *expirationDateString = [formatter stringFromDate:date];
-
-    cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
-
-    return cell;
-}
+//- (UITableViewCell*)tableView:(UITableView *)tableView cellForQuestionnaireRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
+//    cell.delegate = self;
+//
+//    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+//
+//    cell.titleLabel.text = [QuestionnaireUtil titleFromContent:content];
+//
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"YYYY/MM/dd"];
+//    NSInteger epochTime = [QuestionnaireUtil expirationDateFromContent:content];
+//    NSDate *date = [NSDate dateWithTimeIntervalSince1970:epochTime];
+//    NSString *expirationDateString = [formatter stringFromDate:date];
+//
+//    cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
+//
+//    return cell;
+//}
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    QuestionnaireCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
+    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
     cell.delegate = self;
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
@@ -325,18 +226,30 @@ static const NSInteger kMinScanInterval = 3;
         NSDate *now = [NSDate date];
         NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:[ExamUtil startDateFromContent:content]];
         NSInteger scoreInt = -1;
+        ExamTypes examType = [content[ExamType] integerValue];
 
-        if ([endDate laterDate:now] == now) { // Exam is ended
+        NSDate *examStartDate = nil;
+        NSDate *examEndDate = nil;
 
-            NSNumber *score = content[ExamScore];
+        if (content[ExamExamStart]) {
+            examStartDate = [NSDate dateWithTimeIntervalSince1970:[content[ExamExamStart] longLongValue]];
+        }
 
-            if (score == nil || [score isEqualToNumber:@(-1)]) { // Not calculated score yet
-                NSString *fileName = content[CommonFileName];
-                NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+        if (content[ExamExamEnd]) {
+            examEndDate = [NSDate dateWithTimeIntervalSince1970:[content[ExamExamEnd] longLongValue]];
 
-                scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
-                [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
-//                NSLog(@"score: %lld", (long long)scoreInt);
+            if ([examEndDate laterDate:now] == now && examType == ExamTypesFormal) { // Exam was started but ended now
+
+                NSNumber *score = content[ExamScore];
+
+                if (score == nil || [score isEqualToNumber:@(-1)]) { // Not calculated score yet
+                    NSString *fileName = content[CommonFileName];
+                    NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+
+                    scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
+                    [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+                    // NSLog(@"score: %lld", (long long)scoreInt);
+                }
             }
         }
 
@@ -345,9 +258,14 @@ static const NSInteger kMinScanInterval = 3;
         if ([startDate laterDate:now] == startDate) { // Exam is not started yet
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_STARTED", nil);
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
-            cell.actionButtonType = ListTableViewCellActionView;
+            cell.actionButtonType = ContentTableViewCellActionView;
         }
-        else {
+        else if ([endDate laterDate:now] == now && examStartDate != nil) { // Exam is ended and not start answering
+            cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_ENDED", nil);
+            [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_ENDED", nil) forState:UIControlStateNormal];
+            cell.actionButton.enabled = NO;
+        }
+        else { // Exam is started
             NSNumber *score;
 
             if (scoreInt == -1) {
@@ -370,7 +288,7 @@ static const NSInteger kMinScanInterval = 3;
                     cell.qrCodeButton.hidden = NO;
                 }
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];
-                cell.actionButtonType = ListTableViewCellActionView;
+                cell.actionButtonType = ContentTableViewCellActionView;
 
                 cell.scoreTitleLabel.hidden = NO;
                 cell.scoreLabel.hidden = NO;
@@ -380,16 +298,18 @@ static const NSInteger kMinScanInterval = 3;
                 NSString *strScore = [NSString stringWithFormat:@"%lld", [score longLongValue]];
                 NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"LIST_SCORE_TEMPLATE", nil), [score longLongValue]];
                 NSMutableAttributedString *scoreAttrString = [[NSMutableAttributedString alloc] initWithString:scoreString];
+                [scoreAttrString addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]} range:NSMakeRange(0, [scoreString length])];
                 NSRange scoreRange = [scoreString rangeOfString:strScore];
-                [scoreAttrString addAttributes:@{NSForegroundColorAttributeName: RGBCOLOR(200.0, 0.0, 10.0)} range:scoreRange];
+                [scoreAttrString addAttributes:@{NSForegroundColorAttributeName: ILDarkRed} range:scoreRange];
                 cell.scoreLabel.attributedText = scoreAttrString;
 
                 cell.qrCodeButton.titleLabel.text = NSLocalizedString(@"LIST_BUTTON_QRCODE", nil);
             }
             else {
+                // Not start testing or testing
                 cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_TESTING", nil);
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
-                cell.actionButtonType = ListTableViewCellActionView;
+                cell.actionButtonType = ContentTableViewCellActionView;
             }
 
         }
@@ -406,7 +326,7 @@ static const NSInteger kMinScanInterval = 3;
         else {
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_DOWNLOADED", nil);
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_DOWNLOAD", nil) forState:UIControlStateNormal];
-            cell.actionButtonType = ListTableViewCellActionDownload;
+            cell.actionButtonType = ContentTableViewCellActionDownload;
         }
     }
 
@@ -416,7 +336,12 @@ static const NSInteger kMinScanInterval = 3;
 
 #pragma mark - UITableViewDelegate
 
-- (void)didSelectInfoButtonOfCell:(ListTableViewCell*)cell
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 120.0;
+}
+
+- (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
@@ -427,7 +352,7 @@ static const NSInteger kMinScanInterval = 3;
     [self performSegueWithIdentifier:kShowDetailSegue sender:content];
 }
 
-- (void)didSelectActionButtonOfCell:(ListTableViewCell*)cell
+- (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
@@ -436,12 +361,12 @@ static const NSInteger kMinScanInterval = 3;
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
 
-        if (cell.actionButtonType == ListTableViewCellActionDownload) {
+        if (cell.actionButtonType == ContentTableViewCellActionDownload) {
 
             NSString *examId = [NSString stringWithFormat:@"%@", content[ExamId]];
             [self downloadExamId:examId];
         }
-        else if (cell.actionButtonType == ListTableViewCellActionView) {
+        else if (cell.actionButtonType == ContentTableViewCellActionView) {
 
         NSNumber *examType = content[ExamType];
         NSNumber *examLocation = content[ExamLocation];
@@ -459,7 +384,7 @@ static const NSInteger kMinScanInterval = 3;
     }
 }
 
-- (void)didSelectQRCodeButtonOfCell:(ListTableViewCell*)cell
+- (void)didSelectQRCodeButtonOfCell:(ContentTableViewCell*)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
@@ -480,57 +405,7 @@ static const NSInteger kMinScanInterval = 3;
 
 #pragma mark - IBAction
 
-- (IBAction)logoButtonTouched:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)registrationButtonTouched:(id)sender {
-    NSLog(@"registrationButtonTouched");
-    if (_listType == ListViewTypeRegistration) {
-        return;
-    }
-    self.listType = ListViewTypeRegistration;
-    [self refreshContent];
-}
-
-- (IBAction)lectureButtonTouched:(id)sender {
-    NSLog(@"lectureButtonTouched");
-    if (_listType == ListViewTypeLecture) {
-        return;
-    }
-    self.listType = ListViewTypeLecture;
-    [self refreshContent];
-}
-
-- (IBAction)questionnaireButtonTouched:(id)sender {
-    NSLog(@"questionnaireButtonTouched");
-    if (_listType == ListViewTypeQuestionnaire) {
-        return;
-    }
-    self.listType = ListViewTypeQuestionnaire;
-    [self refreshContent];
-}
-
-- (IBAction)examButtonTouched:(id)sender {
-    NSLog(@"examButtonTouched");
-    if (_listType == ListViewTypeExam) {
-        return;
-    }
-    self.listType = ListViewTypeExam;
-    [self refreshContent];
-}
-
-- (IBAction)settingsButtonTouched:(id)sender {
-    NSLog(@"settingsButtonTouched");
-    [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
-}
-
-- (IBAction)syncButtonTouched:(id)sender {
-    NSLog(@"syncButtonTouched");
-    [self syncData];
-}
-
-- (IBAction)scanButtonTouched:(id)sender {
+- (void)scanQRCode {
     if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
         static QRCodeReaderViewController *reader = nil;
         static dispatch_once_t onceToken;
@@ -552,9 +427,9 @@ static const NSInteger kMinScanInterval = 3;
 
 - (void)enterExamPageForContent:(NSDictionary*)content
 {
-    __weak ListTableViewController *weakSelf = self;
+    __weak ExamTableViewController *weakSelf = self;
 
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

@@ -7,7 +7,7 @@
 //
 
 #import "DashboardViewController.h"
-#import "ListTableViewController.h"
+#import "ListViewController.h"
 #import "QRCodeViewController.h"
 #import "LicenseUtil.h"
 #import "NotificationViewController.h"
@@ -21,6 +21,7 @@ static NSString *const kShowRegistrationSegue = @"showRegistrationPage";
 static NSString *const kShowLectureSegue = @"showLecturePage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 static NSString *const kShowQRCodeSegue = @"showQRCodePage";
+static NSString *const kShowNotificationSegue = @"showNotificationPage";
 
 static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifier";
 
@@ -105,25 +106,30 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:kShowQuestionnaireSegue]) {
-        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeQuestionnaire;
     }
     else if ([segue.identifier isEqualToString:kShowExamSegue]) {
-        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeExam;
     }
     else if ([segue.identifier isEqualToString:kShowRegistrationSegue]) {
-        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeRegistration;
     }
     else if ([segue.identifier isEqualToString:kShowLectureSegue]) {
-        ListTableViewController* listVC = (ListTableViewController*)segue.destinationViewController;
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeLecture;
+    }
+    else if ([segue.identifier isEqualToString:kShowNotificationSegue]) {
+        ListViewController* listVC = (ListViewController*)segue.destinationViewController;
+        listVC.listType = ListViewTypeNotification;
     }
     else if ([segue.identifier isEqualToString:kShowQRCodeSegue]) {
         QRCodeViewController* qrCodeVC = (QRCodeViewController*)segue.destinationViewController;
         qrCodeVC.showCloseButton = YES;
     }
+
 }
 
 #pragma mark - Helper Functions
@@ -209,8 +215,9 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [self performSegueWithIdentifier:kShowLectureSegue sender:nil];
 }
 
-- (IBAction)reminderTouched:(id)sender {
+- (IBAction)notificationTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self performSegueWithIdentifier:kShowNotificationSegue sender:nil];
 }
 
 - (IBAction)questionnaireTouched:(id)sender {
@@ -260,8 +267,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NotificationViewController *notificationVC = [[NotificationViewController alloc] init];
-    [self presentViewController:notificationVC animated:YES completion:nil];
+    [self performSegueWithIdentifier:kShowNotificationSegue sender:nil];
 }
 
 @end

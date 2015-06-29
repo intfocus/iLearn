@@ -1,20 +1,20 @@
 //
-//  QuestionnaireCell.m
+//  ExamTabelViewCell.m
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/16.
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
-#import "QuestionnaireCell.h"
+#import "ExamTabelViewCell.h"
 
-@interface QuestionnaireCell ()
+@interface ExamTabelViewCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *bgView;
 
 @end
 
-@implementation QuestionnaireCell
+@implementation ExamTabelViewCell
 
 - (void)awakeFromNib
 {
