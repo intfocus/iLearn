@@ -260,7 +260,7 @@ static const NSInteger kMinScanInterval = 3;
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_TESTING", nil) forState:UIControlStateNormal];
             cell.actionButtonType = ContentTableViewCellActionView;
         }
-        else if ([endDate laterDate:now] == now && examStartDate != nil) { // Exam is ended and not start answering
+        else if ([endDate laterDate:now] == now && examStartDate == nil) { // Exam is ended and not start answering
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_ENDED", nil);
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_ENDED", nil) forState:UIControlStateNormal];
             cell.actionButton.enabled = NO;
