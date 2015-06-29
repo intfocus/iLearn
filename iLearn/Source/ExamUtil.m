@@ -148,13 +148,37 @@ static const BOOL inDeveloping = NO;
 
 + (NSString*)descFromContent:(NSDictionary*)content
 {
+    // Exam start date
     NSNumber *start = content[ExamBeginDate];
     NSDate *beginDate = [NSDate dateWithTimeIntervalSince1970:[start longLongValue]];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY/MM/dd HH:mm"];
     NSString *beginTimeString = [formatter stringFromDate:beginDate];
     NSString *beginString = [NSString stringWithFormat:NSLocalizedString(@"LIST_BEGIN_DATE_TEMPLATE", nil), beginTimeString];
-    NSString *descString = [NSString stringWithFormat:@"%@\n%@", beginString, content[ExamDesc]];
+
+    // Exam duration
+    long long duration = [content[ExamDuration] longLongValue];
+
+    if (duration < 0) {
+        duration = 0;
+    }
+
+    long long minute = duration / 60;
+    long long second = duration % 60;
+
+    NSString *durationString = [NSString stringWithFormat:NSLocalizedString(@"LIST_DURATION_TEMPLATE", nil), minute, second];
+
+    // Show exam duration for formal exam
+    ExamTypes examType = [content[ExamType] integerValue];
+
+    NSString *descString;
+
+    if (examType == ExamTypesFormal) {
+        descString = [NSString stringWithFormat:@"%@\n%@\n%@", beginString, durationString, content[ExamDesc]];
+    }
+    else {
+        descString = [NSString stringWithFormat:@"%@\n%@", beginString, content[ExamDesc]];
+    }
 
     return descString;
 }

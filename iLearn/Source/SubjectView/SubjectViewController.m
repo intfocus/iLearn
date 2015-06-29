@@ -111,11 +111,13 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSNumber *endTime = _examContent[ExamExamEnd];
 
         if (endTime) {
+
+            self.examEndDate = [NSDate dateWithTimeIntervalSince1970:[endTime longLongValue]];
+
             [self updateTimeLeft];
 
             self.timeLeftTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimeLeft) userInfo:nil repeats:YES];
 
-            self.examEndDate = [NSDate dateWithTimeIntervalSince1970:[_examContent[ExamExamEnd] longLongValue]];
             NSTimeInterval timeLeft = [_examEndDate timeIntervalSinceNow];
 
             self.timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:timeLeft target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
