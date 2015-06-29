@@ -37,6 +37,7 @@ LIST_NOTIFICATION = "Notification";
 LIST_DETAIL = "detail";
 LIST_BEGIN_DATE_TEMPLATE = "Start time: %@";
 LIST_END_DATE_TEMPLATE = "End time: %@";
+LIST_DURATION_TEMPLATE = "Duration: %lld:%02lld";
 LIST_STATUS_NOT_DOWNLOADED = "Not Downloaded";
 LIST_STATUS_NOT_STARTED = "Not Started";
 LIST_STATUS_ENDED = "Ended";
