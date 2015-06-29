@@ -11,6 +11,7 @@
 NSString *const ServiceNumber = @"400 400 400";
 NSString *const FakeAccount = @"A1234567";
 NSString *const FakeId = @"1";
+NSString *const FakeName = @"张三";
 
 NSString *const CacheFolder = @"JsonTemplate";
 NSString *const QuestionnaireFolder = @"Questionnaire";
@@ -33,7 +34,9 @@ NSString *const ExamTitle = @"exam_name";
 NSString *const ExamDesc = @"description";
 NSString *const ExamBeginDate = @"begin";
 NSString *const ExamEndDate = @"end";
-NSString *const ExamExpirationDate = @"expire_time";
+NSString *const ExamDuration = @"duration";
+NSString *const ExamExamStart = @"exam_start";
+NSString *const ExamExamEnd = @"exam_end";
 NSString *const ExamStatus = @"status";
 NSString *const ExamSubmitted = @"submit";
 NSString *const ExamType = @"type";

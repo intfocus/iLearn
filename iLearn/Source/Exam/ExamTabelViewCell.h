@@ -1,5 +1,5 @@
 //
-//  QuestionnaireCell.h
+//  ExamTabelViewCell.h
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/16.
@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ListTableViewCell.h"
+#import "ContentTableViewCell.h"
 
-@interface QuestionnaireCell : ListTableViewCell
+@interface ExamTabelViewCell : ContentTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusTitleLabel;

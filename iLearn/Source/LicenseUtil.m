@@ -12,6 +12,7 @@
 
 static NSString *const kUserAccount = @"UserAccount";
 static NSString *const kUserId = @"UserId";
+static NSString *const kUserName = @"UserName";
 
 @implementation LicenseUtil
 
@@ -63,6 +64,29 @@ static NSString *const kUserId = @"UserId";
             [userDefaults setObject:userId forKey:kUserId];
             [userDefaults synchronize];
         }
+    }
+}
+
++ (NSString*)userName
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *userName = [userDefaults stringForKey:kUserName];
+
+    // TODO: Remove FakeName for developing
+    if ([userName length]) {
+        return userName;
+    }
+    else {
+        return FakeName;
+    }
+}
+
++ (void)saveUserName:(NSString*)userName
+{
+    if ([userName length]) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:userName forKey:kUserName];
+        [userDefaults synchronize];
     }
 }
 

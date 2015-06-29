@@ -1,14 +1,14 @@
 //
-//  ListTableViewCell.m
+//  ContentTableViewCell.m
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/16.
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
-#import "ListTableViewCell.h"
+#import "ContentTableViewCell.h"
 
-@implementation ListTableViewCell
+@implementation ContentTableViewCell
 
 - (void)awakeFromNib
 {
