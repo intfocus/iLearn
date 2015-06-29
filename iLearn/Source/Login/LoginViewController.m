@@ -95,7 +95,7 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-    self.cookieValue = @"E00736";
+    self.cookieValue = @"E00001";
     [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
     return;
     
