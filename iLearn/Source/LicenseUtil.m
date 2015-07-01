@@ -13,6 +13,7 @@
 static NSString *const kUserAccount = @"UserAccount";
 static NSString *const kUserId = @"UserId";
 static NSString *const kUserName = @"UserName";
+static NSString *const kEmployeeID = @"EmployeeID";
 
 @implementation LicenseUtil
 

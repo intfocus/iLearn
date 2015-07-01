@@ -309,11 +309,9 @@
 
 -(void)enterMainViewController{
 
-    NSString *userAccount = self.user.name;
-    NSString *userId = self.user.ID;
-    [LicenseUtil saveUserAccount:userAccount];
-    [LicenseUtil saveUserId:userId];
-    [LicenseUtil saveUserName:userAccount];
+    [LicenseUtil saveUserAccount:self.user.employeeID];
+    [LicenseUtil saveUserId:self.user.ID];
+    [LicenseUtil saveUserName:self.user.name];
     
     // TODO: Use the following code to link to Main storyboard
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];

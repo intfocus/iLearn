@@ -193,8 +193,6 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
     self.examQuestionScoreLabel.text = examQuestionScore;
     self.examQuestionTitleLabel.text = examQuestionTitle;
-    self.userNameLabel.text = self.user.name;
-    self.userAccountLabel.text = self.user.ID;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
