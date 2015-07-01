@@ -95,9 +95,9 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-    self.cookieValue = @"E00001";
-    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
-    return;
+//    self.cookieValue = @"E00001";
+//    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+//    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
@@ -309,10 +309,9 @@
 
 -(void)enterMainViewController{
 
-    NSString *userAccount = self.user.loginUserName;
-    NSString *userId = self.user.ID;
-    [LicenseUtil saveUserAccount:userAccount];
-    [LicenseUtil saveUserId:userId];
+    [LicenseUtil saveUserAccount:self.user.employeeID];
+    [LicenseUtil saveUserId:self.user.ID];
+    [LicenseUtil saveUserName:self.user.name];
     
     // TODO: Use the following code to link to Main storyboard
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];

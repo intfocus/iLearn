@@ -94,12 +94,11 @@ static const NSInteger kMinScanInterval = 3;
         };
     }
     else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
-        UINavigationController *navController = segue.destinationViewController;
-        UIViewController *viewController = navController.topViewController;
+        //UINavigationController *navController = segue.destinationViewController;
+        UIViewController *viewController = segue.destinationViewController;
 
         if ([viewController isKindOfClass:[SubjectViewController class]]) {
             SubjectViewController *subjectVC = (SubjectViewController*)viewController;
-
             subjectVC.examContent = sender;
         }
     }
@@ -537,6 +536,7 @@ static const NSInteger kMinScanInterval = 3;
         [ExamUtil setScannedResultSubmitted:result];
     }
     [self syncScannedExamResults];
+    
 }
 
 @end

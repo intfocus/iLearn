@@ -63,7 +63,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     [_avatarImageView.layer setBorderWidth:2.0];
     _avatarImageView.clipsToBounds = YES;
 
-    _userNameLabel.text = [LicenseUtil userAccount];
+    _userNameLabel.text = [LicenseUtil userName];
 
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
 

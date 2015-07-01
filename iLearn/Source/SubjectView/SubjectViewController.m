@@ -12,6 +12,7 @@
 #import "Constants.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
+#import "User.h"
 #import <MBProgressHUD.h>
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
@@ -24,11 +25,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     CellStatusWrong,
 };
 
-
 @interface SubjectViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userNameTitle;
@@ -40,20 +39,17 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UILabel *rightStatusLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *subjectCollectionView;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
-
 @property (weak, nonatomic) IBOutlet UIView *questionView;
 @property (weak, nonatomic) IBOutlet UILabel *questionTitleLabel;
 @property (weak, nonatomic) IBOutlet UITableView *questionTableView;
 @property (weak, nonatomic) IBOutlet UIView *questionTypeView;
 @property (weak, nonatomic) IBOutlet UILabel *questionTypeLabel;
-
 @property (weak, nonatomic) IBOutlet UIView *correctionView;
 @property (weak, nonatomic) IBOutlet UILabel *correctionTitleLabel;
 @property (weak, nonatomic) IBOutlet UITableView *correctionTableView;
 @property (weak, nonatomic) IBOutlet UILabel *correctionNoteLabel;
 @property (weak, nonatomic) IBOutlet UIView *correctionTypeView;
 @property (weak, nonatomic) IBOutlet UILabel *correctionTypeLabel;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *questionToCorrectionSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerTableViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionTableViewHeightConstraint;
@@ -68,8 +64,26 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (strong, nonatomic) NSTimer *timeLeftTimer;
 @property (strong, nonatomic) NSTimer *timeOutTimer;
 
-@property (assign, nonatomic) BOOL isAnswerMode;
+@property (assign, nonatomic) BOOL isAnswerMode; //答案模式
 
+@property (weak, nonatomic) IBOutlet UIView *fakeNavBarView;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton2;
+@property (weak, nonatomic) IBOutlet UIView *squareView;
+
+@property (weak, nonatomic) IBOutlet UIView *countDownView;
+@property (weak, nonatomic) IBOutlet UILabel *countDownHourLabel;
+@property (weak, nonatomic) IBOutlet UILabel *countDownMinuteLabel;
+@property (weak, nonatomic) IBOutlet UILabel *countDownSecondLabel;
+@property (weak, nonatomic) IBOutlet UILabel *examQuestionCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *examQuestionScoreLabel;
+@property (weak, nonatomic) IBOutlet UILabel *examQuestionTitleLabel;;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *countDownViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionVIewButtonContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionViewTopConstraint;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerVIewHeightConstraint;
+@property (nonatomic, nonatomic) User *user;
 @end
 
 @implementation SubjectViewController
@@ -80,6 +94,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 //    NSString *titleString = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil), NSLocalizedString(@"COMMON_CONTENT", nil)];
 
+    self.user = [[User alloc] init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
 
     _titleLabel.text = _examContent[ExamTitle];
@@ -146,26 +161,43 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     if (!_isAnswerMode) { // Hide the answer view
         CGFloat correctionViewHeight = _correctionView.frame.size.height;
-
         _correctionView.hidden = YES;
-        _questionToCorrectionSpaceConstraint.constant = -correctionViewHeight;
+        //self.correctionVIewButtonContraint.constant = -correctionViewHeight;
+        //_questionToCorrectionSpaceConstraint.constant = -correctionViewHeight;
+        //self.correctionViewHeightConstraint.constant = 0;
+        //self.correctionViewTopConstraint.constant = 768;
+        self.scrollView.scrollEnabled = NO;
+        self.answerVIewHeightConstraint.constant = 704;
     }
+    else {
+        //self.correctionViewHeightConstraint.constant = 277;
+        //self.countDownView.hidden = YES;
+        self.countDownViewHeightConstraint.constant = 0;
+        self.squareView.backgroundColor = ILDarkRed;
+    }
+    
+    self.submitButton2.layer.cornerRadius = 4;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    self.examQuestionCountLabel.text = [NSString stringWithFormat:@"%ld", (long)[_examContent[ExamQuestions] count]];
+    NSString *examQuestionScore, *examQuestionTitle;
+    if([_examContent[ExamScore] intValue] < 0) {
+        examQuestionScore = @"100";
+        examQuestionTitle = @"试题总分";
+    } else {
+        examQuestionScore = [NSString stringWithFormat:@"%@", _examContent[ExamScore]];
+        examQuestionTitle = @"考试得分";
+    }
+    self.examQuestionScoreLabel.text = examQuestionScore;
+    self.examQuestionTitleLabel.text = examQuestionTitle;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - UICollectionViewDataSource
 
@@ -182,38 +214,78 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     cell.numberLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
     cell.numberLabel.textColor = [UIColor blackColor];
 
-    if (indexPath.row == _selectedCellIndex) {
-        [cell.layer setBorderColor:[UIColor yellowColor].CGColor];
-        [cell.layer setBorderWidth:4.0];
-    }
-    else {
-        [cell.layer setBorderWidth:0.0];
-    }
-
     if (_isAnswerMode) {
 
         NSDictionary *subjectContent = _examContent[ExamQuestions][indexPath.row];
 
-        if ([subjectContent[ExamQuestionCorrect] isEqualToNumber:@1]) {
-            cell.backgroundColor = ILGreen;
+//        if ([subjectContent[ExamQuestionCorrect] isEqualToNumber:@1]) {
+//            cell.numberLabel.textColor = ILLightGreen;
+//            //cell.numberLabel.textColor = [UIColor whiteColor];
+//        }
+//        else {
+//            cell.numberLabel.textColor = ILDarkRed;
+//        }
+        
+        if (indexPath.row == _selectedCellIndex) {
+            //[cell.layer setBorderColor:[UIColor yellowColor].CGColor];
+            //[cell.layer setBorderWidth:4.0];
+            cell.backgroundColor = ILDarkRed;
             cell.numberLabel.textColor = [UIColor whiteColor];
+            if ([subjectContent[ExamQuestionCorrect] isEqualToNumber:@1]) {
+                //cell.numberLabel.textColor = ILLightGreen;
+                cell.backgroundColor = ILLightGreen;
+                //cell.numberLabel.textColor = [UIColor whiteColor];
+            }
+            else {
+                cell.backgroundColor = ILDarkRed;
+            }
+            
         }
         else {
-            cell.backgroundColor = ILRed;
+            cell.backgroundColor = [UIColor clearColor];
+            if ([subjectContent[ExamQuestionCorrect] isEqualToNumber:@1]) {
+                cell.numberLabel.textColor = ILLightGreen;
+                //cell.numberLabel.textColor = [UIColor whiteColor];
+            }
+            else {
+                cell.numberLabel.textColor = ILDarkRed;
+            }
+
         }
+
     }
     else {
-        if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
-            cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+//        if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
+//            //cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+//            cell.numberLabel.textColor = ILLightGreen;
+//        }
+//        else {
+//            cell.numberLabel.textColor = [UIColor lightGrayColor];
+//        }
+        
+        if (indexPath.row == _selectedCellIndex) {
+            //[cell.layer setBorderColor:[UIColor yellowColor].CGColor];
+            //[cell.layer setBorderWidth:4.0];
+            cell.backgroundColor = ILLightGreen;
             cell.numberLabel.textColor = [UIColor whiteColor];
+            
         }
         else {
-            cell.backgroundColor = [UIColor lightGrayColor];
+            cell.backgroundColor = [UIColor clearColor];
+            //[cell.layer setBorderWidth:0.0];
+            if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
+                //cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
+                cell.numberLabel.textColor = ILLightGreen;
+            }
+            else {
+                cell.numberLabel.textColor = [UIColor lightGrayColor];
+            }
         }
     }
 
     return cell;
 }
+
 
 #pragma mark - UICollectionViewDelegate
 
@@ -225,6 +297,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 }
 
 #pragma mark - UITableViewDataSource
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 44;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -251,10 +326,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         BOOL correct = [selectedQuestion[ExamQuestionCorrect] boolValue];
 
         if (_isAnswerMode && !correct) {
-            backgroundView.backgroundColor = ILRed;
+            backgroundView.backgroundColor = ILDarkRed;
         }
         else {
-            backgroundView.backgroundColor = ILGreen;
+            backgroundView.backgroundColor = ILLightGreen;
         }
         cell.selectedBackgroundView = backgroundView;
 
@@ -269,7 +344,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
 
         if ([answersBySeq containsObject:@(indexPath.row)]) {
-            cell.backgroundColor = ILGreen;
+            cell.backgroundColor = ILLightGreen;
         }
         else {
             cell.backgroundColor = [UIColor whiteColor];
@@ -299,18 +374,23 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     self.selectedRowsOfSubject = [NSMutableArray array];
 
-    NSDictionary *subject = _examContent[ExamQuestions][_selectedCellIndex];
-
-    for (int i = 0; i<[subject[ExamQuestionOptions] count]; i++) {
-
-        NSDictionary *option = subject[ExamQuestionOptions][i];
-        BOOL selected = [option[ExamQuestionOptionSelected] integerValue];
-
-        if (selected) {
-            NSNumber *optionSeq = option[ExamQuestionOptionSeq];
-            [_selectedRowsOfSubject addObject:optionSeq];
+    NSArray *questions = _examContent[ExamQuestions];
+    if (questions.count > 0) {
+        NSDictionary *subject = questions[_selectedCellIndex];
+        for (int i = 0; i<[subject[ExamQuestionOptions] count]; i++) {
+            
+            NSDictionary *option = subject[ExamQuestionOptions][i];
+            BOOL selected = [option[ExamQuestionOptionSelected] integerValue];
+            
+            if (selected) {
+                NSNumber *optionSeq = option[ExamQuestionOptionSeq];
+                [_selectedRowsOfSubject addObject:optionSeq];
+            }
         }
     }
+    
+
+    
 }
 
 - (void)updateOptionContents
@@ -370,15 +450,18 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     if (_isAnswerMode) {
         _submitButton.hidden = YES;
+        self.submitButton2.hidden = YES;
     }
     else {
         for (NSNumber *status in _cellStatus) {
             if ([status isEqualToNumber:@(CellStatusNone)]) {
                 _submitButton.hidden = YES;
+                self.submitButton2.hidden = YES;
                 return;
             }
         }
         _submitButton.hidden = NO;
+        self.submitButton2.hidden = NO;
     }
 }
 
@@ -440,8 +523,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSRange correctTextRange = NSMakeRange(0, correctNumberRange.location);
 
         NSMutableAttributedString *correctAttrString = [[NSMutableAttributedString alloc] initWithString:correctString];
-        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:correctTextRange];
-        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:ILGreen, NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:correctNumberRange];
+        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:correctTextRange];
+        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:ILLightGreen, NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:correctNumberRange];
 
         _leftStatusLabel.attributedText = correctAttrString;
 
@@ -451,7 +534,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSRange wrongTextRange = NSMakeRange(0, wrongNumberRange.location);
 
         NSMutableAttributedString *wrongAttrString = [[NSMutableAttributedString alloc] initWithString:wrongString];
-        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:wrongTextRange];
+        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:wrongTextRange];
         [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:ILRed, NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:wrongNumberRange];
 
         _rightStatusLabel.attributedText = wrongAttrString;
@@ -466,8 +549,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSRange answeredTextRange = NSMakeRange(0, answeredNumberRange.location);
 
         NSMutableAttributedString *answeredAttrString = [[NSMutableAttributedString alloc] initWithString:answeredString];
-        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:answeredTextRange];
-        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(27.0, 165.0, 158.0), NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:answeredNumberRange];
+        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:answeredTextRange];
+        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(19.0, 181.0, 177.0), NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:answeredNumberRange];
 
         _leftStatusLabel.attributedText = answeredAttrString;
 
@@ -477,7 +560,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSRange unansweredTextRange = NSMakeRange(0, unansweredNumberRange.location);
 
         NSMutableAttributedString *unansweredAttrString = [[NSMutableAttributedString alloc] initWithString:unansweredString];
-        [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]} range:unansweredTextRange];
+        [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:unansweredTextRange];
         [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:22]} range:unansweredNumberRange];
 
         _rightStatusLabel.attributedText = unansweredAttrString;
@@ -531,9 +614,21 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
 
     NSInteger minute = timeLeft / 60;
+    NSInteger hour;
+    if (minute > 60) {
+        hour = minute / 60;
+    } else {
+        hour = 0;
+    }
     NSInteger second = timeLeft % 60;
+    minute = minute % 60;
 
-    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"EXAM_TIME_TEMPLATE", nil), (long long)minute, (long long)second];
+    self.countDownHourLabel.text = [NSString stringWithFormat:@"%02ld", (long)hour];
+    self.countDownMinuteLabel.text = [NSString stringWithFormat:@"%02ld", (long)minute];
+    self.countDownSecondLabel.text = [NSString stringWithFormat:@"%02ld", (long)second];
+    
+
+    //self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"EXAM_TIME_TEMPLATE", nil), (long long)minute, (long long)second];
 }
 
 - (void)timeOut
@@ -580,6 +675,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 //    [self saveSelections];
 //    [self dismissViewControllerAnimated:YES completion:nil];
 //}
+- (IBAction)back:(id)sender {
+    [self saveSelections];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (IBAction)backButtonTouched:(id)sender
 {
@@ -605,6 +704,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)submit:(UIButton *)sender {
+    [self submit];
 }
 
 @end
