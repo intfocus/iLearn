@@ -26,7 +26,9 @@ static const BOOL inDeveloping = NO;
     [exams addObjectsFromArray:cachedExams];
 
     for (NSDictionary *exam in cachedExams) {
-        [examIds addObject:exam[ExamId]];
+        if (exam[ExamId]) {
+            [examIds addObject:exam[ExamId]];
+        }
     }
 
     // Add Exams from Exam.json, if exam's ExamId already added, use the cached version (may be content of DB or JSON)

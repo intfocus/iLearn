@@ -131,7 +131,7 @@
         </view>
     </objects>
     <resources>
-        <image name="bgSignIn" width="1024" height="678"/>
+        <image name="bgSignIn" width="1024" height="768"/>
         <image name="iconBackWhite" width="22" height="22"/>
         <image name="img_Takeda_logo" width="73" height="73"/>
     </resources>
