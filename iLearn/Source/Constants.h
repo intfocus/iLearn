@@ -10,12 +10,13 @@
 
 #define RGBCOLOR(r, g, b) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:1]
 
-#define ILGray      [UIColor colorWithRed:106.0 / 255.0 green:106.0 / 255.0 blue:106.0 / 255.0 alpha:1.0f] // #6a6a6a
-#define ILDarkGray  [UIColor colorWithRed:73.0 / 255.0 green:73.0 / 255.0 blue:73.0 / 255.0 alpha:1.0f] // #494949
-#define ILGreen     [UIColor colorWithRed:67.0 / 255.0 green:187.0 / 255.0 blue:184.0 / 255.0 alpha:1.0f] // #43bbb8
-#define ILRed       [UIColor colorWithRed:213.0 / 255.0 green:100.0 / 255.0 blue:100.0 / 255.0 alpha:1.0f] // #d56464
-#define ILDarkRed   [UIColor colorWithRed:206.0 / 255.0 green:64.0 / 255.0 blue:64.0 / 255.0 alpha:1.0f] // #ce4040
-#define ILLightGreen   [UIColor colorWithRed:19 / 255.0 green:187 / 255.0 blue:177 / 255.0 alpha:1.0f] // #ce4040
+#define ILLightGray     [UIColor colorWithRed:188.0 / 255.0 green:188.0 / 255.0 blue:188.0 / 255.0 alpha:1.0f]  // #bcbcbc
+#define ILGray          [UIColor colorWithRed:106.0 / 255.0 green:106.0 / 255.0 blue:106.0 / 255.0 alpha:1.0f]  // #6a6a6a
+#define ILDarkGray      [UIColor colorWithRed:51.0 / 255.0 green:51.0 / 255.0 blue:51.0 / 255.0 alpha:1.0f]     // #333333
+#define ILGreen         [UIColor colorWithRed:67.0 / 255.0 green:187.0 / 255.0 blue:184.0 / 255.0 alpha:1.0f]   // #43bbb8
+#define ILRed           [UIColor colorWithRed:213.0 / 255.0 green:100.0 / 255.0 blue:100.0 / 255.0 alpha:1.0f]  // #d56464
+#define ILDarkRed       [UIColor colorWithRed:206.0 / 255.0 green:64.0 / 255.0 blue:64.0 / 255.0 alpha:1.0f]    // #ce4040
+#define ILLightGreen    [UIColor colorWithRed:19 / 255.0 green:187 / 255.0 blue:177 / 255.0 alpha:1.0f]         // #ce4040
 
 typedef NS_ENUM(NSUInteger, ListViewType) {
     ListViewTypeExam,
