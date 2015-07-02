@@ -68,13 +68,16 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UIButton *submitButton2;
 @property (weak, nonatomic) IBOutlet UIView *squareView;
 
+@property (weak, nonatomic) IBOutlet UILabel *countDownTitleLabel;
 @property (weak, nonatomic) IBOutlet UIView *countDownView;
 @property (weak, nonatomic) IBOutlet UILabel *countDownHourLabel;
 @property (weak, nonatomic) IBOutlet UILabel *countDownMinuteLabel;
 @property (weak, nonatomic) IBOutlet UILabel *countDownSecondLabel;
 @property (weak, nonatomic) IBOutlet UILabel *examQuestionCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *examQuestionCountTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *examQuestionScoreLabel;
-@property (weak, nonatomic) IBOutlet UILabel *examQuestionTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *examQuestionScoreTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *examQuestionScoreUnitLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *countDownViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionVIewButtonContraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionViewTopConstraint;
@@ -103,6 +106,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     [_questionTypeView.layer setCornerRadius:5.0];
     [_correctionTypeView.layer setCornerRadius:5.0];
+
+    _examQuestionCountTitleLabel.text = NSLocalizedString(@"EXAM_TOTAL_NUMBER_TITLE", nil);
+    _examQuestionScoreUnitLabel.text = NSLocalizedString(@"EXAM_SCORE_UNIT", nil);
+    _countDownTitleLabel.text = NSLocalizedString(@"EXAM_TIME_LEFT_TITLE", nil);
 
     NSNumber *score = _examContent[ExamScore];
 
@@ -169,18 +176,21 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     self.examQuestionCountLabel.text = [NSString stringWithFormat:@"%ld", (long)[_examContent[ExamQuestions] count]];
+
     NSString *examQuestionScore, *examQuestionTitle;
+
     if([_examContent[ExamScore] intValue] < 0) {
         examQuestionScore = @"100";
-        examQuestionTitle = @"试题总分";
-    } else {
+        examQuestionTitle = NSLocalizedString(@"EXAM_TOTAL_SCORE_TITLE", nil);
+    }
+    else {
         examQuestionScore = [NSString stringWithFormat:@"%@", _examContent[ExamScore]];
-        examQuestionTitle = @"考试得分";
+        examQuestionTitle = NSLocalizedString(@"EXAM_SCORE_TITLE", nil);
     }
     self.examQuestionScoreLabel.text = examQuestionScore;
-    self.examQuestionTitleLabel.text = examQuestionTitle;
+    self.examQuestionScoreTitleLabel.text = examQuestionTitle;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -2451,11 +2451,14 @@
                         <outlet property="countDownHourLabel" destination="UVZ-Z0-jjj" id="lkY-hS-otk"/>
                         <outlet property="countDownMinuteLabel" destination="KRF-Uv-UOA" id="L8G-o8-q98"/>
                         <outlet property="countDownSecondLabel" destination="qy4-mG-2cl" id="h1K-jx-vGJ"/>
+                        <outlet property="countDownTitleLabel" destination="w1p-Ax-nBz" id="gbc-Ck-5gj"/>
                         <outlet property="countDownView" destination="Rib-yB-V8U" id="Bxq-ic-6ek"/>
                         <outlet property="countDownViewHeightConstraint" destination="Ejm-Oa-cw7" id="PPc-6h-zxz"/>
                         <outlet property="examQuestionCountLabel" destination="bve-ht-8cG" id="Y9b-L8-UeA"/>
+                        <outlet property="examQuestionCountTitleLabel" destination="1JN-Qp-eyo" id="N6i-Bs-YcU"/>
                         <outlet property="examQuestionScoreLabel" destination="W0K-Rs-CAB" id="kri-Rz-wgf"/>
-                        <outlet property="examQuestionTitleLabel" destination="kC1-sT-lf9" id="kHX-ZW-ngJ"/>
+                        <outlet property="examQuestionScoreTitleLabel" destination="kC1-sT-lf9" id="LdP-F7-IFv"/>
+                        <outlet property="examQuestionScoreUnitLabel" destination="wll-l5-yvu" id="bcW-o1-imD"/>
                         <outlet property="fakeNavBarView" destination="lfo-lr-2ov" id="VLe-f4-YRT"/>
                         <outlet property="leftStatusLabel" destination="gMo-TC-yfP" id="bXK-wX-y7T"/>
                         <outlet property="nextButton" destination="7Qv-N0-IC5" id="n8c-JS-Jjc"/>
