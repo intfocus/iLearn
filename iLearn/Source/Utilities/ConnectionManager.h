@@ -10,10 +10,15 @@
 
 @protocol ConnectionManagerDelegate <NSObject>
 
+@optional
 - (void)connectionManagerDidDownloadExamsForUser:(NSString*)userId withError:(NSError*)error;
 - (void)connectionManagerDidDownloadExam:(NSString*)examId withError:(NSError*)error;
 - (void)connectionManagerDidUploadExamResult:(NSString*)examId withError:(NSError*)error;
 - (void)connectionManagerDidUploadExamScannedResult:(NSString*)result withError:(NSError*)error;
+
+- (void)connectionManagerDidDownloadQuestionnairesForUser:(NSString*)userId withError:(NSError*)error;
+- (void)connectionManagerDidDownloadQuestionnaire:(NSString*)questionnaireId withError:(NSError*)error;
+- (void)connectionManagerDidUploadQuestionnaireResult:(NSString*)questionnaireId withError:(NSError*)error;
 
 @end
 
@@ -21,10 +26,13 @@
 
 @property (weak, nonatomic) id<ConnectionManagerDelegate> delegate;
 
-//+ (ConnectionManager*)sharedManager;
 - (void)downloadExamsForUser:(NSString*)userId;
 - (void)downloadExamWithId:(NSString*)examId;
 - (void)uploadExamResultWithPath:(NSString*)resultPath;
 - (void)uploadExamScannedResult:(NSString*)result;
+
+- (void)downloadQuestionnairesForUser:(NSString*)userId;
+- (void)downloadQuestionnaireWithId:(NSString*)examId;
+- (void)uploadQuestionnaireResultWithPath:(NSString*)resultPath;
 
 @end

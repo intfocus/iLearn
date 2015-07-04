@@ -9,6 +9,7 @@
 #import "ListViewController.h"
 #import "LicenseUtil.h"
 #import "ExamTableViewController.h"
+#import "QuestionnaireTableViewController.h"
 #import "NotificationViewController.h"
 
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
@@ -29,6 +30,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) ContentViewController<ContentViewProtocal> *contentViewController;
 @property (strong, nonatomic) ExamTableViewController *examTableViewController;
+@property (strong, nonatomic) QuestionnaireTableViewController *questionnaireTableViewController;
 @property (strong, nonatomic) NotificationViewController *notificationViewController;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
@@ -53,7 +55,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
     _registrationButton.enabled = NO;
     _lectureButton.enabled = NO;
-    _questionnaireButton.enabled = NO;
     _settingsButton.enabled = NO;
 
     // Setup avatar image view
@@ -72,6 +73,9 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
     self.examTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
     _examTableViewController.listViewController = self;
+
+    self.questionnaireTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"QuestionnaireTableViewController"];
+    _questionnaireTableViewController.listViewController = self;
 
     self.notificationViewController = [[NotificationViewController alloc] init];
 
@@ -94,6 +98,9 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     switch (_listType) {
         case ListViewTypeExam:
             newContentViewController = _examTableViewController;
+            break;
+        case ListViewTypeQuestionnaire:
+            newContentViewController = _questionnaireTableViewController;
             break;
         case ListViewTypeNotification:
             newContentViewController = _notificationViewController;

@@ -21,12 +21,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    [self.actionButton.layer setCornerRadius:15.0];
-
-    [self.contentView.layer setBorderWidth:1.0];
-
     UIColor *borderColor = RGBCOLOR(190.0, 190.0, 190.0);
     [self.contentView.layer setBorderColor:borderColor.CGColor];
+    [self.contentView.layer setBorderWidth:1.0];
 
     self.titleLabel.text = _titleString;
     self.descLabel.text = _descString;
@@ -39,9 +36,6 @@
 
 - (IBAction)closeTouched:(id)sender {
     [self dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (IBAction)actionTouched:(id)sender {
 }
 
 @end

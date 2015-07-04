@@ -11,8 +11,25 @@
 @interface QuestionnaireUtil : NSObject
 
 + (NSArray*)loadQuestionaires;
++ (NSString*)jsonStringOfContent:(NSDictionary*)content;
+
 + (NSString*)titleFromContent:(NSDictionary*)content;
 + (NSString*)descFromContent:(NSDictionary*)content;
-+ (NSInteger)expirationDateFromContent:(NSDictionary*)content;
++ (long long)startDateFromContent:(NSDictionary*)content;
++ (long long)endDateFromContent:(NSDictionary*)content;
+
++ (NSString*)questionnaireFolderPathInDocument;
++ (NSString*)questionnaireDBPathOfFile:(NSString*)fileName;
++ (void)cleanQuestionnaireFolder;
+
++ (void)parseContentIntoDB:(NSDictionary*)content;
++ (NSDictionary*)contentFromDBFile:(NSString*)dbPath;
++ (void)setOptionSelected:(BOOL)selected withQuestionId:(NSString*)questionId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath;
++ (void)saveFilledAnswer:(NSString*)filledAnswer withQuestionId:(NSString*)questionId andDBPath:(NSString*)dbPath;
+
++ (void)setQuestionnaireSubmittedwithDBPath:(NSString*)dbPath;
++ (void)generateUploadJsonFromDBPath:(NSString*)dbPath;
+
++ (NSArray*)resultFiles;
 
 @end

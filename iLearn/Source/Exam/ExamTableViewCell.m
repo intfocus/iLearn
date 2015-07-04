@@ -6,15 +6,13 @@
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
-#import "ExamTabelViewCell.h"
+#import "ExamTableViewCell.h"
 
-@interface ExamTabelViewCell ()
-
-@property (weak, nonatomic) IBOutlet UIView *bgView;
+@interface ExamTableViewCell ()
 
 @end
 
-@implementation ExamTabelViewCell
+@implementation ExamTableViewCell
 
 - (void)awakeFromNib
 {

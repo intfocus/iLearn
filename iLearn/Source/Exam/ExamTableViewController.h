@@ -10,7 +10,7 @@
 #import "Constants.h"
 #import "QRCodeReaderViewController.h"
 #import "ConnectionManager.h"
-#import "ExamTabelViewCell.h"
+#import "ExamTableViewCell.h"
 #import "ContentViewController.h"
 
 @interface ExamTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate, QRCodeReaderDelegate, ConnectionManagerDelegate>

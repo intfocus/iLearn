@@ -190,4 +190,19 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
     }
 }
 
+- (void)downloadQuestionnairesForUser:(NSString*)userId
+{
+
+}
+
+- (void)downloadQuestionnaireWithId:(NSString*)examId
+{
+    
+}
+
+- (void)uploadQuestionnaireResultWithPath:(NSString*)resultPath
+{
+
+}
+
 @end

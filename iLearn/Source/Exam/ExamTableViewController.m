@@ -9,7 +9,6 @@
 #import "ExamTableViewController.h"
 #import "DetailViewController.h"
 #import "PasswordViewController.h"
-#import "QuestionnaireUtil.h"
 #import "ExamViewController.h"
 #import "ScoreQRCodeViewController.h"
 #import "LicenseUtil.h"
@@ -21,10 +20,9 @@
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
 static NSString *const kShowPasswordSegue = @"showPasswordPage";
-static NSString *const kShowSettingsSegue = @"showSettingsPage";
 static NSString *const kShowScoreQRCode = @"showScoreQRCode";
 
-static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
+static NSString *const kExamCellIdentifier = @"ExamCell";
 
 static const NSInteger kMinScanInterval = 3;
 
@@ -81,7 +79,7 @@ static const NSInteger kMinScanInterval = 3;
         detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
         detailVC.descString = [ExamUtil descFromContent:sender];
     }
-    if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
+    else if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
 
         PasswordViewController *detailVC = (PasswordViewController*)segue.destinationViewController;
 
@@ -94,7 +92,7 @@ static const NSInteger kMinScanInterval = 3;
         };
     }
     else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
-        //UINavigationController *navController = segue.destinationViewController;
+
         UIViewController *viewController = segue.destinationViewController;
 
         if ([viewController isKindOfClass:[ExamViewController class]]) {
@@ -179,29 +177,9 @@ static const NSInteger kMinScanInterval = 3;
     return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
 }
 
-//- (UITableViewCell*)tableView:(UITableView *)tableView cellForQuestionnaireRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
-//    cell.delegate = self;
-//
-//    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
-//
-//    cell.titleLabel.text = [QuestionnaireUtil titleFromContent:content];
-//
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"YYYY/MM/dd"];
-//    NSInteger epochTime = [QuestionnaireUtil expirationDateFromContent:content];
-//    NSDate *date = [NSDate dateWithTimeIntervalSince1970:epochTime];
-//    NSString *expirationDateString = [formatter stringFromDate:date];
-//
-//    cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
-//
-//    return cell;
-//}
-
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
+    ExamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kExamCellIdentifier];
     cell.delegate = self;
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
@@ -246,7 +224,7 @@ static const NSInteger kMinScanInterval = 3;
                     NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
 
                     scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
-                    [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+                    [ExamUtil generateUploadJsonFromDBPath:dbPath];
                     // NSLog(@"score: %lld", (long long)scoreInt);
                 }
             }
@@ -436,7 +414,7 @@ static const NSInteger kMinScanInterval = 3;
 
         NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
 
-        NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
+        NSDictionary *dbContent = [ExamUtil contentFromDBFile:dbPath];
         NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
 
         dispatch_async(dispatch_get_main_queue(), ^{

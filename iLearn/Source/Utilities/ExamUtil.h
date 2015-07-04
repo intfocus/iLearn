@@ -11,25 +11,24 @@
 @interface ExamUtil : NSObject
 
 + (NSArray*)loadExams;
-+ (NSArray*)loadExamsFromCache;
 + (NSString*)jsonStringOfContent:(NSDictionary*)content;
+
 + (NSString*)titleFromContent:(NSDictionary*)content;
 + (NSString*)descFromContent:(NSDictionary*)content;
-+ (long long)endDateFromContent:(NSDictionary*)content;
 + (long long)startDateFromContent:(NSDictionary*)content;
++ (long long)endDateFromContent:(NSDictionary*)content;
 
-+ (NSString*)examSourceFolderPath;
 + (NSString*)examFolderPathInDocument;
 + (NSString*)examDBPathOfFile:(NSString*)fileName;
 + (void)cleanExamFolder;
 
 + (void)parseContentIntoDB:(NSDictionary*)content;
-+ (NSDictionary*)examContentFromDBFile:(NSString*)dbPath;
-+ (void)setOptionSelected:(BOOL)selected withSubjectId:(NSString*)subjectId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath;
++ (NSDictionary*)contentFromDBFile:(NSString*)dbPath;
++ (void)setOptionSelected:(BOOL)selected withQuestionId:(NSString*)questionId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath;
 
 + (void)setExamSubmittedwithDBPath:(NSString*)dbPath;
 + (NSInteger)examScoreOfDBPath:(NSString*)dbPath;
-+ (void)generateExamUploadJsonOfDBPath:(NSString*)dbPath;
++ (void)generateUploadJsonFromDBPath:(NSString*)dbPath;
 
 + (void)saveScannedResultIntoDB:(NSString*)result;
 + (void)setScannedResultSubmitted:(NSString*)result;

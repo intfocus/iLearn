@@ -30,7 +30,6 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 // Button Area Views
 @property (weak, nonatomic) IBOutlet UIView *coursePackView;
 @property (weak, nonatomic) IBOutlet UIView *lectureView;
-@property (weak, nonatomic) IBOutlet UIView *reminderView;
 @property (weak, nonatomic) IBOutlet UIView *questionnaireView;
 @property (weak, nonatomic) IBOutlet UIView *examView;
 
@@ -44,7 +43,6 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 // Button Labels
 @property (weak, nonatomic) IBOutlet UILabel *coursePackLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lectureLabel;
-@property (weak, nonatomic) IBOutlet UILabel *reminderLabel;
 @property (weak, nonatomic) IBOutlet UILabel *questionnaireLabel;
 @property (weak, nonatomic) IBOutlet UILabel *examLabel;
 
@@ -58,7 +56,6 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weekdayLabel;
-
 
 @property (strong, nonatomic) NSDateFormatter *timeFormatter;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
@@ -74,14 +71,12 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
     _registrationButton.enabled = NO;
     _lectureButton.enabled = NO;
-    _questionnaireButton.enabled = NO;
     _settingsButton.enabled = NO;
 
     // Setup label contents
     self.title = NSLocalizedString(@"DASHBOARD_TITLE", nil);
     self.coursePackLabel.text = NSLocalizedString(@"DASHBOARD_COURSE_PACK", nil);
     self.lectureLabel.text = NSLocalizedString(@"DASHBOARD_LECTURE", nil);
-    self.reminderLabel.text = NSLocalizedString(@"DASHBOARD_REMINDER", nil);
     self.questionnaireLabel.text = NSLocalizedString(@"DASHBOARD_QUESTIONNAIRE", nil);
     self.examLabel.text = NSLocalizedString(@"DASHBOARD_EXAM", nil);
     self.serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];

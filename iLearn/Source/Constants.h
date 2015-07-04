@@ -42,6 +42,13 @@ typedef NS_ENUM(NSUInteger, ExamSubjectType) {
     ExamSubjectTypeMultiple,
 };
 
+typedef NS_ENUM(NSUInteger, QuestionnaireQuestionTypes) {
+    QuestionnaireQuestionsTypeTrueFalse = 1,
+    QuestionnaireQuestionsTypeSingle,
+    QuestionnaireQuestionsTypeMultiple,
+    QuestionnaireQuestionsTypeFill,
+};
+
 extern NSString *const ServiceNumber;
 extern NSString *const FakeAccount;
 extern NSString *const FakeId;
@@ -53,15 +60,46 @@ extern NSString *const ExamFolder;
 
 extern NSString *const CommonFileName;
 
+// Questionnaires
+extern NSString *const Questionnaires;
+extern NSString *const QuestionnaireId;
 extern NSString *const QuestionnaireTitle;
 extern NSString *const QuestionnaireDesc;
-extern NSString *const QuestionnaireExpirationDate;
+extern NSString *const QuestionnaireBeginDate;
+extern NSString *const QuestionnaireEndDate;
+extern NSString *const QuestionnaireQuestionnaireStart;
+extern NSString *const QuestionnaireQuestionnaireEnd;
 extern NSString *const QuestionnaireStatus;
-extern NSString *const QuestionnaireQuestions;
-extern NSString *const QuestionnaireQuestionTitle;
-extern NSString *const QuestionnaireQuestionAnswers;
-extern NSString *const QuestionnaireQuestionAnswerTitle;
+extern NSString *const QuestionnaireCached;
+extern NSString *const QuestionnaireType;
+extern NSString *const QuestionnaireLocation;
+extern NSString *const QuestionnaireAnsType;
+extern NSString *const QuestionnaireSubmitted;
+extern NSString *const QuestionnaireOpened;
+extern NSString *const QuestionnaireUserId;
+extern NSString *const QuestionnaireFinished;
 
+extern NSString *const QuestionnaireQuestions;
+extern NSString *const QuestionnaireQuestionId;
+extern NSString *const QuestionnaireQuestionTitle;
+extern NSString *const QuestionnaireQuestionType;
+extern NSString *const QuestionnaireQuestionNote;
+extern NSString *const QuestionnaireQuestionFilledAnswer;
+extern NSString *const QuestionnaireQuestionAnswered;
+
+extern NSString *const QuestionnaireQuestionResult;
+extern NSString *const QuestionnaireQuestionResultId;
+extern NSString *const QuestionnaireQuestionResultType;
+extern NSString *const QuestionnaireQuestionResultSelected;
+extern NSString *const QuestionnaireQuestionResultFilled;
+
+extern NSString *const QuestionnaireQuestionOptions;
+extern NSString *const QuestionnaireQuestionOptionId;
+extern NSString *const QuestionnaireQuestionOptionTitle;
+extern NSString *const QuestionnaireQuestionOptionSeq;
+extern NSString *const QuestionnaireQuestionOptionSelected;
+
+// Exams
 extern NSString *const Exams;
 extern NSString *const ExamId;
 extern NSString *const ExamTitle;

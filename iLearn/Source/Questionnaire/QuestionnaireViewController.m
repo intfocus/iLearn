@@ -1,12 +1,12 @@
 //
-//  ExamViewController.m
+//  QuestionnaireViewController.m
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/17.
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
-#import "ExamViewController.h"
+#import "QuestionnaireViewController.h"
 #import "QuestionCollectionViewCell.h"
 #import "QuestionOptionCell.h"
 #import "Constants.h"
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     CellStatusWrong,
 };
 
-@interface ExamViewController ()
+@interface QuestionnaireViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
@@ -88,7 +88,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 @end
 
-@implementation ExamViewController
+@implementation QuestionnaireViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -97,7 +97,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     self.user = [[User alloc] init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
 
-    _titleLabel.text = _examContent[ExamTitle];
+    _titleLabel.text = _questionnaireContent[ExamTitle];
     _typeLabel.text = NSLocalizedString(@"LIST_EXAM", nil);
     _userAccountTitle.text = NSLocalizedString(@"COMMON_ACCOUNT", nil);
     _userAccountLabel.text = [LicenseUtil userAccount];
@@ -111,9 +111,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     _examQuestionScoreUnitLabel.text = NSLocalizedString(@"EXAM_SCORE_UNIT", nil);
     _countDownTitleLabel.text = NSLocalizedString(@"EXAM_TIME_LEFT_TITLE", nil);
 
-    NSNumber *score = _examContent[ExamScore];
+    NSNumber *score = _questionnaireContent[ExamScore];
 
-    ExamTypes examType = [_examContent[ExamType] integerValue];
+    ExamTypes examType = [_questionnaireContent[ExamType] integerValue];
 
     if (score != nil && [score integerValue] != -1) {
         self.isAnswerMode = YES;
@@ -125,7 +125,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     else {
         self.isAnswerMode = NO;
 
-        NSNumber *endTime = _examContent[ExamExamEnd];
+        NSNumber *endTime = _questionnaireContent[ExamExamEnd];
 
         if (endTime) {
 
@@ -145,7 +145,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     // Setup CellStatus (answered, normal, correct, wrong...)
     self.cellStatus = [NSMutableArray array];
-    for (NSDictionary *subject in _examContent[ExamQuestions]) {
+    for (NSDictionary *subject in _questionnaireContent[ExamQuestions]) {
 
         if ([subject[ExamQuestionAnswered] isEqualToNumber:@(1)]) {
             [_cellStatus addObject:@(CellStatusAnswered)];
@@ -177,16 +177,16 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    self.examQuestionCountLabel.text = [NSString stringWithFormat:@"%ld", (long)[_examContent[ExamQuestions] count]];
+    self.examQuestionCountLabel.text = [NSString stringWithFormat:@"%ld", (long)[_questionnaireContent[ExamQuestions] count]];
 
     NSString *examQuestionScore, *examQuestionTitle;
 
-    if([_examContent[ExamScore] intValue] < 0) {
+    if([_questionnaireContent[ExamScore] intValue] < 0) {
         examQuestionScore = @"100";
         examQuestionTitle = NSLocalizedString(@"EXAM_TOTAL_SCORE_TITLE", nil);
     }
     else {
-        examQuestionScore = [NSString stringWithFormat:@"%@", _examContent[ExamScore]];
+        examQuestionScore = [NSString stringWithFormat:@"%@", _questionnaireContent[ExamScore]];
         examQuestionTitle = NSLocalizedString(@"EXAM_SCORE_TITLE", nil);
     }
     self.examQuestionScoreLabel.text = examQuestionScore;
@@ -201,7 +201,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSArray *subjects = _examContent[ExamQuestions];
+    NSArray *subjects = _questionnaireContent[ExamQuestions];
     return [subjects count];
 }
 
@@ -213,7 +213,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     if (_isAnswerMode) {
 
-        NSDictionary *subjectContent = _examContent[ExamQuestions][indexPath.row];
+        NSDictionary *subjectContent = _questionnaireContent[ExamQuestions][indexPath.row];
         
         if (indexPath.row == _selectedCellIndex) {
 
@@ -270,7 +270,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *selectedQuestion = _examContent[ExamQuestions][_selectedCellIndex];
+    NSDictionary *selectedQuestion = _questionnaireContent[ExamQuestions][_selectedCellIndex];
     NSArray *options = selectedQuestion[ExamQuestionOptions];
     NSDictionary *option = options[indexPath.row];
     NSString *title = option[ExamQuestionOptionTitle];
@@ -289,7 +289,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSDictionary *selectedQuestion = _examContent[ExamQuestions][_selectedCellIndex];
+    NSDictionary *selectedQuestion = _questionnaireContent[ExamQuestions][_selectedCellIndex];
     NSArray *options = selectedQuestion[ExamQuestionOptions];
     return [options count];
 }
@@ -298,7 +298,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     QuestionOptionCell *cell = (QuestionOptionCell*)[tableView dequeueReusableCellWithIdentifier:kQuestionOptionCellIdentifier];
 
-    NSDictionary *selectedQuestion = _examContent[ExamQuestions][_selectedCellIndex];
+    NSDictionary *selectedQuestion = _questionnaireContent[ExamQuestions][_selectedCellIndex];
     NSArray *options = selectedQuestion[ExamQuestionOptions];
     NSDictionary *option = options[indexPath.row];
 
@@ -358,7 +358,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     self.selectedRowsOfSubject = [NSMutableArray array];
 
-    NSArray *questions = _examContent[ExamQuestions];
+    NSArray *questions = _questionnaireContent[ExamQuestions];
     if (questions.count > 0) {
         NSDictionary *subject = questions[_selectedCellIndex];
         for (int i = 0; i<[subject[ExamQuestionOptions] count]; i++) {
@@ -376,7 +376,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateOptionContents
 {
-    NSDictionary *selectedQuestion = _examContent[ExamQuestions][_selectedCellIndex];
+    NSDictionary *selectedQuestion = _questionnaireContent[ExamQuestions][_selectedCellIndex];
     NSString *questionTitle = selectedQuestion[ExamQuestionTitle];
     NSNumber *questionType = selectedQuestion[ExamQuestionType];
     NSString *typeString;
@@ -452,9 +452,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         return;
     }
 
-    NSMutableDictionary *subject = _examContent[ExamQuestions][_selectedCellIndex];
+    NSMutableDictionary *subject = _questionnaireContent[ExamQuestions][_selectedCellIndex];
     NSString *subjectId = subject[ExamQuestionId];
-    NSString *fileName = _examContent[CommonFileName];
+    NSString *fileName = _questionnaireContent[CommonFileName];
 
     for (int i = 0; i<[subject[ExamQuestionOptions] count]; i++) {
 
@@ -472,7 +472,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateSubjectsStatus
 {
-    NSMutableDictionary *subject = _examContent[ExamQuestions][_selectedCellIndex];
+    NSMutableDictionary *subject = _questionnaireContent[ExamQuestions][_selectedCellIndex];
 
     // Update collectionView cell status
     if ([_selectedRowsOfSubject count]) {
@@ -495,7 +495,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 - (void)updateStringLabels
 {
     if (_isAnswerMode) {
-        NSInteger numberOfSubjects = [_examContent[ExamQuestions] count];
+        NSInteger numberOfSubjects = [_questionnaireContent[ExamQuestions] count];
         NSInteger numberOfCorrectSubjects = [self numberOfCorrectSubjects];
 
         NSString *correctString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_CORRECT_TEMPLATE", nil), numberOfCorrectSubjects];
@@ -564,7 +564,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     NSInteger numberOfCorrectSubjects = 0;
 
-    for (NSDictionary *subject in _examContent[ExamQuestions]) {
+    for (NSDictionary *subject in _questionnaireContent[ExamQuestions]) {
         if ([subject[ExamQuestionCorrect] isEqualToNumber:@(1)]) {
             numberOfCorrectSubjects++;
         }
@@ -620,7 +620,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [_timeLeftTimer invalidate];
     [_timeOutTimer invalidate];
 
-    __weak ExamViewController *weakSelf = self;
+    __weak QuestionnaireViewController *weakSelf = self;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
@@ -629,7 +629,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         [self saveSelections];
 
-        NSString *fileName = _examContent[CommonFileName];
+        NSString *fileName = _questionnaireContent[CommonFileName];
         NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
 
         NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
