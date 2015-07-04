@@ -1,13 +1,13 @@
 //
-//  SubjectViewController.m
+//  ExamViewController.m
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/17.
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
-#import "SubjectViewController.h"
-#import "SubjectCollectionViewCell.h"
+#import "ExamViewController.h"
+#import "QuestionCollectionViewCell.h"
 #import "QuestionOptionCell.h"
 #import "Constants.h"
 #import "LicenseUtil.h"
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     CellStatusWrong,
 };
 
-@interface SubjectViewController ()
+@interface ExamViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
@@ -88,7 +88,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 @end
 
-@implementation SubjectViewController
+@implementation ExamViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -207,7 +207,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    SubjectCollectionViewCell *cell = (SubjectCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:kSubjectCollectionCellIdentifier forIndexPath:indexPath];
+    QuestionCollectionViewCell *cell = (QuestionCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:kSubjectCollectionCellIdentifier forIndexPath:indexPath];
 
     cell.numberLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
 
@@ -620,7 +620,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [_timeLeftTimer invalidate];
     [_timeOutTimer invalidate];
 
-    __weak SubjectViewController *weakSelf = self;
+    __weak ExamViewController *weakSelf = self;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
