@@ -8,9 +8,9 @@
 
 #ifndef iSearch_User_h
 #define iSearch_User_h
-#import <UIKit/UIKit.h>
+#import "BaseModel.h"
 
-@interface User: NSObject
+@interface User: BaseModel
 
 @property (nonatomic, strong) NSString *ID;
 @property (nonatomic, strong) NSString *name;
@@ -28,10 +28,13 @@
 // attribute fields
 @property (nonatomic, strong) NSString *configPath;
 @property (nonatomic, strong) NSMutableDictionary *configDict;
+@property (nonatomic, strong) NSString *personalPath;
+
+// class methods
++ (NSString *)userID;
 
 // instance methods
 - (void)save;
-- (NSString *)inspect;
-- (NSString *)to_s;
+- (void)writeInToPersonal;
 @end
 #endif

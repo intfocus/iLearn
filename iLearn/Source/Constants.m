@@ -8,7 +8,7 @@
 
 #include "Constants.h"
 
-NSString *const ServiceNumber = @"400 400 400";
+NSString *const ServiceNumber = @"400 882 2731";
 NSString *const FakeAccount = @"A1234567";
 NSString *const FakeId = @"1";
 NSString *const FakeName = @"张三";

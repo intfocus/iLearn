@@ -30,20 +30,21 @@
 #import "common.h"
 #import "ViewUtils.h"
 #import "User.h"
+#import "Version.h"
+#import "ViewUpgrade.h"
 #import "LicenseUtil.h"
+#import "UIViewController+CWPopup.h"
 
-@interface LoginViewController ()
-// function controls
+@interface LoginViewController ()<ViewUpgradeProtocol>
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
-//@property (retain, nonatomic) IBOutlet M13Checkbox *rememberPwd;
-
-// Demo of how to add other UI elements on top of splash view
+@property (nonatomic, nonatomic) ViewUpgrade *viewUpgrade;
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 
 // login outside web
 @property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavBack;
 @property (weak, nonatomic) IBOutlet UILabel *labelLoginTitle;
+@property (weak, nonatomic) IBOutlet UILabel *labelPropmt;
 
 @property (strong, nonatomic)  NSString *cookieValue;
 @property (strong, nonatomic)  NSTimer *timerReadCookie;
@@ -61,6 +62,10 @@
      */
     self.user = [[User alloc] init];
     [self hideOutsideLoginControl:YES];
+    self.labelPropmt.text = @"";
+    
+    // CWPopup 事件
+    self.useBlurForPopup = YES;
     /**
      控件事件
     */
@@ -74,13 +79,52 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.view bringSubviewToFront:self.btnSubmit];
+    if([HttpUtils isNetworkAvailable]) {
+        [self checkAppVersionUpgrade];
+    }
 }
 
 #pragma mark memory management
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - check version upgrade
+
+- (void)checkAppVersionUpgrade {
+    self.btnSubmit.enabled = NO;
+    [self.btnSubmit setTitle:@"检测版本..." forState:UIControlStateNormal];
+    
+    Version *version = [[Version alloc] init];
+    [version checkUpdate:^{
+        if([version isUpgrade]) {
+            if(!self.viewUpgrade) {
+                self.viewUpgrade = [[ViewUpgrade alloc] init];
+            }
+            self.viewUpgrade.delegate = self;
+            [self presentPopupViewController:self.viewUpgrade animated:YES completion:^(void) {
+                NSLog(@"popup view viewUpgrade");
+                [self.viewUpgrade refreshControls:YES];
+            }];
+        }
+    } FailBloc:^{
+        self.btnSubmit.enabled = YES;
+        [self.btnSubmit setTitle:@"登陆" forState:UIControlStateNormal];
+    }];
+    
+}
+
+#pragma mark - ViewUpgradeProtocol
+- (void)dismissViewUpgrade {
+    if(self.viewUpgrade) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            _viewUpgrade = nil;
+            NSLog(@"dismiss viewUpgrade.");
+        }];
+    }
+    self.btnSubmit.enabled = YES;
+    [self.btnSubmit setTitle:@"登录" forState:UIControlStateNormal];
 }
 
 
