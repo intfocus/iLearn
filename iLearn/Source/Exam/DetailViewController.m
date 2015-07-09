@@ -29,7 +29,14 @@
     [self.contentView.layer setBorderColor:borderColor.CGColor];
 
     self.titleLabel.text = _titleString;
-    self.descLabel.text = _descString;
+    self.descTextView.text = _descString;
+    //self.descLabel.text = _descString;
+    if (self.shownFromBeginTest) {
+        self.actionButton.hidden = NO;
+    }
+    else {
+        self.actionButton.hidden = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,6 +49,11 @@
 }
 
 - (IBAction)actionTouched:(id)sender {
+    [self dismissViewControllerAnimated:NO completion:^{
+        if ([self.delegate respondsToSelector:@selector(begin)]) {
+            [self.delegate begin];
+        }
+    }];
 }
 
 @end

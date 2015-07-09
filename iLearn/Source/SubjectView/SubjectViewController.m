@@ -28,6 +28,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @interface SubjectViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
+@property (weak, nonatomic) IBOutlet UIButton *BackButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userNameTitle;
@@ -187,9 +188,11 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     if([_examContent[ExamScore] intValue] < 0) {
         examQuestionScore = @"100";
         examQuestionTitle = @"试题总分";
+        self.BackButton.hidden = YES;
     } else {
         examQuestionScore = [NSString stringWithFormat:@"%@", _examContent[ExamScore]];
         examQuestionTitle = @"考试得分";
+        self.BackButton.hidden = NO;
     }
     self.examQuestionScoreLabel.text = examQuestionScore;
     self.examQuestionTitleLabel.text = examQuestionTitle;
