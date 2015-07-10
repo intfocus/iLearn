@@ -10,7 +10,7 @@
 #import "ViewUpgrade.h"
 #import "AFNetworking.h"
 #import "const.h"
-#import "Version.h"
+#import "Version+Self.h"
 #import "MBProgressHUD.h"
 #import "HttpUtils.h"
 
@@ -30,15 +30,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if(self.navigationItem) {
-        UIBarButtonItem *navBtnBackToMain = [[UIBarButtonItem alloc] initWithTitle:@"返回"
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(actionBackToMain:)];
-        self.navigationItem.leftBarButtonItem = navBtnBackToMain;
-        self.navigationItem.title = @"版本更新";
-    }
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {

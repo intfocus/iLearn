@@ -30,7 +30,7 @@
 #import "common.h"
 #import "ViewUtils.h"
 #import "User.h"
-#import "Version.h"
+#import "Version+Self.h"
 #import "ViewUpgrade.h"
 #import "LicenseUtil.h"
 #import "UIViewController+CWPopup.h"
@@ -139,7 +139,7 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-    self.cookieValue = @"E00001";
+    self.cookieValue = @"E00516";
     [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
     return;
     

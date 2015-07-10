@@ -10,6 +10,7 @@
 		9E68D22279AD2B12DB817E6E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E92B1ED4A0E3997FEF469AD5 /* libPods.a */; };
 		C4357C451B39701F00854524 /* ApiUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C431B39701E00854524 /* ApiUtils.m */; };
 		C4357C4A1B39706300854524 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C491B39706300854524 /* User.m */; };
+		C44E50811B4E77A500A17ED8 /* Version+Self.m in Sources */ = {isa = PBXBuildFile; fileRef = C44E50801B4E77A500A17ED8 /* Version+Self.m */; };
 		C48C09B01B4D0DDA00DD4562 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C48C09AF1B4D0DDA00DD4562 /* BaseModel.m */; };
 		C48C09B61B4D258500DD4562 /* ViewUpgrade.m in Sources */ = {isa = PBXBuildFile; fileRef = C48C09B41B4D258500DD4562 /* ViewUpgrade.m */; };
 		C48C09B71B4D258500DD4562 /* ViewUpgrade.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48C09B51B4D258500DD4562 /* ViewUpgrade.xib */; };
@@ -86,6 +87,8 @@
 		C4357C441B39701E00854524 /* ApiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiUtils.h; sourceTree = "<group>"; };
 		C4357C481B39706300854524 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		C4357C491B39706300854524 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		C44E507F1B4E77A500A17ED8 /* Version+Self.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Version+Self.h"; sourceTree = "<group>"; };
+		C44E50801B4E77A500A17ED8 /* Version+Self.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Version+Self.m"; sourceTree = "<group>"; };
 		C48C09AE1B4D0DDA00DD4562 /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
 		C48C09AF1B4D0DDA00DD4562 /* BaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
 		C48C09B31B4D258500DD4562 /* ViewUpgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUpgrade.h; sourceTree = "<group>"; };
@@ -279,6 +282,8 @@
 		C48C09B81B4D259900DD4562 /* Version */ = {
 			isa = PBXGroup;
 			children = (
+				C44E507F1B4E77A500A17ED8 /* Version+Self.h */,
+				C44E50801B4E77A500A17ED8 /* Version+Self.m */,
 				C48C09B91B4D259900DD4562 /* Version.h */,
 				C48C09BA1B4D259900DD4562 /* Version.m */,
 			);
@@ -705,6 +710,7 @@
 				CB2BAB3B1B348D6E00D523EB /* FileUtils.m in Sources */,
 				DCA787F51B038ED00049098C /* main.m in Sources */,
 				CBE0C8501B072DC2000EA3A7 /* split.c in Sources */,
+				C44E50811B4E77A500A17ED8 /* Version+Self.m in Sources */,
 				CB2BAB3C1B348D6E00D523EB /* HttpUtils.m in Sources */,
 				CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */,
 				CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */,
