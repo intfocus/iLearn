@@ -5,9 +5,8 @@
 //  Created by lijunjie on 15/7/14.
 //  Copyright (c) 2015年 intFocus. All rights reserved.
 //
-
 #import "LectureTableViewController.h"
-#import "LectureDescViewController.h"
+#import "DetailViewController.h"
 #import "PasswordViewController.h"
 #import "QuestionnaireUtil.h"
 #import "SubjectViewController.h"
@@ -19,16 +18,16 @@
 #import "ListViewController.h"
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
-static NSString *const kShowDetailSegue = @"showLectureDescPage";
+static NSString *const kShowDetailSegue = @"showDetailPage";
 static NSString *const kShowPasswordSegue = @"showPasswordPage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 static NSString *const kShowScoreQRCode = @"showScoreQRCode";
 
-static NSString *const kLectureTableViewCellIdentifier = @"LectureTableViewCell";
+static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
 static const NSInteger kMinScanInterval = 3;
 
-@interface LectureTableViewController () <LectureDescViewControllerProtocol>
+@interface LectureTableViewController () <DetailViewControllerProtocol>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) ConnectionManager *connectionManager;
@@ -76,10 +75,11 @@ static const NSInteger kMinScanInterval = 3;
     // Dispose of any resources that can be recreated.
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     if ([segue.identifier isEqualToString:kShowDetailSegue]) {
         
-        LectureDescViewController *detailVC = (LectureDescViewController*)segue.destinationViewController;
+        DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
         detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
         detailVC.descString = [ExamUtil descFromContent:sender];
         if (self.showBeginTestInfo) {
@@ -90,6 +90,32 @@ static const NSInteger kMinScanInterval = 3;
             detailVC.shownFromBeginTest = self.showBeginTestInfo;
         }
         
+    }
+    if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
+        
+        PasswordViewController *detailVC = (PasswordViewController*)segue.destinationViewController;
+        
+        detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
+        detailVC.descString = [ExamUtil descFromContent:sender];
+        detailVC.password = sender[ExamPassword];
+        __weak id weakSelf = self;
+        detailVC.callback = ^(void){
+            [weakSelf enterExamPageForContent:sender];
+        };
+    }
+    else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
+        //UINavigationController *navController = segue.destinationViewController;
+        UIViewController *viewController = segue.destinationViewController;
+        
+        if ([viewController isKindOfClass:[SubjectViewController class]]) {
+            SubjectViewController *subjectVC = (SubjectViewController*)viewController;
+            subjectVC.examContent = sender;
+        }
+    }
+    else if ([segue.identifier isEqualToString:kShowScoreQRCode]) {
+        
+        ScoreQRCodeViewController *scoreQRCodeVC = segue.destinationViewController;
+        scoreQRCodeVC.scoreQRCodeImage = sender;
     }
 }
 
@@ -163,9 +189,29 @@ static const NSInteger kMinScanInterval = 3;
     return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
 }
 
+//- (UITableViewCell*)tableView:(UITableView *)tableView cellForQuestionnaireRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
+//    cell.delegate = self;
+//
+//    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+//
+//    cell.titleLabel.text = [QuestionnaireUtil titleFromContent:content];
+//
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"YYYY/MM/dd"];
+//    NSInteger epochTime = [QuestionnaireUtil expirationDateFromContent:content];
+//    NSDate *date = [NSDate dateWithTimeIntervalSince1970:epochTime];
+//    NSString *expirationDateString = [formatter stringFromDate:date];
+//
+//    cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
+//
+//    return cell;
+//}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLectureTableViewCellIdentifier];
+    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCellIdentifier];
     cell.delegate = self;
     
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
@@ -179,6 +225,10 @@ static const NSInteger kMinScanInterval = 3;
     NSString *endDateString = [formatter stringFromDate:endDate];
     
     cell.expirationDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"LIST_END_DATE_TEMPLATE", nil), endDateString];
+    
+    cell.scoreTitleLabel.hidden = YES;
+    cell.scoreLabel.hidden = YES;
+    cell.qrCodeButton.hidden = YES;
     
     if ([content[ExamCached] isEqualToNumber:@1]) {
         
@@ -247,9 +297,25 @@ static const NSInteger kMinScanInterval = 3;
                     NSRange statusLabelRange = {0,[statusLabelString length]};
                     [statusLabelString addAttributes:@{NSForegroundColorAttributeName: ILDarkRed} range:statusLabelRange];
                     cell.statusLabel.attributedText = statusLabelString;
+                    cell.qrCodeButton.hidden = NO;
                 }
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];
                 cell.actionButtonType = ContentTableViewCellActionView;
+                
+                cell.scoreTitleLabel.hidden = NO;
+                cell.scoreLabel.hidden = NO;
+                
+                cell.scoreTitleLabel.text = NSLocalizedString(@"LIST_SCORE_TITLE", nil);
+                
+                NSString *strScore = [NSString stringWithFormat:@"%lld", [score longLongValue]];
+                NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"LIST_SCORE_TEMPLATE", nil), [score longLongValue]];
+                NSMutableAttributedString *scoreAttrString = [[NSMutableAttributedString alloc] initWithString:scoreString];
+                [scoreAttrString addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]} range:NSMakeRange(0, [scoreString length])];
+                NSRange scoreRange = [scoreString rangeOfString:strScore];
+                [scoreAttrString addAttributes:@{NSForegroundColorAttributeName: ILDarkRed} range:scoreRange];
+                cell.scoreLabel.attributedText = scoreAttrString;
+                
+                cell.qrCodeButton.titleLabel.text = NSLocalizedString(@"LIST_BUTTON_QRCODE", nil);
             }
             else {
                 // Not start testing or testing
