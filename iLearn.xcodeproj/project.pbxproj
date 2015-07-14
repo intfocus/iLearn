@@ -15,6 +15,8 @@
 		C48C09B61B4D258500DD4562 /* ViewUpgrade.m in Sources */ = {isa = PBXBuildFile; fileRef = C48C09B41B4D258500DD4562 /* ViewUpgrade.m */; };
 		C48C09B71B4D258500DD4562 /* ViewUpgrade.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48C09B51B4D258500DD4562 /* ViewUpgrade.xib */; };
 		C48C09BB1B4D259900DD4562 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = C48C09BA1B4D259900DD4562 /* Version.m */; };
+		C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54841B550B9000E2B678 /* LectureTableViewController.m */; };
+		C49C54881B5516B700E2B678 /* LectureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54871B5516B700E2B678 /* LectureTableViewCell.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
 		CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2BAB121B348C9800D523EB /* LoginViewController.xib */; };
 		CB2BAB1C1B348C9800D523EB /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB151B348C9800D523EB /* NotificationCell.m */; };
@@ -96,6 +98,10 @@
 		C48C09B51B4D258500DD4562 /* ViewUpgrade.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewUpgrade.xib; sourceTree = "<group>"; };
 		C48C09B91B4D259900DD4562 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
 		C48C09BA1B4D259900DD4562 /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Version.m; sourceTree = "<group>"; };
+		C49C54831B550B9000E2B678 /* LectureTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureTableViewController.h; sourceTree = "<group>"; };
+		C49C54841B550B9000E2B678 /* LectureTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewController.m; sourceTree = "<group>"; };
+		C49C54861B5516B700E2B678 /* LectureTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureTableViewCell.h; sourceTree = "<group>"; };
+		C49C54871B5516B700E2B678 /* LectureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewCell.m; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		CB2BAB111B348C9800D523EB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		CB2BAB121B348C9800D523EB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -288,6 +294,18 @@
 				C48C09BA1B4D259900DD4562 /* Version.m */,
 			);
 			path = Version;
+			sourceTree = "<group>";
+		};
+		C49C54821B550B5D00E2B678 /* Lecture */ = {
+			isa = PBXGroup;
+			children = (
+				C49C54831B550B9000E2B678 /* LectureTableViewController.h */,
+				C49C54841B550B9000E2B678 /* LectureTableViewController.m */,
+				C49C54861B5516B700E2B678 /* LectureTableViewCell.h */,
+				C49C54871B5516B700E2B678 /* LectureTableViewCell.m */,
+			);
+			name = Lecture;
+			path = Source/Lecture;
 			sourceTree = "<group>";
 		};
 		CB2BAB0F1B348C9800D523EB /* Login */ = {
@@ -512,6 +530,7 @@
 				CBE581241B2DE4DA00E7A5A0 /* ConnectionManager.h */,
 				CBE581251B2DE4DA00E7A5A0 /* ConnectionManager.m */,
 				CBC976A81B3E78AA006C104F /* ListView */,
+				C49C54821B550B5D00E2B678 /* Lecture */,
 				CBC976871B3C6EBE006C104F /* Exam */,
 				CB7BD7F31B087391002C6DFB /* SubjectView */,
 				CBE0C8271B072421000EA3A7 /* Settings */,
@@ -726,6 +745,7 @@
 				DC5C4F9B1B1F82F4007C83C9 /* QuestionOptionCell.m in Sources */,
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
 				CBC976901B3C6F0A006C104F /* DetailViewController.m in Sources */,
+				C49C54881B5516B700E2B678 /* LectureTableViewCell.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
 				CB2BAB3A1B348D6E00D523EB /* ExtendNSLogFunctionality.m in Sources */,
 				CBE581261B2DE4DA00E7A5A0 /* ConnectionManager.m in Sources */,
@@ -735,6 +755,7 @@
 				CB2BAB3E1B348D6E00D523EB /* PopupView.m in Sources */,
 				CB7BD7F91B0874DE002C6DFB /* SubjectCollectionViewCell.m in Sources */,
 				C4357C4A1B39706300854524 /* User.m in Sources */,
+				C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */,
 				CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */,
 				CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */,
 				CB7BD7F61B0873B1002C6DFB /* SubjectViewController.m in Sources */,
