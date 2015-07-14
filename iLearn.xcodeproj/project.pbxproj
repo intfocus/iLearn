@@ -17,6 +17,7 @@
 		C48C09BB1B4D259900DD4562 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = C48C09BA1B4D259900DD4562 /* Version.m */; };
 		C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54841B550B9000E2B678 /* LectureTableViewController.m */; };
 		C49C54881B5516B700E2B678 /* LectureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54871B5516B700E2B678 /* LectureTableViewCell.m */; };
+		C49C548B1B551AC500E2B678 /* LectureDescViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C548A1B551AC500E2B678 /* LectureDescViewController.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
 		CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2BAB121B348C9800D523EB /* LoginViewController.xib */; };
 		CB2BAB1C1B348C9800D523EB /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB151B348C9800D523EB /* NotificationCell.m */; };
@@ -102,6 +103,8 @@
 		C49C54841B550B9000E2B678 /* LectureTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewController.m; sourceTree = "<group>"; };
 		C49C54861B5516B700E2B678 /* LectureTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureTableViewCell.h; sourceTree = "<group>"; };
 		C49C54871B5516B700E2B678 /* LectureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewCell.m; sourceTree = "<group>"; };
+		C49C54891B551AC500E2B678 /* LectureDescViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureDescViewController.h; sourceTree = "<group>"; };
+		C49C548A1B551AC500E2B678 /* LectureDescViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureDescViewController.m; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		CB2BAB111B348C9800D523EB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		CB2BAB121B348C9800D523EB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -303,6 +306,8 @@
 				C49C54841B550B9000E2B678 /* LectureTableViewController.m */,
 				C49C54861B5516B700E2B678 /* LectureTableViewCell.h */,
 				C49C54871B5516B700E2B678 /* LectureTableViewCell.m */,
+				C49C54891B551AC500E2B678 /* LectureDescViewController.h */,
+				C49C548A1B551AC500E2B678 /* LectureDescViewController.m */,
 			);
 			name = Lecture;
 			path = Source/Lecture;
@@ -756,6 +761,7 @@
 				CB7BD7F91B0874DE002C6DFB /* SubjectCollectionViewCell.m in Sources */,
 				C4357C4A1B39706300854524 /* User.m in Sources */,
 				C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */,
+				C49C548B1B551AC500E2B678 /* LectureDescViewController.m in Sources */,
 				CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */,
 				CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */,
 				CB7BD7F61B0873B1002C6DFB /* SubjectViewController.m in Sources */,
