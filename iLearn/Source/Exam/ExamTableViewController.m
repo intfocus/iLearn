@@ -294,7 +294,10 @@ static const NSInteger kMinScanInterval = 3;
                     cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_SUBMITTED", nil);
                 }
                 else {
-                    cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_SUBMITTED", nil);
+                    NSMutableAttributedString *statusLabelString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"LIST_STATUS_NOT_SUBMITTED", nil)];
+                    NSRange statusLabelRange = {0,[statusLabelString length]};
+                    [statusLabelString addAttributes:@{NSForegroundColorAttributeName: ILDarkRed} range:statusLabelRange];
+                    cell.statusLabel.attributedText = statusLabelString;
                     cell.qrCodeButton.hidden = NO;
                 }
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];

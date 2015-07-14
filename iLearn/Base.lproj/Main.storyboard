@@ -695,7 +695,7 @@
             <objects>
                 <tableViewController id="17A-wM-gTZ" userLabel="Settings View Controller" customClass="SettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="5QT-fc-aus">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections/>
@@ -1096,12 +1096,13 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Jv-Jr-e63">
-                                                <rect key="frame" x="743" y="26" width="29" height="28"/>
+                                                <rect key="frame" x="707" y="26" width="65" height="28"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="44g-tJ-PDD"/>
-                                                    <constraint firstAttribute="width" constant="29" id="86a-GL-Aey"/>
+                                                    <constraint firstAttribute="width" constant="65" id="86a-GL-Aey"/>
                                                 </constraints>
-                                                <state key="normal" image="icon_sync">
+                                                <state key="normal" title="刷新" image="icon_sync">
+                                                    <color key="titleColor" red="0.14901960780000001" green="0.65490196079999996" blue="0.63529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -1109,7 +1110,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wmj-BX-Vxx">
-                                                <rect key="frame" x="667" y="23" width="54" height="34"/>
+                                                <rect key="frame" x="631" y="23" width="54" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="22" id="CmN-J1-6xI"/>
                                                     <constraint firstAttribute="width" constant="22" id="W4y-FV-9Te"/>
@@ -2523,7 +2524,7 @@
             <objects>
                 <tableViewController id="udU-EA-e8q" customClass="PersonalInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Vlh-k7-Hw1">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections/>
@@ -2606,17 +2607,17 @@
                         <viewControllerLayoutGuide type="bottom" id="bgh-qF-fE8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4BY-Dq-V2S">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Img_Logo" translatesAutoresizingMaskIntoConstraints="NO" id="WwE-3m-Ks7">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Img_Logo" translatesAutoresizingMaskIntoConstraints="NO" id="WwE-3m-Ks7">
                                 <rect key="frame" x="432" y="224" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="FvD-sh-mTn"/>
                                     <constraint firstAttribute="width" constant="160" id="XHS-NZ-GiB"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Version: 1.0.1001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCp-qm-y3r">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version: 1.0.1001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCp-qm-y3r">
                                 <rect key="frame" x="36" y="416" width="952" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <color key="textColor" red="0.094117647060000004" green="0.42352941179999998" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2902,8 +2903,8 @@
         <image name="img_registration" width="157" height="115"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cdG-99-dp3"/>
-        <segue reference="IZm-po-iZK"/>
         <segue reference="Upl-6b-LTb"/>
+        <segue reference="IZm-po-iZK"/>
+        <segue reference="Ln2-yb-tlo"/>
     </inferredMetricsTieBreakers>
 </document>
