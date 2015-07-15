@@ -658,9 +658,33 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
 
-        [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+        NSInteger qualityLine = [_examContent[ExamQualify] integerValue];
+        NSInteger allowTimes = [_examContent[ExamAllowTimes] integerValue];
+        NSInteger submitTimes = [_examContent[ExamSubmitTimes] integerValue];
+        NSInteger newSubmitTimes = submitTimes + 1;
+        NSString *scoreString;
+        [ExamUtil updateSubmitTimes:newSubmitTimes ofDBPath:dbPath];
 
-        NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
+        ExamTypes examType = [_examContent[ExamType] integerValue];
+
+        if (examType == ExamTypesFormal &&
+            score < qualityLine &&
+            newSubmitTimes < allowTimes)
+        { // Should test again
+
+            [ExamUtil resetExamStatusOfDBPath:dbPath];
+            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNDER_QUALIFY_TEMPLATE", nil)];
+        }
+        else {
+
+            if (newSubmitTimes > 1) { // Has submitted, the score should be just qualified
+                score = qualityLine;
+                [ExamUtil updateExamScore:score ofDBPath:dbPath];
+            }
+
+            [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
+        }
 
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
