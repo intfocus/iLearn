@@ -18,6 +18,7 @@
  */
 @interface FileUtils : NSObject
 
++ (NSString *)getBasePath;
 /**
  *  传递目录名取得沙盒中的绝对路径(一级),不存在则创建，请慎用！
  *
@@ -78,7 +79,7 @@
  */
 
 + (BOOL) checkSlideExist: (NSString *) slideID
-                     Dir:(NSString *)dir
+                     Dir:(NSString *)dirName
                    Force:(BOOL)isForce;
 
 /**
@@ -153,26 +154,8 @@
  *
  *  @return @{FILE_DESC_KEY: }
  */
-+ (NSMutableArray *) favoriteFileList;
++ (NSMutableArray *) favoriteSlideList1;
 
-/** 创建新标签
- *
- * step1: 判断该标签名称是否存在
- *      创建FileID, 格式: r150501010101
- *      初始化重组内容文件的配置档
- *  step2.1 若不存在,则创建
- *  @param tagName 输入的新标签名称
- *
- *  结论: 调用过本函数，FILE_DIRNAME/FileID/desc.json 必须存在
- *       后继操作: 拷贝页面文件及文件夹
- *
- *  @param tagName   标签名称
- *  @param tagDesc   标签描述
- *  @param timestamp 时间戳 （创建新FileID时使用)
- */
-+ (NSMutableDictionary *)findOrCreateTag:(NSString*)tagName
-                                    Desc:(NSString *)tagDesc
-                               Timestamp:(NSString *)timestamp;
 
 /**
  *  NSMutableDictionary写入本地文件
@@ -181,7 +164,7 @@
  *  @param filePath 目标文件
  */
 + (void) writeJSON:(NSMutableDictionary *)data
-              Into:(NSString *) filePath;
+              Into:(NSString *) slidePath;
 
 /**
  *  根据文件名称在收藏夹中查找文件描述档
@@ -200,21 +183,35 @@
  *
  *  @return pdf/gif文档路径
  */
-+ (NSString*) fileThumbnail:(NSString *)FileID
++ (NSString*) slideThumbnail:(NSString *)FileID
                      PageID:(NSString *)PageID
                         Dir:(NSString *)dir;
 
+
+
+#pragma mark - slide download cache
++ (NSString *)slideToDownload:(NSString *)slideID;
++ (NSString *)slideDownloaded:(NSString *)slideID;
++ (BOOL)isSlideDownloading:(NSString *)slideID;
+
+
 /**
- *  文档收藏；把文档从SLIDE_DIRNAME拷贝到FAVORITE_DIRNAME;
- *  使用block是为了保持FileUtils一方净土
+ *  计算指定文件路径的文件大小
  *
- *  @param slideID                   文档ID
- *  @param updateSlideTimestampBlock 使用DateUtils更新日间戳
+ *  @param filePath 文件绝对路径
  *
- *  @return 操作成功否
+ *  @return 文件体积
  */
-+ (BOOL) copySlideToFavorite:(NSString *)slideID
-                       Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock;
++ (NSString *)fileSize:(NSString *)filePath;
+/**
+ *  计算指定文件夹路径的文件体积
+ *
+ *  @param folderPath 文件夹路径
+ *
+ *  @return 文件夹体积
+ */
++ (NSString *)folderSize:(NSString *)folderPath;
+
 @end
 
 

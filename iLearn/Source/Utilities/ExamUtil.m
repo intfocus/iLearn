@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "LicenseUtil.h"
 #import "FMDB.h"
+#import "ExtendNSLogFunctionality.h"
 
 static const BOOL inDeveloping = NO;
 
@@ -68,7 +69,17 @@ static const BOOL inDeveloping = NO;
 
 //    NSLog(@"exams: %@", [self jsonStringOfContent:exams]);
 
-    return exams;
+    /**
+     * add#sort jay@2015/07/11
+     * 原因:
+     *     未排序，会导致考试列表（内容不变）每次进入app[考试中心],显示顺序都不一致
+     * 排序:
+     *     以考试结束时间降序，再以考试标题升序
+     */
+    NSSortDescriptor *firstSort  = [[NSSortDescriptor alloc] initWithKey:ExamEndDate ascending:NO];
+    NSSortDescriptor *secondSort = [[NSSortDescriptor alloc] initWithKey:ExamTitle ascending:YES];
+    NSArray *sortExams = [exams sortedArrayUsingDescriptors:[NSArray arrayWithObjects:firstSort, secondSort,nil]];
+    return sortExams;
 }
 
 + (NSArray*)loadExamsFromCache
@@ -291,7 +302,7 @@ static const BOOL inDeveloping = NO;
 
 + (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS subject (id INTEGER PRIMARY KEY AUTOINCREMENT, subject_id INTEGER, desc TEXT, level INTEGER, type INTEGER, score FLOAT, memo TEXT, answer TEXT, selected_answer TEXT)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS subject (id INTEGER PRIMARY KEY AUTOINCREMENT, subject_id INTEGER, desc TEXT, level INTEGER, type INTEGER, score FLOAT, memo TEXT default '', answer TEXT, selected_answer TEXT)"];
 
     [db executeUpdate:@"CREATE TABLE IF NOT EXISTS option (id INTEGER PRIMARY KEY AUTOINCREMENT, option_id INTEGER, subject_id INTEGER, seq INTEGER, desc TEXT, selected INTEGER DEFAULT 0)"];
 
@@ -320,7 +331,22 @@ static const BOOL inDeveloping = NO;
     NSArray *answers = subjectContent[ExamQuestionAnswer];
     NSString *answer = [answers componentsJoinedByString:@"+"];
 
-    [db executeUpdate:@"INSERT INTO subject (subject_id, desc, level, type, score, memo, answer) VALUES (?, ?, ?, ?, ?, ?, ?)", subjectId, subjectContent[ExamQuestionTitle], subjectContent[ExamQuestionLevel], subjectContent[ExamQuestionType], scorePerSubject, subjectContent[ExamQuestionNote], answer];
+    /**
+     *  bug#fix jay@2015/07/11
+     *  起因:
+     *      服务器端创建考题，memo字段为空时，app加载考试界面时，会因NSDictionary#memo赋值nil而crash
+     *  尝试:
+     *      数据库表subject#memo默认值为空字符串，无效，因为insert时赋值为nil起效
+     *  解决:
+     *      只能在insert时判断是否为nil,才能避免crash
+     */
+    [db executeUpdate:@"INSERT INTO subject (subject_id, desc, level, type, score, memo, answer) VALUES (?, ?, ?, ?, ?, ?, ?)", subjectId,
+     (NSString *)psd(subjectContent[ExamQuestionTitle], @"NoSet"),
+     subjectContent[ExamQuestionLevel],
+     subjectContent[ExamQuestionType],
+     scorePerSubject,
+     (NSString *)psd(subjectContent[ExamQuestionNote], @""),
+     answer];
 
 
     NSMutableArray *options = [subjectContent[ExamQuestionOptions] mutableCopy];
@@ -438,7 +464,11 @@ static const BOOL inDeveloping = NO;
         content[ExamQuestionTitle] = [result stringForColumn:@"desc"];
         content[ExamQuestionLevel] = @([result intForColumn:@"level"]);
         content[ExamQuestionType] = @([result intForColumn:@"type"]);
+        NSLog(@"%@", subjectId);
+        NSLog(@"%@po", [result stringForColumn:@"memo"]);
+        NSLog(@"%i", [result stringForColumn:@"memo"] == nil);
         content[ExamQuestionNote] = [result stringForColumn:@"memo"];
+        
 
         NSString *selecteAnswer = [result stringForColumn:@"selected_answer"];
 

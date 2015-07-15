@@ -30,20 +30,21 @@
 #import "common.h"
 #import "ViewUtils.h"
 #import "User.h"
+#import "Version+Self.h"
+#import "ViewUpgrade.h"
 #import "LicenseUtil.h"
+#import "UIViewController+CWPopup.h"
 
-@interface LoginViewController ()
-// function controls
+@interface LoginViewController ()<ViewUpgradeProtocol>
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
-//@property (retain, nonatomic) IBOutlet M13Checkbox *rememberPwd;
-
-// Demo of how to add other UI elements on top of splash view
+@property (nonatomic, nonatomic) ViewUpgrade *viewUpgrade;
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 
 // login outside web
 @property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavBack;
 @property (weak, nonatomic) IBOutlet UILabel *labelLoginTitle;
+@property (weak, nonatomic) IBOutlet UILabel *labelPropmt;
 
 @property (strong, nonatomic)  NSString *cookieValue;
 @property (strong, nonatomic)  NSTimer *timerReadCookie;
@@ -61,6 +62,10 @@
      */
     self.user = [[User alloc] init];
     [self hideOutsideLoginControl:YES];
+    self.labelPropmt.text = @"";
+    
+    // CWPopup 事件
+    self.useBlurForPopup = YES;
     /**
      控件事件
     */
@@ -74,13 +79,52 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.view bringSubviewToFront:self.btnSubmit];
+//    if([HttpUtils isNetworkAvailable]) {
+//        [self checkAppVersionUpgrade];
+//    }
 }
 
 #pragma mark memory management
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - check version upgrade
+
+- (void)checkAppVersionUpgrade {
+    self.btnSubmit.enabled = NO;
+    [self.btnSubmit setTitle:@"检测版本..." forState:UIControlStateNormal];
+    
+    Version *version = [[Version alloc] init];
+    [version checkUpdate:^{
+        if([version isUpgrade]) {
+            if(!self.viewUpgrade) {
+                self.viewUpgrade = [[ViewUpgrade alloc] init];
+            }
+            self.viewUpgrade.delegate = self;
+            [self presentPopupViewController:self.viewUpgrade animated:YES completion:^(void) {
+                NSLog(@"popup view viewUpgrade");
+                [self.viewUpgrade refreshControls:YES];
+            }];
+        }
+    } FailBloc:^{
+        self.btnSubmit.enabled = YES;
+        [self.btnSubmit setTitle:@"登陆" forState:UIControlStateNormal];
+    }];
+    
+}
+
+#pragma mark - ViewUpgradeProtocol
+- (void)dismissViewUpgrade {
+    if(self.viewUpgrade) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            _viewUpgrade = nil;
+            NSLog(@"dismiss viewUpgrade.");
+        }];
+    }
+    self.btnSubmit.enabled = YES;
+    [self.btnSubmit setTitle:@"登录" forState:UIControlStateNormal];
 }
 
 
@@ -95,9 +139,9 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-//    self.cookieValue = @"E00001";
-//    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
-//    return;
+    self.cookieValue = @"E99658601";
+    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
@@ -283,8 +327,10 @@
     
     // 判断2: last日期距离现在小于N小时
     NSTimeInterval intervalBetweenDates = [currentDate timeIntervalSinceDate:lastDate];
-    if(intervalBetweenDates > LOGIN_KEEP_HOURS*60*60) {
-        [errors addObject:LOGIN_ERROR_EXPIRED_OUT_N_HOURS];
+    int intervalHours = (int)intervalBetweenDates/60/60;
+    if(intervalHours > LOGIN_KEEP_HOURS) {
+        NSString *errorInfo = [NSString stringWithFormat:LOGIN_ERROR_EXPIRED_OUT_N_HOURS, user.loginLast, intervalHours, LOGIN_KEEP_HOURS];
+        [errors addObject:errorInfo];
     }
 
     return errors;
