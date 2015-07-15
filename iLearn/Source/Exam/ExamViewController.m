@@ -65,7 +65,6 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (assign, nonatomic) BOOL isAnswerMode; //答案模式
 
 @property (weak, nonatomic) IBOutlet UIView *fakeNavBarView;
-@property (weak, nonatomic) IBOutlet UIButton *submitButton2;
 @property (weak, nonatomic) IBOutlet UIView *squareView;
 
 @property (weak, nonatomic) IBOutlet UILabel *countDownTitleLabel;
@@ -171,7 +170,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         self.squareView.backgroundColor = ILDarkRed;
     }
     
-    self.submitButton2.layer.cornerRadius = 4;
+    _submitButton.layer.cornerRadius = 4;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -431,18 +430,15 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     if (_isAnswerMode) {
         _submitButton.hidden = YES;
-        self.submitButton2.hidden = YES;
     }
     else {
         for (NSNumber *status in _cellStatus) {
             if ([status isEqualToNumber:@(CellStatusNone)]) {
                 _submitButton.hidden = YES;
-                self.submitButton2.hidden = YES;
                 return;
             }
         }
         _submitButton.hidden = NO;
-        self.submitButton2.hidden = NO;
     }
 }
 

@@ -86,6 +86,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerVIewHeightConstraint;
 @property (nonatomic, nonatomic) User *user;
 
+@property (weak, nonatomic) IBOutlet UITextView *fillTextView;
+
+
 @end
 
 @implementation QuestionnaireViewController
