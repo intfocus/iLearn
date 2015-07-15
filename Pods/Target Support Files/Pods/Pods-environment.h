@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 4
 
+// CWPopup
+#define COCOAPODS_POD_AVAILABLE_CWPopup
+#define COCOAPODS_VERSION_MAJOR_CWPopup 1
+#define COCOAPODS_VERSION_MINOR_CWPopup 2
+#define COCOAPODS_VERSION_PATCH_CWPopup 6
+
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 2

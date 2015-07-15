@@ -8,8 +8,10 @@
 
 #import "ListViewController.h"
 #import "LicenseUtil.h"
-#import "ExamTableViewController.h"
 #import "NotificationViewController.h"
+
+#import "ExamTableViewController.h"
+#import "LectureTableViewController.h"
 
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
@@ -28,7 +30,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) ContentViewController<ContentViewProtocal> *contentViewController;
-@property (strong, nonatomic) ExamTableViewController *examTableViewController;
 @property (strong, nonatomic) NotificationViewController *notificationViewController;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
@@ -52,7 +53,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     // Do any additional setup after loading the view, typically from a nib.
 
     _registrationButton.enabled = NO;
-    _lectureButton.enabled = NO;
+    _lectureButton.enabled = YES;
     _questionnaireButton.enabled = NO;
     _settingsButton.enabled = NO;
 
@@ -66,12 +67,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _userNameLabel.text = [LicenseUtil userName];
 
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
-
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main"
-                                                         bundle:nil];
-
-    self.examTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
-    _examTableViewController.listViewController = self;
 
     self.notificationViewController = [[NotificationViewController alloc] init];
 
@@ -90,10 +85,16 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)switchContentViewToViewController
 {
     ContentViewController<ContentViewProtocal> *newContentViewController;
-
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main"
+                                                         bundle:nil];
     switch (_listType) {
         case ListViewTypeExam:
-            newContentViewController = _examTableViewController;
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
+            newContentViewController.listViewController = self;
+            break;
+        case ListViewTypeLecture:
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"LectureTableViewController"];
+            newContentViewController.listViewController = self;
             break;
         case ListViewTypeNotification:
             newContentViewController = _notificationViewController;
