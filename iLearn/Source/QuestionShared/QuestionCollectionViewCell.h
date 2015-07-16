@@ -1,5 +1,5 @@
 //
-//  SubjectCollectionViewCell.h
+//  QuestionCollectionViewCell.h
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/17.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SubjectCollectionViewCell : UICollectionViewCell
+@interface QuestionCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *numberLabel;
 

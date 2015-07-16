@@ -47,6 +47,9 @@ NSString *const ExamPassword = @"password";
 NSString *const ExamScore = @"score";
 NSString *const ExamOpened = @"opened";
 NSString *const ExamUserId = @"user_id";
+NSString *const ExamAllowTimes = @"allow_times";
+NSString *const ExamSubmitTimes = @"submit_times";
+NSString *const ExamQualify = @"qualify_percent";
 
 NSString *const ExamQuestions = @"questions";
 NSString *const ExamQuestionId = @"id";

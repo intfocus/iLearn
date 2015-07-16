@@ -1,13 +1,13 @@
 //
-//  SubjectViewController.m
+//  ExamViewController.m
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/17.
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
-#import "SubjectViewController.h"
-#import "SubjectCollectionViewCell.h"
+#import "ExamViewController.h"
+#import "QuestionCollectionViewCell.h"
 #import "QuestionOptionCell.h"
 #import "Constants.h"
 #import "LicenseUtil.h"
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     CellStatusWrong,
 };
 
-@interface SubjectViewController ()
+@interface ExamViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
 @property (weak, nonatomic) IBOutlet UIButton *BackButton;
@@ -87,7 +87,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (nonatomic, nonatomic) User *user;
 @end
 
-@implementation SubjectViewController
+@implementation ExamViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -212,7 +212,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    SubjectCollectionViewCell *cell = (SubjectCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:kSubjectCollectionCellIdentifier forIndexPath:indexPath];
+    QuestionCollectionViewCell *cell = (QuestionCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:kSubjectCollectionCellIdentifier forIndexPath:indexPath];
 
     cell.numberLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
     cell.numberLabel.textColor = [UIColor blackColor];
@@ -644,7 +644,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [_timeLeftTimer invalidate];
     [_timeOutTimer invalidate];
 
-    __weak SubjectViewController *weakSelf = self;
+    __weak ExamViewController *weakSelf = self;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
@@ -658,9 +658,33 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
 
-        [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+        NSInteger qualityLine = [_examContent[ExamQualify] integerValue];
+        NSInteger allowTimes = [_examContent[ExamAllowTimes] integerValue];
+        NSInteger submitTimes = [_examContent[ExamSubmitTimes] integerValue];
+        NSInteger newSubmitTimes = submitTimes + 1;
+        NSString *scoreString;
+        [ExamUtil updateSubmitTimes:newSubmitTimes ofDBPath:dbPath];
 
-        NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
+        ExamTypes examType = [_examContent[ExamType] integerValue];
+
+        if (examType == ExamTypesFormal &&
+            score < qualityLine &&
+            newSubmitTimes < allowTimes)
+        { // Should test again
+
+            [ExamUtil resetExamStatusOfDBPath:dbPath];
+            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNDER_QUALIFY_TEMPLATE", nil)];
+        }
+        else {
+
+            if (newSubmitTimes > 1) { // Has submitted, the score should be just qualified
+                score = qualityLine;
+                [ExamUtil updateExamScore:score ofDBPath:dbPath];
+            }
+
+            [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
+        }
 
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
