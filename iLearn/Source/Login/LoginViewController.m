@@ -139,9 +139,9 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-//    self.cookieValue = @"E99658601";
-//    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
-//    return;
+    self.cookieValue = @"E99658601";
+    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
@@ -326,9 +326,12 @@
     }
     
     // 判断2: last日期距离现在小于N小时
+    // 判断2: last日期距离现在小于N小时
     NSTimeInterval intervalBetweenDates = [currentDate timeIntervalSinceDate:lastDate];
-    if(intervalBetweenDates > LOGIN_KEEP_HOURS*60*60) {
-        [errors addObject:LOGIN_ERROR_EXPIRED_OUT_N_HOURS];
+    int intervalHours = (int)intervalBetweenDates/60/60;
+    if(intervalHours > LOGIN_KEEP_HOURS) {
+        NSString *errorInfo = [NSString stringWithFormat:LOGIN_ERROR_EXPIRED_OUT_N_HOURS, user.loginLast, intervalHours, LOGIN_KEEP_HOURS];
+        [errors addObject:errorInfo];
     }
 
     return errors;
