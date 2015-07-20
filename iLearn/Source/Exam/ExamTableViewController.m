@@ -24,7 +24,7 @@ static NSString *const kShowPasswordSegue = @"showPasswordPage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 static NSString *const kShowScoreQRCode = @"showScoreQRCode";
 
-static NSString *const kExamTableViewCellIdentifier = @"ExamTableViewCell";
+static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 static const NSInteger kMinScanInterval = 3;
 
@@ -212,7 +212,7 @@ static const NSInteger kMinScanInterval = 3;
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kExamTableViewCellIdentifier];
+    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
     cell.delegate = self;
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];

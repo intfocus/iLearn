@@ -14,9 +14,11 @@
 #import "ExamUtil.h"
 #import "User.h"
 #import <MBProgressHUD.h>
+#import "UploadExamViewController.h"
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
 static NSString *const kQuestionOptionCellIdentifier = @"QuestionAnswerCell";
+static NSString *const kUploadExamViewController = @"UploadExamViewController";
 
 typedef NS_ENUM(NSUInteger, CellStatus) {
     CellStatusNone,
@@ -25,7 +27,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     CellStatusWrong,
 };
 
-@interface SubjectViewController ()
+@interface SubjectViewController () <UploadExamViewControllerProtocol>
 
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
 @property (weak, nonatomic) IBOutlet UIButton *BackButton;
@@ -214,7 +216,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     SubjectCollectionViewCell *cell = (SubjectCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:kSubjectCollectionCellIdentifier forIndexPath:indexPath];
 
-    cell.numberLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
+    cell.numberLabel.text = [NSString stringWithFormat:@"%ld", indexPath.row+1];
     cell.numberLabel.textColor = [UIColor blackColor];
 
     if (_isAnswerMode) {
@@ -423,7 +425,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     _questionTypeLabel.text = typeString;
     _correctionTypeLabel.text = typeString;
 
-    NSString *title = [NSString stringWithFormat:@"%d. %@", _selectedCellIndex+1, questionTitle];
+    NSString *title = [NSString stringWithFormat:@"%lu. %@", _selectedCellIndex+1, questionTitle];
 
     _questionTitleLabel.text = title;
     _correctionTitleLabel.text = title;
@@ -431,7 +433,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
     NSMutableString *answerString = [NSMutableString string];
     for (NSNumber *seq in answersBySeq) {
-        [answerString appendString:[NSString stringWithFormat:@"%c", ([seq integerValue] + 1) + 64]];
+        [answerString appendString:[NSString stringWithFormat:@"%ld", ([seq integerValue] + 1) + 64]];
     }
 
     NSString *correctionNote = selectedQuestion[ExamQuestionNote];
@@ -639,12 +641,13 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [self submit];
 }
 
+
 - (void)submit
 {
     [_timeLeftTimer invalidate];
     [_timeOutTimer invalidate];
 
-    __weak SubjectViewController *weakSelf = self;
+    //__weak SubjectViewController *weakSelf = self;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
@@ -659,16 +662,32 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
 
         [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+        
+        [self performSegueWithIdentifier:kUploadExamViewController sender:[NSNumber numberWithInteger:score]];
+        //NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
 
-        NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
-
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
+        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
-            [alert show];
+            //[alert show];
         });
     });
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:kUploadExamViewController]) {
+        
+        UploadExamViewController *uploadExamVC = (UploadExamViewController*)segue.destinationViewController;
+        uploadExamVC.examScore = sender;
+        uploadExamVC.examID    = _examContent[ExamId];
+        uploadExamVC.delegate  = self;
+        
+    } else {
+        NSLog(@"where you are?!");
+    }
+ 
 }
 
 #pragma mark - UIAction
@@ -711,6 +730,11 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (IBAction)submit:(UIButton *)sender {
     [self submit];
+}
+
+#pragma mark - UploadExamViewControllerProtocol
+- (void)backToListView {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
