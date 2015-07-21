@@ -17,6 +17,7 @@
 		C48C09BB1B4D259900DD4562 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = C48C09BA1B4D259900DD4562 /* Version.m */; };
 		C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54841B550B9000E2B678 /* LectureTableViewController.m */; };
 		C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */; };
+		C4F2E8391B5E4A67001599F2 /* UploadExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F2E8381B5E4A67001599F2 /* UploadExamViewController.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
 		CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2BAB121B348C9800D523EB /* LoginViewController.xib */; };
 		CB2BAB1C1B348C9800D523EB /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB151B348C9800D523EB /* NotificationCell.m */; };
@@ -102,6 +103,8 @@
 		C49C54841B550B9000E2B678 /* LectureTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewController.m; sourceTree = "<group>"; };
 		C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewCell.m; sourceTree = "<group>"; };
 		C49C548D1B5527AC00E2B678 /* LectureTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureTableViewCell.h; sourceTree = "<group>"; };
+		C4F2E8371B5E4A67001599F2 /* UploadExamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadExamViewController.h; sourceTree = "<group>"; };
+		C4F2E8381B5E4A67001599F2 /* UploadExamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadExamViewController.m; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		CB2BAB111B348C9800D523EB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		CB2BAB121B348C9800D523EB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -383,6 +386,8 @@
 		CB7BD7F31B087391002C6DFB /* SubjectView */ = {
 			isa = PBXGroup;
 			children = (
+				C4F2E8371B5E4A67001599F2 /* UploadExamViewController.h */,
+				C4F2E8381B5E4A67001599F2 /* UploadExamViewController.m */,
 				CB7BD7F41B0873B1002C6DFB /* SubjectViewController.h */,
 				CB7BD7F51B0873B1002C6DFB /* SubjectViewController.m */,
 				CB7BD7F71B0874DE002C6DFB /* SubjectCollectionViewCell.h */,
@@ -721,6 +726,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4F2E8391B5E4A67001599F2 /* UploadExamViewController.m in Sources */,
 				CBE0C8541B073528000EA3A7 /* LicenseUtil.m in Sources */,
 				CBC976B31B3E78AA006C104F /* ContentTableViewCell.m in Sources */,
 				CBC976B21B3E78AA006C104F /* CustomSegue.m in Sources */,
