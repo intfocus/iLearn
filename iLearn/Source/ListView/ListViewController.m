@@ -8,8 +8,10 @@
 
 #import "ListViewController.h"
 #import "LicenseUtil.h"
-#import "ExamTableViewController.h"
 #import "NotificationViewController.h"
+
+#import "ExamTableViewController.h"
+#import "LectureTableViewController.h"
 
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
@@ -28,7 +30,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) ContentViewController<ContentViewProtocal> *contentViewController;
-@property (strong, nonatomic) ExamTableViewController *examTableViewController;
 @property (strong, nonatomic) NotificationViewController *notificationViewController;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
@@ -50,31 +51,25 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-
+    
     _registrationButton.enabled = NO;
-    _lectureButton.enabled = NO;
+    _lectureButton.enabled = YES;
     _questionnaireButton.enabled = NO;
     _settingsButton.enabled = NO;
-
+    
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
     [_avatarImageView.layer setCornerRadius:width/2.0];
     [_avatarImageView.layer setBorderColor:[UIColor whiteColor].CGColor];
     [_avatarImageView.layer setBorderWidth:2.0];
     _avatarImageView.clipsToBounds = YES;
-
+    
     _userNameLabel.text = [LicenseUtil userName];
-
+    
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
-
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main"
-                                                         bundle:nil];
-
-    self.examTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
-    _examTableViewController.listViewController = self;
-
+    
     self.notificationViewController = [[NotificationViewController alloc] init];
-
+    
     [self refreshContentView];
 }
 
@@ -90,10 +85,16 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)switchContentViewToViewController
 {
     ContentViewController<ContentViewProtocal> *newContentViewController;
-
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main"
+                                                         bundle:nil];
     switch (_listType) {
         case ListViewTypeExam:
-            newContentViewController = _examTableViewController;
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
+            newContentViewController.listViewController = self;
+            break;
+        case ListViewTypeLecture:
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"LectureTableViewController"];
+            newContentViewController.listViewController = self;
             break;
         case ListViewTypeNotification:
             newContentViewController = _notificationViewController;
@@ -101,18 +102,18 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
         default:
             break;
     }
-
+    
     CGRect containViewFrame = self.contentView.bounds;
-
+    
     [_contentViewController removeFromParentViewController];
     [_contentViewController.view removeFromSuperview];
-
+    
     self.contentViewController = newContentViewController;
-
+    
     [self addChildViewController:_contentViewController];
     [self.contentView addSubview:_contentViewController.view];
     [_contentViewController.view setFrame:containViewFrame];
-
+    
     [_contentViewController didMoveToParentViewController:self];
 }
 
@@ -157,7 +158,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _questionnaireView.backgroundColor = [UIColor clearColor];
     _lectureView.backgroundColor = [UIColor clearColor];
     _registrationView.backgroundColor = [UIColor clearColor];
-
+    
     switch (_listType) {
         case ListViewTypeExam:
             _examView.backgroundColor = RGBCOLOR(26.0, 78.0, 132.0);
@@ -225,14 +226,14 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (IBAction)syncButtonTouched:(id)sender {
     NSLog(@"syncButtonTouched");
-
+    
     if ([_contentViewController respondsToSelector:@selector(syncData)]) {
         [_contentViewController syncData];
     }
 }
 
 - (IBAction)scanButtonTouched:(id)sender {
-
+    
     if ([_contentViewController respondsToSelector:@selector(scanQRCode)]) {
         [_contentViewController scanQRCode];
     }

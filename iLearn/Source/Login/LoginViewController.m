@@ -139,9 +139,9 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-//     self.cookieValue = @"E00516";
-//    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
-//    return;
+     self.cookieValue = @"E00516";
+    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");

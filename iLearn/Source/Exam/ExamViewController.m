@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     CellStatusWrong,
 };
 
-@interface SubjectViewController () <UploadExamViewControllerProtocol>
+@interface ExamViewController () <UploadExamViewControllerProtocol>
 
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
 @property (weak, nonatomic) IBOutlet UIButton *BackButton;
@@ -453,10 +453,6 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateSubmitButtonStatus
 {
-    
-    _submitButton.hidden = NO;
-    self.submitButton2.hidden = NO;
-    return;
     if (_isAnswerMode) {
         _submitButton.hidden = YES;
         self.submitButton2.hidden = YES;
@@ -695,6 +691,13 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         }
        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UploadExam" bundle:nil];
+        UploadExamViewController *uploadExamVC = (UploadExamViewController*)[storyboard instantiateViewControllerWithIdentifier:kUploadExamViewController];
+        uploadExamVC.examScore = [NSNumber numberWithInteger:score];
+        uploadExamVC.examID    = _examContent[ExamId];
+        uploadExamVC.delegate  = self;
+        [self presentViewController:uploadExamVC animated:YES completion:^{}];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
             //[alert show];

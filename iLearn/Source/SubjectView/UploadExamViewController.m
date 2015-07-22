@@ -2,7 +2,7 @@
 //  DetailViewController.m
 //  iLearn
 //
-//  Created by Charlie Hung on 2015/5/16.
+//  Created by lijunjie on 2015/5/16.
 //  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
@@ -13,10 +13,10 @@
 #import "LicenseUtil.h"
 
 
-static NSString *const statusUploading = @"成绩上传服务器中...";
-static NSString *const resultUploading = @"请等待";
-static NSString *const statusUploaded = @"成绩上传服务器成功";
-static NSString *const resultUploaded = @"请返回";
+static NSString *const statusUploading  = @"成绩上传服务器中...";
+static NSString *const resultUploading  = @"请等待";
+static NSString *const statusUploaded   = @"成绩上传服务器成功";
+static NSString *const resultUploaded   = @"请返回";
 static NSString *const statusUploadFail = @"成绩上传服务器失败";
 static NSString *const resultUploadFail = @"请返回后刷新重试或扫描二维码上传";
 @interface UploadExamViewController ()
@@ -53,7 +53,7 @@ static NSString *const resultUploadFail = @"请返回后刷新重试或扫描二
     NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
     
     NSString *filePath = [NSString stringWithFormat:@"%@/%@.result", examPath, self.examID];
-    //[_connectionManager uploadExamResultWithPath:filePath];
+    [_connectionManager uploadExamResultWithPath:filePath];
 }
 
 - (NSString *)applicationDocumentsDirectory {
