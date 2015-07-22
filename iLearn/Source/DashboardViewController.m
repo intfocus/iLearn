@@ -14,6 +14,7 @@
 #import "const.h"
 #import "FileUtils.h"
 #import "ApiUtils.h"
+#import "ExtendNSLogFunctionality.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowExamSegue = @"showExamPage";

@@ -139,7 +139,7 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-    self.cookieValue = @"E99658601";
+     self.cookieValue = @"E00516";
     [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
     return;
     
@@ -325,6 +325,7 @@
         [errors addObject:LOGIN_ERROR_LAST_GT_CURRENT];
     }
     
+    // 判断2: last日期距离现在小于N小时
     // 判断2: last日期距离现在小于N小时
     NSTimeInterval intervalBetweenDates = [currentDate timeIntervalSinceDate:lastDate];
     int intervalHours = (int)intervalBetweenDates/60/60;

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9E68D22279AD2B12DB817E6E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E92B1ED4A0E3997FEF469AD5 /* libPods.a */; };
+		C42611281B5FA0FD006786CD /* UploadExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42611261B5FA0FD006786CD /* UploadExamViewController.m */; };
+		C426112E1B5FA198006786CD /* UploadExam.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C426112C1B5FA198006786CD /* UploadExam.storyboard */; };
 		C4357C451B39701F00854524 /* ApiUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C431B39701E00854524 /* ApiUtils.m */; };
 		C4357C4A1B39706300854524 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C491B39706300854524 /* User.m */; };
 		C44E50811B4E77A500A17ED8 /* Version+Self.m in Sources */ = {isa = PBXBuildFile; fileRef = C44E50801B4E77A500A17ED8 /* Version+Self.m */; };
@@ -85,6 +87,9 @@
 
 /* Begin PBXFileReference section */
 		A5051085F083B61256CF0478 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C42611261B5FA0FD006786CD /* UploadExamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UploadExamViewController.m; path = iLearn/Source/SubjectView/UploadExamViewController.m; sourceTree = SOURCE_ROOT; };
+		C42611271B5FA0FD006786CD /* UploadExamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadExamViewController.h; path = iLearn/Source/SubjectView/UploadExamViewController.h; sourceTree = SOURCE_ROOT; };
+		C426112D1B5FA198006786CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UploadExam.storyboard; sourceTree = "<group>"; };
 		C4357C431B39701E00854524 /* ApiUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiUtils.m; sourceTree = "<group>"; };
 		C4357C441B39701E00854524 /* ApiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiUtils.h; sourceTree = "<group>"; };
 		C4357C481B39706300854524 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -237,6 +242,15 @@
 				E92B1ED4A0E3997FEF469AD5 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C42611291B5FA16A006786CD /* StoryBoards */ = {
+			isa = PBXGroup;
+			children = (
+				C426112C1B5FA198006786CD /* UploadExam.storyboard */,
+				DCA787FC1B038ED00049098C /* Main.storyboard */,
+			);
+			name = StoryBoards;
 			sourceTree = "<group>";
 		};
 		C4357C461B39706300854524 /* Models */ = {
@@ -421,6 +435,8 @@
 				CBC9768D1B3C6F0A006C104F /* PasswordViewController.m */,
 				CBC9768B1B3C6F0A006C104F /* ScoreQRCodeViewController.h */,
 				CBC9768F1B3C6F0A006C104F /* ScoreQRCodeViewController.m */,
+				C42611271B5FA0FD006786CD /* UploadExamViewController.h */,
+				C42611261B5FA0FD006786CD /* UploadExamViewController.m */,
 			);
 			name = Exam;
 			path = Source/Exam;
@@ -526,6 +542,7 @@
 		DCA787F11B038ED00049098C /* iLearn */ = {
 			isa = PBXGroup;
 			children = (
+				C42611291B5FA16A006786CD /* StoryBoards */,
 				CB2BAB201B348D1A00D523EB /* iSearchShared */,
 				CB2BAB0F1B348C9800D523EB /* Login */,
 				CB2BAB131B348C9800D523EB /* Notification */,
@@ -543,7 +560,6 @@
 				CBC976871B3C6EBE006C104F /* Exam */,
 				CB3512361B47F27E00025B5B /* QuestionShared */,
 				CBE0C8271B072421000EA3A7 /* Settings */,
-				DCA787FC1B038ED00049098C /* Main.storyboard */,
 				DCA787FF1B038ED00049098C /* Images.xcassets */,
 				DCA788011B038ED00049098C /* LaunchScreen.xib */,
 				DCA787F21B038ED00049098C /* Supporting Files */,
@@ -677,6 +693,7 @@
 				DCA7881A1B03A40A0049098C /* Localizable.strings in Resources */,
 				CB2BAB1D1B348C9800D523EB /* NotificationCell.xib in Resources */,
 				CB2BAB1F1B348C9800D523EB /* NotificationViewController.xib in Resources */,
+				C426112E1B5FA198006786CD /* UploadExam.storyboard in Resources */,
 				DCA788031B038ED00049098C /* LaunchScreen.xib in Resources */,
 				DCA788001B038ED00049098C /* Images.xcassets in Resources */,
 				C48C09B71B4D258500DD4562 /* ViewUpgrade.xib in Resources */,
@@ -705,7 +722,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\"\"${PODS_ROOT}/Manifest.lock\"> /dev/null\nif [[$? != 0]] ; then\n    cat <<EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run'pod install'or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		EFF810609B5B2B9569ACB014 /* Copy Pods Resources */ = {
@@ -730,6 +747,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C42611281B5FA0FD006786CD /* UploadExamViewController.m in Sources */,
 				CBC976B31B3E78AA006C104F /* ContentTableViewCell.m in Sources */,
 				CBC976B21B3E78AA006C104F /* CustomSegue.m in Sources */,
 				CBE0C8301B072483000EA3A7 /* PersonalInfoViewController.m in Sources */,
@@ -752,7 +770,6 @@
 				C4357C451B39701F00854524 /* ApiUtils.m in Sources */,
 				CBC976921B3C6F0A006C104F /* ExamTabelViewCell.m in Sources */,
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
-				CBC976901B3C6F0A006C104F /* DetailViewController.m in Sources */,
 				C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
 				CB2BAB3A1B348D6E00D523EB /* ExtendNSLogFunctionality.m in Sources */,
@@ -768,7 +785,6 @@
 				C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */,
 				CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */,
 				CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */,
-				CB7BD7F61B0873B1002C6DFB /* SubjectViewController.m in Sources */,
 				C48C09B01B4D0DDA00DD4562 /* BaseModel.m in Sources */,
 				CB2BAB391B348D6E00D523EB /* DateUtils.m in Sources */,
 				CB2BAB381B348D6E00D523EB /* DatabaseUtils.m in Sources */,
@@ -806,6 +822,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		C426112C1B5FA198006786CD /* UploadExam.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C426112D1B5FA198006786CD /* Base */,
+			);
+			name = UploadExam.storyboard;
+			sourceTree = "<group>";
+		};
 		DCA787FC1B038ED00049098C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
