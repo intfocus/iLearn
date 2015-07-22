@@ -70,87 +70,12 @@ EXAM_TYPE_SINGLE = "Single";
 EXAM_TYPE_MULTIPLE = "Multiple";
 EXAM_WRONG_PASSWORD_TITLE = "Wrong Password";
 EXAM_WRONG_PASSWORD_MESSAGE = "Please enter again";
+EXAM_TOTAL_NUMBER_TITLE = "Total";
 EXAM_SCORE_TITLE = "Score";
+EXAM_TOTAL_SCORE_TITLE = "Total Score";
+EXAM_SCORE_UNIT = "";
 EXAM_SCORE_TEMPLATE = "Score: %lld";
+EXAM_UNDER_QUALIFY_TEMPLATE = "Not meet the qualify line, need to test again";
+EXAM_TIME_LEFT_TITLE = "Time Left:";
 EXAM_TIME_TEMPLATE = "%lld:%02lld";
-//
-//
-//
-//
-//
-//
-///*
-// Localizable.strings
-// iLearn
-// 
-// Created by Charlie Hung on 2015/5/13.
-// Copyright (c) 2015 intFocus. All rights reserved.
-// */
-//
-//COMMON_CONTENT = "内容";
-//COMMON_SUBMIT = "提交";
-//COMMON_CLOSE = "关闭";
-//COMMON_OK = "确认";
-//COMMON_ACCOUNT = "员工号";
-//COMMON_NAME = "姓名";
-//
-//DASHBOARD_TITLE = "首页";
-//DASHBOARD_COURSE_PACK = "武田学院";
-//DASHBOARD_LECTURE = "培训报名";
-//DASHBOARD_REMINDER = "提醒";
-//DASHBOARD_QUESTIONNAIRE = "调研问卷";
-//DASHBOARD_EXAM = "考试中心";
-//DASHBOARD_SERVICE_CALL = "服务电话：";
-//
-//SETTINGS_TITLE = "设置";
-//SETTINGS_BUTTON_CLOSE = "关闭";
-//SETTINGS_PERSONAL_TITLE = "个人设置";
-//SETTINGS_APPLICATION_TITLE = "系统设置";
-//SETTINGS_PERSONAL_INFO = "个人信息";
-//SETTINGS_PERSONAL_QRCODE = "我的二维码";
-//SETTINGS_APPLICATION_CLEAN_CACHE = "清除缓存";
-//SETTINGS_APPLICATION_ABOUT = "版本信息";
-//SETTINGS_APPLICATION_VERSION = "版本";
-//
-//LIST_EXAM = "考试";
-//LIST_QUESTIONNAIRE = "问卷";
-//LIST_NOTIFICATION = "通知";
-//LIST_DETAIL = "说明";
-//LIST_BEGIN_DATE_TEMPLATE = "开始时间：%@";
-//LIST_END_DATE_TEMPLATE = "结束时间：%@";
-//LIST_DURATION_TEMPLATE = "答题时限：%lld 分：%02lld 秒";
-//LIST_STATUS_NOT_DOWNLOADED = "未下载";
-//LIST_STATUS_NOT_STARTED = "未开始";
-//LIST_STATUS_ENDED = "已结束";
-//LIST_STATUS_TESTING = "考试中";
-//LIST_STATUS_NOT_SUBMITTED = "未提交";
-//LIST_STATUS_SUBMITTED = "已提交";
-//LIST_BUTTON_DOWNLOAD = "下载";
-//LIST_BUTTON_ENDED = "已结束";
-//LIST_BUTTON_NOT_STARTDED = "未开始";
-//LIST_BUTTON_START_TESTING = "开始考试";
-//LIST_BUTTON_SUBMIT = "提交";
-//LIST_BUTTON_VIEW_RESULT = "观看结果";
-//LIST_BUTTON_QRCODE = "得分二维码";
-//LIST_SCORE_TITLE = "得分：";
-//LIST_SCORE_TEMPLATE = "%lld 分";
-//LIST_SCORE_SCANNED_TITLE = "已扫描";
-//LIST_SCORE_SCANNED_MESSAGE = "该分数已扫描";
-//LIST_SCORE_SCAN_RESULT = "扫描结果";
-//LIST_SCORE_SCAN_RESULT_TEMPLATE = "考生：%@\n考试编号：%@\n得分：%@ 分";
-//LIST_SYNCING = "同步中";
-//LIST_LOADING = "正在加载";
-//
-//EXAM_ANSWERED_TEMPLATE = "已答：%lld";
-//EXAM_UNANSWERED_TEMPLATE = "未答：%lld";
-//EXAM_CORRECT_TEMPLATE = "答对：%lld";
-//EXAM_WRONG_TEMPLATE = "答错：%lld";
-//EXAM_CORRECTION_TEMPLATE = "答案反馈：正确答案为 %@。 %@。";
-//EXAM_TYPE_TRUE_FALSE = "是非";
-//EXAM_TYPE_SINGLE = "单选";
-//EXAM_TYPE_MULTIPLE = "多选";
-//EXAM_WRONG_PASSWORD_TITLE = "密码错误";
-//EXAM_WRONG_PASSWORD_MESSAGE = "请重新输入一次";
-//EXAM_SCORE_TITLE = "得分";
-//EXAM_SCORE_TEMPLATE = "得分：%lld 分";
-//EXAM_TIME_TEMPLATE = "%lld 分：%02lld 秒";
+
