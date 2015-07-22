@@ -10,7 +10,7 @@
 #import "DetailViewController.h"
 #import "PasswordViewController.h"
 #import "QuestionnaireUtil.h"
-#import "SubjectViewController.h"
+#import "ExamViewController.h"
 #import "ScoreQRCodeViewController.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
@@ -108,8 +108,8 @@ static const NSInteger kMinScanInterval = 3;
         //UINavigationController *navController = segue.destinationViewController;
         UIViewController *viewController = segue.destinationViewController;
 
-        if ([viewController isKindOfClass:[SubjectViewController class]]) {
-            SubjectViewController *subjectVC = (SubjectViewController*)viewController;
+        if ([viewController isKindOfClass:[ExamViewController class]]) {
+            ExamViewController *subjectVC = (ExamViewController*)viewController;
             subjectVC.examContent = sender;
         }
     }
@@ -230,6 +230,7 @@ static const NSInteger kMinScanInterval = 3;
     cell.scoreTitleLabel.hidden = YES;
     cell.scoreLabel.hidden = YES;
     cell.qrCodeButton.hidden = YES;
+    cell.actionButton.enabled = YES;
 
     if ([content[ExamCached] isEqualToNumber:@1]) {
 
@@ -257,13 +258,38 @@ static const NSInteger kMinScanInterval = 3;
                     NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
 
                     scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
-                    [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
-                    // NSLog(@"score: %lld", (long long)scoreInt);
+
+                    NSInteger qualityLine = [content[ExamQualify] integerValue];
+                    NSInteger allowTimes = [content[ExamAllowTimes] integerValue];
+                    NSInteger submitTimes = [content[ExamSubmitTimes] integerValue];
+                    NSInteger newSubmitTimes = submitTimes + 1;
+
+                    [ExamUtil updateSubmitTimes:newSubmitTimes ofDBPath:dbPath];
+
+                    ExamTypes examType = [content[ExamType] integerValue];
+
+                    if (examType == ExamTypesFormal &&
+                        scoreInt < qualityLine &&
+                        newSubmitTimes < allowTimes)
+                    { // Should test again
+
+                        [ExamUtil resetExamStatusOfDBPath:dbPath];
+                        scoreInt = -1;
+                        examStartDate = nil;
+                    }
+                    else {
+                        if (newSubmitTimes > 1) { // Has submitted, the score should be just qualified
+                            scoreInt = qualityLine;
+                            [ExamUtil updateExamScore:scoreInt ofDBPath:dbPath];
+                        }
+
+                        [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+                    }
+
                 }
             }
         }
 
-        cell.actionButton.enabled = YES;
 
         if ([startDate laterDate:now] == startDate) { // Exam is not started yet
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_STARTED", nil);

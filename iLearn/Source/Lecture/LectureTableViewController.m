@@ -9,7 +9,7 @@
 #import "DetailViewController.h"
 #import "PasswordViewController.h"
 #import "QuestionnaireUtil.h"
-#import "SubjectViewController.h"
+#import "ExamViewController.h"
 #import "ScoreQRCodeViewController.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
@@ -107,9 +107,9 @@ static const NSInteger kMinScanInterval = 3;
         //UINavigationController *navController = segue.destinationViewController;
         UIViewController *viewController = segue.destinationViewController;
         
-        if ([viewController isKindOfClass:[SubjectViewController class]]) {
-            SubjectViewController *subjectVC = (SubjectViewController*)viewController;
-            subjectVC.examContent = sender;
+        if ([viewController isKindOfClass:[ExamViewController class]]) {
+            ExamViewController *examVC = (ExamViewController*)viewController;
+            examVC.examContent = sender;
         }
     }
     else if ([segue.identifier isEqualToString:kShowScoreQRCode]) {

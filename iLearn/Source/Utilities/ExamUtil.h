@@ -28,7 +28,10 @@
 + (void)setOptionSelected:(BOOL)selected withSubjectId:(NSString*)subjectId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath;
 
 + (void)setExamSubmittedwithDBPath:(NSString*)dbPath;
++ (void)resetExamStatusOfDBPath:(NSString*)dbPath;
 + (NSInteger)examScoreOfDBPath:(NSString*)dbPath;
++ (void)updateExamScore:(NSInteger)score ofDBPath:(NSString*)dbPath;
++ (void)updateSubmitTimes:(NSInteger)submitTimes ofDBPath:(NSString*)dbPath;
 + (void)generateExamUploadJsonOfDBPath:(NSString*)dbPath;
 
 + (void)saveScannedResultIntoDB:(NSString*)result;
