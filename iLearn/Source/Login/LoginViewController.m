@@ -79,9 +79,9 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if([HttpUtils isNetworkAvailable]) {
-        [self checkAppVersionUpgrade];
-    }
+//    if([HttpUtils isNetworkAvailable]) {
+//        [self checkAppVersionUpgrade];
+//    }
 }
 
 #pragma mark memory management
@@ -139,7 +139,7 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-//        self.cookieValue = @"E00516";
+//     self.cookieValue = @"E00516";
 //    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
 //    return;
     

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9E68D22279AD2B12DB817E6E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E92B1ED4A0E3997FEF469AD5 /* libPods.a */; };
+		C419D2A11B5F86DF008A2C66 /* UploadExam.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C419D2A01B5F86DE008A2C66 /* UploadExam.storyboard */; };
 		C4357C451B39701F00854524 /* ApiUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C431B39701E00854524 /* ApiUtils.m */; };
 		C4357C4A1B39706300854524 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C491B39706300854524 /* User.m */; };
 		C44E50811B4E77A500A17ED8 /* Version+Self.m in Sources */ = {isa = PBXBuildFile; fileRef = C44E50801B4E77A500A17ED8 /* Version+Self.m */; };
@@ -86,6 +87,7 @@
 
 /* Begin PBXFileReference section */
 		A5051085F083B61256CF0478 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C419D2A01B5F86DE008A2C66 /* UploadExam.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UploadExam.storyboard; sourceTree = "<group>"; };
 		C4357C431B39701E00854524 /* ApiUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiUtils.m; sourceTree = "<group>"; };
 		C4357C441B39701E00854524 /* ApiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiUtils.h; sourceTree = "<group>"; };
 		C4357C481B39706300854524 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 				CB7BD7F31B087391002C6DFB /* SubjectView */,
 				CBE0C8271B072421000EA3A7 /* Settings */,
 				DCA787FC1B038ED00049098C /* Main.storyboard */,
+				C419D2A01B5F86DE008A2C66 /* UploadExam.storyboard */,
 				DCA787FF1B038ED00049098C /* Images.xcassets */,
 				DCA788011B038ED00049098C /* LaunchScreen.xib */,
 				DCA787F21B038ED00049098C /* Supporting Files */,
@@ -673,6 +676,7 @@
 				DCA7881A1B03A40A0049098C /* Localizable.strings in Resources */,
 				CB2BAB1D1B348C9800D523EB /* NotificationCell.xib in Resources */,
 				CB2BAB1F1B348C9800D523EB /* NotificationViewController.xib in Resources */,
+				C419D2A11B5F86DF008A2C66 /* UploadExam.storyboard in Resources */,
 				DCA788031B038ED00049098C /* LaunchScreen.xib in Resources */,
 				DCA788001B038ED00049098C /* Images.xcassets in Resources */,
 				C48C09B71B4D258500DD4562 /* ViewUpgrade.xib in Resources */,

@@ -53,11 +53,10 @@ static NSString *const resultUploadFail = @"请返回后刷新重试或扫描二
     NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
     
     NSString *filePath = [NSString stringWithFormat:@"%@/%@.result", examPath, self.examID];
-    [_connectionManager uploadExamResultWithPath:filePath];
+    //[_connectionManager uploadExamResultWithPath:filePath];
 }
 
-- (NSString *)applicationDocumentsDirectory
-{
+- (NSString *)applicationDocumentsDirectory {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
     return basePath;

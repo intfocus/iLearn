@@ -453,6 +453,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateSubmitButtonStatus
 {
+    
+    _submitButton.hidden = NO;
+    self.submitButton2.hidden = NO;
+    return;
     if (_isAnswerMode) {
         _submitButton.hidden = YES;
         self.submitButton2.hidden = YES;
@@ -663,7 +667,14 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
         
-        [self performSegueWithIdentifier:kUploadExamViewController sender:[NSNumber numberWithInteger:score]];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UploadExam" bundle:nil];
+        UploadExamViewController *uploadExamVC = (UploadExamViewController*)[storyboard instantiateViewControllerWithIdentifier:kUploadExamViewController];
+        uploadExamVC.examScore = [NSNumber numberWithInteger:score];
+        uploadExamVC.examID    = _examContent[ExamId];
+        uploadExamVC.delegate  = self;
+        [self presentViewController:uploadExamVC animated:YES completion:^{}];
+        //[self performSegueWithIdentifier:kUploadExamViewController sender:[NSNumber numberWithInteger:score]];
+
         //NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
 
         //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
@@ -674,6 +685,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         });
     });
 }
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
