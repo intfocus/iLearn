@@ -15,12 +15,13 @@
 #import "FileUtils.h"
 #import "ApiUtils.h"
 #import "ExtendNSLogFunctionality.h"
+#import "SettingViewController.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowExamSegue = @"showExamPage";
 static NSString *const kShowRegistrationSegue = @"showRegistrationPage";
 static NSString *const kShowLectureSegue = @"showLecturePage";
-static NSString *const kShowSettingsSegue = @"showSettingsPage";
+static NSString *const kShowSettingsSegue = @"SettingViewController";//@"showSettingsPage";
 static NSString *const kShowQRCodeSegue = @"showQRCodePage";
 static NSString *const kShowNotificationSegue = @"showNotificationPage";
 
@@ -76,7 +77,8 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     _registrationButton.enabled = NO;
     _lectureButton.enabled = NO;
     _questionnaireButton.enabled = NO;
-    _settingsButton.enabled = NO;
+    _settingsButton.enabled = YES;
+    
 
     // Setup label contents
     self.title = NSLocalizedString(@"DASHBOARD_TITLE", nil);
@@ -203,7 +205,12 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (IBAction)settingsTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
-    [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
+//    [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SettingsView" bundle:nil];
+    SettingViewController *settingVC = (SettingViewController*)[storyboard instantiateViewControllerWithIdentifier:kShowSettingsSegue];
+    [self presentViewController:settingVC animated:YES completion:^{
+        NSLog(@"Poupview setting view.");
+    }];
 }
 
 - (IBAction)registrationTouced:(id)sender {

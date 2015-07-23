@@ -18,7 +18,7 @@ static const BOOL inDeveloping = NO;
 
 + (NSArray*)loadExams
 {
-    NSMutableArray *exams = [NSMutableArray array];
+    NSMutableArray *exams   = [NSMutableArray array];
     NSMutableArray *examIds = [NSMutableArray array];
 
     // Add Cached Exams first

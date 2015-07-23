@@ -647,9 +647,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [_timeLeftTimer invalidate];
     [_timeOutTimer invalidate];
 
-
-    __weak ExamViewController *weakSelf = self;
-
+    //__weak ExamViewController *weakSelf = self;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
 
@@ -670,32 +668,34 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         [ExamUtil updateSubmitTimes:newSubmitTimes ofDBPath:dbPath];
 
         ExamTypes examType = [_examContent[ExamType] integerValue];
+        BOOL isUploadExamResult = YES;
 
         if (examType == ExamTypesFormal &&
             score < qualityLine &&
-            newSubmitTimes < allowTimes)
-        { // Should test again
+            newSubmitTimes < allowTimes) { // Should test again
 
             [ExamUtil resetExamStatusOfDBPath:dbPath];
             scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNDER_QUALIFY_TEMPLATE", nil)];
+            isUploadExamResult = NO;
         }
         else {
-
             if (newSubmitTimes > 1) { // Has submitted, the score should be just qualified
                 score = qualityLine;
                 [ExamUtil updateExamScore:score ofDBPath:dbPath];
             }
-
+            
             [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
             scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
+            isUploadExamResult = YES;
         }
        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UploadExam" bundle:nil];
         UploadExamViewController *uploadExamVC = (UploadExamViewController*)[storyboard instantiateViewControllerWithIdentifier:kUploadExamViewController];
-        uploadExamVC.examScore = [NSNumber numberWithInteger:score];
-        uploadExamVC.examID    = _examContent[ExamId];
-        uploadExamVC.delegate  = self;
+        uploadExamVC.examScoreString    = scoreString;
+        uploadExamVC.isUploadExamResult = isUploadExamResult;
+        uploadExamVC.examID             = _examContent[ExamId];
+        uploadExamVC.delegate           = self;
         [self presentViewController:uploadExamVC animated:YES completion:^{}];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -706,20 +706,19 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 }
 
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:kUploadExamViewController]) {
-        
-        UploadExamViewController *uploadExamVC = (UploadExamViewController*)segue.destinationViewController;
-        uploadExamVC.examScore = sender;
-        uploadExamVC.examID    = _examContent[ExamId];
-        uploadExamVC.delegate  = self;
-        
-    } else {
-        NSLog(@"where you are?!");
-    }
- 
-}
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    if ([segue.identifier isEqualToString:kUploadExamViewController]) {
+//        
+//        UploadExamViewController *uploadExamVC = (UploadExamViewController*)segue.destinationViewController;
+//        uploadExamVC.examID    = _examContent[ExamId];
+//        uploadExamVC.delegate  = self;
+//        
+//    } else {
+//        NSLog(@"where you are?!");
+//    }
+// 
+//}
 
 #pragma mark - UIAction
 

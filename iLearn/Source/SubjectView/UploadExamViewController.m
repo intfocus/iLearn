@@ -40,20 +40,23 @@ static NSString *const resultUploadFail = @"请返回后刷新重试或扫描二
     self.connectionManager = [[ConnectionManager alloc] init];
     _connectionManager.delegate = self;
     
-    self.scoreLabel.text  = [NSString stringWithFormat:@"得分:  %@", self.examScore];
-    self.statusLabel.text = statusUploading;
-    self.resultLabel.text = resultUploading;
-    self.actionButton.hidden = YES;
+    self.scoreLabel.text     = self.examScoreString;
+    self.statusLabel.text    = statusUploading;
+    self.resultLabel.text    = resultUploading;
+    self.statusLabel.hidden  = !self.isUploadExamResult;
+    self.resultLabel.hidden  = !self.isUploadExamResult;
+    self.actionButton.hidden = self.isUploadExamResult; // shown when upload exam result
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    NSString *docPath = [self applicationDocumentsDirectory];
-    NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
-    
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@.result", examPath, self.examID];
-    [_connectionManager uploadExamResultWithPath:filePath];
+    if(self.isUploadExamResult) {
+        NSString *docPath  = [self applicationDocumentsDirectory];
+        NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
+        NSString *filePath = [NSString stringWithFormat:@"%@/%@.result", examPath, self.examID];
+        [_connectionManager uploadExamResultWithPath:filePath];
+    }
 }
 
 - (NSString *)applicationDocumentsDirectory {
@@ -77,8 +80,8 @@ static NSString *const resultUploadFail = @"请返回后刷新重试或扫描二
         
         self.statusLabel.text = statusUploaded;
         self.resultLabel.text = resultUploaded;
-    } else {
-        
+    }
+    else {
         self.statusLabel.text = statusUploadFail;
         self.resultLabel.text = resultUploadFail;
     }

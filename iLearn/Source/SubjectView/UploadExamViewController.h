@@ -23,7 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *actionButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 
-@property (strong, nonatomic) NSNumber *examScore;
+@property (strong, nonatomic) NSString *examScoreString;
+@property (nonatomic, nonatomic) BOOL isUploadExamResult;
 @property (strong, nonatomic) NSString *examID;
 
 @property (weak, nonatomic) id <UploadExamViewControllerProtocol> delegate;
