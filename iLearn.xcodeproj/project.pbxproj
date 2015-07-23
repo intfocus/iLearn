@@ -19,6 +19,14 @@
 		C48C09BB1B4D259900DD4562 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = C48C09BA1B4D259900DD4562 /* Version.m */; };
 		C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54841B550B9000E2B678 /* LectureTableViewController.m */; };
 		C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */; };
+		C4A579D61B6085600093C98A /* SettingAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579C91B6085600093C98A /* SettingAppInfo.m */; };
+		C4A579D71B6085600093C98A /* SettingAppInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579CA1B6085600093C98A /* SettingAppInfo.xib */; };
+		C4A579D81B6085600093C98A /* SettingMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579CD1B6085600093C98A /* SettingMainView.m */; };
+		C4A579D91B6085600093C98A /* SettingMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579CE1B6085600093C98A /* SettingMainView.xib */; };
+		C4A579DA1B6085600093C98A /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579D01B6085600093C98A /* SettingViewController.m */; };
+		C4A579DC1B6085600093C98A /* SettingUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579D41B6085600093C98A /* SettingUserInfo.m */; };
+		C4A579DD1B6085600093C98A /* SettingUserInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579D51B6085600093C98A /* SettingUserInfo.xib */; };
+		C4A579DF1B60A2B80093C98A /* SettingsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4A579DE1B60A2B80093C98A /* SettingsView.storyboard */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
 		CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2BAB121B348C9800D523EB /* LoginViewController.xib */; };
 		CB2BAB1C1B348C9800D523EB /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB151B348C9800D523EB /* NotificationCell.m */; };
@@ -107,6 +115,18 @@
 		C49C54841B550B9000E2B678 /* LectureTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewController.m; sourceTree = "<group>"; };
 		C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewCell.m; sourceTree = "<group>"; };
 		C49C548D1B5527AC00E2B678 /* LectureTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureTableViewCell.h; sourceTree = "<group>"; };
+		C4A579C81B6085600093C98A /* SettingAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAppInfo.h; sourceTree = "<group>"; };
+		C4A579C91B6085600093C98A /* SettingAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAppInfo.m; sourceTree = "<group>"; };
+		C4A579CA1B6085600093C98A /* SettingAppInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAppInfo.xib; sourceTree = "<group>"; };
+		C4A579CC1B6085600093C98A /* SettingMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingMainView.h; sourceTree = "<group>"; };
+		C4A579CD1B6085600093C98A /* SettingMainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingMainView.m; sourceTree = "<group>"; };
+		C4A579CE1B6085600093C98A /* SettingMainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingMainView.xib; sourceTree = "<group>"; };
+		C4A579CF1B6085600093C98A /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		C4A579D01B6085600093C98A /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		C4A579D31B6085600093C98A /* SettingUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserInfo.h; sourceTree = "<group>"; };
+		C4A579D41B6085600093C98A /* SettingUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserInfo.m; sourceTree = "<group>"; };
+		C4A579D51B6085600093C98A /* SettingUserInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingUserInfo.xib; sourceTree = "<group>"; };
+		C4A579DE1B60A2B80093C98A /* SettingsView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsView.storyboard; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		CB2BAB111B348C9800D523EB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		CB2BAB121B348C9800D523EB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -249,6 +269,7 @@
 			children = (
 				C426112C1B5FA198006786CD /* UploadExam.storyboard */,
 				DCA787FC1B038ED00049098C /* Main.storyboard */,
+				C4A579DE1B60A2B80093C98A /* SettingsView.storyboard */,
 			);
 			name = StoryBoards;
 			sourceTree = "<group>";
@@ -284,6 +305,7 @@
 		C48C09B11B4D258500DD4562 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C4A579C61B6085600093C98A /* Setting */,
 				C48C09B21B4D258500DD4562 /* upgrade */,
 			);
 			path = Views;
@@ -320,6 +342,48 @@
 			);
 			name = Lecture;
 			path = Source/Lecture;
+			sourceTree = "<group>";
+		};
+		C4A579C61B6085600093C98A /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				C4A579C71B6085600093C98A /* AppInfo */,
+				C4A579CB1B6085600093C98A /* MainView */,
+				C4A579CF1B6085600093C98A /* SettingViewController.h */,
+				C4A579D01B6085600093C98A /* SettingViewController.m */,
+				C4A579D21B6085600093C98A /* UserInfo */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		C4A579C71B6085600093C98A /* AppInfo */ = {
+			isa = PBXGroup;
+			children = (
+				C4A579C81B6085600093C98A /* SettingAppInfo.h */,
+				C4A579C91B6085600093C98A /* SettingAppInfo.m */,
+				C4A579CA1B6085600093C98A /* SettingAppInfo.xib */,
+			);
+			path = AppInfo;
+			sourceTree = "<group>";
+		};
+		C4A579CB1B6085600093C98A /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				C4A579CC1B6085600093C98A /* SettingMainView.h */,
+				C4A579CD1B6085600093C98A /* SettingMainView.m */,
+				C4A579CE1B6085600093C98A /* SettingMainView.xib */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		C4A579D21B6085600093C98A /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				C4A579D31B6085600093C98A /* SettingUserInfo.h */,
+				C4A579D41B6085600093C98A /* SettingUserInfo.m */,
+				C4A579D51B6085600093C98A /* SettingUserInfo.xib */,
+			);
+			path = UserInfo;
 			sourceTree = "<group>";
 		};
 		CB2BAB0F1B348C9800D523EB /* Login */ = {
@@ -654,7 +718,6 @@
 				TargetAttributes = {
 					DCA787EE1B038ED00049098C = {
 						CreatedOnToolsVersion = 6.3;
-						DevelopmentTeam = WV94P663S4;
 					};
 					DCA788071B038ED00049098C = {
 						CreatedOnToolsVersion = 6.3;
@@ -688,14 +751,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCA787FE1B038ED00049098C /* Main.storyboard in Resources */,
+				C4A579DF1B60A2B80093C98A /* SettingsView.storyboard in Resources */,
 				CB7BD7E01B07BD2D002C6DFB /* JsonTemplate in Resources */,
+				C4A579D91B6085600093C98A /* SettingMainView.xib in Resources */,
 				CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */,
+				C4A579DD1B6085600093C98A /* SettingUserInfo.xib in Resources */,
 				DCA7881A1B03A40A0049098C /* Localizable.strings in Resources */,
 				CB2BAB1D1B348C9800D523EB /* NotificationCell.xib in Resources */,
 				CB2BAB1F1B348C9800D523EB /* NotificationViewController.xib in Resources */,
 				C426112E1B5FA198006786CD /* UploadExam.storyboard in Resources */,
 				DCA788031B038ED00049098C /* LaunchScreen.xib in Resources */,
 				DCA788001B038ED00049098C /* Images.xcassets in Resources */,
+				C4A579D71B6085600093C98A /* SettingAppInfo.xib in Resources */,
 				C48C09B71B4D258500DD4562 /* ViewUpgrade.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -762,9 +829,11 @@
 				CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */,
 				CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */,
 				CBE0C84E1B072DC2000EA3A7 /* qrspec.c in Sources */,
+				C4A579DC1B6085600093C98A /* SettingUserInfo.m in Sources */,
 				CBC976931B3C6F0A006C104F /* ScoreQRCodeViewController.m in Sources */,
 				CBC976911B3C6F0A006C104F /* PasswordViewController.m in Sources */,
 				CB35123B1B47F27E00025B5B /* QuestionOptionCell.m in Sources */,
+				C4A579D61B6085600093C98A /* SettingAppInfo.m in Sources */,
 				CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */,
 				CB2BAB3D1B348D6E00D523EB /* LogUtils.m in Sources */,
 				C4357C451B39701F00854524 /* ApiUtils.m in Sources */,
@@ -777,6 +846,7 @@
 				CBC976B71B3E7A52006C104F /* ContentViewController.m in Sources */,
 				CB35123F1B47F29700025B5B /* DetailViewController.m in Sources */,
 				CB3512351B47F0B200025B5B /* QuestionnaireUtil.m in Sources */,
+				C4A579DA1B6085600093C98A /* SettingViewController.m in Sources */,
 				CB2BAB1E1B348C9800D523EB /* NotificationViewController.m in Sources */,
 				CB35123C1B47F27E00025B5B /* QuestionCollectionViewCell.m in Sources */,
 				CB2BAB3F1B348D6E00D523EB /* ViewUtils.m in Sources */,
@@ -792,6 +862,7 @@
 				CBC976961B3C6F81006C104F /* ExamTableViewController.m in Sources */,
 				C48C09BB1B4D259900DD4562 /* Version.m in Sources */,
 				CBE0C8361B0724C5000EA3A7 /* AppInfoViewController.m in Sources */,
+				C4A579D81B6085600093C98A /* SettingMainView.m in Sources */,
 				CB2BAB1C1B348C9800D523EB /* NotificationCell.m in Sources */,
 				C48C09B61B4D258500DD4562 /* ViewUpgrade.m in Sources */,
 				CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */,
@@ -946,11 +1017,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = iLearn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fa7d14b2-ec02-43fc-826d-387e0e6e9b5e";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -960,12 +1032,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = iLearn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fa7d14b2-ec02-43fc-826d-387e0e6e9b5e";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

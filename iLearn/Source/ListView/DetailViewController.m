@@ -22,8 +22,8 @@
     // Do any additional setup after loading the view, typically from a nib.
 
     [self.actionButton.layer setCornerRadius:15.0];
-
     [self.contentView.layer setBorderWidth:1.0];
+    self.descTextView.userInteractionEnabled = NO;
 
     UIColor *borderColor = RGBCOLOR(190.0, 190.0, 190.0);
     [self.contentView.layer setBorderColor:borderColor.CGColor];

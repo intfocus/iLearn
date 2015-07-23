@@ -447,7 +447,7 @@ static const NSInteger kMinScanInterval = 3;
         NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
         
         NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
-        NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
+        //NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
