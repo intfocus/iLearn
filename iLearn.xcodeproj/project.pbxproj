@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		9E68D22279AD2B12DB817E6E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E92B1ED4A0E3997FEF469AD5 /* libPods.a */; };
 		C42611281B5FA0FD006786CD /* UploadExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42611261B5FA0FD006786CD /* UploadExamViewController.m */; };
-		C426112E1B5FA198006786CD /* UploadExam.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C426112C1B5FA198006786CD /* UploadExam.storyboard */; };
 		C4357C451B39701F00854524 /* ApiUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C431B39701E00854524 /* ApiUtils.m */; };
 		C4357C4A1B39706300854524 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C491B39706300854524 /* User.m */; };
 		C44E50811B4E77A500A17ED8 /* Version+Self.m in Sources */ = {isa = PBXBuildFile; fileRef = C44E50801B4E77A500A17ED8 /* Version+Self.m */; };
@@ -26,7 +25,9 @@
 		C4A579DA1B6085600093C98A /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579D01B6085600093C98A /* SettingViewController.m */; };
 		C4A579DC1B6085600093C98A /* SettingUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579D41B6085600093C98A /* SettingUserInfo.m */; };
 		C4A579DD1B6085600093C98A /* SettingUserInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579D51B6085600093C98A /* SettingUserInfo.xib */; };
-		C4A579DF1B60A2B80093C98A /* SettingsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4A579DE1B60A2B80093C98A /* SettingsView.storyboard */; };
+		C4A579E61B61E8010093C98A /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579E51B61E8010093C98A /* SettingViewController.xib */; };
+		C4A579EB1B62182D0093C98A /* UploadExamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */; };
+		C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
 		CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2BAB121B348C9800D523EB /* LoginViewController.xib */; };
 		CB2BAB1C1B348C9800D523EB /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB151B348C9800D523EB /* NotificationCell.m */; };
@@ -97,7 +98,6 @@
 		A5051085F083B61256CF0478 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C42611261B5FA0FD006786CD /* UploadExamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UploadExamViewController.m; path = iLearn/Source/SubjectView/UploadExamViewController.m; sourceTree = SOURCE_ROOT; };
 		C42611271B5FA0FD006786CD /* UploadExamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadExamViewController.h; path = iLearn/Source/SubjectView/UploadExamViewController.h; sourceTree = SOURCE_ROOT; };
-		C426112D1B5FA198006786CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UploadExam.storyboard; sourceTree = "<group>"; };
 		C4357C431B39701E00854524 /* ApiUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiUtils.m; sourceTree = "<group>"; };
 		C4357C441B39701E00854524 /* ApiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiUtils.h; sourceTree = "<group>"; };
 		C4357C481B39706300854524 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -126,7 +126,9 @@
 		C4A579D31B6085600093C98A /* SettingUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserInfo.h; sourceTree = "<group>"; };
 		C4A579D41B6085600093C98A /* SettingUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserInfo.m; sourceTree = "<group>"; };
 		C4A579D51B6085600093C98A /* SettingUserInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingUserInfo.xib; sourceTree = "<group>"; };
-		C4A579DE1B60A2B80093C98A /* SettingsView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsView.storyboard; sourceTree = "<group>"; };
+		C4A579E51B61E8010093C98A /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
+		C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadExamViewController.xib; sourceTree = "<group>"; };
+		C4A579ED1B622C3C0093C98A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UploadExam.storyboard; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		CB2BAB111B348C9800D523EB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		CB2BAB121B348C9800D523EB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -267,9 +269,8 @@
 		C42611291B5FA16A006786CD /* StoryBoards */ = {
 			isa = PBXGroup;
 			children = (
-				C426112C1B5FA198006786CD /* UploadExam.storyboard */,
+				C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */,
 				DCA787FC1B038ED00049098C /* Main.storyboard */,
-				C4A579DE1B60A2B80093C98A /* SettingsView.storyboard */,
 			);
 			name = StoryBoards;
 			sourceTree = "<group>";
@@ -347,10 +348,11 @@
 		C4A579C61B6085600093C98A /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				C4A579C71B6085600093C98A /* AppInfo */,
-				C4A579CB1B6085600093C98A /* MainView */,
 				C4A579CF1B6085600093C98A /* SettingViewController.h */,
 				C4A579D01B6085600093C98A /* SettingViewController.m */,
+				C4A579E51B61E8010093C98A /* SettingViewController.xib */,
+				C4A579C71B6085600093C98A /* AppInfo */,
+				C4A579CB1B6085600093C98A /* MainView */,
 				C4A579D21B6085600093C98A /* UserInfo */,
 			);
 			path = Setting;
@@ -501,6 +503,7 @@
 				CBC9768F1B3C6F0A006C104F /* ScoreQRCodeViewController.m */,
 				C42611271B5FA0FD006786CD /* UploadExamViewController.h */,
 				C42611261B5FA0FD006786CD /* UploadExamViewController.m */,
+				C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */,
 			);
 			name = Exam;
 			path = Source/Exam;
@@ -752,16 +755,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCA787FE1B038ED00049098C /* Main.storyboard in Resources */,
-				C4A579DF1B60A2B80093C98A /* SettingsView.storyboard in Resources */,
 				CB7BD7E01B07BD2D002C6DFB /* JsonTemplate in Resources */,
 				C4A579D91B6085600093C98A /* SettingMainView.xib in Resources */,
+				C4A579EB1B62182D0093C98A /* UploadExamViewController.xib in Resources */,
 				CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */,
 				C4A579DD1B6085600093C98A /* SettingUserInfo.xib in Resources */,
 				DCA7881A1B03A40A0049098C /* Localizable.strings in Resources */,
 				CB2BAB1D1B348C9800D523EB /* NotificationCell.xib in Resources */,
+				C4A579E61B61E8010093C98A /* SettingViewController.xib in Resources */,
 				CB2BAB1F1B348C9800D523EB /* NotificationViewController.xib in Resources */,
-				C426112E1B5FA198006786CD /* UploadExam.storyboard in Resources */,
 				DCA788031B038ED00049098C /* LaunchScreen.xib in Resources */,
+				C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */,
 				DCA788001B038ED00049098C /* Images.xcassets in Resources */,
 				C4A579D71B6085600093C98A /* SettingAppInfo.xib in Resources */,
 				C48C09B71B4D258500DD4562 /* ViewUpgrade.xib in Resources */,
@@ -894,10 +898,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C426112C1B5FA198006786CD /* UploadExam.storyboard */ = {
+		C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C426112D1B5FA198006786CD /* Base */,
+				C4A579ED1B622C3C0093C98A /* Base */,
 			);
 			name = UploadExam.storyboard;
 			sourceTree = "<group>";

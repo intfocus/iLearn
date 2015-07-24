@@ -867,7 +867,7 @@ static const BOOL inDeveloping = NO;
             [db close];
         }
 
-        NSLog(@"jsonDic: %@", jsonDic);
+        //NSLog(@"jsonDic: %@", jsonDic);
 
         NSError *jsonError;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDic options:0 error:&jsonError];

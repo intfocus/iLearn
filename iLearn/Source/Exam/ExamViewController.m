@@ -15,6 +15,8 @@
 #import "User.h"
 #import <MBProgressHUD.h>
 #import "UploadExamViewController.h"
+//#import "UIViewController+CWPopup.h"
+
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
 static NSString *const kQuestionOptionCellIdentifier = @"QuestionAnswerCell";
@@ -180,6 +182,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
     
     self.submitButton2.layer.cornerRadius = 4;
+    
+    //self.useBlurForPopup = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -690,13 +694,16 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         }
        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
+        //UploadExamViewController *uploadExamVC = [[UploadExamViewController alloc] init];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UploadExam" bundle:nil];
         UploadExamViewController *uploadExamVC = (UploadExamViewController*)[storyboard instantiateViewControllerWithIdentifier:kUploadExamViewController];
         uploadExamVC.examScoreString    = scoreString;
         uploadExamVC.isUploadExamResult = isUploadExamResult;
         uploadExamVC.examID             = _examContent[ExamId];
         uploadExamVC.delegate           = self;
-        [self presentViewController:uploadExamVC animated:YES completion:^{}];
+        [self presentViewController:uploadExamVC animated:YES completion:^{
+            NSLog(@"popup view.");
+        }];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];

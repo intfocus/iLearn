@@ -27,7 +27,6 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-
     SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
     viewController.settingViewController = self;
     self.containerViewController         = viewController;

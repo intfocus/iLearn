@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ExamViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface ExamViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSDictionary *examContent;
 

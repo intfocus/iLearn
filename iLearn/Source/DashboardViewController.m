@@ -16,6 +16,7 @@
 #import "ApiUtils.h"
 #import "ExtendNSLogFunctionality.h"
 #import "SettingViewController.h"
+#import "UIViewController+CWPopup.h"
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowExamSegue = @"showExamPage";
@@ -98,6 +99,12 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [self setupAvatarImageView];
     [self reloadNotifications];
 
+    // CWPoup setting
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
+    tapRecognizer.numberOfTapsRequired = 1;
+    tapRecognizer.delegate = self;
+    [self.view addGestureRecognizer:tapRecognizer];
+    self.useBlurForPopup = YES;
 
 }
 
@@ -205,12 +212,10 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (IBAction)settingsTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
-//    [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SettingsView" bundle:nil];
-    SettingViewController *settingVC = (SettingViewController*)[storyboard instantiateViewControllerWithIdentifier:kShowSettingsSegue];
-    [self presentViewController:settingVC animated:YES completion:^{
-        NSLog(@"Poupview setting view.");
-    }];
+    // [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
+
+    SettingViewController *settingVC = [[SettingViewController alloc] init];
+    [self presentPopupViewController:settingVC animated:YES completion:nil];
 }
 
 - (IBAction)registrationTouced:(id)sender {
@@ -276,6 +281,16 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self performSegueWithIdentifier:kShowNotificationSegue sender:nil];
+}
+
+#pragma mark - CWPoup
+
+- (void)dismissPopup {
+    if (self.popupViewController) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissed");
+        }];
+    }
 }
 
 @end
