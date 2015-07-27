@@ -18,7 +18,7 @@ static NSString *const resultUploading  = @"请等待";
 static NSString *const statusUploaded   = @"成绩上传服务器成功";
 static NSString *const resultUploaded   = @"请返回";
 static NSString *const statusUploadFail = @"成绩上传服务器失败";
-static NSString *const resultUploadFail = @"请返回后刷新重试或扫描二维码上传";
+static NSString *const resultUploadFail = @"请返回后刷新重试"; //或扫描二维码上传
 @interface UploadExamViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;

@@ -45,6 +45,9 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 @property (weak, nonatomic) IBOutlet UIButton *scanButton;
 @property (weak, nonatomic) IBOutlet UIButton *syncButton;
 
+// 头像设置
+@property (nonatomic) UIActionSheet *imagePickerActionSheet;
+@property (nonatomic) UIImagePickerController *imagePicker;
 @end
 
 
@@ -254,6 +257,18 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     }
 }
 
+
+/**
+ *  点击头像事件
+ *
+ *  @param sender <#sender description#>
+ */
+- (IBAction)headClick:(id)sender {
+    self.imagePickerActionSheet = [[UIActionSheet alloc] initWithTitle:@"上传头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"从相册选择" otherButtonTitles:@"现在拍照", nil];
+    self.imagePickerActionSheet.delegate = self;
+    [self.imagePickerActionSheet showInView:self.view];
+}
+
 #pragma mark - CWPoup
 
 - (void)dismissPopup {
@@ -266,4 +281,81 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)dismissSettingView {
     [self dismissPopup];
 }
+
+#pragma mark - gesture recognizer delegate functions
+
+// so that tapping popup view doesnt dismiss it
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    return touch.view == self.view;
+}
+#pragma mark - 头像上传功能函数
+
+#pragma mark - actionSheet let user choose
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    [self showImagePicker:buttonIndex];
+}
+
+#pragma mark - imagePicker
+- (void)showImagePicker: (NSInteger)index {
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authStatus == AVAuthorizationStatusAuthorized || authStatus == AVAuthorizationStatusNotDetermined) {
+        if (!self.imagePicker) {
+            self.imagePicker = [[UIImagePickerController alloc] init];
+        }
+        self.imagePicker.delegate = self;
+        self.imagePicker.allowsEditing = YES;
+        self.imagePicker.modalPresentationStyle = UIModalPresentationFormSheet;
+        if (index == 0 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+            self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            [self presentViewController:self.imagePicker animated:YES completion:nil];
+        }
+        else if (index == 1 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+            self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            [self presentViewController:self.imagePicker animated:YES completion:nil];
+        }
+    }
+    else {
+        //authorization failed, show the alert
+        [self alertAuthorization];
+    }
+}
+
+- (void)alertAuthorization{
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8){
+        NSString *message = @"授权访问相机~";
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler: ^(UIAlertAction *action){
+            if (&UIApplicationOpenSettingsURLString != NULL) {
+                NSURL *appSettings = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:appSettings];
+            }
+        }];
+        [alertVC addAction:okAction];
+        [self presentViewController:alertVC animated:YES completion:nil];
+    }
+    else{
+        UIAlertView *alertView =[[UIAlertView alloc] initWithTitle:nil message:@"授权访问相机~" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alertView show];
+    }
+}
+
+#pragma mark - imagePicker delegate
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:^{
+        //
+    }];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *editImamge = info[UIImagePickerControllerEditedImage];
+    NSData *imagedata = UIImageJPEGRepresentation(editImamge, 0.6);
+    //save the photo for next launch
+    [[NSUserDefaults standardUserDefaults] setObject:imagedata forKey:@"avatarSmall"];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        //((SideViewController *)self.leftViewController).head.headView.image = editImamge;
+        NSLog(@"????");
+    }];
+}
+
 @end

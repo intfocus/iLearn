@@ -22,6 +22,7 @@
 		C4A4FDBB1B66292000741BF3 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A4FDB71B66292000741BF3 /* SettingViewController.xib */; };
 		C4A4FDC01B66293B00741BF3 /* SettingDataInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FDBE1B66293B00741BF3 /* SettingDataInfo.m */; };
 		C4A4FDC11B66293B00741BF3 /* SettingDataInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A4FDBF1B66293B00741BF3 /* SettingDataInfo.xib */; };
+		C4A4FDC41B663B1700741BF3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */; };
 		C4A579EB1B62182D0093C98A /* UploadExamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */; };
 		C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
@@ -117,6 +118,7 @@
 		C4A4FDBD1B66293B00741BF3 /* SettingDataInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingDataInfo.h; sourceTree = "<group>"; };
 		C4A4FDBE1B66293B00741BF3 /* SettingDataInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingDataInfo.m; sourceTree = "<group>"; };
 		C4A4FDBF1B66293B00741BF3 /* SettingDataInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingDataInfo.xib; sourceTree = "<group>"; };
+		C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadExamViewController.xib; sourceTree = "<group>"; };
 		C4A579ED1B622C3C0093C98A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UploadExam.storyboard; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4A4FDC41B663B1700741BF3 /* AVFoundation.framework in Frameworks */,
 				DC3F8EEB1B176A140007AC56 /* libsqlite3.0.dylib in Frameworks */,
 				9E68D22279AD2B12DB817E6E /* libPods.a in Frameworks */,
 			);
@@ -251,6 +254,7 @@
 		6B857E74EC1616B9BAB16C64 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */,
 				E92B1ED4A0E3997FEF469AD5 /* libPods.a */,
 			);
 			name = Frameworks;

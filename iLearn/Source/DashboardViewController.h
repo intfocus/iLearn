@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DashboardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
+@interface DashboardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate>
 - (void)dismissPopup;
 - (void)dismissSettingView;
 @end
