@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "SettingViewController.h"
+#import "MainViewController.h"
 #import "SettingMainView.h"
 #import "ViewUpgrade.h"
-#import "DashboardViewController.h"
 
 @interface SettingViewController()<ViewUpgradeProtocol>
 @property (nonatomic,weak) IBOutlet UIView *containerView;
@@ -23,15 +23,21 @@
     /**
      *  控件事件
      */
+    SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
+    viewController.settingViewController = self;
+    viewController.mainViewController    = self.masterViewController;
+    self.containerViewController         = viewController;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
-    viewController.settingViewController = self;
-    viewController.mainViewController    = self.masterViewController;
-    self.containerViewController         = viewController;
+    if(!self.containerView) {
+        SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
+        viewController.settingViewController = self;
+        viewController.mainViewController    = self.masterViewController;
+        self.containerViewController         = viewController;
+    }
 }
 
 - (void)setContainerViewController:(UIViewController *)mainView{
@@ -55,9 +61,5 @@
 #pragma mark - ViewUpgradeProtocol
 - (void)dismissViewUpgrade {
     [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
-- (void)actionCloseSettingView {
-    [self.masterViewController dismissPopup];
 }
 @end

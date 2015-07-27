@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface DashboardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
-
+- (void)dismissPopup;
 @end

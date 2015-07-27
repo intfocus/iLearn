@@ -9,12 +9,10 @@
 #ifndef iSearch_SettingViewController_h
 #define iSearch_SettingViewController_h
 #import <UIKit/UIKit.h>
-@class DashboardViewController;
+@class MainViewController;
 
 @interface SettingViewController : UIViewController
-@property (nonatomic,nonatomic) DashboardViewController *masterViewController;
+@property (nonatomic,nonatomic) MainViewController *masterViewController;
 @property (nonatomic,nonatomic) UIViewController *containerViewController;
-
-- (void)actionCloseSettingView;
 @end
 #endif

@@ -215,6 +215,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     // [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
 
     SettingViewController *settingVC = [[SettingViewController alloc] init];
+    settingVC.masterViewController = self;
     [self presentPopupViewController:settingVC animated:YES completion:nil];
 }
 
@@ -293,4 +294,11 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     }
 }
 
+
+#pragma mark - gesture recognizer delegate functions
+
+// so that tapping popup view doesnt dismiss it
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    return touch.view == self.view;
+}
 @end

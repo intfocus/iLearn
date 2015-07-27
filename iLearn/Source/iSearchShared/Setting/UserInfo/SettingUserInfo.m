@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SettingUserInfo.h"
-#import "DashboardViewController.h"
+#import "MainViewController.h"
 #import "SettingViewController.h"
 #import "SettingMainView.h"
 #import "User.h"
@@ -32,11 +32,11 @@
     /**
      *  控件事件
      */
-//    UIBarButtonItem *navBtnBackToMain = [[UIBarButtonItem alloc] initWithTitle:@"返回"
-//                                                                    style:UIBarButtonItemStylePlain
-//                                                                   target:self
-//                                                                   action:@selector(actionBackToMain:)];
-//    self.navigationItem.leftBarButtonItem = navBtnBackToMain;
+    UIBarButtonItem *navBtnBackToMain = [[UIBarButtonItem alloc] initWithTitle:@"返回"
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(actionBackToMain:)];
+    self.navigationItem.leftBarButtonItem = navBtnBackToMain;
     NSString *title = (self.indexRow == 0 ? @"用户信息" : @"应用信息");
     self.navigationItem.title = title;
     
@@ -61,9 +61,9 @@
    
 }
 
-//- (IBAction)actionBackToMain:(id)sender {
-//    [self.navigationController popToRootViewControllerAnimated:YES];
-//}
+- (IBAction)actionBackToMain:(id)sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 
 #pragma mark - <UITableViewDelegate, UITableViewDataSource>
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

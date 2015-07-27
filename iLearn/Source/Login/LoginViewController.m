@@ -79,9 +79,9 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-//    if([HttpUtils isNetworkAvailable]) {
-//        [self checkAppVersionUpgrade];
-//    }
+    if([HttpUtils isNetworkAvailable]) {
+        [self checkAppVersionUpgrade];
+    }
 }
 
 #pragma mark memory management
@@ -139,9 +139,9 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-     self.cookieValue = @"E00001";
-    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
-    return;
+//     self.cookieValue = @"E00001";
+//    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+//    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");

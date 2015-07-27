@@ -10,10 +10,10 @@
 #import "SettingMainView.h"
 
 #import "User.h"
+#import "MainViewController.h"
 #import "SettingViewController.h"
 #import "SettingUserInfo.h"
 #import "ViewUpgrade.h"
-#import "LoginViewController.h"
 
 typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     SettingUserInfoIndex = 0,
@@ -67,13 +67,13 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
 
 #pragma mark - controls action
 - (IBAction)actionBtnClose:(UIBarButtonItem *)sender {
-    [self.settingViewController actionCloseSettingView];
+    MainViewController *mainViewController = [self mainViewController];
+    [mainViewController dimmissPopupSettingViewController];
 }
 
 - (IBAction)actionLogout:(id)sender {
-    LoginViewController *login = [[LoginViewController alloc] initWithNibName:nil bundle:nil];
-    UIWindow *window = self.view.window;
-    window.rootViewController = login;
+    MainViewController *mainViewController = [self mainViewController];
+    [mainViewController backToLoginViewController];
 }
 
 
