@@ -12,10 +12,12 @@
 
 #import "ExamTableViewController.h"
 #import "LectureTableViewController.h"
+#import "SettingViewController.h"
+#import "UIViewController+CWPopup.h"
 
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
-@interface ListViewController ()
+@interface ListViewController ()<SettingViewProtocol>
 
 @property (weak, nonatomic) IBOutlet UIView *registrationView;
 @property (weak, nonatomic) IBOutlet UIView *lectureView;
@@ -55,7 +57,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _registrationButton.enabled = NO;
     _lectureButton.enabled = YES;
     _questionnaireButton.enabled = NO;
-    _settingsButton.enabled = NO;
+    _settingsButton.enabled = YES;
     
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
@@ -71,6 +73,9 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     self.notificationViewController = [[NotificationViewController alloc] init];
     
     [self refreshContentView];
+    
+    
+    self.useBlurForPopup = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -220,8 +225,17 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 }
 
 - (IBAction)settingsButtonTouched:(id)sender {
-    NSLog(@"settingsButtonTouched");
-    [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
+    //NSLog(@"settingsButtonTouched");
+    //[self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
+    
+    SettingViewController *settingVC = [[SettingViewController alloc] init];
+    settingVC.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingVC];
+    nav.view.frame = CGRectMake(0, 0, 400, 500);
+    
+    [self presentPopupViewController:nav animated:YES completion:^(void) {
+        NSLog(@"popup view settingViewController");
+    }];
 }
 
 - (IBAction)syncButtonTouched:(id)sender {
@@ -239,4 +253,16 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     }
 }
 
+#pragma mark - CWPoup
+
+- (void)dismissPopup {
+    if (self.popupViewController) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissed");
+        }];
+    }
+}
+- (void)dismissSettingView {
+    [self dismissPopup];
+}
 @end
