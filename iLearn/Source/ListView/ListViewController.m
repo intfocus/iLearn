@@ -231,6 +231,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     SettingViewController *settingVC = [[SettingViewController alloc] init];
     settingVC.delegate = self;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingVC];
+    nav.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor]};
     nav.view.frame = CGRectMake(0, 0, 400, 500);
     
     [self presentPopupViewController:nav animated:YES completion:^(void) {
