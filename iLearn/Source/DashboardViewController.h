@@ -10,4 +10,5 @@
 
 @interface DashboardViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 - (void)dismissPopup;
+- (void)dismissSettingView;
 @end

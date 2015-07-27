@@ -1020,6 +1020,12 @@
                                             </mask>
                                         </variation>
                                     </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" 服务电话：400 882 2731" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xWj-MQ-U7W">
+                                        <rect key="frame" x="63" y="699" width="173" height="17"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vse-Mo-CsM" userLabel="Settings Button">
                                         <rect key="frame" x="8" y="664" width="55" height="52"/>
                                         <constraints>
@@ -1033,12 +1039,6 @@
                                             <action selector="settingsButtonTouched:" destination="MOd-D3-0KC" eventType="touchUpInside" id="XB6-xx-1wQ"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" 服务电话：400 882 2731" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xWj-MQ-U7W">
-                                        <rect key="frame" x="63" y="699" width="173" height="17"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.1803921568627451" green="0.53333333333333333" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -3128,10 +3128,10 @@
         <image name="img_registration" width="157" height="115"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8NI-S9-Sdh"/>
-        <segue reference="Upl-6b-LTb"/>
-        <segue reference="Ln2-yb-tlo"/>
-        <segue reference="zoh-nu-ty0"/>
         <segue reference="xan-xh-hbx"/>
+        <segue reference="zoh-nu-ty0"/>
+        <segue reference="Upl-6b-LTb"/>
+        <segue reference="8NI-S9-Sdh"/>
+        <segue reference="Ln2-yb-tlo"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -6,15 +6,16 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#ifndef iSearch_SettingViewController_h
-#define iSearch_SettingViewController_h
+#ifndef iSearch_SettingMainView_h
+#define iSearch_SettingMainView_h
 #import <UIKit/UIKit.h>
-@class DashboardViewController;
+
+@protocol SettingViewProtocol <NSObject>
+- (void)dismissSettingView;
+@end
 
 @interface SettingViewController : UIViewController
-@property (nonatomic,nonatomic) DashboardViewController *masterViewController;
-@property (nonatomic,nonatomic) UIViewController *containerViewController;
 
-- (void)actionCloseSettingView;
+@property (nonatomic, weak) id <SettingViewProtocol> delegate;
 @end
 #endif

@@ -18,12 +18,10 @@
 		C48C09BB1B4D259900DD4562 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = C48C09BA1B4D259900DD4562 /* Version.m */; };
 		C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54841B550B9000E2B678 /* LectureTableViewController.m */; };
 		C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */; };
-		C4A4FD9E1B6616B400741BF3 /* SettingMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FD951B6616B400741BF3 /* SettingMainView.m */; };
-		C4A4FD9F1B6616B400741BF3 /* SettingMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A4FD961B6616B400741BF3 /* SettingMainView.xib */; };
-		C4A4FDA01B6616B400741BF3 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FD981B6616B400741BF3 /* SettingViewController.m */; };
-		C4A4FDA11B6616B400741BF3 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A4FD991B6616B400741BF3 /* SettingViewController.xib */; };
-		C4A4FDA21B6616B400741BF3 /* SettingUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FD9C1B6616B400741BF3 /* SettingUserInfo.m */; };
-		C4A4FDA31B6616B400741BF3 /* SettingUserInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A4FD9D1B6616B400741BF3 /* SettingUserInfo.xib */; };
+		C4A4FDB81B66292000741BF3 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FDB11B66292000741BF3 /* SettingViewController.m */; };
+		C4A4FDBB1B66292000741BF3 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A4FDB71B66292000741BF3 /* SettingViewController.xib */; };
+		C4A4FDC01B66293B00741BF3 /* SettingDataInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FDBE1B66293B00741BF3 /* SettingDataInfo.m */; };
+		C4A4FDC11B66293B00741BF3 /* SettingDataInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A4FDBF1B66293B00741BF3 /* SettingDataInfo.xib */; };
 		C4A579EB1B62182D0093C98A /* UploadExamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */; };
 		C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
@@ -113,15 +111,12 @@
 		C49C54841B550B9000E2B678 /* LectureTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewController.m; sourceTree = "<group>"; };
 		C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewCell.m; sourceTree = "<group>"; };
 		C49C548D1B5527AC00E2B678 /* LectureTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureTableViewCell.h; sourceTree = "<group>"; };
-		C4A4FD941B6616B400741BF3 /* SettingMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingMainView.h; sourceTree = "<group>"; };
-		C4A4FD951B6616B400741BF3 /* SettingMainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingMainView.m; sourceTree = "<group>"; };
-		C4A4FD961B6616B400741BF3 /* SettingMainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingMainView.xib; sourceTree = "<group>"; };
-		C4A4FD971B6616B400741BF3 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
-		C4A4FD981B6616B400741BF3 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
-		C4A4FD991B6616B400741BF3 /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
-		C4A4FD9B1B6616B400741BF3 /* SettingUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserInfo.h; sourceTree = "<group>"; };
-		C4A4FD9C1B6616B400741BF3 /* SettingUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserInfo.m; sourceTree = "<group>"; };
-		C4A4FD9D1B6616B400741BF3 /* SettingUserInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingUserInfo.xib; sourceTree = "<group>"; };
+		C4A4FDB11B66292000741BF3 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		C4A4FDB61B66292000741BF3 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		C4A4FDB71B66292000741BF3 /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
+		C4A4FDBD1B66293B00741BF3 /* SettingDataInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingDataInfo.h; sourceTree = "<group>"; };
+		C4A4FDBE1B66293B00741BF3 /* SettingDataInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingDataInfo.m; sourceTree = "<group>"; };
+		C4A4FDBF1B66293B00741BF3 /* SettingDataInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingDataInfo.xib; sourceTree = "<group>"; };
 		C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadExamViewController.xib; sourceTree = "<group>"; };
 		C4A579ED1B622C3C0093C98A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UploadExam.storyboard; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -343,33 +338,22 @@
 		C4A4FD921B6616B400741BF3 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				C4A4FD931B6616B400741BF3 /* MainView */,
-				C4A4FD971B6616B400741BF3 /* SettingViewController.h */,
-				C4A4FD981B6616B400741BF3 /* SettingViewController.m */,
-				C4A4FD991B6616B400741BF3 /* SettingViewController.xib */,
-				C4A4FD9A1B6616B400741BF3 /* UserInfo */,
+				C4A4FDBC1B66293B00741BF3 /* DataInfo */,
+				C4A4FDB61B66292000741BF3 /* SettingViewController.h */,
+				C4A4FDB11B66292000741BF3 /* SettingViewController.m */,
+				C4A4FDB71B66292000741BF3 /* SettingViewController.xib */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
 		};
-		C4A4FD931B6616B400741BF3 /* MainView */ = {
+		C4A4FDBC1B66293B00741BF3 /* DataInfo */ = {
 			isa = PBXGroup;
 			children = (
-				C4A4FD941B6616B400741BF3 /* SettingMainView.h */,
-				C4A4FD951B6616B400741BF3 /* SettingMainView.m */,
-				C4A4FD961B6616B400741BF3 /* SettingMainView.xib */,
+				C4A4FDBD1B66293B00741BF3 /* SettingDataInfo.h */,
+				C4A4FDBE1B66293B00741BF3 /* SettingDataInfo.m */,
+				C4A4FDBF1B66293B00741BF3 /* SettingDataInfo.xib */,
 			);
-			path = MainView;
-			sourceTree = "<group>";
-		};
-		C4A4FD9A1B6616B400741BF3 /* UserInfo */ = {
-			isa = PBXGroup;
-			children = (
-				C4A4FD9B1B6616B400741BF3 /* SettingUserInfo.h */,
-				C4A4FD9C1B6616B400741BF3 /* SettingUserInfo.m */,
-				C4A4FD9D1B6616B400741BF3 /* SettingUserInfo.xib */,
-			);
-			path = UserInfo;
+			path = DataInfo;
 			sourceTree = "<group>";
 		};
 		CB2BAB0F1B348C9800D523EB /* Login */ = {
@@ -739,11 +723,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCA787FE1B038ED00049098C /* Main.storyboard in Resources */,
+				C4A4FDC11B66293B00741BF3 /* SettingDataInfo.xib in Resources */,
 				CB7BD7E01B07BD2D002C6DFB /* JsonTemplate in Resources */,
-				C4A4FD9F1B6616B400741BF3 /* SettingMainView.xib in Resources */,
-				C4A4FDA11B6616B400741BF3 /* SettingViewController.xib in Resources */,
+				C4A4FDBB1B66292000741BF3 /* SettingViewController.xib in Resources */,
 				C4A579EB1B62182D0093C98A /* UploadExamViewController.xib in Resources */,
-				C4A4FDA31B6616B400741BF3 /* SettingUserInfo.xib in Resources */,
 				CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */,
 				DCA7881A1B03A40A0049098C /* Localizable.strings in Resources */,
 				CB2BAB1D1B348C9800D523EB /* NotificationCell.xib in Resources */,
@@ -807,11 +790,11 @@
 				CBC976B21B3E78AA006C104F /* CustomSegue.m in Sources */,
 				CBE0C8301B072483000EA3A7 /* PersonalInfoViewController.m in Sources */,
 				CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */,
+				C4A4FDB81B66292000741BF3 /* SettingViewController.m in Sources */,
 				CB2BAB3B1B348D6E00D523EB /* FileUtils.m in Sources */,
 				DCA787F51B038ED00049098C /* main.m in Sources */,
 				CBE0C8501B072DC2000EA3A7 /* split.c in Sources */,
 				C44E50811B4E77A500A17ED8 /* Version+Self.m in Sources */,
-				C4A4FDA01B6616B400741BF3 /* SettingViewController.m in Sources */,
 				CB2BAB3C1B348D6E00D523EB /* HttpUtils.m in Sources */,
 				CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */,
 				CB3512281B47F06500025B5B /* ExamViewController.m in Sources */,
@@ -821,7 +804,6 @@
 				CBC976931B3C6F0A006C104F /* ScoreQRCodeViewController.m in Sources */,
 				CBC976911B3C6F0A006C104F /* PasswordViewController.m in Sources */,
 				CB35123B1B47F27E00025B5B /* QuestionOptionCell.m in Sources */,
-				C4A4FD9E1B6616B400741BF3 /* SettingMainView.m in Sources */,
 				CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */,
 				CB2BAB3D1B348D6E00D523EB /* LogUtils.m in Sources */,
 				C4357C451B39701F00854524 /* ApiUtils.m in Sources */,
@@ -852,10 +834,10 @@
 				CB2BAB1C1B348C9800D523EB /* NotificationCell.m in Sources */,
 				C48C09B61B4D258500DD4562 /* ViewUpgrade.m in Sources */,
 				CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */,
+				C4A4FDC01B66293B00741BF3 /* SettingDataInfo.m in Sources */,
 				CBE0C84C1B072DC2000EA3A7 /* qrencode.c in Sources */,
 				CBE0C8331B0724A4000EA3A7 /* QRCodeViewController.m in Sources */,
 				CB3512331B47F0B200025B5B /* ExamUtil.m in Sources */,
-				C4A4FDA21B6616B400741BF3 /* SettingUserInfo.m in Sources */,
 				CBC976B41B3E78AA006C104F /* ListViewController.m in Sources */,
 				CB3512341B47F0B200025B5B /* LicenseUtil.m in Sources */,
 			);

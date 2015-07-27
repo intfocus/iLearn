@@ -28,7 +28,7 @@ static NSString *const kShowNotificationSegue = @"showNotificationPage";
 
 static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifier";
 
-@interface DashboardViewController ()
+@interface DashboardViewController ()<SettingViewProtocol>
 
 // Button Area Views
 @property (weak, nonatomic) IBOutlet UIView *coursePackView;
@@ -215,8 +215,13 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     // [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
 
     SettingViewController *settingVC = [[SettingViewController alloc] init];
-    settingVC.masterViewController = self;
-    [self presentPopupViewController:settingVC animated:YES completion:nil];
+    settingVC.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingVC];
+    nav.view.frame = CGRectMake(0, 0, 400, 500);
+
+    [self presentPopupViewController:nav animated:YES completion:^(void) {
+        NSLog(@"popup view settingViewController");
+    }];
 }
 
 - (IBAction)registrationTouced:(id)sender {
@@ -292,6 +297,9 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
             NSLog(@"popup view dismissed");
         }];
     }
+}
+- (void)dismissSettingView {
+    [self dismissPopup];
 }
 
 
