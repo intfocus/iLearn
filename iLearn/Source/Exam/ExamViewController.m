@@ -438,16 +438,19 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     _questionTitleLabel.text = title;
     _correctionTitleLabel.text = title;
 
-    NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
-    NSMutableString *answerString = [NSMutableString string];
-    for (NSNumber *seq in answersBySeq) {
-        [answerString appendString:[NSString stringWithFormat:@"%ld", ([seq integerValue] + 1) + 64]];
-    }
-
+//    NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
+//    NSMutableString *answerString = [NSMutableString string];
+//    for (NSNumber *seq in answersBySeq) {
+//        [answerString appendString:[NSString stringWithFormat:@"%c", ([seq integerValue] + 1) + 64]];
+//    }
+    
     NSString *correctionNote = selectedQuestion[ExamQuestionNote];
-    NSString *correctionString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_CORRECTION_TEMPLATE", nil), answerString, correctionNote];
-
-    _correctionNoteLabel.text = correctionString;
+    if(correctionNote && [correctionNote length] > 0) {
+        NSString *correctionString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_CORRECTION_TEMPLATE", nil), correctionNote];
+        _correctionNoteLabel.text = correctionString;
+    } else {
+        _correctionNoteLabel.text = @"";
+    }
 
     [_questionTableView reloadData];
     [_correctionTableView reloadData];
