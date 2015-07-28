@@ -46,6 +46,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 @property (weak, nonatomic) IBOutlet UIButton *syncButton;
 
 // 头像设置
+@property (weak, nonatomic) IBOutlet UIButton *avatarBtn;
 @property (nonatomic) UIActionSheet *imagePickerActionSheet;
 @property (nonatomic) UIImagePickerController *imagePicker;
 @end
@@ -77,8 +78,20 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     
     [self refreshContentView];
     
-    
+    // CWpopup
     self.useBlurForPopup = YES;
+    
+    // load avatar image
+    UIButton *avatar = self.avatarBtn;
+    avatar.layer.cornerRadius=CGRectGetHeight(avatar.frame)/2;
+    avatar.layer.borderColor=[UIColor whiteColor].CGColor;
+    avatar.layer.borderWidth=2;
+    NSData *imagedata = [[NSUserDefaults standardUserDefaults] objectForKey:@"avatarSmall"];
+    if (imagedata){
+        UIImage *avatarImage = [UIImage imageWithData:imagedata];
+        [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
+    }
+    avatar.layer.masksToBounds = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -353,8 +366,10 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     //save the photo for next launch
     [[NSUserDefaults standardUserDefaults] setObject:imagedata forKey:@"avatarSmall"];
     [picker dismissViewControllerAnimated:YES completion:^{
-        //((SideViewController *)self.leftViewController).head.headView.image = editImamge;
-        NSLog(@"????");
+        if (imagedata){
+            UIImage *avatarImage = [UIImage imageWithData:imagedata];
+            [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
+        }
     }];
 }
 

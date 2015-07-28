@@ -69,6 +69,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 @property (strong, nonatomic) NSDateFormatter *weekdayFormatter;
 
 // 头像设置
+@property (weak, nonatomic) IBOutlet UIButton *avatarBtn;
 @property (nonatomic) UIActionSheet *imagePickerActionSheet;
 @property (nonatomic) UIImagePickerController *imagePicker;
 @end
@@ -110,7 +111,19 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [self.view addGestureRecognizer:tapRecognizer];
     self.useBlurForPopup = YES;
     
+    // hidden navigation
     self.navigationController.navigationBarHidden = YES;
+    // load avatar image
+    UIButton *avatar = self.avatarBtn;
+    avatar.layer.cornerRadius=CGRectGetHeight(avatar.frame)/2;
+    avatar.layer.borderColor=[UIColor whiteColor].CGColor;
+    avatar.layer.borderWidth=2;
+    NSData *imagedata = [[NSUserDefaults standardUserDefaults] objectForKey:@"avatarSmall"];
+    if (imagedata){
+        UIImage *avatarImage = [UIImage imageWithData:imagedata];
+        [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
+    }
+    avatar.layer.masksToBounds = YES;
 }
 
 
@@ -393,8 +406,10 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     //save the photo for next launch
     [[NSUserDefaults standardUserDefaults] setObject:imagedata forKey:@"avatarSmall"];
     [picker dismissViewControllerAnimated:YES completion:^{
-        //((SideViewController *)self.leftViewController).head.headView.image = editImamge;
-        NSLog(@"????");
+        if (imagedata){
+            UIImage *avatarImage = [UIImage imageWithData:imagedata];
+            [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
+        }
     }];
 }
 
