@@ -51,12 +51,12 @@ static NSString *const resultUploadFail = @"请返回后刷新重试"; //或扫�
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-//    if(self.isUploadExamResult) {
-//        NSString *docPath  = [self applicationDocumentsDirectory];
-//        NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
-//        NSString *filePath = [NSString stringWithFormat:@"%@/%@.result", examPath, self.examID];
-//        [_connectionManager uploadExamResultWithPath:filePath];
-//    }
+    if(self.isUploadExamResult) {
+        NSString *docPath  = [self applicationDocumentsDirectory];
+        NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
+        NSString *filePath = [NSString stringWithFormat:@"%@/%@.result", examPath, self.examID];
+        [_connectionManager uploadExamResultWithPath:filePath];
+    }
 }
 
 - (NSString *)applicationDocumentsDirectory {
