@@ -690,7 +690,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
             isUploadExamResult = NO;
         }
         else {
-            if (newSubmitTimes > 1) { // Has submitted, the score should be just qualified
+            if (newSubmitTimes > 1 && score > qualityLine) { // Qualitied and has submitted, the score should be just qualified
                 score = qualityLine;
                 [ExamUtil updateExamScore:score ofDBPath:dbPath];
             }
