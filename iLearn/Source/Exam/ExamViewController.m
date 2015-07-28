@@ -124,6 +124,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
     else if (examType == ExamTypesPractice) {
         self.isAnswerMode = NO;
+        // 模拟考试，左侧倒计时显示 00:00:00
+        self.countDownHourLabel.text   = [NSString stringWithFormat:@"%02ld", (long)0.0];
+        self.countDownMinuteLabel.text = [NSString stringWithFormat:@"%02ld", (long)0.0];
+        self.countDownSecondLabel.text = [NSString stringWithFormat:@"%02ld", (long)0.0];
     }
     else {
         self.isAnswerMode = NO;
@@ -325,7 +329,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSArray *options = selectedQuestion[ExamQuestionOptions];
     NSDictionary *option = options[indexPath.row];
 
-    cell.seqLabel.text = [NSString stringWithFormat:@"%c", (indexPath.row+1)+64];
+    cell.seqLabel.text = [NSString stringWithFormat:@"%ld", (indexPath.row+1)+64];
     cell.titleLabel.text = option[ExamQuestionOptionTitle];
 
     if (tableView == _questionTableView) {
