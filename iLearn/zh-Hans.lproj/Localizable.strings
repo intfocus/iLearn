@@ -75,5 +75,5 @@ EXAM_SCORE_TITLE = "考试得分";
 EXAM_TOTAL_SCORE_TITLE = "试题总分";
 EXAM_SCORE_UNIT = "分";
 EXAM_SCORE_TEMPLATE = "得分：%lld 分";
-EXAM_UNDER_QUALIFY_TEMPLATE = "未达及格线，请重新测验。";
+EXAM_UNDER_QUALIFY_TEMPLATE = "及格线为%@分，您的得分为%@分，您还有%@次补考机会，请继续努力。";
 EXAM_TIME_LEFT_TITLE = "距离考试结束还有：";

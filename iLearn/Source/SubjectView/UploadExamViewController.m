@@ -97,7 +97,12 @@ static NSString *const resultUploadFail = @"请返回后刷新重试"; //或扫�
 }
 
 - (IBAction)closeTouched:(id)sender {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    //[self dismissViewControllerAnimated:NO completion:nil];
+    [self dismissViewControllerAnimated:NO completion:^{
+        if ([self.delegate respondsToSelector:@selector(backToListView)]) {
+            [self.delegate backToListView];
+        }
+    }];
 }
 
 - (IBAction)actionTouched:(id)sender {

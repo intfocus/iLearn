@@ -170,7 +170,8 @@ static const BOOL inDeveloping = NO;
     NSString *beginString = [NSString stringWithFormat:NSLocalizedString(@"LIST_BEGIN_DATE_TEMPLATE", nil), beginTimeString];
 
     // Exam duration
-    long long duration = [content[ExamDuration] longLongValue];
+    //TODO: 确认服务器使用单位为分钟
+    long long duration = [content[ExamDuration] longLongValue] * 60.0;
 
     if (duration < 0) {
         duration = 0;
@@ -300,7 +301,8 @@ static const BOOL inDeveloping = NO;
 
                 if ([result columnIsNull:@"exam_end"]) {
 
-                    long long duration = [result longLongIntForColumn:@"duration"];
+                    //TODO: 确认服务器使用单位为分钟
+                    long long duration = [result longLongIntForColumn:@"duration"] * 60.0;
                     NSDate *deadline = [now dateByAddingTimeInterval:duration];
 
                     long long deadlineInteger = [deadline timeIntervalSince1970];
@@ -317,7 +319,8 @@ static const BOOL inDeveloping = NO;
 {
     [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, location INTEGER, begin INTEGER, end INTEGER, duration INTEGER, exam_start INTEGER, exam_end INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT, allow_times INTEGER DEFAULT 1, submit_times INTEGER DEFAULT 0, qualify_percent INTEGER DEFAULT -1)"];
 
-    long long duration = [content[ExamDuration] longLongValue];
+    //TODO: 确认服务器使用分钟
+    long long duration = [content[ExamDuration] longLongValue] * 60.0;
 
     NSDate *now = [NSDate date];
     NSDate *deadline = [now dateByAddingTimeInterval:duration];
@@ -368,11 +371,12 @@ static const BOOL inDeveloping = NO;
      *  解决:
      *      只能在insert时判断是否为nil,才能避免crash
      */
+    //TODO: 确认每道题分值使用服务器设置的吗？
     [db executeUpdate:@"INSERT INTO subject (subject_id, desc, level, type, score, memo, answer) VALUES (?, ?, ?, ?, ?, ?, ?)", subjectId,
      (NSString *)psd(subjectContent[ExamQuestionTitle], @"NoSet"),
      subjectContent[ExamQuestionLevel],
      subjectContent[ExamQuestionType],
-     scorePerSubject,
+     subjectContent[ExamQuestionScore],
      (NSString *)psd(subjectContent[ExamQuestionNote], @""),
      answer];
 
@@ -686,8 +690,11 @@ static const BOOL inDeveloping = NO;
 {
     [self updateSelectedAnswersOfSubjectsInDB:db];
 
-    NSInteger totalSubjectCount = [db intForQuery:@"SELECT COUNT(*) FROM subject"];
-    NSInteger correctCount = [db intForQuery:@"SELECT COUNT(*) FROM subject WHERE answer=selected_answer"];
+    //TODO: 得分其实得分率，按每道题分值计算
+    //NSInteger totalSubjectCount = [db intForQuery:@"SELECT COUNT(*) FROM subject"];
+    //NSInteger correctCount = [db intForQuery:@"SELECT COUNT(*) FROM subject WHERE answer=selected_answer"];
+    NSInteger totalSubjectCount = [db intForQuery:@"SELECT SUM(score) FROM subject"];
+    NSInteger correctCount = [db intForQuery:@"SELECT SUM(score) FROM subject WHERE answer=selected_answer"];
 
     NSInteger score = (float)correctCount/(float)totalSubjectCount * 100.0 + 0.5;
 

@@ -679,7 +679,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
             newSubmitTimes < allowTimes) { // Should test again
 
             [ExamUtil resetExamStatusOfDBPath:dbPath];
-            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNDER_QUALIFY_TEMPLATE", nil)];
+            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNDER_QUALIFY_TEMPLATE", nil), [NSNumber numberWithInteger:qualityLine],[NSNumber numberWithInteger:score], [NSNumber numberWithInteger:(allowTimes - newSubmitTimes)]];
             isUploadExamResult = NO;
         }
         else {

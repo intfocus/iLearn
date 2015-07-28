@@ -136,6 +136,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
         request.HTTPMethod = @"PUT";
         NSData *bodyData = [NSData dataWithContentsOfFile:resultPath];
         request.HTTPBody = bodyData;
+        request.timeoutInterval = 5.0;
 
         AFHTTPRequestOperation *op = [manager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
