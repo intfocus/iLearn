@@ -14,4 +14,7 @@
 
 @property (assign, nonatomic) ListViewType listType;
 
+- (void)popupNotificationDetailView:(NSDictionary *)notification;
+- (void)dimmissPopupNotificationDetailView;
+
 @end

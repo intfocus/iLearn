@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "JTCalendar.h"
-//#import "RightSideViewController.h"
 #import "ListViewController.h"
 
 @interface NotificationViewController : ContentViewController<JTCalendarDataSource, ContentViewProtocal>
@@ -18,5 +17,6 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarContentViewHeight;
 @property (strong, nonatomic) JTCalendar *calendar;
+@property (nonatomic, strong) ListViewController *masterViewController;
 @end
 

@@ -13,7 +13,7 @@
 #import "NotificationViewController.h"
 #import "const.h"
 #import "FileUtils.h"
-#import "ApiUtils.h"
+#import "DataHelper.h"
 #import "ExtendNSLogFunctionality.h"
 #import "SettingViewController.h"
 #import "UIViewController+CWPopup.h"
@@ -177,7 +177,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (void)reloadNotifications
 {
-    NSMutableDictionary *notificationDatas = [ApiUtils notifications];
+    NSMutableDictionary *notificationDatas = [DataHelper notifications];
     self.notificationList = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
 
     // 公告通知按created_date升序

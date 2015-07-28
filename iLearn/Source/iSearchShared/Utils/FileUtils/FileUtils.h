@@ -149,13 +149,6 @@
  */
 + (NSString *)humanFileSize:(NSString *)fileSize;
 
-/**
- *  收藏文件列表（FAVORITE_DIRNAME）
- *
- *  @return @{FILE_DESC_KEY: }
- */
-+ (NSMutableArray *) favoriteSlideList1;
-
 
 /**
  *  NSMutableDictionary写入本地文件
@@ -166,14 +159,6 @@
 + (void) writeJSON:(NSMutableDictionary *)data
               Into:(NSString *) slidePath;
 
-/**
- *  根据文件名称在收藏夹中查找文件描述档
- *
- *  @param fileName 文件名称
- *
- *  @return descJSOn
- */
-+ (NSMutableDictionary *) getDescFromFavoriteWithName:(NSString *)fileName;
 
 /**
  *  获取文档的缩略图，即文档中的pdf/gif文件; 文件名为PageID, 后缀应该小写
@@ -187,12 +172,21 @@
                      PageID:(NSString *)PageID
                         Dir:(NSString *)dir;
 
+/**
+ *  在线浏览目录时，根据文档属性显示对应缩略图
+ *
+ *  @param slideTyoe 文档类型
+ *
+ *  @return 缩略图地址
+ */
++ (NSString *)slideThumbnail:(NSString *)slideTyoe;
 
 
 #pragma mark - slide download cache
 + (NSString *)slideToDownload:(NSString *)slideID;
 + (NSString *)slideDownloaded:(NSString *)slideID;
 + (BOOL)isSlideDownloading:(NSString *)slideID;
+
 
 
 /**

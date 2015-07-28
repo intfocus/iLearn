@@ -70,12 +70,12 @@ BOOL ExtendNSLogPrintError(const char *file, int lineNumber, const char *functio
  * ActionObject  操作对象（具体到文件）
  */
 void actionLogPost(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionName, NSString *actionResult) {
-    NSString *userID = @"1";
-    NSString *actionTime = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];
-    NSString *data = [NSString stringWithFormat:@"UserId=%@&FunctionName=%s#%d&ActionName=%@&ActionTime=%@&ActionReturn=%@&ActionObject=%s",
-                      userID, functionName, lineNumber, actionName, actionTime, actionResult, sourceFile];
-    
-    [HttpUtils httpPost:ACTION_LOGGER_URL_PATH Data:data];
+//    NSString *userID = @"1";
+//    NSString *actionTime = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];
+//    NSString *data = [NSString stringWithFormat:@"UserId=%@&FunctionName=%s#%d&ActionName=%@&ActionTime=%@&ActionReturn=%@&ActionObject=%s",
+//                      userID, functionName, lineNumber, actionName, actionTime, actionResult, sourceFile];
+//    
+//    [HttpUtils httpPost:ACTION_LOGGER_URL_PATH Data:data];
 }
 
 BOOL isNil(NSObject *propertyValue) {
@@ -86,4 +86,36 @@ NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue) {
         propertyValue = defaultVlaue;
     }
     return propertyValue;
+}
+
+#pragma mark - Url+Param.h
+NSString* GenFormat(NSInteger num) {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    for(NSInteger i=0; i < num; i++) [array addObject:@"%@"];
+    return [array componentsJoinedByString:UrlParamSparater];
+}
+
+BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionName, NSString *format, ...) {
+    // Type to hold information about variable arguments.
+    va_list ap;
+    // Initialize a variable argument list.
+    va_start (ap, format);
+    NSString *params = [[NSString alloc] initWithFormat:format arguments:ap];
+    // End using variable argument list.
+    va_end (ap);
+    
+    NSArray *array = [params componentsSeparatedByString:UrlParamSparater];
+    BOOL isAllValid = YES;
+    for(NSString *item in array) {
+        if([item isEqualToString:@"nil"]) {
+            isAllValid = NO;
+            break;
+        }
+    }
+    if(!isAllValid) {
+        NSString *fileName = [[NSString stringWithUTF8String:file] lastPathComponent];
+        fprintf(stderr, "(%s) (%s:%d) %s",
+                functionName, [fileName UTF8String],lineNumber, [params UTF8String]);
+    }
+    return isAllValid;
 }

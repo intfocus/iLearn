@@ -47,5 +47,9 @@
 - (void)reload;
 - (void)updateTimestamp;
 - (void)save;
+- (NSString *)simpleDescription;
+
+// class methods
++ (NSString *)pgy_app_id;
 @end
 #endif

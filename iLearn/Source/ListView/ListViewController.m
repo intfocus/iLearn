@@ -14,6 +14,7 @@
 #import "LectureTableViewController.h"
 #import "SettingViewController.h"
 #import "UIViewController+CWPopup.h"
+#import "NotificationDetailView.h"
 
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
@@ -75,6 +76,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
     
     self.notificationViewController = [[NotificationViewController alloc] init];
+    self.notificationViewController.masterViewController = self;
     
     [self refreshContentView];
     
@@ -370,6 +372,23 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
             UIImage *avatarImage = [UIImage imageWithData:imagedata];
             [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
         }
+    }];
+}
+
+#pragma mark - present view NotificationDetailView
+- (void)popupNotificationDetailView:(NSDictionary *)notification {
+    NotificationDetailView *notificationDetailView = [[NotificationDetailView alloc] init];
+    notificationDetailView.dict = notification;
+    notificationDetailView.masterViewController = self;
+    [self presentPopupViewController:notificationDetailView animated:YES completion:^{
+        //self.coverView.hidden = NO;
+    }];
+}
+- (void)dimmissPopupNotificationDetailView {
+    [self dismissPopupViewControllerAnimated:YES completion:^{
+        //self.coverView.hidden = YES;
+        
+        NSLog(@"dismiss NotificationDetailView.");
     }];
 }
 
