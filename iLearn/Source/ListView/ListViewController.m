@@ -57,12 +57,10 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    
-    _registrationButton.enabled = NO;
-    _lectureButton.enabled = YES;
-    _questionnaireButton.enabled = NO;
-    _settingsButton.enabled = YES;
+    // Do any additional setup after loading the view, typically from a nib.    
+    _questionnaireView.hidden = YES;
+    _lectureView.hidden = YES;
+    _registrationView.hidden = YES;
     
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
@@ -77,6 +75,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     
     self.notificationViewController = [[NotificationViewController alloc] init];
     self.notificationViewController.masterViewController = self;
+    self.notificationViewController.listViewController = self;
     
     [self refreshContentView];
     

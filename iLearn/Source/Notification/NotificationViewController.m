@@ -53,6 +53,7 @@
 #import "DataHelper.h"
 #import "ExtendNslogfunctionality.h"
 #import "ListViewController.h"
+#import <MBProgressHUD.h>
 
 
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -313,22 +314,25 @@
 
 /**
  *  JTCanlendar回调函数；点击日历表中某日期时，响应处理
+ *
  *  Question:
- *      [NSPredicate predicateWithFormat:@"(OccurTime == %@)", dateStr];
- *      => OccurTime == "2015/06/18"
- *      [NSPredicate predicateWithFormat:@"(%@ == %@)", @"OccurTime", dateStr];
- *      => "OccurTime" == "2015/06/18"
+ *      [NSPredicate predicateWithFormat:@"(OccurTime BEGINSWITH %@)", dateStr];
+ *      => OccurTime BEGINSWITH "2015/06/18"
+ *      [NSPredicate predicateWithFormat:@"(%@ BEGINSWITH %@)", @"OccurTime", dateStr];
+ *      => "OccurTime" BEGINSWITH "2015/06/18"
  *   Solution:
  *      String format and not use predicateWithFormat!
+ *      NSPredicate#BEGINSWITH cat match "2015/06/18" and "2015/06/18 00:00:00" etc.
  *
  *  @param calendar 日历控件实例
  *  @param date     选择的日期
  */
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
-    NSString *dateStr = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
-    NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
-    NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
-    NSMutableArray *array = self.dataList[NOTIFICATION_FIELD_HDDATA];
+    NSString *dateStr      = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
+    NSString *predicateStr = [NSString stringWithFormat:@"(%@ BEGINSWITH \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
+    NSPredicate *filter    = [NSPredicate predicateWithFormat:predicateStr];
+    NSMutableArray *array  = self.dataList[NOTIFICATION_FIELD_HDDATA];
+    
     self.dataListTwo = [NSMutableArray arrayWithArray:[array filteredArrayUsingPredicate:filter]];
     [self.tableViewTwo reloadData];
 }
@@ -463,6 +467,20 @@
     NSString *text = currentDict[NOTIFICATION_FIELD_MSG];
     CGSize size = [ViewUtils sizeForTableViewCell:text Width:width FontSize:NOTIFICATION_MSG_FONT];
     return size.height + 60.0f;
+}
+
+#pragma mark - ContentViewProtocal
+- (void)syncData {
+    MBProgressHUD *progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+
+    [progressHUD showAnimated:YES whileExecutingBlock:^{
+        [self dealWithData];
+        
+        [self.tableViewOne reloadData];
+        [self.tableViewTwo reloadData];
+        [self.calendar reloadData];
+    }];
 }
 
 
