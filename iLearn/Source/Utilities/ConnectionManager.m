@@ -10,9 +10,11 @@
 #import "ExamUtil.h"
 #import "LicenseUtil.h"
 #import <AFNetworking.h>
+#import "const.h"
 #import "ExtendNSLogFunctionality.h"
 
-static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uatui/api/v1";
+static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/api/v1";
+
 
 @interface ConnectionManager ()
 
@@ -134,6 +136,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uatui/
         request.HTTPMethod = @"PUT";
         NSData *bodyData = [NSData dataWithContentsOfFile:resultPath];
         request.HTTPBody = bodyData;
+        request.timeoutInterval = 5.0;
 
         AFHTTPRequestOperation *op = [manager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
 

@@ -15,6 +15,8 @@
 #import "User.h"
 #import <MBProgressHUD.h>
 #import "UploadExamViewController.h"
+//#import "UIViewController+CWPopup.h"
+
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
 static NSString *const kQuestionOptionCellIdentifier = @"QuestionAnswerCell";
@@ -122,6 +124,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
     else if (examType == ExamTypesPractice) {
         self.isAnswerMode = NO;
+        // 模拟考试，左侧倒计时显示 00:00:00
+        self.countDownHourLabel.text   = [NSString stringWithFormat:@"%02ld", (long)0.0];
+        self.countDownMinuteLabel.text = [NSString stringWithFormat:@"%02ld", (long)0.0];
+        self.countDownSecondLabel.text = [NSString stringWithFormat:@"%02ld", (long)0.0];
     }
     else {
         self.isAnswerMode = NO;
@@ -180,6 +186,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
     
     self.submitButton2.layer.cornerRadius = 4;
+    
+    //self.useBlurForPopup = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -321,7 +329,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSArray *options = selectedQuestion[ExamQuestionOptions];
     NSDictionary *option = options[indexPath.row];
 
-    cell.seqLabel.text = [NSString stringWithFormat:@"%c", (indexPath.row+1)+64];
+    cell.seqLabel.text = [NSString stringWithFormat:@"%ld", (indexPath.row+1)+64];
     cell.titleLabel.text = option[ExamQuestionOptionTitle];
 
     if (tableView == _questionTableView) {
@@ -430,16 +438,19 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     _questionTitleLabel.text = title;
     _correctionTitleLabel.text = title;
 
-    NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
-    NSMutableString *answerString = [NSMutableString string];
-    for (NSNumber *seq in answersBySeq) {
-        [answerString appendString:[NSString stringWithFormat:@"%ld", ([seq integerValue] + 1) + 64]];
-    }
-
+//    NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
+//    NSMutableString *answerString = [NSMutableString string];
+//    for (NSNumber *seq in answersBySeq) {
+//        [answerString appendString:[NSString stringWithFormat:@"%c", ([seq integerValue] + 1) + 64]];
+//    }
+    
     NSString *correctionNote = selectedQuestion[ExamQuestionNote];
-    NSString *correctionString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_CORRECTION_TEMPLATE", nil), answerString, correctionNote];
-
-    _correctionNoteLabel.text = correctionString;
+    if(correctionNote && [correctionNote length] > 0) {
+        NSString *correctionString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_CORRECTION_TEMPLATE", nil), correctionNote];
+        _correctionNoteLabel.text = correctionString;
+    } else {
+        _correctionNoteLabel.text = @"";
+    }
 
     [_questionTableView reloadData];
     [_correctionTableView reloadData];
@@ -675,11 +686,11 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
             newSubmitTimes < allowTimes) { // Should test again
 
             [ExamUtil resetExamStatusOfDBPath:dbPath];
-            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNDER_QUALIFY_TEMPLATE", nil)];
+            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNDER_QUALIFY_TEMPLATE", nil), [NSNumber numberWithInteger:qualityLine],[NSNumber numberWithInteger:score], [NSNumber numberWithInteger:(allowTimes - newSubmitTimes)]];
             isUploadExamResult = NO;
         }
         else {
-            if (newSubmitTimes > 1) { // Has submitted, the score should be just qualified
+            if (newSubmitTimes > 1 && score > qualityLine) { // Qualitied and has submitted, the score should be just qualified
                 score = qualityLine;
                 [ExamUtil updateExamScore:score ofDBPath:dbPath];
             }
@@ -690,13 +701,16 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         }
        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
+        //UploadExamViewController *uploadExamVC = [[UploadExamViewController alloc] init];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UploadExam" bundle:nil];
         UploadExamViewController *uploadExamVC = (UploadExamViewController*)[storyboard instantiateViewControllerWithIdentifier:kUploadExamViewController];
         uploadExamVC.examScoreString    = scoreString;
         uploadExamVC.isUploadExamResult = isUploadExamResult;
         uploadExamVC.examID             = _examContent[ExamId];
         uploadExamVC.delegate           = self;
-        [self presentViewController:uploadExamVC animated:YES completion:^{}];
+        [self presentViewController:uploadExamVC animated:YES completion:^{
+            NSLog(@"popup view.");
+        }];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];

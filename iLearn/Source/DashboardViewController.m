@@ -13,9 +13,11 @@
 #import "NotificationViewController.h"
 #import "const.h"
 #import "FileUtils.h"
-#import "ApiUtils.h"
+#import "DataHelper.h"
 #import "ExtendNSLogFunctionality.h"
 #import "SettingViewController.h"
+#import "UIViewController+CWPopup.h"
+#import <AVFoundation/AVFoundation.h>
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
 static NSString *const kShowExamSegue = @"showExamPage";
@@ -27,7 +29,7 @@ static NSString *const kShowNotificationSegue = @"showNotificationPage";
 
 static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifier";
 
-@interface DashboardViewController ()
+@interface DashboardViewController ()<SettingViewProtocol>
 
 // Button Area Views
 @property (weak, nonatomic) IBOutlet UIView *coursePackView;
@@ -66,6 +68,10 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSDateFormatter *weekdayFormatter;
 
+// 头像设置
+@property (weak, nonatomic) IBOutlet UIButton *avatarBtn;
+@property (nonatomic) UIActionSheet *imagePickerActionSheet;
+@property (nonatomic) UIImagePickerController *imagePicker;
 @end
 
 @implementation DashboardViewController
@@ -98,8 +104,28 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [self setupAvatarImageView];
     [self reloadNotifications];
 
-
+    // CWPoup setting
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
+    tapRecognizer.numberOfTapsRequired = 1;
+    tapRecognizer.delegate = self;
+    [self.view addGestureRecognizer:tapRecognizer];
+    self.useBlurForPopup = YES;
+    
+    // hidden navigation
+    self.navigationController.navigationBarHidden = YES;
+    // load avatar image
+    UIButton *avatar = self.avatarBtn;
+    avatar.layer.cornerRadius=CGRectGetHeight(avatar.frame)/2;
+    avatar.layer.borderColor=[UIColor whiteColor].CGColor;
+    avatar.layer.borderWidth=2;
+    NSData *imagedata = [[NSUserDefaults standardUserDefaults] objectForKey:@"avatarSmall"];
+    if (imagedata){
+        UIImage *avatarImage = [UIImage imageWithData:imagedata];
+        [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
+    }
+    avatar.layer.masksToBounds = YES;
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -151,7 +177,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (void)reloadNotifications
 {
-    NSMutableDictionary *notificationDatas = [ApiUtils notifications];
+    NSMutableDictionary *notificationDatas = [DataHelper notifications];
     self.notificationList = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
 
     // 公告通知按created_date升序
@@ -205,11 +231,16 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (IBAction)settingsTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
-//    [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SettingsView" bundle:nil];
-    SettingViewController *settingVC = (SettingViewController*)[storyboard instantiateViewControllerWithIdentifier:kShowSettingsSegue];
-    [self presentViewController:settingVC animated:YES completion:^{
-        NSLog(@"Poupview setting view.");
+    // [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
+
+    SettingViewController *settingVC = [[SettingViewController alloc] init];
+    settingVC.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingVC];
+    nav.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor]};
+    nav.view.frame = CGRectMake(0, 0, 400, 500);
+
+    [self presentPopupViewController:nav animated:YES completion:^(void) {
+        NSLog(@"popup view settingViewController");
     }];
 }
 
@@ -241,6 +272,17 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 - (IBAction)qrCodeTouched:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     [self performSegueWithIdentifier:kShowQRCodeSegue sender:nil];
+}
+
+/**
+ *  点击头像事件
+ *
+ *  @param sender <#sender description#>
+ */
+- (IBAction)headClick:(id)sender {
+    self.imagePickerActionSheet = [[UIActionSheet alloc] initWithTitle:@"上传头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"从相册选择" otherButtonTitles:@"现在拍照", nil];
+    self.imagePickerActionSheet.delegate = self;
+    [self.imagePickerActionSheet showInView:self.view];
 }
 
 #pragma mark - UITableViewDataSource
@@ -276,6 +318,99 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self performSegueWithIdentifier:kShowNotificationSegue sender:nil];
+}
+
+#pragma mark - CWPoup
+
+- (void)dismissPopup {
+    if (self.popupViewController) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissed");
+        }];
+    }
+}
+- (void)dismissSettingView {
+    [self dismissPopup];
+}
+
+
+#pragma mark - gesture recognizer delegate functions
+
+// so that tapping popup view doesnt dismiss it
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    return touch.view == self.view;
+}
+
+#pragma mark - 头像上传功能函数
+
+#pragma mark - actionSheet let user choose
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    [self showImagePicker:buttonIndex];
+}
+
+#pragma mark - imagePicker
+- (void)showImagePicker: (NSInteger)index {
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authStatus == AVAuthorizationStatusAuthorized || authStatus == AVAuthorizationStatusNotDetermined) {
+        if (!self.imagePicker) {
+            self.imagePicker = [[UIImagePickerController alloc] init];
+        }
+        self.imagePicker.delegate = self;
+        self.imagePicker.allowsEditing = YES;
+        self.imagePicker.modalPresentationStyle = UIModalPresentationFormSheet;
+        if (index == 0 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+            self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            [self presentViewController:self.imagePicker animated:YES completion:nil];
+        }
+        else if (index == 1 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+            self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            [self presentViewController:self.imagePicker animated:YES completion:nil];
+        }
+    }
+    else {
+        //authorization failed, show the alert
+        [self alertAuthorization];
+    }
+}
+
+- (void)alertAuthorization{
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8){
+        NSString *message = @"授权访问相机~";
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler: ^(UIAlertAction *action){
+            if (&UIApplicationOpenSettingsURLString != NULL) {
+                NSURL *appSettings = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:appSettings];
+            }
+        }];
+        [alertVC addAction:okAction];
+        [self presentViewController:alertVC animated:YES completion:nil];
+    }
+    else{
+        UIAlertView *alertView =[[UIAlertView alloc] initWithTitle:nil message:@"授权访问相机~" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alertView show];
+    }
+}
+
+#pragma mark - imagePicker delegate
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:^{
+        //
+    }];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *editImamge = info[UIImagePickerControllerEditedImage];
+    NSData *imagedata = UIImageJPEGRepresentation(editImamge, 0.6);
+    //save the photo for next launch
+    [[NSUserDefaults standardUserDefaults] setObject:imagedata forKey:@"avatarSmall"];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        if (imagedata){
+            UIImage *avatarImage = [UIImage imageWithData:imagedata];
+            [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
+        }
+    }];
 }
 
 @end

@@ -67,6 +67,12 @@
     
     [FileUtils writeJSON:configDict Into:configPath];
 }
-#pragma mark -
 
+- (NSString *)simpleDescription {
+    return [NSString stringWithFormat:@"<#%@ version: %@, dbVersion:%@, platform:%@, sdkName: %@, lang: %@>", self.appName,self.current,self.dbVersion,self.platform,self.sdkName,self.lang];
+}
+
++ (NSString *)pgy_app_id {
+    return PGY_APP_ID;
+}
 @end

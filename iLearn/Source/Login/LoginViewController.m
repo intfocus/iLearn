@@ -27,24 +27,32 @@
 //  2. 修改login.plist只存在于一种情况: 有网络环境下，HttpPost服务器登陆成功时
 
 #import "LoginViewController.h"
-#import "common.h"
-#import "ViewUtils.h"
+
+#import "const.h"
+#import "message.h"
 #import "User.h"
+#import "HttpResponse.h"
 #import "Version+Self.h"
+#import "HttpUtils.h"
+#import "ViewUtils.h"
+#import "DateUtils.h"
+#import "FileUtils.h"
+#import "ApiHelper.h"
+#import "ExtendNSLogFunctionality.h"
+
+#import "AFNetworking.h"
+#import "UIViewController+CWPopup.h"
 #import "ViewUpgrade.h"
 #import "LicenseUtil.h"
-#import "UIViewController+CWPopup.h"
 
-@interface LoginViewController ()<ViewUpgradeProtocol>
+@interface LoginViewController () <ViewUpgradeProtocol>
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
-@property (nonatomic, nonatomic) ViewUpgrade *viewUpgrade;
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
-
-// login outside web
 @property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavBack;
 @property (weak, nonatomic) IBOutlet UILabel *labelLoginTitle;
 @property (weak, nonatomic) IBOutlet UILabel *labelPropmt;
+@property (nonatomic, nonatomic) ViewUpgrade *viewUpgrade;
 
 @property (strong, nonatomic)  NSString *cookieValue;
 @property (strong, nonatomic)  NSTimer *timerReadCookie;
@@ -61,23 +69,21 @@
      *  实例变量初始化
      */
     self.user = [[User alloc] init];
-    [self hideOutsideLoginControl:YES];
     self.labelPropmt.text = @"";
+    [self hideOutsideLoginControl:YES];
     
     // CWPopup 事件
     self.useBlurForPopup = YES;
+    
     /**
      控件事件
-    */
+     */
     [self.btnNavBack addTarget:self action:@selector(actionOutsideLoginClose:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnSubmit addTarget:self action:@selector(actionSubmit:) forControlEvents:UIControlEventTouchUpInside];
-    
-    NSLog(@"view:%@", NSStringFromCGRect(self.view.bounds));
-    NSLog(@"webview:%@", NSStringFromCGRect(self.webViewLogin.bounds));
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     if([HttpUtils isNetworkAvailable]) {
         [self checkAppVersionUpgrade];
@@ -126,8 +132,6 @@
     self.btnSubmit.enabled = YES;
     [self.btnSubmit setTitle:@"登录" forState:UIControlStateNormal];
 }
-
-
 #pragma mark - control action selector
 
 - (IBAction)actionOutsideLoginClose:(id)sender {
@@ -139,17 +143,19 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-     self.cookieValue = @"E00001";
-    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
-    return;
+    self.labelPropmt.text = @"";
+    
+//    self.cookieValue = @"E99658603";
+//    [self actionOutsideLoginSuccessfully];
+//    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
         [self actionClearCookies];
-        [self performSelector:@selector(actionOutsideLogin:) withObject:self];
+        [self actionOutsideLogin];
     } else {
-        [self performSelector:@selector(actionLoginWithoutNetwork:) withObject:self];
+        [self actionLoginWithoutNetwork];
     }
     
 }
@@ -157,24 +163,23 @@
 #pragma mark - assistant methods
 
 #pragma mark - within network
-- (IBAction)actionOutsideLogin:(id)sender {
-    [self performSelector:@selector(actionOutsideLoginRefresh:) withObject:self];
+- (void)actionOutsideLogin {
+    [self actionOutsideLoginRefresh];
     [self hideOutsideLoginControl:NO];
     if(!self.timerReadCookie || ![self.timerReadCookie isValid]) {
-        self.timerReadCookie = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionReadCookieTimer:) userInfo:nil repeats:YES];
+        self.timerReadCookie = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionReadCookieTimer) userInfo:nil repeats:YES];
     }
     self.timerCount = 0;
     [self.timerReadCookie fire];
 }
 
-- (IBAction)actionOutsideLoginRefresh:(id)sender {
+- (void)actionOutsideLoginRefresh {
     NSString *urlString = @"https://tsa-china.takeda.com.cn/uat/saml/sp/index.php?sso";
     NSURL *url = [NSURL URLWithString:urlString];
     [self.webViewLogin loadRequest:[NSURLRequest requestWithURL:url]];
 }
 
-- (IBAction)actionReadCookieTimer:(id)sender {
-    NSLog(@"timer: %ld", (long)self.timerCount);
+- (void)actionReadCookieTimer {
     NSString *cookieName = @"samlNameId", *cookieValue = @"";
     
     NSHTTPCookie *cookie;
@@ -187,13 +192,12 @@
         }
     }
     if([cookieValue length] > 0) {
-        NSLog(@"got it, samlNameId: %@", cookieValue);
         if([cookieValue isEqualToString:@"error000"]) {
             [self hideOutsideLoginControl:YES];
             [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
         } else {
             self.cookieValue = cookieValue;
-            [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+            [self actionOutsideLoginSuccessfully];
         }
         [self.timerReadCookie invalidate];
         [self actionClearCookies];
@@ -202,9 +206,6 @@
 }
 
 - (void) hideOutsideLoginControl:(BOOL)isHidden {
-    NSLog(@"view:%@", NSStringFromCGRect(self.view.bounds));
-    NSLog(@"webview:%@", NSStringFromCGRect(self.webViewLogin.bounds));
-    NSLog(@"hidden:%@, webview:%@", (isHidden ? @"true" : @"false"), NSStringFromCGRect(self.webViewLogin.bounds));
     if(isHidden) {
         [self.view sendSubviewToBack:self.labelLoginTitle];
         [self.view sendSubviewToBack:self.webViewLogin];
@@ -221,63 +222,50 @@
 - (void) actionClearCookies {
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-
+    
     for (cookie in [cookieJar cookies]) {
         [cookieJar deleteCookie:cookie];
     }
 }
 
-- (IBAction)actionOutsideLoginSuccessfully:(id)sender {
+- (void)actionOutsideLoginSuccessfully {
     NSMutableArray *loginErrors = [[NSMutableArray alloc] init];
-
-        NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", LOGIN_URL_PATH, PARAM_LANG, APP_LANG, LOGIN_PARAM_UID, self.cookieValue];
-        NSString *response = [HttpUtils httpGet:urlPath];
-        NSError *error;
-        NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
-                                                                            options:NSJSONReadingMutableContainers
-                                                                              error:&error];
-        NSErrorPrint(error, @"login response convert into json");
-        
+    
+    self.labelPropmt.text = @"获取用户信息...";
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    
+    HttpResponse *httpResponse = [ApiHelper login:self.cookieValue];
+    if(![httpResponse isValid]) {
+        [loginErrors addObjectsFromArray:httpResponse.errors];
+    } else {
+        NSMutableDictionary *responseDict = httpResponse.data;
         // 服务器交互成功
-        if(!error) {
-            // 服务器响应json格式为: { code: 1, info: {} }
-            //  code = 1 则表示服务器与客户端交互成功, info为用户信息,格式为JSON
-            //  code = 非1 则表示服务器方面查检出有错误， info为错误信息,格式为JSON
-            //            NSNumber *responseStatus = [responseDict objectForKey:LOGIN_FIELD_STATUS];
-            NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
-            // C.5.1 登陆成功,跳至步骤 C.success
-            // if([responseStatus isEqualToNumber:[NSNumber numberWithInt:1]]) {
-            if([responseResult length] == 0) {
-                //      3.success
-                //          last为当前时间(格式LOGIN_DATE_FORMAT)
-                //          password = remember_password ? 控件内容 : @""
-                //          把user/password/last/remember_password写入login.plist文件
-                // 界面输入信息
-                self.user.loginUserName    = self.cookieValue;
-                self.user.loginPassword    = self.cookieValue;
-                self.user.loginRememberPWD = YES;
-                self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
-                
-                // 服务器信息
-                self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
-                self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
-                self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
-                self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
-                self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
-                
-                // write into local config
-                [self.user save];
-                
-                // 跳至主界面
-                [self enterMainViewController];
-                return;
-            } else {
-                [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", responseResult]];
-            }
+        NSString *responseResult = responseDict[LOGIN_FIELD_RESULT];
+        if(responseResult && [responseResult length] == 0) {
+            self.user.loginUserName    = self.cookieValue;
+            self.user.loginPassword    = self.cookieValue;
+            self.user.loginRememberPWD = YES;
+            self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
+            
+            // 服务器信息
+            self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
+            self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
+            self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
+            self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
+            self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
+            
+            // write into local config
+            [self.user save];
+            [self.user writeInToPersonal];
+            
+            // 跳至主界面
+            [self enterMainViewController];
+            return;
         } else {
-            [loginErrors addObject:[NSString stringWithFormat:@"服务器响应解析失败:%@", response]];
+            [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", psd(responseResult,@"")]];
         }
-
+    }
+    
     if([loginErrors count])
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[loginErrors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
     [self hideOutsideLoginControl:YES];
@@ -290,13 +278,13 @@
  *     D.1 current > last 且 current - last < N 小时 => 点击此按钮进入主页，
  *     D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
  */
-- (IBAction)actionLoginWithoutNetwork:(id)sender {
+- (void)actionLoginWithoutNetwork {
     NSMutableArray *errors = [self checkEnableLoginWithoutNetwork:self.user];
     
     if(![errors count]) {
         // 跳至主界面
         [self enterMainViewController];
-    // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
+        // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
     } else {
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[errors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
     }
@@ -326,14 +314,13 @@
     }
     
     // 判断2: last日期距离现在小于N小时
-    // 判断2: last日期距离现在小于N小时
     NSTimeInterval intervalBetweenDates = [currentDate timeIntervalSinceDate:lastDate];
     int intervalHours = (int)intervalBetweenDates/60/60;
     if(intervalHours > LOGIN_KEEP_HOURS) {
         NSString *errorInfo = [NSString stringWithFormat:LOGIN_ERROR_EXPIRED_OUT_N_HOURS, user.loginLast, intervalHours, LOGIN_KEEP_HOURS];
         [errors addObject:errorInfo];
     }
-
+    
     return errors;
 }
 
@@ -355,7 +342,7 @@
 #pragma mark - assistant methods
 
 -(void)enterMainViewController{
-
+    
     [LicenseUtil saveUserAccount:self.user.employeeID];
     [LicenseUtil saveUserId:self.user.ID];
     [LicenseUtil saveUserName:self.user.name];
@@ -366,4 +353,5 @@
     UIViewController *dashboardViewController = [mainStoryboard instantiateInitialViewController];
     [self presentViewController:dashboardViewController animated:YES completion:nil];
 }
+
 @end

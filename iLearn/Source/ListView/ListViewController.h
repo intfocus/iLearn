@@ -10,8 +10,11 @@
 #import "Constants.h"
 #import "ContentViewController.h"
 
-@interface ListViewController : UIViewController
+@interface ListViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate>
 
 @property (assign, nonatomic) ListViewType listType;
+
+- (void)popupNotificationDetailView:(NSDictionary *)notification;
+- (void)dimmissPopupNotificationDetailView;
 
 @end

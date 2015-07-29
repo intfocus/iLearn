@@ -50,9 +50,10 @@
 #import "DateUtils.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
-#import "ApiUtils.h"
+#import "DataHelper.h"
 #import "ExtendNslogfunctionality.h"
-//#import "MainViewController.h"
+#import "ListViewController.h"
+#import <MBProgressHUD.h>
 
 
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -66,7 +67,11 @@
 @property (strong, nonatomic) NSMutableArray *dataListOne;   // 通告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwo;   // 预告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwoDate; // 预告列表日期去重，为日历控件加效果时使用
+@property (strong, nonatomic) NSNumber *widthOne;
+@property (strong, nonatomic) NSNumber *widthTwo;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
+
+//@property (nonatomic) NotificationCell *cell;
 
 @end
 
@@ -86,6 +91,8 @@
     self.dataListOne     = [[NSMutableArray alloc] init];
     self.dataListTwo     = [[NSMutableArray alloc] init];
     self.dataListTwoDate = [[NSMutableArray alloc] init];
+    self.widthOne = [[NSNumber alloc] init];
+    self.widthTwo = [[NSNumber alloc] init];
     // 服务器取数据
     [self dealWithData];
     // 通知列表
@@ -125,7 +132,13 @@
                                                            target:self
                                                            action:@selector(toggleShowLeftBar:)];
     self.barItemTMP.possibleTitles = [NSSet setWithObjects:@"<<", @">>", nil];
-//    self.navigationItem.rightBarButtonItem = self.barItemTMP;
+    self.navigationItem.rightBarButtonItem = self.barItemTMP;
+    
+    self.tableViewOne.rowHeight = UITableViewAutomaticDimension;
+    self.tableViewOne.estimatedRowHeight = 100;
+    self.tableViewTwo.rowHeight = UITableViewAutomaticDimension;
+    self.tableViewTwo.estimatedRowHeight = 100;
+    //self.cell = [self.tableViewOne dequeueReusableCellWithIdentifier:@"cellID"];
 }
 
 /**
@@ -135,6 +148,20 @@
     [super viewDidAppear:animated];
     
     [self.calendar reloadData]; // Must be call in viewDidAppear
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    if (iOSVersion < 8) {
+        self.widthTwo = [NSNumber numberWithFloat:self.viewCalendar.bounds.size.width - 16 - 8];
+        self.widthOne = [NSNumber numberWithFloat:(self.view.bounds.size.width-self.viewCalendar.bounds.size.width) - 16 - 8];
+    }
+    else {
+        self.widthTwo = [NSNumber numberWithFloat:self.viewCalendar.bounds.size.width - 16 - 8 - 5];
+        self.widthOne = [NSNumber numberWithFloat:(self.view.bounds.size.width-self.viewCalendar.bounds.size.width) - 16 - 8 - 5];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -153,7 +180,7 @@
 //        [self.barItemTMP setTitle:@"<<"];
 //        
 //    }
-//    
+    
 }
 
 - (void)configCalendar {
@@ -237,22 +264,21 @@
 #pragma mark - Utils
 
 - (void)dealWithData {
-    NSMutableDictionary *notificationDatas = [ApiUtils notifications];
+    NSMutableDictionary *notificationDatas = [DataHelper notifications];
 
     // 通告、预告的判断区别在于occur_date字段是否为空, 或NSNULL
     NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
     self.dataList    = notificationDatas;
     self.dataListOne = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
     self.dataListTwo = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告数据
-
-
+    
     // 初始化时需要遍历日历控件所有日期，此操作会减少比较次数
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    NSString *occurDate = [[NSString alloc] init];
+    NSString *occurDate;
     for(dict in self.dataListTwo) {
         // 日历精确至天，如果服务器提示occur_date精确到秒时需要截取
         occurDate = [dict[NOTIFICATION_FIELD_OCCURDATE] substringToIndex:toIndex];
-        dict[NOTIFICATION_FIELD_OCCURDATE] = occurDate;
+        //dict[NOTIFICATION_FIELD_OCCURDATE] = occurDate;
         if(![self.dataListTwoDate containsObject:occurDate])
             [self.dataListTwoDate addObject:occurDate];
     }
@@ -288,22 +314,25 @@
 
 /**
  *  JTCanlendar回调函数；点击日历表中某日期时，响应处理
+ *
  *  Question:
- *      [NSPredicate predicateWithFormat:@"(OccurTime == %@)", dateStr];
- *      => OccurTime == "2015/06/18"
- *      [NSPredicate predicateWithFormat:@"(%@ == %@)", @"OccurTime", dateStr];
- *      => "OccurTime" == "2015/06/18"
+ *      [NSPredicate predicateWithFormat:@"(OccurTime BEGINSWITH %@)", dateStr];
+ *      => OccurTime BEGINSWITH "2015/06/18"
+ *      [NSPredicate predicateWithFormat:@"(%@ BEGINSWITH %@)", @"OccurTime", dateStr];
+ *      => "OccurTime" BEGINSWITH "2015/06/18"
  *   Solution:
  *      String format and not use predicateWithFormat!
+ *      NSPredicate#BEGINSWITH cat match "2015/06/18" and "2015/06/18 00:00:00" etc.
  *
  *  @param calendar 日历控件实例
  *  @param date     选择的日期
  */
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
-    NSString *dateStr = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
-    NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
-    NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
-    NSMutableArray *array = self.dataList[NOTIFICATION_FIELD_HDDATA];
+    NSString *dateStr      = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
+    NSString *predicateStr = [NSString stringWithFormat:@"(%@ BEGINSWITH \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
+    NSPredicate *filter    = [NSPredicate predicateWithFormat:predicateStr];
+    NSMutableArray *array  = self.dataList[NOTIFICATION_FIELD_HDDATA];
+    
     self.dataListTwo = [NSMutableArray arrayWithArray:[array filteredArrayUsingPredicate:filter]];
     [self.tableViewTwo reloadData];
 }
@@ -361,7 +390,7 @@
     NSInteger cellIndex = indexPath.row;
     NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
     NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if(cell == nil) {
+    if(!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil] lastObject];
     }
     
@@ -371,9 +400,7 @@
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
         }
             break;
-        case NotificationTableViewTWO:
-        //case NotificationTableViewTHREE:
-        {
+        case NotificationTableViewTWO: {
             currentDict = [self.dataListTwo objectAtIndex:cellIndex];
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_OCCURDATE]];
         }
@@ -383,13 +410,31 @@
             [currentDict setObject:@"unkown Message" forKey:NOTIFICATION_FIELD_TITLE];
             break;
     }
-    [cell.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
-    [cell.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
-    [cell.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
-    cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
-    cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
-    
+
+    cell.dict = currentDict;
     return cell;
+}
+
+// 选择某行, 跳转至[首页][通知]
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger cellIndex = indexPath.row;
+    NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
+    switch ([tableView tag]) {
+        case NotificationTableViewONE: {
+            currentDict = [self.dataListOne objectAtIndex:cellIndex];
+        }
+            break;
+        case NotificationTableViewTWO: {
+            currentDict = [self.dataListTwo objectAtIndex:cellIndex];
+        }
+            break;
+        default:
+            [currentDict setObject:@"unkown Title" forKey:NOTIFICATION_FIELD_TITLE];
+            [currentDict setObject:@"unkown Message" forKey:NOTIFICATION_FIELD_TITLE];
+            break;
+    }
+    
+    [self.masterViewController popupNotificationDetailView:[NSDictionary dictionaryWithDictionary:currentDict]];
 }
 
 /**
@@ -402,15 +447,17 @@
  */
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
-    NSInteger width = self.viewCalendar.bounds.size.width;
+    CGFloat width;
     switch([tableView tag]) {
-        case NotificationTableViewONE:
+        case NotificationTableViewONE: {
             currentDict = [self.dataListOne objectAtIndex:indexPath.row];
-            width = self.view.bounds.size.width - width;
+            width = [self.widthOne floatValue];
+        }
             break;
-        case NotificationTableViewTWO:
-        //case NotificationTableViewTHREE:
+        case NotificationTableViewTWO: {
             currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
+            width = [self.widthTwo floatValue];
+        }
             break;
 
         default:
@@ -419,7 +466,21 @@
     }
     NSString *text = currentDict[NOTIFICATION_FIELD_MSG];
     CGSize size = [ViewUtils sizeForTableViewCell:text Width:width FontSize:NOTIFICATION_MSG_FONT];
-    return size.height + 50.0f;
+    return size.height + 60.0f;
+}
+
+#pragma mark - ContentViewProtocal
+- (void)syncData {
+    MBProgressHUD *progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+
+    [progressHUD showAnimated:YES whileExecutingBlock:^{
+        [self dealWithData];
+        
+        [self.tableViewOne reloadData];
+        [self.tableViewTwo reloadData];
+        [self.calendar reloadData];
+    }];
 }
 
 

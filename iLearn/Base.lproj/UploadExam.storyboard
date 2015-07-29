@@ -13,12 +13,16 @@
                         <viewControllerLayoutGuide type="top" id="DY6-Wd-QnT"/>
                         <viewControllerLayoutGuide type="bottom" id="3hW-bB-M9P"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" contentMode="scaleToFill" id="ogK-yR-mFQ">
+                    <view key="view" contentMode="scaleToFill" id="ogK-yR-mFQ">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zDC-VC-E6p">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YhW-Pc-e6Q">
-                                <rect key="frame" x="114" y="196" width="540" height="376"/>
+                                <rect key="frame" x="114" y="322" width="540" height="380"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="提交考试成绩" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1VV-Uf-toi">
                                         <rect key="frame" x="193" y="16" width="156" height="32"/>
@@ -105,39 +109,25 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="oGN-vu-v9Z" secondAttribute="trailing" constant="20" id="1MN-uT-fx8"/>
                                     <constraint firstItem="oGN-vu-v9Z" firstAttribute="top" secondItem="1VV-Uf-toi" secondAttribute="bottom" constant="16" id="4jk-OQ-0Q3"/>
-                                    <constraint firstAttribute="height" constant="500" id="9Ua-bW-je4"/>
                                     <constraint firstItem="oGN-vu-v9Z" firstAttribute="leading" secondItem="YhW-Pc-e6Q" secondAttribute="leading" constant="20" id="F7C-u3-L83"/>
-                                    <constraint firstItem="oGN-vu-v9Z" firstAttribute="top" secondItem="Wbs-mc-RgO" secondAttribute="bottom" constant="8" id="VL7-sD-1jc"/>
                                     <constraint firstAttribute="trailing" secondItem="Wbs-mc-RgO" secondAttribute="trailing" constant="8" id="YD9-9g-N2e"/>
                                     <constraint firstAttribute="bottom" secondItem="oGN-vu-v9Z" secondAttribute="bottom" constant="20" id="ZWt-dp-wwL"/>
                                     <constraint firstAttribute="width" constant="540" id="eJb-3h-a2B"/>
                                     <constraint firstItem="1VV-Uf-toi" firstAttribute="top" secondItem="YhW-Pc-e6Q" secondAttribute="top" constant="16" id="kRV-2e-I94"/>
-                                    <constraint firstAttribute="height" constant="620" id="pzv-8m-uuM"/>
                                     <constraint firstItem="Wbs-mc-RgO" firstAttribute="top" secondItem="YhW-Pc-e6Q" secondAttribute="top" constant="8" id="v8x-cg-Pxc"/>
                                     <constraint firstAttribute="centerX" secondItem="1VV-Uf-toi" secondAttribute="centerX" id="x3F-hJ-nza"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="9Ua-bW-je4"/>
-                                        <exclude reference="pzv-8m-uuM"/>
-                                        <exclude reference="VL7-sD-1jc"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="YhW-Pc-e6Q" firstAttribute="leading" secondItem="ogK-yR-mFQ" secondAttribute="leading" constant="20" id="RLP-sk-XC2"/>
+                            <constraint firstAttribute="centerY" secondItem="zDC-VC-E6p" secondAttribute="centerY" id="2Y7-Or-fNb"/>
+                            <constraint firstAttribute="centerX" secondItem="zDC-VC-E6p" secondAttribute="centerX" id="K9D-YI-Wr5"/>
+                            <constraint firstItem="zDC-VC-E6p" firstAttribute="height" secondItem="ogK-yR-mFQ" secondAttribute="height" id="ZOc-4K-qse"/>
                             <constraint firstAttribute="centerY" secondItem="YhW-Pc-e6Q" secondAttribute="centerY" id="Zix-HJ-tvI"/>
-                            <constraint firstAttribute="trailing" secondItem="YhW-Pc-e6Q" secondAttribute="trailing" constant="20" id="aAn-L9-afe"/>
+                            <constraint firstItem="zDC-VC-E6p" firstAttribute="width" secondItem="ogK-yR-mFQ" secondAttribute="width" id="cnC-Qa-PaJ"/>
                             <constraint firstAttribute="centerX" secondItem="YhW-Pc-e6Q" secondAttribute="centerX" id="pip-YJ-hsD"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="RLP-sk-XC2"/>
-                                <exclude reference="aAn-L9-afe"/>
-                            </mask>
-                        </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
@@ -151,7 +141,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="adQ-Nh-FMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4835" y="609"/>
+            <point key="canvasLocation" x="4823" y="398"/>
         </scene>
     </scenes>
     <resources>
