@@ -30,6 +30,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if(self.navigationItem) {
+        self.navigationItem.title = @"版本更新";
+    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -54,10 +58,8 @@
                 if([self.version isUpgrade]) {
                     [self refreshControls:YES];
                 }
-            } FailBloc:^{
-            }];
-        } completionBlock:^{
-        }];
+            } FailBloc:nil];
+        } completionBlock:nil];
     }
 }
 
