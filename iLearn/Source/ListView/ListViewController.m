@@ -59,8 +59,8 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.    
     _questionnaireView.hidden = YES;
-    _lectureView.hidden = YES;
-    _registrationView.hidden = YES;
+    _lectureView.hidden       = NO;
+    _registrationView.hidden  = YES;
     
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
@@ -107,14 +107,14 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)switchContentViewToViewController
 {
     ContentViewController<ContentViewProtocal> *newContentViewController;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main"
-                                                         bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     switch (_listType) {
         case ListViewTypeExam:
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
             newContentViewController.listViewController = self;
             break;
         case ListViewTypeLecture:
+            storyboard = [UIStoryboard storyboardWithName:@"Lecture" bundle:nil];
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"LectureTableViewController"];
             newContentViewController.listViewController = self;
             break;
@@ -216,9 +216,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (IBAction)lectureButtonTouched:(id)sender {
     NSLog(@"lectureButtonTouched");
-    if (_listType == ListViewTypeLecture) {
-        return;
-    }
     self.listType = ListViewTypeLecture;
     [self refreshContentView];
 }

@@ -35,6 +35,9 @@
 		C49731D41B678A210014048B /* Url+Param.m in Sources */ = {isa = PBXBuildFile; fileRef = C49731C91B678A210014048B /* Url+Param.m */; };
 		C49731D51B678A210014048B /* Url.m in Sources */ = {isa = PBXBuildFile; fileRef = C49731CB1B678A210014048B /* Url.m */; };
 		C49731D61B678A210014048B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C49731CE1B678A210014048B /* User.m */; };
+		C49ACF551B69FA1C00EB7E40 /* Lecture.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C49ACF541B69FA1C00EB7E40 /* Lecture.storyboard */; };
+		C49ACF591B6A024600EB7E40 /* CoursePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C49ACF581B6A024600EB7E40 /* CoursePackage.m */; };
+		C49ACF5B1B6A04E600EB7E40 /* testDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C49ACF5A1B6A04E600EB7E40 /* testDataHelper.m */; };
 		C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54841B550B9000E2B678 /* LectureTableViewController.m */; };
 		C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */; };
 		C4A4FDB81B66292000741BF3 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FDB11B66292000741BF3 /* SettingViewController.m */; };
@@ -44,6 +47,9 @@
 		C4A4FDC41B663B1700741BF3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */; };
 		C4A579EB1B62182D0093C98A /* UploadExamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */; };
 		C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */; };
+		C4D4F7C11B6A42AF00C435C4 /* CoursePackageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */; };
+		C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */; };
+		C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
 		CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2BAB121B348C9800D523EB /* LoginViewController.xib */; };
 		CB3512281B47F06500025B5B /* ExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3512271B47F06500025B5B /* ExamViewController.m */; };
@@ -150,6 +156,10 @@
 		C49731CB1B678A210014048B /* Url.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Url.m; sourceTree = "<group>"; };
 		C49731CD1B678A210014048B /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		C49731CE1B678A210014048B /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		C49ACF541B69FA1C00EB7E40 /* Lecture.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Lecture.storyboard; sourceTree = "<group>"; };
+		C49ACF571B6A024600EB7E40 /* CoursePackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackage.h; sourceTree = "<group>"; };
+		C49ACF581B6A024600EB7E40 /* CoursePackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackage.m; sourceTree = "<group>"; };
+		C49ACF5A1B6A04E600EB7E40 /* testDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testDataHelper.m; sourceTree = "<group>"; };
 		C49C54831B550B9000E2B678 /* LectureTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureTableViewController.h; sourceTree = "<group>"; };
 		C49C54841B550B9000E2B678 /* LectureTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewController.m; sourceTree = "<group>"; };
 		C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewCell.m; sourceTree = "<group>"; };
@@ -163,6 +173,12 @@
 		C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadExamViewController.xib; sourceTree = "<group>"; };
 		C4A579ED1B622C3C0093C98A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UploadExam.storyboard; sourceTree = "<group>"; };
+		C4D4F7BF1B6A42AF00C435C4 /* CoursePackageContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackageContent.h; sourceTree = "<group>"; };
+		C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackageContent.m; sourceTree = "<group>"; };
+		C4D4F7C21B6A470E00C435C4 /* CoursePackageContent+CoursePackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoursePackageContent+CoursePackage.h"; sourceTree = "<group>"; };
+		C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoursePackageContent+CoursePackage.m"; sourceTree = "<group>"; };
+		C4D4F7C61B6A493F00C435C4 /* CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackageDetail.h; sourceTree = "<group>"; };
+		C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackageDetail.m; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		CB2BAB111B348C9800D523EB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		CB2BAB121B348C9800D523EB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -285,6 +301,7 @@
 			children = (
 				C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */,
 				DCA787FC1B038ED00049098C /* Main.storyboard */,
+				C49ACF541B69FA1C00EB7E40 /* Lecture.storyboard */,
 			);
 			name = StoryBoards;
 			sourceTree = "<group>";
@@ -292,6 +309,9 @@
 		C4357C461B39706300854524 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C4D4F7C51B6A491900C435C4 /* CoursePackageDetail */,
+				C4D4F7BE1B6A429800C435C4 /* CoursePackageContent */,
+				C49ACF561B6A022C00EB7E40 /* CoursePackage */,
 				C49731B91B678A210014048B /* HttpResponse */,
 				C49731BC1B678A210014048B /* Version */,
 				C49731C11B678A210014048B /* BaseModel */,
@@ -472,6 +492,15 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		C49ACF561B6A022C00EB7E40 /* CoursePackage */ = {
+			isa = PBXGroup;
+			children = (
+				C49ACF571B6A024600EB7E40 /* CoursePackage.h */,
+				C49ACF581B6A024600EB7E40 /* CoursePackage.m */,
+			);
+			path = CoursePackage;
+			sourceTree = "<group>";
+		};
 		C49C54821B550B5D00E2B678 /* Lecture */ = {
 			isa = PBXGroup;
 			children = (
@@ -503,6 +532,26 @@
 				C4A4FDBF1B66293B00741BF3 /* SettingDataInfo.xib */,
 			);
 			path = DataInfo;
+			sourceTree = "<group>";
+		};
+		C4D4F7BE1B6A429800C435C4 /* CoursePackageContent */ = {
+			isa = PBXGroup;
+			children = (
+				C4D4F7BF1B6A42AF00C435C4 /* CoursePackageContent.h */,
+				C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */,
+				C4D4F7C21B6A470E00C435C4 /* CoursePackageContent+CoursePackage.h */,
+				C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */,
+			);
+			path = CoursePackageContent;
+			sourceTree = "<group>";
+		};
+		C4D4F7C51B6A491900C435C4 /* CoursePackageDetail */ = {
+			isa = PBXGroup;
+			children = (
+				C4D4F7C61B6A493F00C435C4 /* CoursePackageDetail.h */,
+				C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */,
+			);
+			path = CoursePackageDetail;
 			sourceTree = "<group>";
 		};
 		CB2BAB0F1B348C9800D523EB /* Login */ = {
@@ -605,14 +654,14 @@
 		CBC976A81B3E78AA006C104F /* ListView */ = {
 			isa = PBXGroup;
 			children = (
+				CBC976AF1B3E78AA006C104F /* ListViewController.h */,
+				CBC976B01B3E78AA006C104F /* ListViewController.m */,
 				CB35123D1B47F29700025B5B /* DetailViewController.h */,
 				CB35123E1B47F29700025B5B /* DetailViewController.m */,
 				CBC976A91B3E78AA006C104F /* CustomFormSegue.h */,
 				CBC976AA1B3E78AA006C104F /* CustomFormSegue.m */,
 				CBC976AB1B3E78AA006C104F /* CustomSegue.h */,
 				CBC976AC1B3E78AA006C104F /* CustomSegue.m */,
-				CBC976AF1B3E78AA006C104F /* ListViewController.h */,
-				CBC976B01B3E78AA006C104F /* ListViewController.m */,
 				CBC976B51B3E7A52006C104F /* ContentViewController.h */,
 				CBC976B61B3E7A52006C104F /* ContentViewController.m */,
 				CBC976AD1B3E78AA006C104F /* ContentTableViewCell.h */,
@@ -742,6 +791,7 @@
 			children = (
 				DCA7880E1B038ED00049098C /* iLearnTests.m */,
 				DCA7880C1B038ED00049098C /* Supporting Files */,
+				C49ACF5A1B6A04E600EB7E40 /* testDataHelper.m */,
 			);
 			path = iLearnTests;
 			sourceTree = "<group>";
@@ -860,6 +910,7 @@
 				C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */,
 				DCA788001B038ED00049098C /* Images.xcassets in Resources */,
 				C48C09B71B4D258500DD4562 /* ViewUpgrade.xib in Resources */,
+				C49ACF551B69FA1C00EB7E40 /* Lecture.storyboard in Resources */,
 				C49731911B67889B0014048B /* NotificationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -930,12 +981,15 @@
 				CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */,
 				CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */,
 				CBE0C84E1B072DC2000EA3A7 /* qrspec.c in Sources */,
+				C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */,
 				C49731B21B6789C40014048B /* DatabaseUtils.m in Sources */,
 				CBC976931B3C6F0A006C104F /* ScoreQRCodeViewController.m in Sources */,
 				C49731B51B6789C40014048B /* DataHelper.m in Sources */,
 				C49731D21B678A210014048B /* BaseModel.m in Sources */,
 				C49731D31B678A210014048B /* ActionLog.m in Sources */,
 				CBC976911B3C6F0A006C104F /* PasswordViewController.m in Sources */,
+				C49ACF591B6A024600EB7E40 /* CoursePackage.m in Sources */,
+				C4D4F7C11B6A42AF00C435C4 /* CoursePackageContent.m in Sources */,
 				CB35123B1B47F27E00025B5B /* QuestionOptionCell.m in Sources */,
 				C49731901B67889B0014048B /* NotificationViewController.m in Sources */,
 				CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */,
@@ -956,6 +1010,7 @@
 				C49731D61B678A210014048B /* User.m in Sources */,
 				C49731B81B6789C40014048B /* ViewUtils.m in Sources */,
 				C49731B01B6789C40014048B /* FileUtils.m in Sources */,
+				C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */,
 				CBC976B11B3E78AA006C104F /* CustomFormSegue.m in Sources */,
 				CBC976961B3C6F81006C104F /* ExamTableViewController.m in Sources */,
 				C49731D51B678A210014048B /* Url.m in Sources */,
@@ -980,6 +1035,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCA7880F1B038ED00049098C /* iLearnTests.m in Sources */,
+				C49ACF5B1B6A04E600EB7E40 /* testDataHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

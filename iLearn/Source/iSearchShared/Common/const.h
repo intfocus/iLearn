@@ -275,6 +275,21 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define ACTIONLOG_FIELD_ACTRET        @"ActionReturn"
 #define ACTIONLOG_FIELD_ACTOBJ        @"ActionObject"
 
+#define COURSE_PACKAGES_URL_PATH      @"/uatui/api/CoursePackets_Api.php"
+#define COURSE_PACKAGES_PARAMS_UID    @"uid"
+#define COURSE_PACKAGES_FIELD_DATA    @"cpdata"
+#define COURSE_PACKAGES_FIELD_ID      @"Id"
+#define COURSE_PACKAGES_FIELD_NAME    @"Name"
+#define COURSE_PACKAGES_FIELD_DESC    @"Desc"
+#define COURSE_PACKAGES_FIELD_AVTIME  @"AvailableTime"
+
+#define COURSE_PACKAGE_CONTENT_URL_PATH   @"/uatui/api/CPOne_Api.php"
+#define COURSE_PACKAGE_CONTENT_PARAMS_PID @"cpid"
+// 课程包内容
+#define COURSE_PACKAGES_FIELD_PACKAGES  @"CoursewarePacketList"
+#define COURSE_PACKAGES_FIELD_COURSES   @"CoursewareList"
+#define COURSE_PACKAGES_FIELD_QUESTIONS @"QuestionnaireList"
+#define COURSE_PACKAGES_FIELD_EXAMS     @"ExamList"
 
 #define PGY_APP_ID @"9d8870e80c74ae536ac2039eab8a3d19"
 

@@ -21,21 +21,6 @@
  *  @return 通知公告数据列表
  */
 + (NSMutableDictionary *)notifications;
-/**
- *  获取目录信息: 分类数据+文档数据;
- *  分类在前，文档在后；各自默认按名称升序排序；
- *
- *  @param deptID        部门ID
- *  @param categoryID    分类ID
- *  @param localOrServer local or sever
- *
- *  @return 数据列表
- */
-+ (NSArray*)loadContentData:(UIView *)view
-                 CategoryID:(NSString *)categoryID
-                       Type:(NSString *)localOrServer
-                        Key:(NSString *)sortKey
-                      Order:(BOOL)isAsceding;
 
 /**
  *  给元素为字典的数组排序；
@@ -58,8 +43,19 @@
  */
 + (NSMutableArray *)actionLog:(NSMutableArray *)unSyncRecords;
 
-- (void)traverseVisitContent:(NSString *)categoryID Depth:(NSInteger)depth;
-- (void)traverseVisitReport;
+/**
+ *  课程包列表下载
+ *
+ *  @return 课程包列表
+ */
++ (NSArray *)coursePackages;
+
+/**
+ *  课程包内容明细
+ *
+ *  @return 课程包内容明细
+ */
++ (NSArray *)coursePackageContent:(NSString *)PID;
 @end
 
 #endif

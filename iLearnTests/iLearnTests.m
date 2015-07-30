@@ -107,4 +107,9 @@
     NSLog(@"66 ascii: %@", string);
 }
 
+- (void)testCountSet {
+    NSArray *array = @[@1, @1, @2, @2, @3, @3, @4, @4];
+    NSCountedSet *noDuplicateSet = [NSCountedSet setWithArray:array];
+    NSArray *noDuplicateArray = [noDuplicateSet allObjects];
+}
 @end

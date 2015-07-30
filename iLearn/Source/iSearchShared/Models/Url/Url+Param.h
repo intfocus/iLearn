@@ -6,7 +6,6 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "Url.h"
 /**
  *  api链接传递参数，约束统一在此
@@ -23,34 +22,6 @@
 + (NSString *)login:(NSString *)UID;
 
 /**
- *  目录同步,获取某分类下的文档列表
- *
- *  @return urlString
- */
-+ (NSString *)slides:(NSString *)categoryID DeptID:(NSString *)deptID;
-
-/**
- *  目录同步,获取某分类下的分类列表
- *
- *  @return urlString
- */
-+ (NSString *)categories:(NSString *)categoryID DeptID:(NSString *)deptID;
-
-/**
- *  目录同步界面，点击文档进入下载
- *
- *  @return urlString
- */
-+ (NSString *)slideDownload:(NSString *)slideID;
-
-/**
- *  批量下载时，获取该用户有权限看到的所有文档列表
- *
- *  @return urlString
- */
-+ (NSString *)slideList:(NSString *)deptID;
-
-/**
  *  通知公告列表
  *
  *  @return urlString
@@ -63,4 +34,22 @@
  *  @return urlString
  */
 + (NSString *)actionLog;
+
+/**
+ *  课程包列表
+ *
+ *  @param UID 用户ID
+ *
+ *  @return 课程包列表
+ */
++ (NSString *)coursePackages:(NSString *)UID;
+
+/**
+ *  某个课程包明细
+ *
+ *  @param PID 课程包ID
+ *
+ *  @return 课程内容
+ */
++ (NSString *)coursePackageContent:(NSString *)PID;
 @end

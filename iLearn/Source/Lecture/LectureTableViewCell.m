@@ -21,7 +21,6 @@
     [super awakeFromNib];
     
     [_actionButton.layer setCornerRadius:10.0];
-    [_qrCodeButton.layer setCornerRadius:10.0];
 }
 
 - (IBAction)actionTouched:(id)sender {
@@ -30,10 +29,6 @@
 
 - (IBAction)infoTouched:(id)sender {
     [super infoTouched];
-}
-
-- (IBAction)qrCodeTouched:(id)sender {
-    [super qrCodeTouched];
 }
 
 @end

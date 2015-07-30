@@ -11,6 +11,7 @@
 typedef NS_ENUM(NSUInteger, ContentTableViewCellAction) {
     ContentTableViewCellActionView,
     ContentTableViewCellActionDownload,
+    ContentTableViewCellActionCoursePackages
 };
 
 @class ContentTableViewCell;
