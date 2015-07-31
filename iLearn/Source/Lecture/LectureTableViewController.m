@@ -20,12 +20,12 @@
 #import "CoursePackage.h"
 #import "CoursePackageContent.h"
 #import "CoursePackageDetail.h"
+#import "DisplayViewController.h"
 
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
 static NSString *const kShowPasswordSegue = @"showPasswordPage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
-static NSString *const kShowScoreQRCode = @"showScoreQRCode";
 
 static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
@@ -129,11 +129,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             ExamViewController *examVC = (ExamViewController*)viewController;
             examVC.examContent = sender;
         }
-    }
-    else if ([segue.identifier isEqualToString:kShowScoreQRCode]) {
-        
-        ScoreQRCodeViewController *scoreQRCodeVC = segue.destinationViewController;
-        scoreQRCodeVC.scoreQRCodeImage = sender;
     }
 }
 
@@ -243,6 +238,11 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
                     _progressHUD.labelText = @"下载中...";
                     [self.connectionManager downloadCourse:packageDetail.courseId Ext:packageDetail.courseExt];
+                }
+                else {
+                    DisplayViewController *displayViewController = [[DisplayViewController alloc] init];
+                    displayViewController.packageDetail = packageDetail;
+                    [self presentViewController:displayViewController animated:YES completion:nil];
                 }
             }
         }
