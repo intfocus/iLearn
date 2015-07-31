@@ -11,18 +11,22 @@
 #import "FileUtils.h"
 #import "MBProgressHUD.h"
 #import "CoursePackageDetail.h"
-#import "ExtendNSLogFunctionality.h"
+#import <JavaScriptCore/JavaScriptCore.h>
 
 @interface DisplayViewController ()
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 演示pdf/视频/html
+@property (weak, nonatomic) IBOutlet UIView *statusPanel;
 @property (weak, nonatomic) IBOutlet UIButton *btnBack;
 @property (weak, nonatomic) IBOutlet UILabel *labelCourseName;
+@property (assign, nonatomic) float offsetY;
 @end
 
 @implementation DisplayViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.offsetY = 0.0;
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -32,6 +36,7 @@
         NSURL *targetURL = [NSURL fileURLWithPath:coursePath];
         NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
         [self.webView loadRequest:request];
+        self.webView.scrollView.delegate = self;
     }
     else {
         NSString *htmlString = @" \
@@ -59,5 +64,15 @@
 
 - (IBAction)actionDismiss:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+    
+#pragma mark - UIScrollView Delgate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    float currentY = scrollView.contentOffset.y;
+    BOOL isHidden  = (currentY > self.offsetY);
+    self.offsetY   = currentY;
+    if(isHidden != self.statusPanel.hidden) {
+        self.statusPanel.hidden = isHidden;
+    }
 }
 @end

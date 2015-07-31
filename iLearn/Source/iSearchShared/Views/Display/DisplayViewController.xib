@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="btnBack" destination="705-n5-wh8" id="uFR-K8-wFy"/>
                 <outlet property="labelCourseName" destination="lnd-K1-bkl" id="QKa-Tl-63Z"/>
+                <outlet property="statusPanel" destination="mnw-ph-9p5" id="NbS-rY-X5e"/>
                 <outlet property="view" destination="iN0-l3-epB" id="7jd-4c-Zhy"/>
                 <outlet property="webView" destination="q28-6c-Np6" id="JGQ-Iu-TYL"/>
             </connections>
@@ -19,7 +20,7 @@
             <rect key="frame" x="0.0" y="0.0" width="850" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <webView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q28-6c-Np6">
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q28-6c-Np6">
                     <rect key="frame" x="-12" y="-12" width="874" height="624"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </webView>
@@ -62,6 +63,7 @@
                 <constraint firstItem="mnw-ph-9p5" firstAttribute="leading" secondItem="q28-6c-Np6" secondAttribute="leading" id="fJs-mi-rQR"/>
                 <constraint firstItem="mnw-ph-9p5" firstAttribute="trailing" secondItem="q28-6c-Np6" secondAttribute="trailing" id="iF7-LP-m4X"/>
                 <constraint firstItem="q28-6c-Np6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="-12" id="iJP-pK-ME1"/>
+                <constraint firstItem="q28-6c-Np6" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-12" id="j39-e5-bvT"/>
                 <constraint firstAttribute="bottom" secondItem="q28-6c-Np6" secondAttribute="bottom" constant="-12" id="xQS-6G-Vxi"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
