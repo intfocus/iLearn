@@ -97,11 +97,11 @@
             mutableDictionary[LOCAL_COLUMN_SLIDE_TYPE] = slideType;
             mutableDictionary[DB_COLUMN_CREATED]       = createdAt;
             
-            if([FileUtils checkSlideExist:slideID Dir:slideType Force:NO]) {
-                [mutableArray addObject: mutableDictionary];
-            } else {
-                NSLog(@"bug# should update deleted=1");
-            }
+//            if([FileUtils checkSlideExist:slideID Dir:slideType Force:NO]) {
+//                [mutableArray addObject: mutableDictionary];
+//            } else {
+//                NSLog(@"bug# should update deleted=1");
+//            }
         }
         [db close];
     } else {

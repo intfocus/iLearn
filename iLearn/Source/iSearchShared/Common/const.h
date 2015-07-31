@@ -199,35 +199,8 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define DB_COLUMN_UPDATED      @"updated_at"
 
 
-// 内容重组
-#define EDITPAGES_CONFIG_FILENAME  @"edit_pages.json" // 进入编辑界面
-#define ADDTAG_CONFIG_FILENAME     @"add_tag.json" // 编辑界面，选择页面后，保存信息
-#define REORGANIZE_DIRNAME         @"Save" // 内容重组后，放置些文件夹中
-#define FAVORITE_DIRNAME           @"Favorites"
-// 文档描述desc.json相关
-// TODO: 用户上传文档后可能修改文件名称、描述，所以同步目录时更新desc.json信息
-#define SLIDE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
-#define SLIDE_DICT_FILENAME         @"dict.json" // desc.json保待不变，一切操作在些文件
-#define SLIDE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
-#define SLIDE_DESC_ID               @"id"
-#define SLIDE_DESC_TYPE             @"type"
-#define SLIDE_DESC_NAME             @"name"
-#define SLIDE_DESC_DESC             @"desc"
-#define SLIDE_DESC_ORDER            @"order"
-#define SLIDE_DESC_LOCAL_CREATEAT   @"local_created_at" // 本地更新时间
-#define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
-#define SLIDE_DESC_ISDISPLAY        @"display_or_not"  // 下载后是否演示过
-#define SLIDE_DESC_FOLDERSIZE       @"slide_folder_size"  // 下载解压后文件大小
-#define SLIDE_DESC_THUMBNAIL        @"thumbnail_path"  // slidePath/thumbnailPath
-// FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
-#define PAGE_HTML_FORMAT            @"html"
-#define PAGE_IMAGE_FORMAT           @"gif"
-#define PAGE_FROM_SLIDES            @"PageFromSlides"
-
 // 公告通知
 #define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"
-#define NOTIFICATION_CACHE        @"notifications.cache"
-#define NOTIFICATION_DIRNAME      @"notifications"
 #define NOTIFICATION_OCCUR_DATE   @"occur_date" // 通告与预告的区分字段
 #define NOTIFICATION_TITLE_FONT   14.0f // 公告标题字体大小
 #define NOTIFICATION_MSG_FONT     12.0f // 公告内容字体大小
@@ -275,6 +248,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define ACTIONLOG_FIELD_ACTRET        @"ActionReturn"
 #define ACTIONLOG_FIELD_ACTOBJ        @"ActionObject"
 
+#define COURSE_DIRNAME                @"CoursePacages"
 #define COURSE_PACKAGES_URL_PATH      @"/uatui/api/CoursePackets_Api.php"
 #define COURSE_PACKAGES_PARAMS_UID    @"uid"
 #define COURSE_PACKAGES_FIELD_DATA    @"cpdata"

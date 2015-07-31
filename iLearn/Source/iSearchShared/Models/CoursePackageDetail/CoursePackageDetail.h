@@ -33,7 +33,20 @@
 @property (nonatomic, strong) NSString *examQualifyPercent;
 
 
-- (CoursePackageDetail *)initWithCourse:(NSDictionary *)data;
+// instance methods
+- (CoursePackageDetail *)init:(NSDictionary *)data Type:(NSString *)typeName;
+- (NSString *)name;
+- (NSString *)desc;
+- (NSString *)typeName;
 
-+ (NSArray *)loadDataFromCourse:(NSArray *)courses;
+- (BOOL)isExam;
+- (BOOL)isQuestion;
+- (BOOL)isCourse;
+- (BOOL)isPackage;
+
+// class methods
++ (NSArray *)loadData:(NSArray *)dataList Type:(NSString *)typeName;
++ (NSArray *)loadCourses:(NSArray *)courses;
++ (NSArray *)loadExams:(NSArray *)exams;
++ (NSArray *)loadQuestions:(NSArray *)questions;
 @end

@@ -62,8 +62,8 @@
     configDict[VERSION_CHANGELOG]   = self.changeLog;
     configDict[VERSION_LATEST]      = self.latest;
     configDict[VERSION_INSERTURL]   = self.insertURL;
-    configDict[SLIDE_DESC_LOCAL_CREATEAT] = self.localCreatedDate;
-    configDict[SLIDE_DESC_LOCAL_UPDATEAT] = self.localUpdatedDate;
+    configDict[DB_COLUMN_CREATED] = self.localCreatedDate;
+    configDict[DB_COLUMN_CREATED] = self.localUpdatedDate;
     
     [FileUtils writeJSON:configDict Into:configPath];
 }

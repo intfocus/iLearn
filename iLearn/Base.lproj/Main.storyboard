@@ -1146,6 +1146,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mfe-n7-AA4" userLabel="List View">
                                 <rect key="frame" x="240" y="0.0" width="784" height="724"/>
                                 <subviews>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yx9-5m-bII">
+                                        <rect key="frame" x="4" y="68" width="776" height="652"/>
+                                    </containerView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vbH-jF-6lp" userLabel="NavBar">
                                         <rect key="frame" x="0.0" y="0.0" width="784" height="64"/>
                                         <subviews>
@@ -1157,11 +1160,21 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text=" 问卷 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RB5-YX-SPW">
-                                                <rect key="frame" x="8" y="24" width="44" height="26"/>
+                                                <rect key="frame" x="8" y="24" width="60" height="26"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="epk-nv-VYP">
+                                                <rect key="frame" x="8" y="24" width="67" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="70" id="0lf-qd-QBx"/>
+                                                </constraints>
+                                                <state key="normal" title="返回" image="iconBack">
+                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Jv-Jr-e63">
                                                 <rect key="frame" x="693" y="26" width="79" height="28"/>
                                                 <constraints>
@@ -1197,13 +1210,24 @@
                                                     <action selector="scanButtonTouched:" destination="MOd-D3-0KC" eventType="touchUpInside" id="nNl-oJ-SM3"/>
                                                 </connections>
                                             </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="课程包名称" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kFX-4y-58T">
+                                                <rect key="frame" x="97" y="27" width="501" height="26"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="4Jv-Jr-e63" secondAttribute="trailing" constant="12" id="7dY-1v-7Xh"/>
+                                            <constraint firstItem="4Jv-Jr-e63" firstAttribute="leading" secondItem="kFX-4y-58T" secondAttribute="trailing" constant="95" id="927-iS-Nt1"/>
                                             <constraint firstItem="wmj-BX-Vxx" firstAttribute="centerY" secondItem="4Jv-Jr-e63" secondAttribute="centerY" id="9Gn-5n-R3m"/>
+                                            <constraint firstItem="epk-nv-VYP" firstAttribute="leading" secondItem="vbH-jF-6lp" secondAttribute="leading" constant="8" id="K3A-Ql-ZZv"/>
                                             <constraint firstItem="4Jv-Jr-e63" firstAttribute="leading" secondItem="wmj-BX-Vxx" secondAttribute="trailing" constant="8" id="MQy-yR-43V"/>
+                                            <constraint firstAttribute="bottom" secondItem="epk-nv-VYP" secondAttribute="bottom" constant="18" id="NwS-Am-eYG"/>
                                             <constraint firstItem="IJn-el-zeM" firstAttribute="leading" secondItem="vbH-jF-6lp" secondAttribute="leading" id="Pm9-st-iJu"/>
+                                            <constraint firstItem="kFX-4y-58T" firstAttribute="leading" secondItem="epk-nv-VYP" secondAttribute="trailing" constant="22" id="Qen-fb-Rjp"/>
+                                            <constraint firstItem="epk-nv-VYP" firstAttribute="centerY" secondItem="kFX-4y-58T" secondAttribute="centerY" id="Qlo-8v-gOK"/>
                                             <constraint firstItem="RB5-YX-SPW" firstAttribute="leading" secondItem="vbH-jF-6lp" secondAttribute="leading" constant="8" id="X7Y-IW-hdJ"/>
                                             <constraint firstAttribute="height" constant="64" id="blP-m0-clv"/>
                                             <constraint firstAttribute="bottom" secondItem="IJn-el-zeM" secondAttribute="bottom" id="i34-ax-HdZ"/>
@@ -1212,9 +1236,6 @@
                                             <constraint firstAttribute="trailing" secondItem="IJn-el-zeM" secondAttribute="trailing" id="obw-M4-uXG"/>
                                         </constraints>
                                     </view>
-                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yx9-5m-bII">
-                                        <rect key="frame" x="4" y="68" width="776" height="652"/>
-                                    </containerView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1246,7 +1267,9 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="avatarBtn" destination="Gux-GW-VNx" id="mub-Wd-KPT"/>
+                        <outlet property="backButton" destination="epk-nv-VYP" id="Afb-cd-U8M"/>
                         <outlet property="contentView" destination="Yx9-5m-bII" id="kaq-Ts-xND"/>
+                        <outlet property="courseNameLabel" destination="kFX-4y-58T" id="LlF-ip-xVd"/>
                         <outlet property="examButton" destination="i79-Pp-OXU" id="K9a-0q-hh9"/>
                         <outlet property="examView" destination="Xly-RA-A3Q" id="0To-pC-EjL"/>
                         <outlet property="lectureButton" destination="icr-jM-hDN" id="TJY-6j-n63"/>
@@ -2960,6 +2983,7 @@
         <image name="Spliter" width="340" height="2"/>
         <image name="bgCountDown" width="60" height="44"/>
         <image name="btnMask" width="284" height="135"/>
+        <image name="iconBack" width="22" height="22"/>
         <image name="icon_back" width="32" height="32"/>
         <image name="icon_close" width="48" height="48"/>
         <image name="icon_info" width="49" height="49"/>

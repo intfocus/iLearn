@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "Constants.h"
-#import "QRCodeReaderViewController.h"
 #import "ConnectionManager.h"
 #import "ExamTabelViewCell.h"
 #import "ContentViewController.h"
 
-@interface LectureTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate, QRCodeReaderDelegate, ConnectionManagerDelegate>
+
+@interface LectureTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate, ConnectionManagerDelegate>
 
 @end

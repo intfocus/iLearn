@@ -313,8 +313,8 @@
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="a5g-sj-qhP"/>
                                         <exclude reference="1Qt-N0-dz6"/>
+                                        <exclude reference="a5g-sj-qhP"/>
                                         <exclude reference="8tK-Ac-436"/>
                                     </mask>
                                 </variation>
@@ -329,8 +329,8 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="ykv-gE-4xo"/>
                                 <exclude reference="U3b-uZ-a1i"/>
+                                <exclude reference="ykv-gE-4xo"/>
                             </mask>
                         </variation>
                     </view>

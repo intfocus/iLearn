@@ -45,6 +45,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 @property (nonatomic) ContentTableViewCell *currentCell;
 
 @property (strong, nonatomic) NSNumber *depth;
+@property (strong, nonatomic) NSDictionary *lastLevelData;
 @end
 
 
@@ -76,14 +77,31 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSIndexPath *indexPath = (NSIndexPath*)sender;
+    
     if ([segue.identifier isEqualToString:kShowDetailSegue]) {
-        CoursePackage *coursePackage = (CoursePackage *)sender;
+        NSString *title, *desc;
+        
+        switch([self.depth intValue]) {
+            case 1: {
+                CoursePackage *coursePackage = self.dataList[indexPath.row];
+                title = coursePackage.name;
+                desc = coursePackage.desc;
+            }
+                break;
+            case 2: {
+                CoursePackageDetail *packageDetail = self.dataList[indexPath.row];
+                title = [packageDetail name];
+                desc  = [packageDetail desc];
+            }
+                default:
+                break;
+        }
         
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
-        detailVC.titleString = coursePackage.name;
-        detailVC.descString  = coursePackage.desc;
+        detailVC.titleString = title;
+        detailVC.descString  = desc;
         if (self.showBeginTestInfo) {
             detailVC.delegate = self;
             detailVC.shownFromBeginTest = self.showBeginTestInfo;
@@ -148,21 +166,21 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         case 1: {
             CoursePackage *coursePackage = [self.dataList objectAtIndex:indexPath.row];
             cell.titleLabel.text       = coursePackage.name;
-            cell.statusTitleLabel.text = @"TODO1";
-            cell.statusLabel.text      = @"TODO1";
-            cell.scoreTitleLabel.text  = @"TODO1";
-            cell.scoreLabel.text       = @"TODO1";
+            cell.statusTitleLabel.text = @"类型:";
+            cell.statusLabel.text      = @"课程包";
+            cell.scoreTitleLabel.text  = @"状态:";
+            cell.scoreLabel.text       = @"未学习";
             [cell.actionButton setTitle:@"进入" forState:UIControlStateNormal];
         }
             break;
             
         case 2: {
             CoursePackageDetail *packageDetail = [self.dataList objectAtIndex:indexPath.row];
-            cell.titleLabel.text       = packageDetail.courseName;
-            cell.statusTitleLabel.text = @"TODO2";
-            cell.statusLabel.text      = @"TODO2";
-            cell.scoreTitleLabel.text  = @"TODO2";
-            cell.scoreLabel.text       = @"TODO2";
+            cell.titleLabel.text       = [packageDetail name];
+            cell.statusTitleLabel.text = @"类型:";
+            cell.statusLabel.text      = [packageDetail typeName];
+            cell.scoreTitleLabel.text  = @"状态:";
+            cell.scoreLabel.text       = @"未学习";
             [cell.actionButton setTitle:@"TODO" forState:UIControlStateNormal];
         }
             break;
@@ -172,8 +190,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         default:
             break;
     }
-    
-
     
     return cell;
 }
@@ -191,8 +207,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     self.showBeginTestInfo = NO;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
-    CoursePackage *coursePackage = [self.dataList objectAtIndex:indexPath.row];
-    [self performSegueWithIdentifier:kShowDetailSegue sender:coursePackage];
+    [self performSegueWithIdentifier:kShowDetailSegue sender:indexPath];
 }
 
 - (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell
@@ -210,7 +225,13 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         case 1: {
             CoursePackage *coursePackage = [self.dataList objectAtIndex:indexPath.row];
             _dataList = [DataHelper coursePackageContent:coursePackage.ID];
+            self.listViewController.titleLabel.hidden = YES;
+            self.listViewController.backButton.hidden = NO;
+            self.listViewController.courseNameLabel.hidden = NO;
+            self.listViewController.courseNameLabel.text = coursePackage.name;
+            [self.listViewController.backButton addTarget:self action:@selector(actionBack:) forControlEvents:UIControlEventTouchUpInside];
             self.depth = @2;
+            self.lastLevelData = @{@"type":@"CoursePackage", @"id": @"just refres from server"};
             [self.tableView reloadData];
         }
             break;
@@ -224,23 +245,33 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         default:
             break;
     }
-    if (cell.actionButtonType == ContentTableViewCellActionDownload) {
-        
-//        NSString *examId = [NSString stringWithFormat:@"%@", content[ExamId]];
-//        [self downloadExamId:examId];
-    }
-    else if (cell.actionButtonType == ContentTableViewCellActionView) {
-        
-//        ExamTabelViewCell *examTVC = (ExamTabelViewCell *)cell;
-//        if ([examTVC.actionButton.titleLabel.text isEqual:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil)]) {
-//            [self beginTest: content];
-//        }
-//        else {
-//            [self performSegueWithIdentifier:kShowDetailSegue sender:content];
-//        }
-    }
 }
 
+- (IBAction)actionBack:(id)sender {
+    MBProgressHUD *progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    
+    
+    switch ([self.depth intValue]) {
+        case 2: {
+            _dataList = [DataHelper coursePackages];
+            [self.tableView reloadData];
+            self.listViewController.backButton.hidden = YES;
+            self.listViewController.titleLabel.hidden = NO;
+            self.listViewController.courseNameLabel.hidden = YES;
+            self.depth = @1;
+        }
+            break;
+        case 3: {
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+    [progressHUD removeFromSuperview];
+}
 - (void)didSelectQRCodeButtonOfCell:(ContentTableViewCell*)cell {}
 
 #pragma mark - IBAction

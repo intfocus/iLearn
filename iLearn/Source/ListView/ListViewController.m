@@ -40,7 +40,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 @property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 
 @property (weak, nonatomic) IBOutlet UIButton *scanButton;
@@ -150,26 +149,33 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (void)adjustToolbarItems
 {
+    
+    _syncButton.hidden      = YES;
+    _scanButton.hidden      = YES;
+    _backButton.hidden      = YES;
+    _courseNameLabel.hidden = YES;
+    
     switch (_listType) {
         case ListViewTypeExam:
             self.titleLabel.text = NSLocalizedString(@"LIST_EXAM", nil);
             _syncButton.hidden = NO;
             _scanButton.hidden = NO;
             break;
+        case ListViewTypeLecture:
+            self.titleLabel.text = NSLocalizedString(@"LIST_LECTURE", nil);
+            _syncButton.hidden = NO;
+            break;
         case ListViewTypeQuestionnaire:
             self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
             _syncButton.hidden = NO;
-            _scanButton.hidden = YES;
             break;
         case ListViewTypeNotification:
             self.titleLabel.text = NSLocalizedString(@"LIST_NOTIFICATION", nil);
             _syncButton.hidden = NO;
-            _scanButton.hidden = YES;
             break;
         default:
             self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
             _syncButton.hidden = NO;
-            _scanButton.hidden = YES;
             break;
     }
 }

@@ -44,7 +44,7 @@
     
     //无网络，读缓存
     if(![HttpUtils isNetworkAvailable]) {
-        return [CacheHelper readNotifications];
+        return [CacheHelper notifications];
     }
     
     // 从服务器端获取[公告通知]
@@ -106,18 +106,23 @@
  *  @return 课程包列表
  */
 + (NSArray *)coursePackages {
-    //无网络，读缓存
-//    if(![HttpUtils isNetworkAvailable]) {
-//        return [CacheHelper readNotifications];
-//    }
+    NSMutableDictionary *packages = [[NSMutableDictionary alloc] init];
+    NSArray *dataList             = [[NSArray alloc] init];
+    NSString *PID                 = @"1";// [User userID];
     
-    HttpResponse *httpResponse = [ApiHelper coursePackages:@"1"];
-    
-//    if([httpResponse isValid]) {
-//        [CacheHelper writeNotifications:httpResponse.data];
-//    }
-    NSArray *dataList = httpResponse.data[COURSE_PACKAGES_FIELD_DATA];
-    if([dataList count] > 0) {
+    if([HttpUtils isNetworkAvailable]) {
+        HttpResponse *httpResponse = [ApiHelper coursePackages:PID];
+        packages = httpResponse.data;
+        
+        [CacheHelper writeCoursePackages:packages ID:PID];
+    }
+    else {
+        packages = [CacheHelper coursePackages:PID];
+        
+    }
+
+    dataList = packages[COURSE_PACKAGES_FIELD_DATA];
+    if(dataList && [dataList count] > 0) {
         NSMutableArray *coursePackages = [[NSMutableArray alloc] init];
         for(NSDictionary *data in dataList) {
             [coursePackages addObject: [[CoursePackage alloc] initWithData:data]];
@@ -133,22 +138,26 @@
  *  @return 课程包内容明细
  */
 + (NSArray *)coursePackageContent:(NSString *)PID {
-    //无网络，读缓存
-    //    if(![HttpUtils isNetworkAvailable]) {
-    //        return [CacheHelper readNotifications];
-    //    }
+    NSMutableDictionary *packages = [[NSMutableDictionary alloc] init];
     
-    HttpResponse *httpResponse = [ApiHelper coursePackageContent:PID];
-    
-    //    if([httpResponse isValid]) {
-    //        [CacheHelper writeNotifications:httpResponse.data];
-    //    }
+    if([HttpUtils isNetworkAvailable]) {
+        HttpResponse *httpResponse = [ApiHelper coursePackageContent:PID];
+        packages = httpResponse.data;
+        
+        [CacheHelper writeCoursePackageContent:packages ID:PID];
+    }
+    else {
+        packages = [CacheHelper coursePackageContent:PID];
+    }
 
-    NSDictionary *content = httpResponse.data[COURSE_PACKAGES_FIELD_DATA];
+    NSDictionary *content = packages[COURSE_PACKAGES_FIELD_DATA];
     CoursePackageContent *packageContent = [[CoursePackageContent alloc] initWithData:content];
-    NSArray *courseList = [CoursePackageDetail loadDataFromCourse:packageContent.courseList];
+    NSArray *dataList = [[NSArray alloc] init];
+    dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadCourses:packageContent.courseList]];
+    dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadExams:packageContent.examList]];
+    dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadQuestions:packageContent.questionList]];
     
-    return courseList;
+    return dataList;
 }
 
 #pragma mark - assistant methods

@@ -111,5 +111,12 @@
     NSArray *array = @[@1, @1, @2, @2, @3, @3, @4, @4];
     NSCountedSet *noDuplicateSet = [NSCountedSet setWithArray:array];
     NSArray *noDuplicateArray = [noDuplicateSet allObjects];
+    XCTAssertNotNil(noDuplicateArray);
+}
+
+- (void)testReverse {
+    NSString *str = @"hello world";
+    NSMutableString *str2 = [NSMutableString stringWithString:str];
+    
 }
 @end
