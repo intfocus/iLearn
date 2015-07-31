@@ -7,6 +7,7 @@
 //
 
 #import "CoursePackageDetail.h"
+#import "FileUtils.h"
 /**
  *  课程包内容明细
  */
@@ -86,14 +87,55 @@ static NSString *const kPackagePackage  = @"PackagePackage";
     return name;
 }
 
-- (NSString *)actionButtonStatu {
+/**
+ *  课件功能按钮的显示状态
+ *
+ *  @return 状态
+ */
+- (NSString *)actionButtonState {
     NSString *statu;
     if([self.type isEqualToString:kPackageCourse]) {
-        statu = @"课程";
+        if([FileUtils isCourseReaded:self.courseId Ext:self.courseExt]) {
+            statu = @"继续学习";
+        }
+        else if ([FileUtils isCourseDownloaded:self.courseId Ext:self.courseExt]) {
+            statu = @"开始学习";
+        }
+        else {
+            statu = @"下载";
+        }
     } else if([self.type isEqualToString:kPackageExam]) {
-        statu = @"考试";
+        statu = @"开始考试";// 查看结果
     } else if([self.type isEqualToString:kPackageQuestion]) {
-        statu = @"问卷";
+        statu = @"开始填写";
+    } else {
+        statu = @"unkown type";
+    }
+    return statu;
+}
+
+/**
+ *  课件状态标签
+ *
+ *  @return 状态
+ */
+- (NSString *)statusLabelText {
+    NSString *statu;
+    if([self.type isEqualToString:kPackageCourse]) {
+        NSString *fileName = [NSString stringWithFormat:@"%@.%@", self.courseId, self.courseExt];
+        if([FileUtils isCourseReaded:self.courseId Ext:self.courseExt]) {
+            statu = @"学习完成";
+        }
+        else if ([FileUtils isCourseDownloaded:self.courseId Ext:self.courseExt]) {
+            statu = @"尚未学习";
+        }
+        else {
+            statu = @"未下载";
+        }
+    } else if([self.type isEqualToString:kPackageExam]) {
+        statu = @"开始考试";// 查看结果
+    } else if([self.type isEqualToString:kPackageQuestion]) {
+        statu = @"开始填写";
     } else {
         statu = @"unkown type";
     }

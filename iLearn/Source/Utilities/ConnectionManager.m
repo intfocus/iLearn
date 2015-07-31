@@ -11,6 +11,8 @@
 #import "LicenseUtil.h"
 #import <AFNetworking.h>
 #import "const.h"
+#import "FileUtils.h"
+#import "Url+Param.h"
 #import "ExtendNSLogFunctionality.h"
 
 static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/api/v1";
@@ -100,7 +102,6 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadExam:withError:)]) {
                 [_delegate connectionManagerDidDownloadExam:examId withError:error];
             }
-
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Download ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
@@ -113,6 +114,43 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
             }
         }];
 
+        op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
+    }
+}
+
+- (void)downloadCourse:(NSString*)courseID Ext:(NSString *)extName
+{
+    if (courseID) {
+        
+        NSString *requestUrl    = [Url downloadCourse:courseID Ext:extName];
+        NSString *outputPath    = [FileUtils coursePath:courseID Ext:extName];
+        NSString *outputPathTmp = [NSString stringWithFormat:@"%@.json.tmp", outputPath];
+        
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
+        
+        AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSFileManager *fileMgr = [NSFileManager defaultManager];
+            NSError *error;
+            
+            [fileMgr removeItemAtPath:outputPath error:nil];
+            [fileMgr moveItemAtPath:outputPathTmp toPath:outputPath error:&error];
+            
+            if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadCourse:Ext:withError:)]) {
+                [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Download Course ID: %@ Ext: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", courseID, extName, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
+            
+            NSFileManager *fileMgr = [NSFileManager defaultManager];
+            [fileMgr moveItemAtPath:outputPathTmp toPath:outputPath error:&error];
+            
+            if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadCourse:Ext:withError:)]) {
+                [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
+            }
+        }];
+        
         op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
     }
 }

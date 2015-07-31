@@ -88,7 +88,27 @@
     NSDictionary *params = @{COURSE_PACKAGE_CONTENT_PARAMS_PID: PID};
     
     return [Url UrlConcate:urlString Param:params];
+}
+
+/**
+ *  课件下载
+ *
+ *  @param cid 课件ID
+ *  @param ext 课件文件扩展名
+ *
+ *  @return 课件下载链接
+ */
++ (NSString *)downloadCourse:(NSString *)cid Ext:(NSString *)ext {
+    BOOL isParamsValid = CheckParams(GenFormat(2), cid, ext);
+    if(!isParamsValid) {
+        cid = (NSString *)psd(cid, @"null");
+        ext = (NSString *)psd(ext, @"null");
+    }
     
+    NSString *urlString  = [[Url alloc] init].downloadCourse;
+    NSDictionary *params = @{COURSE_DOWNLOAD_PARAMS_CID:cid, COURSE_DOWNLOAD_PARAMS_EXT:ext};
+    
+    return [Url UrlConcate:urlString Param:params];
 }
 
 #pragma mark - GET# assistant methods

@@ -23,4 +23,5 @@
 // 课程包
 @property (nonatomic, strong) NSString *coursePackages;
 @property (nonatomic, strong) NSString *coursePackageContent;
+@property (nonatomic, strong) NSString *downloadCourse;
 @end

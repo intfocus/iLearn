@@ -18,7 +18,7 @@
  */
 @interface FileUtils : NSObject
 
-+ (NSString *)getBasePath;
++ (NSString *)basePath;
 /**
  *  传递目录名取得沙盒中的绝对路径(一级),不存在则创建，请慎用！
  *
@@ -26,7 +26,7 @@
  *
  *  @return 沙盒中的绝对路径
  */
-+ (NSString *)getPathName: (NSString *)dirName;
++ (NSString *)dirPath: (NSString *)dirName;
 
 /**
  *  传递目录名取得沙盒中的绝对路径(二级)
@@ -36,7 +36,7 @@
  *
  *  @return 沙盒中的绝对路径
  */
-+ (NSString *)getPathName: (NSString *)dirName FileName:(NSString*) fileName;
++ (NSString *)dirPath: (NSString *)dirName FileName:(NSString*) fileName;
 
 /**
  *  检测目录路径、文件路径是否存在
@@ -114,6 +114,35 @@
  */
 + (NSString *)folderSize:(NSString *)folderPath;
 
+/**
+ *  课件文件路径
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return 课件文件路径
+ */
++ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName;
+
+/**
+ *  课件内容是否下载
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (BOOL)isCourseDownloaded:(NSString *)courseID Ext:(NSString *)extName;
+
+/**
+ *  课件内容是否被阅读
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (BOOL)isCourseReaded:(NSString *)courseID Ext:(NSString *)extName;
 @end
 
 

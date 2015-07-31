@@ -180,8 +180,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             cell.statusTitleLabel.text = @"类型:";
             cell.statusLabel.text      = [packageDetail typeName];
             cell.scoreTitleLabel.text  = @"状态:";
-            cell.scoreLabel.text       = @"未学习";
-            [cell.actionButton setTitle:@"TODO" forState:UIControlStateNormal];
+            cell.scoreLabel.text       = [packageDetail statusLabelText];
+            [cell.actionButton setTitle:[packageDetail actionButtonState] forState:UIControlStateNormal];
         }
             break;
         case 3:
@@ -229,14 +229,23 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             self.listViewController.backButton.hidden = NO;
             self.listViewController.courseNameLabel.hidden = NO;
             self.listViewController.courseNameLabel.text = coursePackage.name;
-            [self.listViewController.backButton addTarget:self action:@selector(actionBack:) forControlEvents:UIControlEventTouchUpInside];
             self.depth = @2;
             self.lastLevelData = @{@"type":@"CoursePackage", @"id": @"just refres from server"};
             [self.tableView reloadData];
         }
             break;
             
-        case 2:
+        case 2: {
+            CoursePackageDetail *packageDetail = [self.dataList objectAtIndex:indexPath.row];
+            NSString *state = [packageDetail actionButtonState];
+            if([packageDetail isCourse]) {
+                if([state isEqualToString:@"下载"]) {
+                    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+                    _progressHUD.labelText = @"下载中...";
+                    [self.connectionManager downloadCourse:packageDetail.courseId Ext:packageDetail.courseExt];
+                }
+            }
+        }
             break;
             
         case 3:
@@ -245,6 +254,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         default:
             break;
     }
+    [self.listViewController.backButton addTarget:self action:@selector(actionBack:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (IBAction)actionBack:(id)sender {
@@ -300,6 +310,13 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
 #pragma mark - ConnectionManagerDelegate
 
+- (void)connectionManagerDidDownloadCourse:(NSString *)courseID Ext:(NSString *)extName withError:(NSError *)error {
+    [_progressHUD hide:YES];
+    
+    if(!error) {
+        [self.tableView reloadData];
+    }
+}
 - (void)connectionManagerDidDownloadExamsForUser:(NSString *)userId withError:(NSError *)error
 {
     [_progressHUD hide:YES];
@@ -328,9 +345,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     }
 }
 
-- (void)connectionManagerDidUploadExamScannedResult:(NSString *)result withError:(NSError *)error
-{
-}
+- (void)connectionManagerDidUploadExamScannedResult:(NSString *)result withError:(NSError *)error {}
 
 
 

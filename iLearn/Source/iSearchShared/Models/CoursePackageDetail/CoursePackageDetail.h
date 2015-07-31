@@ -44,6 +44,19 @@
 - (BOOL)isCourse;
 - (BOOL)isPackage;
 
+/**
+ *  课件功能按钮的显示状态
+ *
+ *  @return 状态
+ */
+- (NSString *)actionButtonState;
+/**
+ *  课件状态标签
+ *
+ *  @return 状态
+ */
+- (NSString *)statusLabelText;
+
 // class methods
 + (NSArray *)loadData:(NSArray *)dataList Type:(NSString *)typeName;
 + (NSArray *)loadCourses:(NSArray *)courses;

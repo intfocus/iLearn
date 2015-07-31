@@ -21,7 +21,7 @@
         NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
         _dbVersion = (NSString *)psd(localVersionInfo[@"Database Version"], @"NotSet");
         _dbName = [NSString stringWithFormat:@"%@-%@.db", DATABASE_FILEAME, self.dbVersion];
-        _dbPath = [FileUtils getPathName:DATABASE_DIRNAME FileName:self.dbName];
+        _dbPath = [FileUtils dirPath:DATABASE_DIRNAME FileName:self.dbName];
 
         [self executeSQL:[self createTableOffline]];
         [self executeSQL:[self createTableActionLog]];

@@ -52,4 +52,15 @@
  *  @return 课程内容
  */
 + (NSString *)coursePackageContent:(NSString *)PID;
+
+
+/**
+ *  课件下载
+ *
+ *  @param cid 课件ID
+ *  @param ext 课件文件扩展名
+ *
+ *  @return 课件下载链接
+ */
++ (NSString *)downloadCourse:(NSString *)cid Ext:(NSString *)ext;
 @end

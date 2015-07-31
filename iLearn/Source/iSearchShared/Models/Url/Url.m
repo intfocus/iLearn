@@ -13,12 +13,13 @@
 
 - (Url *)init {
     if(self = [super init]) {
-        _base          = BASE_URL;
-        _login         = [self concate:LOGIN_URL_PATH];
-        _notifications  = [self concate:NOTIFICATION_URL_PATH];
-        _actionLog      = [self concate:ACTION_LOGGER_URL_PATH];
-        _coursePackages = [self concate:COURSE_PACKAGES_URL_PATH];
+        _base                 = BASE_URL;
+        _login                = [self concate:LOGIN_URL_PATH];
+        _notifications        = [self concate:NOTIFICATION_URL_PATH];
+        _actionLog            = [self concate:ACTION_LOGGER_URL_PATH];
+        _coursePackages       = [self concate:COURSE_PACKAGES_URL_PATH];
         _coursePackageContent = [self concate:COURSE_PACKAGE_CONTENT_URL_PATH];
+        _downloadCourse       = [self concate:COURSE_DOWNLOAD_URL_PATH];
     }
     return self;
 }

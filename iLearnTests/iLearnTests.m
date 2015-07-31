@@ -116,7 +116,6 @@
 
 - (void)testReverse {
     NSString *str = @"hello world";
-    NSMutableString *str2 = [NSMutableString stringWithString:str];
     
 }
 @end

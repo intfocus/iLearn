@@ -17,7 +17,7 @@
 
 @implementation FileUtils
 
-+ (NSString *)getBasePath {
++ (NSString *)basePath {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
     return [paths objectAtIndex:0];
 }
@@ -28,10 +28,10 @@
  *
  *  @return 沙盒中的绝对路径
  */
-+ (NSString *)getPathName: (NSString *)dirName {
++ (NSString *)dirPath: (NSString *)dirName {
     //获取应用程序沙盒的Documents目录
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *basePath = [FileUtils getBasePath];
+    NSString *basePath = [FileUtils basePath];
     BOOL isDir = true, existed;
     
     NSString *configPath = [basePath stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
@@ -57,9 +57,9 @@
  *
  *  @return 沙盒中的绝对路径
  */
-+ (NSString *)getPathName: (NSString *)dirName FileName:(NSString*) fileName {
++ (NSString *)dirPath: (NSString *)dirName FileName:(NSString*) fileName {
     // 一级目录路径， 不存在则创建
-    NSString *pathname = [self getPathName:dirName];
+    NSString *pathname = [self dirPath:dirName];
     // 二级文件名称或二级目录名称
     pathname = [pathname stringByAppendingPathComponent:fileName];
     
@@ -74,10 +74,49 @@
  *
  *  @return 布尔类型，存在即TRUE，否则为FALSE
  */
-+ (BOOL) checkFileExist: (NSString*) pathname isDir: (BOOL) isDir {
++ (BOOL)checkFileExist:(NSString*)pathname isDir:(BOOL)isDir {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL isExist = [fileManager fileExistsAtPath:pathname isDirectory:&isDir];
     return isExist;
+}
+
+/**
+ *  课件文件路径
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return 课件文件路径
+ */
++ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName {
+    NSString *courseName = [NSString stringWithFormat:@"%@.%@", courseID, extName];
+    return [self dirPath:COURSE_DIRNAME FileName:courseName];
+}
+/**
+ *  课件内容是否下载
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (BOOL)isCourseDownloaded:(NSString *)courseID Ext:(NSString *)extName {
+    NSString *coursePath = [self coursePath:courseID Ext:extName];
+    return [self checkFileExist:coursePath isDir:NO];
+}
+
+/**
+ *  课件内容是否被阅读
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (BOOL)isCourseReaded:(NSString *)courseID Ext:(NSString *)extName {
+    NSString *coursePath = [self coursePath:courseID Ext:extName];
+    coursePath = [NSString stringWithFormat:@"%@.read-progress", coursePath];
+    return [self checkFileExist:coursePath isDir:NO];
 }
 
 /**
@@ -88,7 +127,7 @@
  *
  *  @return 返回配置信息NSMutableDictionary
  */
-+ (NSMutableDictionary*) readConfigFile: (NSString*) pathName {
++ (NSMutableDictionary*)readConfigFile:(NSString*) pathName {
     NSMutableDictionary *dict = [NSMutableDictionary alloc];
     //NSLog(@"pathname: %@", pathname);
     if([self checkFileExist:pathName isDir:false]) {

@@ -114,7 +114,7 @@
  */
 + (NSString *)cachePath:(NSString *)type Type:(NSString *)contentType ID:(NSString *)ID {
     NSString *cacheName = [NSString stringWithFormat:@"%@-%@-%@.cache",type, contentType, ID];
-    NSString *cachePath = [FileUtils getPathName:CACHE_DIRNAME FileName:cacheName];
+    NSString *cachePath = [FileUtils dirPath:CACHE_DIRNAME FileName:cacheName];
     return cachePath;
 }
 @end

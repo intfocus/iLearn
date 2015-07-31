@@ -265,6 +265,11 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define COURSE_PACKAGES_FIELD_QUESTIONS @"QuestionnaireList"
 #define COURSE_PACKAGES_FIELD_EXAMS     @"ExamList"
 
+// 课程包内容
+#define COURSE_DOWNLOAD_URL_PATH      @"/uatui/api/CoursewaresDown_Api.php"
+#define COURSE_DOWNLOAD_PARAMS_CID    @"cid"
+#define COURSE_DOWNLOAD_PARAMS_EXT    @"es"
+
 #define PGY_APP_ID @"9d8870e80c74ae536ac2039eab8a3d19"
 
 #endif

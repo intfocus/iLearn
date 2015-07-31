@@ -49,7 +49,7 @@
 }
 
 - (void)reload {
-    NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:UPGRADE_CONFIG_FILENAME];
+    NSString *configPath = [[FileUtils basePath] stringByAppendingPathComponent:UPGRADE_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     _latest    = configDict[VERSION_LATEST];
     _insertURL = configDict[VERSION_INSERTURL];
@@ -57,7 +57,7 @@
 }
 
 - (void)save {
-    NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:UPGRADE_CONFIG_FILENAME];
+    NSString *configPath = [[FileUtils basePath] stringByAppendingPathComponent:UPGRADE_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     configDict[VERSION_CHANGELOG]   = self.changeLog;
     configDict[VERSION_LATEST]      = self.latest;
