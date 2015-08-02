@@ -21,6 +21,7 @@
 #import "CoursePackage.h"
 #import "CoursePackageContent.h"
 #import "CoursePackageDetail.h"
+#import "CourseWrap+CoursePackageDetail.h"
 
 @interface DataHelper()
 @property (nonatomic, strong) NSMutableArray *visitData;
@@ -108,7 +109,7 @@
 + (NSArray *)coursePackages {
     NSMutableDictionary *packages = [[NSMutableDictionary alloc] init];
     NSArray *dataList             = [[NSArray alloc] init];
-    NSString *PID                 = @"1";// [User userID];
+    NSString *PID                 = [User userID];
     
     if([HttpUtils isNetworkAvailable]) {
         HttpResponse *httpResponse = [ApiHelper coursePackages:PID];
@@ -156,6 +157,7 @@
     dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadCourses:packageContent.courseList]];
     dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadExams:packageContent.examList]];
     dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadQuestions:packageContent.questionList]];
+    dataList = [dataList arrayByAddingObjectsFromArray:[CourseWrap loadCourseWraps:packageContent.courseWrapList]];
     
     return dataList;
 }

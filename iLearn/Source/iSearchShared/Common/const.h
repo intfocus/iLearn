@@ -75,6 +75,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define PARAM_LANG              @"lang" // 传递给服务器的语言key
 #define APP_LANG                @"zh-CN" // 应用系统的语言
 #define BASE_URL                @"http://tsa-china.takeda.com.cn" //
+#define BASE_PATH               @"uatui" // 传递给服务器的语言key
 #define CONFIG_DIRNAME          @"Configs" // 所有配置档放置在些文件夹下
 #define DATE_FORMAT             @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define DATE_SIMPLE_FORMAT      @"yyyy/MM/dd" // 公告通知api使用及日历控件
@@ -106,7 +107,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define GRID_VIEW_DELETE_BTN_IMAGE    @"close_x.png" // GridView Delete按钮背影图片
 
 // 登陆相关
-#define LOGIN_URL_PATH         @"/uat/api/users_api.php" // 用户身份验证的url路径
+#define LOGIN_URL_PATH         @"/api/users_api.php" // 用户身份验证的url路径
 #define LOGIN_CONFIG_FILENAME  @"login.json" // 用户验证成功后，信息写入该配置档
 #define LOGIN_KEEP_HOURS       24 // 用户在线登陆成功后，可LOGIN_KEEP_HOURS小时内[离线登陆]
 #define LOGIN_DATE_FORMAT      @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
@@ -133,9 +134,9 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define USER_LOGIN_LAST        @"LoginLastTime"
 
 // 目录相关(_FILE与获取文件相关，默认获取分类)
-#define CONTENT_URL_PATH          @"/uat/api/Categories_Api.php" // 请求目录的url路径
-#define CONTENT_FILE_URL_PATH     @"/uat/api/Files_Api.php" // 请求目录的url路径
-#define CONTENT_DOWNLOAD_URL_PATH @"/uat/api/Filedown_Api.php"
+#define CONTENT_URL_PATH          @"/api/Categories_Api.php" // 请求目录的url路径
+#define CONTENT_FILE_URL_PATH     @"/api/Files_Api.php" // 请求目录的url路径
+#define CONTENT_DOWNLOAD_URL_PATH @"/api/Filedown_Api.php"
 #define CONTENT_DIRNAME           @"Contents" // [目录]成功取得后，写入本地缓存文件夹
 #define DOWNLOAD_DIRNAME          @"Downloads"// [目录]中[文件]压缩包下载文件夹
 #define SLIDE_DIRNAME             @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
@@ -174,7 +175,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_FIELD_URL        @"DownloadUrl" // 文件下载链接，代码拼接而成
 
 // 离线搜索/批量下载
-#define OFFLINE_URL_PATH         @"/uat/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
+#define OFFLINE_URL_PATH         @"/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
 #define OFFLINE_DIRNAME          @"Offlines"
 // API参数
 #define OFFLINE_PARAM_DEPTID     @"did"
@@ -200,7 +201,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 
 // 公告通知
-#define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"
+#define NOTIFICATION_URL_PATH     @"/api/News_api.php"
 #define NOTIFICATION_OCCUR_DATE   @"occur_date" // 通告与预告的区分字段
 #define NOTIFICATION_TITLE_FONT   14.0f // 公告标题字体大小
 #define NOTIFICATION_MSG_FONT     12.0f // 公告内容字体大小
@@ -249,7 +250,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define ACTIONLOG_FIELD_ACTOBJ        @"ActionObject"
 
 #define COURSE_DIRNAME                @"CoursePacages"
-#define COURSE_PACKAGES_URL_PATH      @"/uatui/api/CoursePackets_Api.php"
+#define COURSE_PACKAGES_URL_PATH      @"/api/CoursePackets_Api.php"
 #define COURSE_PACKAGES_PARAMS_UID    @"uid"
 #define COURSE_PACKAGES_FIELD_DATA    @"cpdata"
 #define COURSE_PACKAGES_FIELD_ID      @"Id"
@@ -257,16 +258,20 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define COURSE_PACKAGES_FIELD_DESC    @"Desc"
 #define COURSE_PACKAGES_FIELD_AVTIME  @"AvailableTime"
 
-#define COURSE_PACKAGE_CONTENT_URL_PATH   @"/uatui/api/CPOne_Api.php"
+#define COURSE_PACKAGE_CONTENT_URL_PATH   @"/api/CPOne_Api.php"
 #define COURSE_PACKAGE_CONTENT_PARAMS_PID @"cpid"
 // 课程包内容
 #define COURSE_PACKAGES_FIELD_PACKAGES  @"CoursewarePacketList"
 #define COURSE_PACKAGES_FIELD_COURSES   @"CoursewareList"
 #define COURSE_PACKAGES_FIELD_QUESTIONS @"QuestionnaireList"
 #define COURSE_PACKAGES_FIELD_EXAMS     @"ExamList"
+// 课件包内容
+#define COURSE_WRAP_FIELD_NAME  @"PPTName"
+#define COURSE_WRAP_FIELD_DESC  @"PPTDesc"
+#define COURSE_WRAP_FIELD_LIST  @"PPTList"
 
 // 课程包内容
-#define COURSE_DOWNLOAD_URL_PATH      @"/uatui/api/CoursewaresDown_Api.php"
+#define COURSE_DOWNLOAD_URL_PATH      @"/api/CoursewaresDown_Api.php"
 #define COURSE_DOWNLOAD_PARAMS_CID    @"cid"
 #define COURSE_DOWNLOAD_PARAMS_EXT    @"es"
 

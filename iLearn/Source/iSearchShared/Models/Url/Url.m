@@ -27,7 +27,7 @@
 #pragma mark - asisstant methods
 - (NSString *)concate:(NSString *)path {
     NSString *splitStr  = ([path hasPrefix:@"/"] ? @"" : @"/");
-    NSString *urlString = [NSString stringWithFormat:@"%@%@%@", BASE_URL, splitStr, path];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@%@%@", BASE_URL, BASE_PATH, splitStr, path];
     return  [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 @end

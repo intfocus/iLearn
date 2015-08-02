@@ -15,7 +15,7 @@
 static NSString *const kPackageCourse   = @"PackageCourse";
 static NSString *const kPackageQuestion = @"PackageQuestion";
 static NSString *const kPackageExam     = @"PackageExam";
-static NSString *const kPackagePackage  = @"PackagePackage";
+static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
 
 @implementation CoursePackageDetail
 
@@ -151,8 +151,8 @@ static NSString *const kPackagePackage  = @"PackagePackage";
 - (BOOL)isCourse {
     return [self.type isEqualToString:kPackageCourse];
 }
-- (BOOL)isPackage {
-    return [self.type isEqualToString:kPackagePackage];
+- (BOOL)isCourseWrap {
+    return NO;
 }
 
 
@@ -165,6 +165,9 @@ static NSString *const kPackagePackage  = @"PackagePackage";
     return [NSArray arrayWithArray:array];
 }
 
++ (NSArray *)loadCourseWraps:(NSArray *)courseWraps {
+    return [self loadData:courseWraps Type:kPackageCourseWrap];
+}
 + (NSArray *)loadCourses:(NSArray *)courses {
     return [self loadData:courses Type:kPackageCourse];
 }

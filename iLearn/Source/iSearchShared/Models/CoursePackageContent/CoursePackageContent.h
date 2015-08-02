@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSString *availableTime;
 
 // 课件包
-@property (nonatomic, strong) NSArray *packagesList;
+@property (nonatomic, strong) NSArray *courseWrapList;
 // 课件列表
 @property (nonatomic, strong) NSArray *courseList;
 // 问卷列表

@@ -70,7 +70,7 @@
 }
 - (NSString *)description {
     NSMutableString *str = [NSMutableString string];
-    NSString *className = NSStringFromClass([self class]);
+    // NSString *className = NSStringFromClass([self class]);
     NSDictionary *dic = [self mapPropertiesToDictionary];
     [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         [str appendFormat:@"%@ = %@\n", key, obj];
@@ -78,4 +78,10 @@
     return str;
 }
 
+- (NSArray *)defaultArrayWhenNil:(NSArray *)array{
+    return (NSArray *)psd(array, @[]);
+}
+- (NSString *)defaultStringWhenNil:(NSString *)string{
+    return (NSString *)psd(string, @"");
+}
 @end

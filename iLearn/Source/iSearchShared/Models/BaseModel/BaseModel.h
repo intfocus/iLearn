@@ -10,6 +10,7 @@
 #define iSearch_BaseModel_h
 #import <UIKit/UIKit.h>
 #import "const.h"
+#import "ExtendNSLogFunctionality.h"
 
 @interface BaseModel : NSObject
 
@@ -18,6 +19,9 @@
 - (NSString *)inspect;
 - (NSString *)description;
 
+
+- (NSArray *)defaultArrayWhenNil:(NSArray *)array;
+- (NSString *)defaultStringWhenNil:(NSString *)string;
 @end
 
 #endif

@@ -52,6 +52,9 @@
 		C4D4F7C11B6A42AF00C435C4 /* CoursePackageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */; };
 		C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */; };
 		C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */; };
+		C4DC38531B6D1C5300AC0C20 /* UIWebView+VideoControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC38521B6D1C5300AC0C20 /* UIWebView+VideoControl.m */; };
+		C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */; };
+		C4DC385F1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385E1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
 		CB2BAB1B1B348C9800D523EB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2BAB121B348C9800D523EB /* LoginViewController.xib */; };
 		CB3512281B47F06500025B5B /* ExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3512271B47F06500025B5B /* ExamViewController.m */; };
@@ -184,6 +187,12 @@
 		C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoursePackageContent+CoursePackage.m"; sourceTree = "<group>"; };
 		C4D4F7C61B6A493F00C435C4 /* CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackageDetail.h; sourceTree = "<group>"; };
 		C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackageDetail.m; sourceTree = "<group>"; };
+		C4DC38511B6D1C5300AC0C20 /* UIWebView+VideoControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+VideoControl.h"; sourceTree = "<group>"; };
+		C4DC38521B6D1C5300AC0C20 /* UIWebView+VideoControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+VideoControl.m"; sourceTree = "<group>"; };
+		C4DC385A1B6DBC6200AC0C20 /* CourseWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseWrap.h; sourceTree = "<group>"; };
+		C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseWrap.m; sourceTree = "<group>"; };
+		C4DC385D1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CourseWrap+CoursePackageDetail.h"; sourceTree = "<group>"; };
+		C4DC385E1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CourseWrap+CoursePackageDetail.m"; sourceTree = "<group>"; };
 		CB2BAB101B348C9800D523EB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		CB2BAB111B348C9800D523EB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		CB2BAB121B348C9800D523EB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -314,6 +323,7 @@
 		C4357C461B39706300854524 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C4DC38591B6DBC4F00AC0C20 /* CourseWrap */,
 				C4D4F7C51B6A491900C435C4 /* CoursePackageDetail */,
 				C4D4F7BE1B6A429800C435C4 /* CoursePackageContent */,
 				C49ACF561B6A022C00EB7E40 /* CoursePackage */,
@@ -333,6 +343,8 @@
 				C452E1BC1B6B82600024A950 /* DisplayViewController.h */,
 				C452E1BD1B6B82600024A950 /* DisplayViewController.m */,
 				C452E1BE1B6B82600024A950 /* DisplayViewController.xib */,
+				C4DC38511B6D1C5300AC0C20 /* UIWebView+VideoControl.h */,
+				C4DC38521B6D1C5300AC0C20 /* UIWebView+VideoControl.m */,
 			);
 			path = Display;
 			sourceTree = "<group>";
@@ -568,6 +580,17 @@
 				C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */,
 			);
 			path = CoursePackageDetail;
+			sourceTree = "<group>";
+		};
+		C4DC38591B6DBC4F00AC0C20 /* CourseWrap */ = {
+			isa = PBXGroup;
+			children = (
+				C4DC385A1B6DBC6200AC0C20 /* CourseWrap.h */,
+				C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */,
+				C4DC385D1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.h */,
+				C4DC385E1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m */,
+			);
+			path = CourseWrap;
 			sourceTree = "<group>";
 		};
 		CB2BAB0F1B348C9800D523EB /* Login */ = {
@@ -995,6 +1018,7 @@
 				C49731B71B6789C40014048B /* DateUtils.m in Sources */,
 				CB3512281B47F06500025B5B /* ExamViewController.m in Sources */,
 				C49731B41B6789C40014048B /* CacheHelper.m in Sources */,
+				C4DC38531B6D1C5300AC0C20 /* UIWebView+VideoControl.m in Sources */,
 				CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */,
 				CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */,
 				CBE0C84E1B072DC2000EA3A7 /* qrspec.c in Sources */,
@@ -1007,6 +1031,7 @@
 				C452E1C51B6B82600024A950 /* DisplayViewController.m in Sources */,
 				CBC976911B3C6F0A006C104F /* PasswordViewController.m in Sources */,
 				C49ACF591B6A024600EB7E40 /* CoursePackage.m in Sources */,
+				C4DC385F1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m in Sources */,
 				C4D4F7C11B6A42AF00C435C4 /* CoursePackageContent.m in Sources */,
 				CB35123B1B47F27E00025B5B /* QuestionOptionCell.m in Sources */,
 				C49731901B67889B0014048B /* NotificationViewController.m in Sources */,
@@ -1016,6 +1041,7 @@
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
 				C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
+				C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */,
 				CB3512321B47F0B200025B5B /* ConnectionManager.m in Sources */,
 				CBC976B71B3E7A52006C104F /* ContentViewController.m in Sources */,
 				CB35123F1B47F29700025B5B /* DetailViewController.m in Sources */,

@@ -42,7 +42,7 @@
 - (BOOL)isExam;
 - (BOOL)isQuestion;
 - (BOOL)isCourse;
-- (BOOL)isPackage;
+- (BOOL)isCourseWrap;
 
 /**
  *  课件功能按钮的显示状态
