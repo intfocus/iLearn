@@ -15,32 +15,13 @@
 #import "Url+Param.h"
 #import "ExtendNSLogFunctionality.h"
 
-static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/api/v1";
-
+static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uatui/api/v1";
 
 @interface ConnectionManager ()
 
 @end
 
 @implementation ConnectionManager
-
-//+ (ConnectionManager*)sharedManager
-//{
-//    static ConnectionManager *sharedManager = nil;
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        sharedManager = [[self alloc] init];
-//    });
-//    return sharedManager;
-//}
-
-//- (id)init
-//{
-//    if (self = [super init]) {
-//
-//    }
-//    return self;
-//}
 
 - (void)downloadExamsForUser:(NSString*)userId
 {
@@ -86,6 +67,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
     if (examId != nil) {
 
         NSString *requestUrl = [NSString stringWithFormat:@"%@/exam/%@", kServerAddress, examId];
+        NSLog(@"%@", requestUrl);
         NSString *outputPath = [NSString stringWithFormat:@"%@/%@.json", [ExamUtil examFolderPathInDocument], examId];
         NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@.json.tmp", [ExamUtil examFolderPathInDocument], examId];
 

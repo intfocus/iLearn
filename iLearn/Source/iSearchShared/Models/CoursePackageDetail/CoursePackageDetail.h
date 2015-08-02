@@ -32,6 +32,9 @@
 @property (nonatomic, strong) NSString *examAllowTime;
 @property (nonatomic, strong) NSString *examQualifyPercent;
 
+// local
+@property (nonatomic, strong) NSDictionary *examDictContent;
+
 
 // instance methods
 - (CoursePackageDetail *)init:(NSDictionary *)data Type:(NSString *)typeName;
@@ -60,18 +63,15 @@
  */
 - (void)recordProgress:(NSDictionary *)dict;
 
-/**
- *  课件功能按钮的显示状态
- *
- *  @return 状态
- */
-- (NSString *)actionButtonState;
+- (BOOL)isExamDownload;
+
+
 /**
  *  课件状态标签
  *
  *  @return 状态
  */
-- (NSString *)statusLabelText;
+- (NSArray *)statusLabelText;
 
 // class methods
 + (NSArray *)loadData:(NSArray *)dataList Type:(NSString *)typeName;

@@ -20,8 +20,9 @@
 #import "CoursePackageDetail.h"
 #import "CourseWrap.h"
 #import "DisplayViewController.h"
+#import "LectureTableViewCell.h"
 
-static NSString *const kShowSubjectSegue = @"showSubjectPage";
+static NSString *const kExamVCStoryBoardID = @"ExamViewController";
 static NSString *const kShowDetailSegue = @"showDetailPage";
 static NSString *const kShowPasswordSegue = @"showPasswordPage";
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
@@ -62,13 +63,12 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     _dataList = [DataHelper coursePackages];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     
-    if (!_hasAutoSynced) {
-        _hasAutoSynced = YES;
+    //if (!_hasAutoSynced) {
+    //    _hasAutoSynced = YES;
         [self syncData];
-    }
+    //}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,51 +90,24 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             detailVC.shownFromBeginTest = self.showBeginTestInfo;
         }
     }
-    if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
-        PasswordViewController *detailVC = (PasswordViewController*)segue.destinationViewController;
-        
-        detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
-        detailVC.descString = [ExamUtil descFromContent:sender];
-        detailVC.password = sender[ExamPassword];
-        __weak id weakSelf = self;
-        detailVC.callback = ^(void){
-            [weakSelf enterExamPageForContent:sender];
-        };
-    }
-    else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
-        //UINavigationController *navController = segue.destinationViewController;
-        UIViewController *viewController = segue.destinationViewController;
-        
-        if ([viewController isKindOfClass:[ExamViewController class]]) {
-            ExamViewController *examVC = (ExamViewController*)viewController;
-            examVC.examContent = sender;
-        }
-    }
 }
-
-#pragma mark - UI Adjustment
-
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [_dataList count];
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCellIdentifier];
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath {
+    LectureTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCellIdentifier];
     cell.delegate = self;
     
     switch ([self.depth intValue]) {
@@ -148,56 +121,40 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             [cell.actionButton setTitle:@"进入" forState:UIControlStateNormal];
         }
             break;
-            
         case 2:
         case 3: {
             id obj =  [self.dataList objectAtIndex:indexPath.row];
-            if([obj isCourseWrap]) {
-                CourseWrap *courseWrap = (CourseWrap *)obj;
-                cell.titleLabel.text       = [courseWrap name];
-                cell.statusTitleLabel.text = @"类型:";
-                cell.statusLabel.text      = [courseWrap typeName];
-                cell.scoreTitleLabel.text  = @"状态:";
-                cell.scoreLabel.text       = [courseWrap statusLabelText];
-                [cell.actionButton setTitle:[courseWrap actionButtonState] forState:UIControlStateNormal];
-            }
-            else {
-                CoursePackageDetail *packageDetail = (CoursePackageDetail *)obj;
-                cell.titleLabel.text       = [packageDetail name];
-                cell.statusTitleLabel.text = @"类型:";
-                cell.statusLabel.text      = [packageDetail typeName];
-                cell.scoreTitleLabel.text  = @"状态:";
-                cell.scoreLabel.text       = [packageDetail statusLabelText];
-                [cell.actionButton setTitle:[packageDetail actionButtonState] forState:UIControlStateNormal];
-            }
+            NSArray *statusLabelText = [obj statusLabelText];
+            
+            cell.titleLabel.text       = [obj name];
+            cell.statusLabel.text      = [obj typeName];
+            cell.statusTitleLabel.text = @"类型:";
+            cell.scoreTitleLabel.text  = @"状态:";
+            cell.scoreLabel.text       = statusLabelText[0];
+            [cell.actionButton setTitle:statusLabelText[1] forState:UIControlStateNormal];
         }
             break;
-            
         default:
             break;
     }
-    
     return cell;
 }
 
 
 #pragma mark - UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 120.0;
 }
 
-- (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell
-{
+- (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell {
     self.showBeginTestInfo = NO;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
     [self performSegueWithIdentifier:kShowDetailSegue sender:[self.dataList objectAtIndex:indexPath.row]];
 }
 
-- (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell
-{
+- (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell {
     self.showBeginTestInfo = YES;
     self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
@@ -233,8 +190,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             }
             else {
                 CoursePackageDetail *packageDetail = (CoursePackageDetail *)obj;
-                NSString *state = [packageDetail actionButtonState];
                 if([packageDetail isCourse]) {
+                    LectureTableViewCell *lectureTableViewCell = (LectureTableViewCell *)cell;
+                    NSString *state = lectureTableViewCell.actionButton.titleLabel.text;
                     if([state isEqualToString:@"下载"]) {
                         self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
                         _progressHUD.labelText = @"下载中...";
@@ -244,6 +202,15 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                         DisplayViewController *displayViewController = [[DisplayViewController alloc] init];
                         displayViewController.packageDetail = packageDetail;
                         [self presentViewController:displayViewController animated:YES completion:nil];
+                    }
+                }
+                else if([packageDetail isExam]) {
+                    if([packageDetail isExamDownload]) {
+                        self.showBeginTestInfo = YES;
+                        [self performSegueWithIdentifier:kShowDetailSegue sender:packageDetail];
+                    }
+                    else {
+                        [self downloadExamId:packageDetail.examId];
                     }
                 }
             }
@@ -284,10 +251,15 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 - (void)didSelectQRCodeButtonOfCell:(ContentTableViewCell*)cell {}
 
+- (void)downloadExamId:(NSString*)examId
+{
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    [_connectionManager downloadExamWithId:examId];
+}
 #pragma mark - IBAction
 
-- (void)enterExamPageForContent:(NSDictionary*)content
-{
+- (void)enterExamPageForContent:(NSDictionary*)content {
     __weak LectureTableViewController *weakSelf = self;
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
@@ -296,14 +268,20 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [ExamUtil parseContentIntoDB:content];
         
-        NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
+        NSString *dbPath = [ExamUtil examDBPath:content[CommonFileName]];
         
         NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
-        //NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
+        [dbContent setValue:[NSNumber numberWithInt:ExamTypesPractice] forKey:ExamType];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
-            [weakSelf performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
+            
+            UIStoryboard *storyboard   = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            ExamViewController *examVC = (ExamViewController *)[storyboard instantiateViewControllerWithIdentifier:kExamVCStoryBoardID];
+            examVC.examContent         = dbContent;
+            [weakSelf presentViewController:examVC animated:YES completion:^{
+                NSLog(@"popup view.");
+            }];
         });
     });
 }
@@ -330,15 +308,13 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 {
     [_progressHUD hide:YES];
     
-    if (!error) {
-        //[self refreshContent];
-    }
+    [self syncData];
 }
 
 - (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error
 {
     if (!error) {
-        NSString *dbPath = [ExamUtil examDBPathOfFile:examId];
+        NSString *dbPath = [ExamUtil examDBPath:examId];
         [ExamUtil setExamSubmittedwithDBPath:dbPath];
         
         //[self refreshContent];
@@ -373,27 +349,15 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     }
 }
 
-- (void)beginTest:(NSDictionary *)content {
-    NSNumber *examType = content[ExamType];
-    NSNumber *examLocation = content[ExamLocation];
-    NSNumber *examOpened = content[ExamOpened];
-    
-    if ([examType isEqualToNumber:@(ExamTypesFormal)] &&
-        [examLocation isEqualToNumber:@(ExamLocationsOnsite)] &&
-        ![examOpened isEqualToNumber:@1]) {
-        
-        [self performSegueWithIdentifier:kShowPasswordSegue sender:content];
-    }
-    else {
-        [self enterExamPageForContent:content];
-    }
-}
 
 #pragma mark - DetailViewControllerProtocol
 - (void)begin{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
-    NSDictionary *content = [self.dataList objectAtIndex:indexPath.row];
-    [self beginTest:content];
+    CoursePackageDetail *packageDetail = [self.dataList objectAtIndex:indexPath.row];
+    NSMutableDictionary *content = [NSMutableDictionary dictionaryWithDictionary:packageDetail.examDictContent];
+    content[CommonFileName] = packageDetail.examId;
+    
+    [self enterExamPageForContent:[NSDictionary dictionaryWithDictionary:content]];
 }
 
 @end

@@ -54,12 +54,8 @@ static const BOOL inDeveloping = NO;
     // Check for exam is cached or not
     for (NSMutableDictionary *exam in exams) {
         NSString *examId = exam[ExamId];
-
-        NSString *jsonPath = [NSString stringWithFormat:@"%@/%@.json", [self examSourceFolderPath], examId];
-
-        BOOL fileExist = [[NSFileManager defaultManager] fileExistsAtPath:jsonPath];
-
-        if (fileExist) {
+        
+        if ([self isExamDownloaded:examId]) {
             [exam setObject:@1 forKey:ExamCached];
         }
         else {
@@ -80,6 +76,20 @@ static const BOOL inDeveloping = NO;
     NSSortDescriptor *secondSort = [[NSSortDescriptor alloc] initWithKey:ExamTitle ascending:YES];
     NSArray *sortExams = [exams sortedArrayUsingDescriptors:[NSArray arrayWithObjects:firstSort, secondSort,nil]];
     return sortExams;
+}
+
++ (NSString *)examPath:(NSString *)examID {
+    return [self examBasePath:examID Ext:@"json"];
+}
++ (NSString *)examDBPath:(NSString *)examID {
+    return [self examBasePath:examID Ext:@"db"];
+}
++ (NSString *)examBasePath:(NSString *)examID Ext:(NSString *)extName {
+    return [NSString stringWithFormat:@"%@/%@.%@", [self examSourceFolderPath], examID, extName];
+}
+
++ (BOOL)isExamDownloaded:(NSString *)examID {
+    return [[NSFileManager defaultManager] fileExistsAtPath:[self examPath:examID]];
 }
 
 + (NSArray*)loadExamsFromCache
@@ -105,7 +115,7 @@ static const BOOL inDeveloping = NO;
             }
 
             NSString *examName = [self fileName:file];
-            NSString *dbPath = [self examDBPathOfFile:examName];
+            NSString *dbPath = [self examDBPath:examName];
 
             // Use the info from DB
             if ([fileMgr fileExistsAtPath:dbPath]) {
@@ -254,15 +264,10 @@ static const BOOL inDeveloping = NO;
     }
 }
 
-+ (NSString*)examDBPathOfFile:(NSString*)fileName
-{
-    NSString *dbPath = [NSString stringWithFormat:@"%@/%@.db", [self examFolderPathInDocument], fileName];
-    return dbPath;
-}
 
 + (void)parseContentIntoDB:(NSDictionary*)content
 {
-    NSString *dbPath = [self examDBPathOfFile:content[CommonFileName]];
+    NSString *dbPath = [self examDBPath:content[CommonFileName]];
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
@@ -504,7 +509,7 @@ static const BOOL inDeveloping = NO;
         content[ExamQuestionLevel] = @([result intForColumn:@"level"]);
         content[ExamQuestionType] = @([result intForColumn:@"type"]);
         NSLog(@"%@", subjectId);
-        NSLog(@"%@po", [result stringForColumn:@"memo"]);
+        NSLog(@"memo: [%@] is nil?", [result stringForColumn:@"memo"]);
         NSLog(@"%i", [result stringForColumn:@"memo"] == nil);
         content[ExamQuestionNote] = [result stringForColumn:@"memo"];
         

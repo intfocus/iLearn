@@ -20,7 +20,6 @@
 
 + (NSString*)examSourceFolderPath;
 + (NSString*)examFolderPathInDocument;
-+ (NSString*)examDBPathOfFile:(NSString*)fileName;
 + (void)cleanExamFolder;
 
 + (void)parseContentIntoDB:(NSDictionary*)content;
@@ -39,5 +38,10 @@
 + (NSArray*)unsubmittedScannedResults;
 
 + (NSArray*)resultFiles;
+
++ (NSString *)examPath:(NSString *)examID;
++ (BOOL)isExamDownloaded:(NSString *)examID;
++ (NSString *)examDBPath:(NSString *)examID;
++ (NSString *)examBasePath:(NSString *)examID Ext:(NSString *)extName;
 
 @end

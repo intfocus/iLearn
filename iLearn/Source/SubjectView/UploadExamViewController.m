@@ -75,7 +75,7 @@ static NSString *const resultUploadFail = @"请返回后,联网刷新重试"; //
 - (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error
 {
     if (!error) {
-        NSString *dbPath = [ExamUtil examDBPathOfFile:examId];
+        NSString *dbPath = [ExamUtil examDBPath:examId];
         [ExamUtil setExamSubmittedwithDBPath:dbPath];
         
         self.statusLabel.text = statusUploaded;

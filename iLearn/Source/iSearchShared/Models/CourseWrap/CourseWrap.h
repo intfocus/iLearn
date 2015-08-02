@@ -21,6 +21,5 @@
 - (CourseWrap *)initWithData:(NSDictionary *)data;
 - (BOOL)isCourseWrap;
 - (NSString *)typeName;
-- (NSString *)statusLabelText;
-- (NSString *)actionButtonState;
+- (NSArray *)statusLabelText;
 @end

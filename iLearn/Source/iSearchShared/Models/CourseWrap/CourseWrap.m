@@ -29,10 +29,6 @@
 }
 
 - (NSString *)statusLabelText {
-    return @"todo";
-}
-
-- (NSString *)actionButtonState {
-    return @"进入";
+    return @[@"todo", @"进入"];
 }
 @end

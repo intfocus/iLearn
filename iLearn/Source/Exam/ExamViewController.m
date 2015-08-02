@@ -497,7 +497,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSMutableDictionary *option = subject[ExamQuestionOptions][i];
         NSString *optionId = option[ExamQuestionOptionId];
 
-        NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+        NSString *dbPath = [ExamUtil examDBPath:fileName];
 
         BOOL selected = [_selectedRowsOfSubject containsObject:@(i)];
 
@@ -668,7 +668,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         [self saveSelections];
 
         NSString *fileName = _examContent[CommonFileName];
-        NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+        NSString *dbPath = [ExamUtil examDBPath:fileName];
 
         NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
 

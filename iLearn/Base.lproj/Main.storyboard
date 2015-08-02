@@ -1520,7 +1520,7 @@
         <!--Exam View Controller-->
         <scene sceneID="NC8-W6-flw">
             <objects>
-                <viewController id="bAD-er-vf6" customClass="ExamViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExamViewController" id="bAD-er-vf6" customClass="ExamViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="H8c-JY-sMx"/>
                         <viewControllerLayoutGuide type="bottom" id="LnU-AP-gyS"/>

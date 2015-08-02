@@ -255,7 +255,7 @@ static const NSInteger kMinScanInterval = 3;
                 
                 if (score == nil || [score isEqualToNumber:@(-1)]) { // Not calculated score yet
                     NSString *fileName = content[CommonFileName];
-                    NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+                    NSString *dbPath = [ExamUtil examDBPath:fileName];
                     
                     scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
                     
@@ -472,7 +472,7 @@ static const NSInteger kMinScanInterval = 3;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [ExamUtil parseContentIntoDB:content];
         
-        NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
+        NSString *dbPath = [ExamUtil examDBPath:content[CommonFileName]];
         
         NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
         //NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
@@ -560,7 +560,7 @@ static const NSInteger kMinScanInterval = 3;
 - (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error
 {
     if (!error) {
-        NSString *dbPath = [ExamUtil examDBPathOfFile:examId];
+        NSString *dbPath = [ExamUtil examDBPath:examId];
         [ExamUtil setExamSubmittedwithDBPath:dbPath];
         
         [self refreshContent];

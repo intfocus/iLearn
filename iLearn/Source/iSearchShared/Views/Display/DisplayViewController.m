@@ -78,10 +78,15 @@
 }
 
 - (IBAction)actionDismiss:(id)sender {
+    NSDictionary *dict;
     if([self.packageDetail isPDF]) {
-        NSDictionary *dict = @{@"totalHeight": [NSNumber numberWithFloat:self.webView.scrollView.contentSize.height], @"currentHeight": [NSNumber numberWithFloat:self.offsetY]};
-        [self.packageDetail recordProgress:dict];
+        dict = @{@"totalHeight": [NSNumber numberWithFloat:self.webView.scrollView.contentSize.height], @"currentHeight": [NSNumber numberWithFloat:self.offsetY]};
     }
+    else {
+        dict = @{};
+    }
+    [self.packageDetail recordProgress:dict];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -99,7 +104,7 @@
     if(isHidden != self.statusPanel.hidden) {
         self.statusPanel.hidden = isHidden;
     }
-     NSLog(@"currentY: %f, lastY: %f", currentY, self.offsetY);
+    //NSLog(@"currentY: %f, lastY: %f", currentY, self.offsetY);
     self.offsetY   = currentY;
 }
 @end
