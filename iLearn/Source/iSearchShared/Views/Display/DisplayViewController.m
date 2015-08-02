@@ -11,7 +11,7 @@
 #import "FileUtils.h"
 #import "MBProgressHUD.h"
 #import "CoursePackageDetail.h"
-#import <JavaScriptCore/JavaScriptCore.h>
+//#import <JavaScriptCore/JavaScriptCore.h>
 
 @interface DisplayViewController ()
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 演示pdf/视频/html
@@ -36,16 +36,15 @@
         NSURL *targetURL = [NSURL fileURLWithPath:coursePath];
         NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
         [self.webView loadRequest:request];
-        self.webView.scrollView.delegate = self;
     }
     else {
         NSString *htmlString = @" \
-        <html>                \
-        <body>                \
-        <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
-        该页面为空.             \
-        </div>                \
-        </body>               \
+        <html>                    \
+            <body>                \
+                <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
+                该页面为空.         \
+                </div>            \
+            </body>               \
         </html>";
         [self.webView loadHTMLString:htmlString baseURL:nil];
     }
@@ -55,6 +54,22 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if ([self.packageDetail isVideo]) {
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleShowStatusPanel)];
+        tapGesture.numberOfTapsRequired = 1; //点击次数
+        tapGesture.numberOfTouchesRequired = 1; //点击手指数
+        [self.webView addGestureRecognizer:tapGesture];
+    }
+    else if([self.packageDetail isPDF]) {
+        self.webView.scrollView.delegate = self;
+        
+        self.offsetY = [self.packageDetail pdfProgress];
+        [self.webView.scrollView setContentOffset:CGPointMake(0, self.offsetY) animated:NO];
+    }
+}
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
@@ -63,16 +78,28 @@
 }
 
 - (IBAction)actionDismiss:(id)sender {
+    if([self.packageDetail isPDF]) {
+        NSDictionary *dict = @{@"totalHeight": [NSNumber numberWithFloat:self.webView.scrollView.contentSize.height], @"currentHeight": [NSNumber numberWithFloat:self.offsetY]};
+        [self.packageDetail recordProgress:dict];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+/**
+ *  播放视频时，点击视频界面，交替显示状态面板
+ */
+- (void)toggleShowStatusPanel {
+    self.statusPanel.hidden = !self.statusPanel.hidden;
 }
     
 #pragma mark - UIScrollView Delgate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     float currentY = scrollView.contentOffset.y;
     BOOL isHidden  = (currentY > self.offsetY);
-    self.offsetY   = currentY;
     if(isHidden != self.statusPanel.hidden) {
         self.statusPanel.hidden = isHidden;
     }
+     NSLog(@"currentY: %f, lastY: %f", currentY, self.offsetY);
+    self.offsetY   = currentY;
 }
 @end

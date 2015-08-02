@@ -52,7 +52,6 @@
 		C4D4F7C11B6A42AF00C435C4 /* CoursePackageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */; };
 		C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */; };
 		C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */; };
-		C4DC38531B6D1C5300AC0C20 /* UIWebView+VideoControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC38521B6D1C5300AC0C20 /* UIWebView+VideoControl.m */; };
 		C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */; };
 		C4DC385F1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385E1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
@@ -187,8 +186,6 @@
 		C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoursePackageContent+CoursePackage.m"; sourceTree = "<group>"; };
 		C4D4F7C61B6A493F00C435C4 /* CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackageDetail.h; sourceTree = "<group>"; };
 		C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackageDetail.m; sourceTree = "<group>"; };
-		C4DC38511B6D1C5300AC0C20 /* UIWebView+VideoControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+VideoControl.h"; sourceTree = "<group>"; };
-		C4DC38521B6D1C5300AC0C20 /* UIWebView+VideoControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+VideoControl.m"; sourceTree = "<group>"; };
 		C4DC385A1B6DBC6200AC0C20 /* CourseWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseWrap.h; sourceTree = "<group>"; };
 		C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseWrap.m; sourceTree = "<group>"; };
 		C4DC385D1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CourseWrap+CoursePackageDetail.h"; sourceTree = "<group>"; };
@@ -343,8 +340,6 @@
 				C452E1BC1B6B82600024A950 /* DisplayViewController.h */,
 				C452E1BD1B6B82600024A950 /* DisplayViewController.m */,
 				C452E1BE1B6B82600024A950 /* DisplayViewController.xib */,
-				C4DC38511B6D1C5300AC0C20 /* UIWebView+VideoControl.h */,
-				C4DC38521B6D1C5300AC0C20 /* UIWebView+VideoControl.m */,
 			);
 			path = Display;
 			sourceTree = "<group>";
@@ -1018,7 +1013,6 @@
 				C49731B71B6789C40014048B /* DateUtils.m in Sources */,
 				CB3512281B47F06500025B5B /* ExamViewController.m in Sources */,
 				C49731B41B6789C40014048B /* CacheHelper.m in Sources */,
-				C4DC38531B6D1C5300AC0C20 /* UIWebView+VideoControl.m in Sources */,
 				CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */,
 				CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */,
 				CBE0C84E1B072DC2000EA3A7 /* qrspec.c in Sources */,

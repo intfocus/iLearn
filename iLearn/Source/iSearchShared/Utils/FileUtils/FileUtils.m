@@ -106,6 +106,19 @@
 }
 
 /**
+ *  课件学习进度
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (NSString *)courseProgressPath:(NSString *)courseID Ext:(NSString *)extName {
+    NSString *coursePath = [self coursePath:courseID Ext:extName];
+    return [NSString stringWithFormat:@"%@.read-progress", coursePath];
+}
+
+/**
  *  课件内容是否被阅读
  *
  *  @param courseID 课程名称 ID
@@ -114,11 +127,19 @@
  *  @return BOOL
  */
 + (BOOL)isCourseReaded:(NSString *)courseID Ext:(NSString *)extName {
-    NSString *coursePath = [self coursePath:courseID Ext:extName];
-    coursePath = [NSString stringWithFormat:@"%@.read-progress", coursePath];
-    return [self checkFileExist:coursePath isDir:NO];
+    return [self checkFileExist:[self courseProgressPath:courseID Ext:extName] isDir:NO];
 }
 
+/**
+ *  记录学习进度
+ *
+ *  @param dict     学习进度配置档
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ */
++ (void)recordProgress:(NSDictionary *)dict CourseID:(NSString *)courseID Ext:(NSString *)extName {
+    [dict writeToFile:[self courseProgressPath:courseID Ext:extName] atomically:YES];
+}
 /**
  *  读取配置档，有则读取。
  *  默认为NSMutableDictionary，若读取后为空，则按JSON字符串转NSMutableDictionary处理。

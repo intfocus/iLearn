@@ -260,7 +260,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     MBProgressHUD *progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
     
-    
     switch ([self.depth intValue]) {
         case 2: {
             _dataList = [DataHelper coursePackages];
@@ -348,7 +347,31 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
 - (void)connectionManagerDidUploadExamScannedResult:(NSString *)result withError:(NSError *)error {}
 
-- (void)syncData {}
+- (void)syncData {
+    switch ([self.depth intValue]) {
+        case 1: {
+            _dataList = [DataHelper coursePackages];
+            [self.tableView reloadData];
+            self.listViewController.backButton.hidden = YES;
+            self.listViewController.titleLabel.hidden = NO;
+            self.listViewController.courseNameLabel.hidden = YES;
+        }
+            break;
+        case 2: {
+            _dataList = [DataHelper coursePackageContent:self.lastCoursePackage.ID];
+            self.listViewController.courseNameLabel.hidden = NO;
+            self.listViewController.courseNameLabel.text = self.lastCoursePackage.name;
+            [self.tableView reloadData];
+        }
+            break;
+        case 3: {
+            [self.tableView reloadData];
+        }
+            break;
+        default:
+            break;
+    }
+}
 
 - (void)beginTest:(NSDictionary *)content {
     NSNumber *examType = content[ExamType];

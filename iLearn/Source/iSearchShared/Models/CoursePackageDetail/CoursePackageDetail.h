@@ -41,8 +41,24 @@
 
 - (BOOL)isExam;
 - (BOOL)isQuestion;
-- (BOOL)isCourse;
 - (BOOL)isCourseWrap;
+
+- (BOOL)isCourse;
+- (BOOL)isVideo;
+- (BOOL)isPDF;
+/**
+ *  pdf阅读进度
+ *
+ *  @return float 相对y偏移量
+ */
+- (float)pdfProgress;
+
+/**
+ *  记录课件学习进度
+ *
+ *  @param dict 学习进度
+ */
+- (void)recordProgress:(NSDictionary *)dict;
 
 /**
  *  课件功能按钮的显示状态
