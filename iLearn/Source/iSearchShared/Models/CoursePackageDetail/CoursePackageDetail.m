@@ -89,33 +89,6 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
 }
 
 /**
- *  课件功能按钮的显示状态
- *
- *  @return 状态
- */
-- (NSString *)actionButtonState {
-    NSString *statu;
-    if([self.type isEqualToString:kPackageCourse]) {
-        if([FileUtils isCourseReaded:self.courseId Ext:self.courseExt]) {
-            statu = @"继续学习";
-        }
-        else if ([FileUtils isCourseDownloaded:self.courseId Ext:self.courseExt]) {
-            statu = @"开始学习";
-        }
-        else {
-            statu = @"下载";
-        }
-    } else if([self.type isEqualToString:kPackageExam]) {
-        statu = [self statusLabelText];
-    } else if([self.type isEqualToString:kPackageQuestion]) {
-        statu = @"开始填写";
-    } else {
-        statu = @"unkown type";
-    }
-    return statu;
-}
-
-/**
  *  课件状态标签
  *
  *  @return 状态
@@ -253,24 +226,42 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
 
 #pragma mark - class methods
 
-+ (NSArray *)loadData:(NSArray *)dataList Type:(NSString *)typeName {
++ (NSArray *)loadData:(NSMutableArray *)dataList Type:(NSString *)typeName {
+    if([dataList count] == 0) {
+        return @[];
+    }
+    
+    if([typeName isEqualToString:kPackageCourse]) {
+        dataList = [self sortArray:dataList key:@"CoursewareName"];
+    }
+    else if([typeName isEqualToString:kPackageExam]) {
+        dataList = [self sortArray:dataList key:@"ExamName"];
+    }
+    else if([typeName isEqualToString:kPackageQuestion]) {
+        dataList = [self sortArray:dataList key:@"QuestionName"];
+    }
+    
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for(NSDictionary *dict in dataList) {
         [array addObject:[[CoursePackageDetail alloc] init:dict Type:typeName]];
     }
+    
     return [NSArray arrayWithArray:array];
 }
 
-+ (NSArray *)loadCourseWraps:(NSArray *)courseWraps {
-    return [self loadData:courseWraps Type:kPackageCourseWrap];
++ (NSMutableArray *)sortArray:(NSMutableArray *)array key:(NSString *)keyName {
+    NSSortDescriptor *highestToLowest = [NSSortDescriptor sortDescriptorWithKey:keyName ascending:YES];
+    [array sortUsingDescriptors:[NSArray arrayWithObject:highestToLowest]];
+    return array;
 }
+
 + (NSArray *)loadCourses:(NSArray *)courses {
-    return [self loadData:courses Type:kPackageCourse];
+    return [self loadData:[NSMutableArray arrayWithArray:courses] Type:kPackageCourse];
 }
 + (NSArray *)loadExams:(NSArray *)exams {
-    return [self loadData:exams Type:kPackageExam];
+   return [self loadData:[NSMutableArray arrayWithArray:exams] Type:kPackageExam];
 }
 + (NSArray *)loadQuestions:(NSArray *)questions {
-    return [self loadData:questions Type:kPackageQuestion];
+    return [self loadData:[NSMutableArray arrayWithArray:questions] Type:kPackageQuestion];
 }
 @end

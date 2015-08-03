@@ -80,10 +80,10 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    _registrationButton.enabled = NO;
-    _lectureButton.enabled = NO;
+    _registrationButton.enabled  = NO;
+    _lectureButton.enabled       = YES;
     _questionnaireButton.enabled = NO;
-    _settingsButton.enabled = YES;
+    _settingsButton.enabled      = YES;
     
 
     // Setup label contents

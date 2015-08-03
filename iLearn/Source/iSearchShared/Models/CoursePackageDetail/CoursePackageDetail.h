@@ -65,7 +65,6 @@
 
 - (BOOL)isExamDownload;
 
-
 /**
  *  课件状态标签
  *
@@ -74,7 +73,7 @@
 - (NSArray *)statusLabelText;
 
 // class methods
-+ (NSArray *)loadData:(NSArray *)dataList Type:(NSString *)typeName;
++ (NSMutableArray *)loadData:(NSArray *)dataList Type:(NSString *)typeName;
 + (NSArray *)loadCourses:(NSArray *)courses;
 + (NSArray *)loadExams:(NSArray *)exams;
 + (NSArray *)loadQuestions:(NSArray *)questions;

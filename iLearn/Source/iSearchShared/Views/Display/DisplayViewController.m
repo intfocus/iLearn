@@ -70,6 +70,13 @@
         [self.webView.scrollView setContentOffset:CGPointMake(0, self.offsetY) animated:NO];
     }
 }
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    [self.webView reload];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
