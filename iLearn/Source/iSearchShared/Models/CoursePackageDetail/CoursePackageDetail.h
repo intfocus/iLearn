@@ -49,6 +49,7 @@
 - (BOOL)isCourse;
 - (BOOL)isVideo;
 - (BOOL)isPDF;
+- (BOOL)isHTML;
 /**
  *  pdf阅读进度
  *

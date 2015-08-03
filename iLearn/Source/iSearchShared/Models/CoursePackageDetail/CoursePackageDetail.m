@@ -184,6 +184,9 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
 - (BOOL)isPDF {
     return [self checkType:@"pdf"];
 }
+- (BOOL)isHTML {
+    return [self checkType:@"zip"];
+}
 /**
  *  pdf阅读进度
  *

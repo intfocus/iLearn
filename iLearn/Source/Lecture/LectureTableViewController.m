@@ -14,6 +14,7 @@
 #import "ExamUtil.h"
 #import "FileUtils.h"
 #import <MBProgressHUD.h>
+#import <SSZipArchive.h>
 #import "ListViewController.h"
 #import "DataHelper.h"
 #import "CoursePackage.h"
@@ -22,6 +23,7 @@
 #import "CourseWrap.h"
 #import "DisplayViewController.h"
 #import "LectureTableViewCell.h"
+#import "ExtendNSLogFunctionality.h"
 
 static NSString *const kExamVCStoryBoardID = @"ExamViewController";
 static NSString *const kShowDetailSegue    = @"showDetailPage";
@@ -100,10 +102,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
-}
-
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath {
     LectureTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCellIdentifier];
     cell.delegate = self;
     
@@ -295,6 +293,25 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     [_progressHUD hide:YES];
     
     if(!error) {
+        if([extName isEqualToString:@"zip"]) {
+            NSString *zipPath    = [FileUtils coursePath:courseID Ext:extName UseExt:YES];
+            NSString *coursePath = [FileUtils coursePath:courseID Ext:extName UseExt:NO];
+            if([SSZipArchive unzipFileAtPath:zipPath toDestination:coursePath]) {
+                NSFileManager *fileManage = [NSFileManager defaultManager];
+                NSArray *files = [fileManage subpathsAtPath: coursePath];
+                
+                NSString *subDirPath = [coursePath stringByAppendingPathComponent:files[0]];
+                NSString *tmpPath = [NSString stringWithFormat:@"%@-tmp", coursePath];
+                [fileManage moveItemAtPath:subDirPath toPath:tmpPath error:&error];
+                NSErrorPrint(error, @"move %@ => %@", subDirPath, tmpPath);
+                [FileUtils removeFile:coursePath];
+                [fileManage moveItemAtPath:tmpPath toPath:coursePath error:&error];
+                NSErrorPrint(error, @"move %@ => %@", tmpPath, coursePath);
+                
+                [FileUtils removeFile:zipPath];
+            }
+        }
+        
         [self.tableView reloadData];
     }
 }

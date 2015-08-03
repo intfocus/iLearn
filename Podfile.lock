@@ -39,6 +39,7 @@ PODS:
   - MBProgressHUD (0.9.1)
   - QRCodeReaderViewController (3.4.0)
   - Reachability (3.2)
+  - SSZipArchive (0.3.2)
 
 DEPENDENCIES:
   - AFNetworking
@@ -50,6 +51,7 @@ DEPENDENCIES:
   - MBProgressHUD
   - QRCodeReaderViewController
   - Reachability
+  - SSZipArchive (~> 0.3.2)
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
@@ -61,5 +63,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   QRCodeReaderViewController: bbe09ba1805a74e4da29863a5220a7ad0411f5bc
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  SSZipArchive: 11801759495fa4efb7512ef652eb0042d68305d7
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0.beta.2

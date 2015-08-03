@@ -85,12 +85,23 @@
  *
  *  @param courseID 课程名称 ID
  *  @param extName  课件文件扩展名
+ *  @param UseExt   是否使用扩展名
  *
  *  @return 课件文件路径
  */
-+ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName {
-    NSString *courseName = [NSString stringWithFormat:@"%@.%@", courseID, extName];
++ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName UseExt:(BOOL)useExt {
+    NSString *courseName;
+    if(useExt) {
+        courseName = [NSString stringWithFormat:@"%@.%@", courseID, extName];
+    }
+    else {
+        courseName = courseID;
+    }
     return [self dirPath:COURSE_DIRNAME FileName:courseName];
+}
+
++ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName {
+    return [self coursePath:courseID Ext:extName UseExt:YES];
 }
 /**
  *  课件内容是否下载
@@ -102,6 +113,12 @@
  */
 + (BOOL)isCourseDownloaded:(NSString *)courseID Ext:(NSString *)extName {
     NSString *coursePath = [self coursePath:courseID Ext:extName];
+    
+    if([extName isEqualToString:@"zip"]) {
+        coursePath = [coursePath stringByDeletingPathExtension];
+        return [self checkFileExist:coursePath isDir:YES];
+    }
+    
     return [self checkFileExist:coursePath isDir:NO];
 }
 

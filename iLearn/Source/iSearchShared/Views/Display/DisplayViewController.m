@@ -30,22 +30,42 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    NSString *coursePath = [FileUtils coursePath:self.packageDetail.courseId Ext:self.packageDetail.courseExt];
-    if([FileUtils checkFileExist:coursePath isDir:NO]) {
-        NSURL *targetURL = [NSURL fileURLWithPath:coursePath];
-        NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
-        [self.webView loadRequest:request];
+    
+    NSString *coursePath;
+    if([FileUtils isCourseDownloaded:self.packageDetail.courseId Ext:self.packageDetail.courseExt]) {
+        if([self.packageDetail isHTML]) {
+            NSError *error;
+            coursePath = [FileUtils coursePath:self.packageDetail.courseId Ext:self.packageDetail.courseExt UseExt:NO];
+            NSString *htmlPath = [NSString stringWithFormat:@"%@/%@", coursePath, @"index.html"];
+            NSString *htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
+            NSURL *baseURL = [NSURL fileURLWithPath:coursePath];
+            if(error) {
+                htmlString = [NSString stringWithFormat:@" \
+                              <html>                    \
+                                <body>                     \
+                                  <div style = 'position:fixed;left:40%%;top:40%%;font-size:20px;'> \
+                                    load %@ failed for %@.         \
+                                  </div>            \
+                                </body>               \
+                              </html>", htmlPath, [error localizedDescription]];
+            }
+            [self.webView loadHTMLString:htmlString baseURL:baseURL];
+        } else {
+            coursePath = [FileUtils coursePath:self.packageDetail.courseId Ext:self.packageDetail.courseExt UseExt:YES];
+            NSURL *targetURL = [NSURL fileURLWithPath:coursePath];
+            NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
+            [self.webView loadRequest:request];
+        }
     }
     else {
-        NSString *htmlString = @" \
-        <html>                    \
-            <body>                \
-                <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
-                该页面为空.         \
-                </div>            \
-            </body>               \
-        </html>";
+        NSString *htmlString = [NSString stringWithFormat:@" \
+                 <html>                    \
+                   <body>                  \
+                     <div style = 'position:fixed;left:40%%;top:40%%;font-size:20px;'> \
+                        未找到页面: %@.      \
+                     </div>                \
+                   </body>                 \
+                 </html>", [self.packageDetail to_s]];
         [self.webView loadHTMLString:htmlString baseURL:nil];
     }
     self.webView.scalesPageToFit = YES;

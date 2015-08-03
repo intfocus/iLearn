@@ -120,6 +120,16 @@
  *
  *  @param courseID 课程名称 ID
  *  @param extName  课件文件扩展名
+ *  @param UseExt   是否使用扩展名
+ *
+ *  @return 课件文件路径
+ */
++ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName UseExt:(BOOL)useExt;
+/**
+ *  课件文件路径
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
  *
  *  @return 课件文件路径
  */
