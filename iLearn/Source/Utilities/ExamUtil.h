@@ -23,6 +23,7 @@
 + (void)cleanExamFolder;
 
 + (void)parseContentIntoDB:(NSDictionary*)content;
++ (void)parseContentIntoDB:(NSDictionary*)content Path:(NSString *)dbPath;
 + (NSDictionary*)examContentFromDBFile:(NSString*)dbPath;
 + (void)setOptionSelected:(BOOL)selected withSubjectId:(NSString*)subjectId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath;
 

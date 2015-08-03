@@ -264,10 +264,12 @@ static const BOOL inDeveloping = NO;
     }
 }
 
-
-+ (void)parseContentIntoDB:(NSDictionary*)content
-{
++ (void)parseContentIntoDB:(NSDictionary*)content {
     NSString *dbPath = [self examDBPath:content[CommonFileName]];
+    [self parseContentIntoDB:content Path:dbPath];
+}
+
++ (void)parseContentIntoDB:(NSDictionary*)content Path:(NSString *)dbPath {
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;

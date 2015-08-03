@@ -71,7 +71,8 @@
  *
  *  @return 是否删除成功的布尔值
  */
-+ (BOOL) removeFile:(NSString *)filePath;
++ (BOOL)removeFile:(NSString *)filePath;
++ (BOOL)move:(NSString *)source to:(NSString *)target;
 
 /**
  *  文件体积大小转化为可读文字；

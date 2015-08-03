@@ -205,18 +205,20 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
 
 #pragma mark - Around Exam
 - (BOOL)isExamDownload {
-    return [ExamUtil isExamDownloaded:self.examId];
+    NSString *examPath = [FileUtils coursePath:self.examId Ext:@"json"];
+    return [FileUtils checkFileExist:examPath isDir:NO];
 }
 
 - (NSDictionary *)examDictContent {
     if(!_examDictContent) {
-        NSString *examDBPath = [ExamUtil examDBPath:self.examId];
+        NSString *examDBPath = [FileUtils coursePath:self.examId Ext:@"db"];
         NSDictionary *dict;
         if([FileUtils checkFileExist:examDBPath isDir:NO]) {
             dict = [ExamUtil examContentFromDBFile:examDBPath];
         }
         else {
-            dict = [FileUtils readConfigFile:[ExamUtil examPath:self.examId]];
+            NSString *examPath = [FileUtils coursePath:self.examId Ext:@"json"];
+            dict = [FileUtils readConfigFile:examPath];
         }
         _examDictContent = dict;
     }

@@ -490,14 +490,14 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     NSMutableDictionary *subject = _examContent[ExamQuestions][_selectedCellIndex];
     NSString *subjectId = subject[ExamQuestionId];
-    NSString *fileName = _examContent[CommonFileName];
+    //NSString *fileName = _examContent[CommonFileName];
 
     for (int i = 0; i<[subject[ExamQuestionOptions] count]; i++) {
 
         NSMutableDictionary *option = subject[ExamQuestionOptions][i];
         NSString *optionId = option[ExamQuestionOptionId];
 
-        NSString *dbPath = [ExamUtil examDBPath:fileName];
+        NSString *dbPath = _examContent[CommonDBPath];
 
         BOOL selected = [_selectedRowsOfSubject containsObject:@(i)];
 
@@ -667,8 +667,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         [self saveSelections];
 
-        NSString *fileName = _examContent[CommonFileName];
-        NSString *dbPath = [ExamUtil examDBPath:fileName];
+        //NSString *fileName = _examContent[CommonFileName];
+        NSString *dbPath = _examContent[CommonDBPath];
 
         NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
 
@@ -681,24 +681,28 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         ExamTypes examType = [_examContent[ExamType] integerValue];
         BOOL isUploadExamResult = YES;
+        scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
 
-        if (examType == ExamTypesFormal &&
-            score < qualityLine &&
-            newSubmitTimes < allowTimes) { // Should test again
+        if (examType == ExamTypesFormal) {
+            if(score < qualityLine && newSubmitTimes < allowTimes) { // Should test again
 
             [ExamUtil resetExamStatusOfDBPath:dbPath];
             scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNDER_QUALIFY_TEMPLATE", nil), [NSNumber numberWithInteger:qualityLine],[NSNumber numberWithInteger:score], [NSNumber numberWithInteger:(allowTimes - newSubmitTimes)]];
             isUploadExamResult = NO;
-        }
-        else {
-            if (newSubmitTimes > 1 && score > qualityLine) { // Qualitied and has submitted, the score should be just qualified
-                score = qualityLine;
-                [ExamUtil updateExamScore:score ofDBPath:dbPath];
+                
             }
-            
-            [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
-            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
-            isUploadExamResult = YES;
+            else {
+                if (newSubmitTimes > 1 && score > qualityLine) { // Qualitied and has submitted, the score should be just qualified
+                    score = qualityLine;
+                    [ExamUtil updateExamScore:score ofDBPath:dbPath];
+                }
+                
+                [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+                isUploadExamResult = YES;
+            }
+        }
+        else if(examType == ExamTypesPractice) {
+            isUploadExamResult = NO;
         }
        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 

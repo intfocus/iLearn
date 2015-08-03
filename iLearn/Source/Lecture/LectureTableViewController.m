@@ -12,6 +12,7 @@
 #import "ExamViewController.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
+#import "FileUtils.h"
 #import <MBProgressHUD.h>
 #import "ListViewController.h"
 #import "DataHelper.h"
@@ -23,9 +24,8 @@
 #import "LectureTableViewCell.h"
 
 static NSString *const kExamVCStoryBoardID = @"ExamViewController";
-static NSString *const kShowDetailSegue = @"showDetailPage";
-static NSString *const kShowPasswordSegue = @"showPasswordPage";
-static NSString *const kShowSettingsSegue = @"showSettingsPage";
+static NSString *const kShowDetailSegue    = @"showDetailPage";
+static NSString *const kShowSettingsSegue  = @"showSettingsPage";
 
 static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
@@ -84,11 +84,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         detailVC.descString  = [sender desc];
         if (self.showBeginTestInfo) {
             detailVC.delegate = self;
-            detailVC.shownFromBeginTest = self.showBeginTestInfo;
         }
-        else {
-            detailVC.shownFromBeginTest = self.showBeginTestInfo;
-        }
+        detailVC.shownFromBeginTest = self.showBeginTestInfo;
     }
 }
 
@@ -271,11 +268,12 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [ExamUtil parseContentIntoDB:content];
+        NSString *examDBPath = [FileUtils coursePath:content[CommonFileName] Ext:@"db"];
+        [ExamUtil parseContentIntoDB:content Path:examDBPath];
         
-        NSString *dbPath = [ExamUtil examDBPath:content[CommonFileName]];
         
-        NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
+        NSDictionary *dbContent = [ExamUtil examContentFromDBFile:examDBPath];
+        [dbContent setValue:examDBPath forKey:CommonDBPath];
         [dbContent setValue:[NSNumber numberWithInt:ExamTypesPractice] forKey:ExamType];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -312,6 +310,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     [_progressHUD hide:YES];
     
     if(!error) {
+        NSString *examPath = [ExamUtil examPath:examId];
+        NSString *coursePath = [FileUtils coursePath:examId Ext:[examPath pathExtension]];
+        [FileUtils move:examPath to:coursePath];
+        
         [self.tableView reloadData];
     }
 }

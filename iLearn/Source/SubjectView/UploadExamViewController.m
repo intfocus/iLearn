@@ -72,6 +72,8 @@ static NSString *const resultUploadFail = @"请返回后,联网刷新重试"; //
 
 - (void)connectionManagerDidDownloadExam:(NSString *)examId withError:(NSError *)error {}
 
+- (void)connectionManagerDidDownloadCourse:(NSString *)courseID Ext:(NSString *)extName withError:(NSError *)error {};
+
 - (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error
 {
     if (!error) {

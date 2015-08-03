@@ -18,6 +18,7 @@ NSString *const QuestionnaireFolder = @"Questionnaire";
 NSString *const ExamFolder = @"Exam";
 
 NSString *const CommonFileName = @"filename";
+NSString *const CommonDBPath = @"dbpath";
 
 NSString *const QuestionnaireTitle = @"title";
 NSString *const QuestionnaireDesc = @"desc";

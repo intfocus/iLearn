@@ -470,11 +470,11 @@ static const NSInteger kMinScanInterval = 3;
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [ExamUtil parseContentIntoDB:content];
-        
         NSString *dbPath = [ExamUtil examDBPath:content[CommonFileName]];
+        [ExamUtil parseContentIntoDB:content Path:dbPath];
         
         NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
+        [dbContent setValue:dbPath forKey:CommonDBPath];
         //NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
         
         dispatch_async(dispatch_get_main_queue(), ^{

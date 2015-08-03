@@ -190,7 +190,7 @@
  *
  *  @return 是否删除成功的布尔值
  */
-+ (BOOL) removeFile:(NSString *)filePath {
++ (BOOL)removeFile:(NSString *)filePath {
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL removed = [fileManager removeItemAtPath: filePath error: &error];
@@ -201,6 +201,15 @@
 }
 
 
++ (BOOL)move:(NSString *)source to:(NSString *)target {
+    NSError *error;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL moved = [fileManager moveItemAtPath:source toPath:target error:&error];
+    if(error)
+        NSLog(@"<# move %@ => %@ failed for %@", source, target, [error localizedDescription]);
+    
+    return moved;
+}
 
 /**
  *  文件体积大小转化为可读文字；
