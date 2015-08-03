@@ -504,14 +504,11 @@ static const BOOL inDeveloping = NO;
 
         NSNumber *subjectId = @([result intForColumn:@"subject_id"]);
 
-        content[ExamQuestionId] = subjectId;
+        content[ExamQuestionId]    = subjectId;
         content[ExamQuestionTitle] = [result stringForColumn:@"desc"];
         content[ExamQuestionLevel] = @([result intForColumn:@"level"]);
-        content[ExamQuestionType] = @([result intForColumn:@"type"]);
-        NSLog(@"%@", subjectId);
-        NSLog(@"memo: [%@] is nil?", [result stringForColumn:@"memo"]);
-        NSLog(@"%i", [result stringForColumn:@"memo"] == nil);
-        content[ExamQuestionNote] = [result stringForColumn:@"memo"];
+        content[ExamQuestionType]  = @([result intForColumn:@"type"]);
+        content[ExamQuestionNote]  = [result stringForColumn:@"memo"];
         
 
         NSString *selecteAnswer = [result stringForColumn:@"selected_answer"];

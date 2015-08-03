@@ -77,7 +77,7 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
 - (NSString *)typeName {
     NSString *name;
     if([self.type isEqualToString:kPackageCourse]) {
-        name = @"课程";
+        name = @"课件";
     } else if([self.type isEqualToString:kPackageExam]) {
         name = @"考试";
     } else if([self.type isEqualToString:kPackageQuestion]) {
@@ -119,7 +119,7 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
         }
         else if ([FileUtils isCourseDownloaded:self.courseId Ext:self.courseExt]) {
             labelState = @"尚未学习";
-            btnState   = @"开学学习";
+            btnState   = @"开始学习";
         }
         else {
             labelState = @"未下载";
@@ -144,7 +144,7 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
     }
     else if([self.type isEqualToString:kPackageQuestion]) {
         labelState = @"开始填写";
-        btnState   = @"todo";
+        btnState   = @"TODO";
     }
     else {
         labelState = @"unkown type";

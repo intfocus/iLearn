@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class CoursePackageDetail;
 
-@interface DisplayViewController : UIViewController<UIScrollViewDelegate>
+@interface DisplayViewController : UIViewController<UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) CoursePackageDetail *packageDetail;
 @end

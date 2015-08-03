@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "Constants.h"
 #import "LoginViewController.h"
+#import <PgySDK/PgyManager.h>
+#import "Version.h"
 
 @interface AppDelegate ()
 
@@ -16,10 +18,42 @@
 
 @implementation AppDelegate
 
+void UncaughtExceptionHandler(NSException * exception) {
+    NSArray *arr     = [exception callStackSymbols];
+    NSString *reason = [exception reason];
+    NSString *name   = [exception name];
+    Version *version = [[Version alloc] init];
+    NSString *mailContent = [NSString stringWithFormat:@"mailto:jay_li@intfocus.com \
+                             ?subject=%@客户端bug报告                                 \
+                             &body=很抱歉%@应用出现故障,感谢您的配合!发送这封邮件可协助我们改善此应用<br><br> \
+                             应用详情:<br>                                            \
+                             %@<br>                                                  \
+                             错误详情:<br>                                            \
+                             %@<br>                                                  \
+                             --------------------------<br>                          \
+                             %@<br>                                                  \
+                             --------------------------<br>                          \
+                             %@",
+                             version.appName, version.appName,
+                             [version simpleDescription],
+                             name,reason,[arr componentsJoinedByString:@"<br>"]];
+    
+    NSURL *url = [NSURL URLWithString:[mailContent stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [[UIApplication sharedApplication] openURL:url];
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-
+    @try {
+        [[PgyManager sharedPgyManager] setEnableFeedback:NO];
+        [[PgyManager sharedPgyManager] startManagerWithAppId:[Version pgy_app_id]];
+        NSSetUncaughtExceptionHandler(&UncaughtExceptionHandler);
+    }
+    @catch (NSException *exception) {
+        NSLog(@"NSSetUncaughtExceptionHandler - %@", exception.name);
+    } @finally {}
+    
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     [self.window setRootViewController:loginViewController];
 

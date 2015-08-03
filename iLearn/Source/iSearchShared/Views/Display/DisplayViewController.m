@@ -48,6 +48,7 @@
         </html>";
         [self.webView loadHTMLString:htmlString baseURL:nil];
     }
+    self.webView.scalesPageToFit = YES;
     
     self.labelCourseName.text = self.packageDetail.courseName;
     [self.view bringSubviewToFront:self.btnBack];
@@ -61,6 +62,7 @@
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleShowStatusPanel)];
         tapGesture.numberOfTapsRequired = 1; //点击次数
         tapGesture.numberOfTouchesRequired = 1; //点击手指数
+        tapGesture.delegate = self;
         [self.webView addGestureRecognizer:tapGesture];
     }
     else if([self.packageDetail isPDF]) {
@@ -69,12 +71,6 @@
         self.offsetY = [self.packageDetail pdfProgress];
         [self.webView.scrollView setContentOffset:CGPointMake(0, self.offsetY) animated:NO];
     }
-}
-
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    
-    [self.webView reload];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -104,7 +100,7 @@
     self.statusPanel.hidden = !self.statusPanel.hidden;
 }
     
-#pragma mark - UIScrollView Delgate
+#pragma mark - UIWebview - UIScrollView Delgate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     float currentY = scrollView.contentOffset.y;
     BOOL isHidden  = (currentY > self.offsetY);
@@ -113,5 +109,10 @@
     }
     //NSLog(@"currentY: %f, lastY: %f", currentY, self.offsetY);
     self.offsetY   = currentY;
+}
+
+#pragma mark - UIWebview - UIGestureRecognizer
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
 }
 @end

@@ -124,8 +124,9 @@
 
     dataList = packages[COURSE_PACKAGES_FIELD_DATA];
     if(dataList && [dataList count] > 0) {
+        NSMutableArray *sortArray = [self sortArray:[NSMutableArray arrayWithArray:dataList] Key:@"Name" Ascending:YES];
         NSMutableArray *coursePackages = [[NSMutableArray alloc] init];
-        for(NSDictionary *data in dataList) {
+        for(NSDictionary *data in sortArray) {
             [coursePackages addObject: [[CoursePackage alloc] initWithData:data]];
         }
         dataList = [NSArray arrayWithArray:coursePackages];

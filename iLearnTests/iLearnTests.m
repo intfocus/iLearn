@@ -97,9 +97,12 @@
 }
 
 - (void)testASCII {
-    NSString *string = @"A";
+    NSString *string = @"W";
     int asciiCode = [string characterAtIndex:0]; //65
-    NSLog(@"A ascii: %i", asciiCode);
+    NSLog(@"W ascii: %i", asciiCode);
+    string = @"w";
+    asciiCode = [string characterAtIndex:0]; //65
+    NSLog(@"w ascii: %i", asciiCode);
     
     //ASCII to NSString
     asciiCode = 66;
@@ -114,8 +117,4 @@
     XCTAssertNotNil(noDuplicateArray);
 }
 
-- (void)testReverse {
-    NSString *str = @"hello world";
-    
-}
 @end
