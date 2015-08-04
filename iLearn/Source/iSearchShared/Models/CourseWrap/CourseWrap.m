@@ -28,7 +28,11 @@
     return @"课件包";
 }
 
-- (NSString *)statusLabelText {
+- (NSArray *)statusLabelText {
     return @[@"todo", @"进入"];
+}
+
+- (NSString *)infoButtonImage {
+    return @"course_course";
 }
 @end

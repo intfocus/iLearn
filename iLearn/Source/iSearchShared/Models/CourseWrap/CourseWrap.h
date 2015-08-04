@@ -22,4 +22,5 @@
 - (BOOL)isCourseWrap;
 - (NSString *)typeName;
 - (NSArray *)statusLabelText;
+- (NSString *)infoButtonImage;
 @end

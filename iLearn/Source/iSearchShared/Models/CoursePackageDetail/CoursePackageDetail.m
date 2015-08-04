@@ -164,6 +164,29 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
     return NO;
 }
 
+- (NSString *)infoButtonImage {
+    NSString *imageName = @"icon_info";
+    if([self isExam]) {
+        imageName = @"course_exam";
+    }
+    else if([self isQuestion]) {
+        imageName = @"course_question";
+    }
+    else if([self isCourse]) {
+        imageName = @"course_course";
+        if([self isHTML]) {
+            imageName = @"course_html";
+        }
+        else if([self isPDF]) {
+            imageName = @"course_pdf";
+        }
+        else if([self isVideo]) {
+            imageName = @"course_video";
+        }
+    }
+    return imageName;
+}
+
 #pragma mark - Around PDF
 /**
  *  检查课程包类型

@@ -114,6 +114,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             cell.scoreTitleLabel.text  = @"状态:";
             cell.scoreLabel.text       = @"TODO";
             [cell.actionButton setTitle:@"进入" forState:UIControlStateNormal];
+            [cell.infoButton setImage:[UIImage imageNamed:@"course_package"] forState:UIControlStateNormal];
         }
             break;
         case 2:
@@ -127,6 +128,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             cell.scoreTitleLabel.text  = @"状态:";
             cell.scoreLabel.text       = statusLabelText[0];
             [cell.actionButton setTitle:statusLabelText[1] forState:UIControlStateNormal];
+            [cell.infoButton setImage:[UIImage imageNamed:[obj infoButtonImage]] forState:UIControlStateNormal];
         }
             break;
         default:
