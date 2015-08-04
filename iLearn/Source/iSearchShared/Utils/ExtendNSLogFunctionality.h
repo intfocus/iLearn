@@ -46,5 +46,5 @@ BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionNam
 #pragma mark - ActionLog
 void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSString *actRet);
 #define ActionLogRecordLogin(actionResult) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"登录", @"", actionResult);
-#define ActionLogRecordNavigate(actionResult) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"主界面左侧导航栏按钮点击", @"", actionResult);
+#define ActionLogRecordDashboard(actionResult) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"主界面Dashboard", @"", actionResult);
 #endif

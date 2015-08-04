@@ -144,31 +144,39 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSString *humanName = @"unkown";
     if ([segue.identifier isEqualToString:kShowQuestionnaireSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeQuestionnaire;
+        humanName = @"问卷";
     }
     else if ([segue.identifier isEqualToString:kShowExamSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeExam;
+        humanName = @"考试";
     }
     else if ([segue.identifier isEqualToString:kShowRegistrationSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeRegistration;
+        humanName = @"注册";
     }
     else if ([segue.identifier isEqualToString:kShowLectureSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeLecture;
+        humanName = @"武田学院";
     }
     else if ([segue.identifier isEqualToString:kShowNotificationSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeNotification;
+        humanName = @"通知公告";
     }
     else if ([segue.identifier isEqualToString:kShowQRCodeSegue]) {
         QRCodeViewController* qrCodeVC = (QRCodeViewController*)segue.destinationViewController;
         qrCodeVC.showCloseButton = YES;
+        humanName = @"二维码扫描";
     }
-
+    
+    ActionLogRecordDashboard(humanName);
 }
 
 #pragma mark - Helper Functions
@@ -251,6 +259,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
     [self presentPopupViewController:nav animated:YES completion:^(void) {
         NSLog(@"popup view settingViewController");
+        ActionLogRecordDashboard(@"设置");
     }];
 }
 
@@ -293,6 +302,8 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     self.imagePickerActionSheet = [[UIActionSheet alloc] initWithTitle:@"上传头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"从相册选择" otherButtonTitles:@"现在拍照", nil];
     self.imagePickerActionSheet.delegate = self;
     [self.imagePickerActionSheet showInView:self.view];
+    
+    ActionLogRecordDashboard(@"点击头像");
 }
 
 #pragma mark - UITableViewDataSource
@@ -419,6 +430,8 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
         if (imagedata){
             UIImage *avatarImage = [UIImage imageWithData:imagedata];
             [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
+            
+            ActionLogRecordDashboard(@"头像设置成功");
         }
     }];
 }
