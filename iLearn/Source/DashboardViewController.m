@@ -17,6 +17,7 @@
 #import "ExtendNSLogFunctionality.h"
 #import "SettingViewController.h"
 #import "UIViewController+CWPopup.h"
+#import "ActionLog.h"
 #import <AVFoundation/AVFoundation.h>
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
@@ -126,6 +127,15 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     avatar.layer.masksToBounds = YES;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        if([HttpUtils isNetworkAvailable]) {
+            [ActionLog syncRecords];
+        }
+    });
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

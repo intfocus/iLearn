@@ -91,7 +91,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define iOSVersion [[[UIDevice currentDevice] systemVersion] floatValue]
 
 // ActionLogger
-#define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
+#define ACTION_LOGGER_URL_PATH @"/api/logjson.php"
 
 #define SIZE_GRID_VIEW_CELL_WIDTH     120 // GridView Cell‘s width
 #define SIZE_GRID_VIEW_CELL_HEIGHT    80 // GridView Cell‘s width

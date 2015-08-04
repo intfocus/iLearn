@@ -82,7 +82,9 @@
  */
 + (NSMutableArray *)actionLog:(NSMutableArray *)unSyncRecords {
     NSMutableArray *IDS = [[NSMutableArray alloc] init];
-    if([unSyncRecords count] == 0) { return IDS; }
+    if([unSyncRecords count] == 0) {
+        return IDS;
+    }
 
     NSString *ID;
     HttpResponse *httpResponse;
@@ -90,11 +92,12 @@
         ID = dict[@"id"]; [dict removeObjectForKey:@"id"];
         @try {
             httpResponse = [ApiHelper actionLog:dict];
-            if([httpResponse isSuccessfullyPostActionLog]) { [IDS addObject:ID]; }
+            if([httpResponse isSuccessfullyPostActionLog]) {
+                [IDS addObject:ID];
+            }
         } @catch (NSException *exception) {
             NSLog(@"sync action log(%@) faild for %@#%@\n %@", dict, exception.name, exception.reason);
         } @finally {
-            [IDS addObject:ID];
         }
     }
     

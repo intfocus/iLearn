@@ -259,6 +259,8 @@
             [self.user writeInToPersonal];
             
             // 跳至主界面
+            
+            ActionLogRecordLogin(@"successfully, online");
             [self enterMainViewController];
             return;
         } else {
@@ -283,6 +285,8 @@
     
     if(![errors count]) {
         // 跳至主界面
+        
+        ActionLogRecordLogin(@"successfully, offline");
         [self enterMainViewController];
         // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
     } else {
@@ -342,7 +346,6 @@
 #pragma mark - assistant methods
 
 -(void)enterMainViewController{
-    
     [LicenseUtil saveUserAccount:self.user.employeeID];
     [LicenseUtil saveUserId:self.user.ID];
     [LicenseUtil saveUserName:self.user.name];
