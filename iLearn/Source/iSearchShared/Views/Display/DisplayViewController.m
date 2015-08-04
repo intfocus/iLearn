@@ -103,7 +103,13 @@
 - (IBAction)actionDismiss:(id)sender {
     NSDictionary *dict;
     if([self.packageDetail isPDF]) {
-        dict = @{@"totalHeight": [NSNumber numberWithFloat:self.webView.scrollView.contentSize.height], @"currentHeight": [NSNumber numberWithFloat:self.offsetY]};
+        float totalHeight = self.webView.scrollView.contentSize.height;
+        float screentHeight = [[UIScreen mainScreen] bounds].size.height;
+        float readPercentage  = (self.offsetY + screentHeight * 1.5) / totalHeight * 100.0;
+        dict = @{@"totalHeight": [NSNumber numberWithFloat:totalHeight],
+                 @"currentHeight": [NSNumber numberWithFloat:self.offsetY],
+                 @"screenHeight":[NSNumber numberWithFloat:screentHeight],
+                 @"readPercentage":[NSNumber numberWithFloat:readPercentage]};
     }
     else {
         dict = @{};

@@ -99,18 +99,16 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
         if([FileUtils isCourseReaded:self.courseId Ext:self.courseExt]) {
             if([self isPDF]) {
                 NSDictionary *dict = [FileUtils readConfigFile:[FileUtils courseProgressPath:self.courseId Ext:self.courseExt]];
-                @try {
-                    float ratio = [dict[@"currentHeight"] floatValue] / [dict[@"totalHeight"] floatValue] * 100.0;
-                    if(ratio < 1.0) {
-                        labelState = @"学习不足1%";
-                    }
-                    else {
-                        labelState = [NSString stringWithFormat:@"已阅读至%i%%", (int)ratio];
-                    }
+                float ratio = [dict[@"readPercentage"] floatValue];
+                if(ratio < 1.0) {
+                    labelState = @"阅读不足1%";
                 }
-                @catch (NSException *exception) {
+                else if(ratio >= 100.0 ){
                     labelState = @"学习完成";
-                } @finally {}
+                }
+                else {
+                    labelState = [NSString stringWithFormat:@"已阅读至%i%%", (int)ratio];
+                }
             }
             else {
                 labelState = @"学习完成";
