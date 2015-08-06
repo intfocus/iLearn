@@ -95,4 +95,9 @@
     NSString *configPath = [[FileUtils basePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
     return [FileUtils readConfigFile:configPath];
 }
+
+
+- (BOOL)isEverLogin {
+    return self.loginLast;
+}
 @end

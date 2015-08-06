@@ -139,18 +139,19 @@
     [self actionClearCookies];
     if(self.timerReadCookie) {
         [self.timerReadCookie invalidate];
+        _timerReadCookie = nil;
     }
 }
 
 - (IBAction)actionSubmit:(id)sender {
     self.labelPropmt.text = @"";
     
-    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
+    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:10.0];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
-        self.cookieValue = @"E99658603";
-        [self actionOutsideLoginSuccessfully];
-        return;
+//        self.cookieValue = @"E99658603";
+//        [self actionOutsideLoginSuccessfully];
+//        return;
         
         [self actionClearCookies];
         [self actionOutsideLogin];
@@ -200,7 +201,9 @@
             [self actionOutsideLoginSuccessfully];
         }
         [self.timerReadCookie invalidate];
+        _timerReadCookie = nil;
         [self actionClearCookies];
+        [self actionOutsideLoginRefresh];
     }
     self.timerCount++;
 }
@@ -306,6 +309,12 @@
  */
 - (NSMutableArray *) checkEnableLoginWithoutNetwork:(User *) user {
     NSMutableArray *errors = [[NSMutableArray alloc] init];
+    
+    if(!user.isEverLogin) {
+        [errors addObject:@"无网络，不登录"];
+        
+        return errors;
+    }
     
     // 上次登陆日期字符串转换成NSDate
     NSDate *lastDate    = [DateUtils strToDate:user.loginLast Format:LOGIN_DATE_FORMAT];
