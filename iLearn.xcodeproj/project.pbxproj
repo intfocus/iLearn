@@ -11,6 +11,7 @@
 		C42611281B5FA0FD006786CD /* UploadExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42611261B5FA0FD006786CD /* UploadExamViewController.m */; };
 		C452E1C51B6B82600024A950 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C452E1BD1B6B82600024A950 /* DisplayViewController.m */; };
 		C452E1C61B6B82600024A950 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C452E1BE1B6B82600024A950 /* DisplayViewController.xib */; };
+		C458917C1B7376F400B66A91 /* PgySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C458917B1B7376F400B66A91 /* PgySDK.framework */; };
 		C484E0281B735ECD00AFBF45 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E0271B735ECD00AFBF45 /* SystemConfiguration.framework */; };
 		C484E02A1B735EDF00AFBF45 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E0291B735EDF00AFBF45 /* AudioToolbox.framework */; };
 		C484E02C1B735EEC00AFBF45 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E02B1B735EEC00AFBF45 /* CoreMotion.framework */; };
@@ -58,7 +59,6 @@
 		C4D4F7C11B6A42AF00C435C4 /* CoursePackageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */; };
 		C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */; };
 		C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */; };
-		C4D9735F1B6F572900E16439 /* PgySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4D9735E1B6F572900E16439 /* PgySDK.framework */; };
 		C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */; };
 		C4DC385F1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385E1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
@@ -122,6 +122,7 @@
 		C452E1BC1B6B82600024A950 /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
 		C452E1BD1B6B82600024A950 /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
 		C452E1BE1B6B82600024A950 /* DisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayViewController.xib; sourceTree = "<group>"; };
+		C458917B1B7376F400B66A91 /* PgySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PgySDK.framework; path = Frameworks/PgySDK.framework; sourceTree = "<group>"; };
 		C484E0271B735ECD00AFBF45 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C484E0291B735EDF00AFBF45 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C484E02B1B735EEC00AFBF45 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -199,7 +200,6 @@
 		C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoursePackageContent+CoursePackage.m"; sourceTree = "<group>"; };
 		C4D4F7C61B6A493F00C435C4 /* CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackageDetail.h; sourceTree = "<group>"; };
 		C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackageDetail.m; sourceTree = "<group>"; };
-		C4D9735E1B6F572900E16439 /* PgySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PgySDK.framework; path = ../iSearch/Frameworks/PgySDK.framework; sourceTree = "<group>"; };
 		C4DC385A1B6DBC6200AC0C20 /* CourseWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseWrap.h; sourceTree = "<group>"; };
 		C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseWrap.m; sourceTree = "<group>"; };
 		C4DC385D1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CourseWrap+CoursePackageDetail.h"; sourceTree = "<group>"; };
@@ -296,13 +296,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C458917C1B7376F400B66A91 /* PgySDK.framework in Frameworks */,
 				C484E0321B735F1200AFBF45 /* CoreTelephony.framework in Frameworks */,
 				C484E0301B735F0700AFBF45 /* OpenGLES.framework in Frameworks */,
 				C484E02E1B735EF700AFBF45 /* SceneKit.framework in Frameworks */,
 				C484E02C1B735EEC00AFBF45 /* CoreMotion.framework in Frameworks */,
 				C484E02A1B735EDF00AFBF45 /* AudioToolbox.framework in Frameworks */,
 				C484E0281B735ECD00AFBF45 /* SystemConfiguration.framework in Frameworks */,
-				C4D9735F1B6F572900E16439 /* PgySDK.framework in Frameworks */,
 				C4A4FDC41B663B1700741BF3 /* AVFoundation.framework in Frameworks */,
 				DC3F8EEB1B176A140007AC56 /* libsqlite3.0.dylib in Frameworks */,
 				9E68D22279AD2B12DB817E6E /* libPods.a in Frameworks */,
@@ -322,13 +322,13 @@
 		6B857E74EC1616B9BAB16C64 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C458917B1B7376F400B66A91 /* PgySDK.framework */,
 				C484E0311B735F1200AFBF45 /* CoreTelephony.framework */,
 				C484E02F1B735F0700AFBF45 /* OpenGLES.framework */,
 				C484E02D1B735EF700AFBF45 /* SceneKit.framework */,
 				C484E02B1B735EEC00AFBF45 /* CoreMotion.framework */,
 				C484E0291B735EDF00AFBF45 /* AudioToolbox.framework */,
 				C484E0271B735ECD00AFBF45 /* SystemConfiguration.framework */,
-				C4D9735E1B6F572900E16439 /* PgySDK.framework */,
 				C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */,
 				E92B1ED4A0E3997FEF469AD5 /* libPods.a */,
 			);
@@ -1244,7 +1244,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/lijunjie/Code/IOS/iSearch/Frameworks,
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = iLearn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1263,7 +1264,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/lijunjie/Code/IOS/iSearch/Frameworks,
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = iLearn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

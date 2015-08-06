@@ -20,13 +20,13 @@ PODS:
   - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - CocoaLumberjack (2.0.0):
-    - CocoaLumberjack/Default (= 2.0.0)
-    - CocoaLumberjack/Extensions (= 2.0.0)
-  - CocoaLumberjack/Core (2.0.0)
-  - CocoaLumberjack/Default (2.0.0):
+  - CocoaLumberjack (2.0.1):
+    - CocoaLumberjack/Default (= 2.0.1)
+    - CocoaLumberjack/Extensions (= 2.0.1)
+  - CocoaLumberjack/Core (2.0.1)
+  - CocoaLumberjack/Default (2.0.1):
     - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.0.0):
+  - CocoaLumberjack/Extensions (2.0.1):
     - CocoaLumberjack/Default
   - CWPopup (1.2.6)
   - FMDB (2.5):
@@ -37,31 +37,31 @@ PODS:
   - FXBlurView (1.6.3)
   - JTCalendar (1.2.3)
   - MBProgressHUD (0.9.1)
-  - QRCodeReaderViewController (3.4.0)
+  - QRCodeReaderViewController (3.5.2)
   - Reachability (3.2)
   - SSZipArchive (0.3.2)
 
 DEPENDENCIES:
-  - AFNetworking
-  - CocoaLumberjack
+  - AFNetworking (~> 2.5.4)
+  - CocoaLumberjack (~> 2.0.1)
   - CWPopup (~> 1.2.4)
-  - FMDB
-  - FXBlurView
-  - JTCalendar
-  - MBProgressHUD
-  - QRCodeReaderViewController
-  - Reachability
+  - FMDB (~> 2.5)
+  - FXBlurView (~> 1.6.3)
+  - JTCalendar (~> 1.2.3)
+  - MBProgressHUD (~> 0.9.1)
+  - QRCodeReaderViewController (~> 3.5.2)
+  - Reachability (~> 3.2)
   - SSZipArchive (~> 0.3.2)
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
+  CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   CWPopup: 3f8b0704a9914813d90372d66525d31f24b27d49
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   FXBlurView: c6d23f3d35af2c6282296a2930f61c6e2c788d01
   JTCalendar: 246ea3e338fb97624846ec77cdcde448242c4d5c
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
-  QRCodeReaderViewController: bbe09ba1805a74e4da29863a5220a7ad0411f5bc
+  QRCodeReaderViewController: f20275985c41ae551099641493ab364691d9113e
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SSZipArchive: 11801759495fa4efb7512ef652eb0042d68305d7
 
