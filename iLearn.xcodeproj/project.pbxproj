@@ -11,6 +11,12 @@
 		C42611281B5FA0FD006786CD /* UploadExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42611261B5FA0FD006786CD /* UploadExamViewController.m */; };
 		C452E1C51B6B82600024A950 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C452E1BD1B6B82600024A950 /* DisplayViewController.m */; };
 		C452E1C61B6B82600024A950 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C452E1BE1B6B82600024A950 /* DisplayViewController.xib */; };
+		C484E0281B735ECD00AFBF45 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E0271B735ECD00AFBF45 /* SystemConfiguration.framework */; };
+		C484E02A1B735EDF00AFBF45 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E0291B735EDF00AFBF45 /* AudioToolbox.framework */; };
+		C484E02C1B735EEC00AFBF45 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E02B1B735EEC00AFBF45 /* CoreMotion.framework */; };
+		C484E02E1B735EF700AFBF45 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E02D1B735EF700AFBF45 /* SceneKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		C484E0301B735F0700AFBF45 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E02F1B735F0700AFBF45 /* OpenGLES.framework */; };
+		C484E0321B735F1200AFBF45 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E0311B735F1200AFBF45 /* CoreTelephony.framework */; };
 		C48C09B61B4D258500DD4562 /* ViewUpgrade.m in Sources */ = {isa = PBXBuildFile; fileRef = C48C09B41B4D258500DD4562 /* ViewUpgrade.m */; };
 		C48C09B71B4D258500DD4562 /* ViewUpgrade.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48C09B51B4D258500DD4562 /* ViewUpgrade.xib */; };
 		C497318C1B67889B0014048B /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49731831B67889B0014048B /* NotificationCell.m */; };
@@ -116,6 +122,12 @@
 		C452E1BC1B6B82600024A950 /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
 		C452E1BD1B6B82600024A950 /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
 		C452E1BE1B6B82600024A950 /* DisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayViewController.xib; sourceTree = "<group>"; };
+		C484E0271B735ECD00AFBF45 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C484E0291B735EDF00AFBF45 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		C484E02B1B735EEC00AFBF45 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		C484E02D1B735EF700AFBF45 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
+		C484E02F1B735F0700AFBF45 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		C484E0311B735F1200AFBF45 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		C48C09B31B4D258500DD4562 /* ViewUpgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUpgrade.h; sourceTree = "<group>"; };
 		C48C09B41B4D258500DD4562 /* ViewUpgrade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUpgrade.m; sourceTree = "<group>"; };
 		C48C09B51B4D258500DD4562 /* ViewUpgrade.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewUpgrade.xib; sourceTree = "<group>"; };
@@ -284,6 +296,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C484E0321B735F1200AFBF45 /* CoreTelephony.framework in Frameworks */,
+				C484E0301B735F0700AFBF45 /* OpenGLES.framework in Frameworks */,
+				C484E02E1B735EF700AFBF45 /* SceneKit.framework in Frameworks */,
+				C484E02C1B735EEC00AFBF45 /* CoreMotion.framework in Frameworks */,
+				C484E02A1B735EDF00AFBF45 /* AudioToolbox.framework in Frameworks */,
+				C484E0281B735ECD00AFBF45 /* SystemConfiguration.framework in Frameworks */,
 				C4D9735F1B6F572900E16439 /* PgySDK.framework in Frameworks */,
 				C4A4FDC41B663B1700741BF3 /* AVFoundation.framework in Frameworks */,
 				DC3F8EEB1B176A140007AC56 /* libsqlite3.0.dylib in Frameworks */,
@@ -304,6 +322,12 @@
 		6B857E74EC1616B9BAB16C64 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C484E0311B735F1200AFBF45 /* CoreTelephony.framework */,
+				C484E02F1B735F0700AFBF45 /* OpenGLES.framework */,
+				C484E02D1B735EF700AFBF45 /* SceneKit.framework */,
+				C484E02B1B735EEC00AFBF45 /* CoreMotion.framework */,
+				C484E0291B735EDF00AFBF45 /* AudioToolbox.framework */,
+				C484E0271B735ECD00AFBF45 /* SystemConfiguration.framework */,
 				C4D9735E1B6F572900E16439 /* PgySDK.framework */,
 				C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */,
 				E92B1ED4A0E3997FEF469AD5 /* libPods.a */,
