@@ -37,6 +37,7 @@ PODS:
   - FXBlurView (1.6.3)
   - JTCalendar (1.2.3)
   - MBProgressHUD (0.9.1)
+  - ObjectiveSugar (1.1.0)
   - QRCodeReaderViewController (3.5.2)
   - Reachability (3.2)
   - SSZipArchive (0.3.2)
@@ -49,6 +50,7 @@ DEPENDENCIES:
   - FXBlurView (~> 1.6.3)
   - JTCalendar (~> 1.2.3)
   - MBProgressHUD (~> 0.9.1)
+  - ObjectiveSugar (~> 1.1.0)
   - QRCodeReaderViewController (~> 3.5.2)
   - Reachability (~> 3.2)
   - SSZipArchive (~> 0.3.2)
@@ -61,6 +63,7 @@ SPEC CHECKSUMS:
   FXBlurView: c6d23f3d35af2c6282296a2930f61c6e2c788d01
   JTCalendar: 246ea3e338fb97624846ec77cdcde448242c4d5c
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   QRCodeReaderViewController: f20275985c41ae551099641493ab364691d9113e
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SSZipArchive: 11801759495fa4efb7512ef652eb0042d68305d7

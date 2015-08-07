@@ -149,9 +149,9 @@
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:10.0];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
-//        self.cookieValue = @"E99658603";
-//        [self actionOutsideLoginSuccessfully];
-//        return;
+        self.cookieValue = @"E99658603";
+        [self actionOutsideLoginSuccessfully];
+        return;
         
         [self actionClearCookies];
         [self actionOutsideLogin];

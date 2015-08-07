@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 演示pdf/视频/html
 @property (weak, nonatomic) IBOutlet UIView *statusPanel;
 @property (weak, nonatomic) IBOutlet UIButton *btnBack;
+@property (weak, nonatomic) IBOutlet UIButton *btnSwitchPanel;
 @property (weak, nonatomic) IBOutlet UILabel *labelCourseName;
 @property (assign, nonatomic) float offsetY;
 @end
@@ -27,6 +28,10 @@
     [super viewDidLoad];
     
     self.offsetY = 0.0;
+    [self.btnSwitchPanel addTarget:self action:@selector(dragMoving:withEvent:) forControlEvents:UIControlEventTouchDragInside];
+    [self.btnSwitchPanel addTarget:self action:@selector(dragEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside|UIControlEventTouchUpInside];
+    
+    [self.btnSwitchPanel addTarget:self action:@selector(actionSwitchPanel:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -140,5 +145,22 @@
 #pragma mark - UIWebview - UIGestureRecognizer
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
+}
+
+#pragma mark - UIButton Drag
+- (void)actionSwitchPanel:(UIButton *)sender {
+    self.statusPanel.hidden = !self.statusPanel.hidden;
+    NSString *imageName = self.statusPanel.hidden ? @"iconArrowLeft" : @"iconArrowRight";
+    [self.btnSwitchPanel setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+}
+
+- (void)dragMoving:(UIButton *)btn withEvent:ev {
+    btn.tag = 1;
+    btn.center = [[[ev allTouches] anyObject] locationInView:self.view];
+}
+
+- (void)dragEnded:(UIButton *)btn withEvent:ev {
+    btn.tag = 0;
+    btn.center = [[[ev allTouches] anyObject] locationInView:self.view];
 }
 @end
