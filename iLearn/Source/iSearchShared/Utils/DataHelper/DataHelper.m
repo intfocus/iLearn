@@ -107,14 +107,16 @@
 /**
  *  课程包列表
  *
+ *  @param isNetworkAvailable 无网络读取缓存，有网络读取服务器
+ *
  *  @return 课程包列表
  */
-+ (NSArray *)coursePackages {
++ (NSArray *)coursePackages:(BOOL)isNetworkAvailable {
     NSMutableDictionary *packages = [[NSMutableDictionary alloc] init];
     NSArray *dataList             = [[NSArray alloc] init];
     NSString *PID                 = [User userID];
     
-    if([HttpUtils isNetworkAvailable]) {
+    if(isNetworkAvailable) {
         HttpResponse *httpResponse = [ApiHelper coursePackages:PID];
         packages = httpResponse.data;
         
@@ -122,7 +124,6 @@
     }
     else {
         packages = [CacheHelper coursePackages:PID];
-        
     }
 
     dataList = packages[COURSE_PACKAGES_FIELD_DATA];
@@ -139,13 +140,16 @@
 
 /**
  *  课程包内容明细
+ 
+ *  @param isNetworkAvailable 无网络读取缓存，有网络读取服务器
+ *  @param pid package ID
  *
  *  @return 课程包内容明细
  */
-+ (NSArray *)coursePackageContent:(NSString *)PID {
++ (NSArray *)coursePackageContent:(BOOL)isNetworkAvaliable pid:(NSString *)PID {
     NSMutableDictionary *packages = [[NSMutableDictionary alloc] init];
     
-    if([HttpUtils isNetworkAvailable]) {
+    if(isNetworkAvaliable) {
         HttpResponse *httpResponse = [ApiHelper coursePackageContent:PID];
         packages = httpResponse.data;
         

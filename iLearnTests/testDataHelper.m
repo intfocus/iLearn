@@ -28,8 +28,7 @@
 }
 
 - (void)testCoursePackages {
-    NSArray *dataList = [DataHelper coursePackages];
-
+    NSArray *dataList = [DataHelper coursePackages:NO];
 }
 
 @end

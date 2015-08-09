@@ -44,18 +44,23 @@
 + (NSMutableArray *)actionLog:(NSMutableArray *)unSyncRecords;
 
 /**
- *  课程包列表下载
+ *  课程包列表
+ *
+ *  @param isNetworkAvailable 无网络读取缓存，有网络读取服务器
  *
  *  @return 课程包列表
  */
-+ (NSArray *)coursePackages;
++ (NSArray *)coursePackages:(BOOL)isNetworkAvailable;
 
 /**
  *  课程包内容明细
+ 
+ *  @param isNetworkAvailable 无网络读取缓存，有网络读取服务器
+ *  @param pid package ID
  *
  *  @return 课程包内容明细
  */
-+ (NSArray *)coursePackageContent:(NSString *)PID;
++ (NSArray *)coursePackageContent:(BOOL)isNetworkAvaliable pid:(NSString *)PID;
 @end
 
 #endif
