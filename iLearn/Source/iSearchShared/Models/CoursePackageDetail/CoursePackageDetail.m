@@ -22,14 +22,14 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
 
 - (CoursePackageDetail *)init:(NSDictionary *)data Type:(NSString *)typeName {
     if(self = [super init]) {
-        _type       = typeName;
-        
-        _courseId   = data[@"CoursewareId"];
-        _courseName = data[@"CoursewareName"];
-        _courseDesc = data[@"CoursewareDesc"];
-        _courseFile = data[@"CoursewareFile"];
-        _courseExt  = data[@"Extension"];
-        
+        _type               = typeName;
+
+        _courseId           = data[@"CoursewareId"];
+        _courseName         = data[@"CoursewareName"];
+        _courseDesc         = data[@"CoursewareDesc"];
+        _courseFile         = data[@"CoursewareFile"];
+        _courseExt          = data[@"Extension"];
+
         _examId             = data[@"ExamId"];
         _examName           = data[@"ExamName"];
         _examDesc           = data[@"ExamDesc"];
@@ -234,19 +234,15 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
 }
 
 - (NSDictionary *)examDictContent {
-    if(!_examDictContent) {
-        NSString *examDBPath = [FileUtils coursePath:self.examId Ext:@"db"];
-        NSDictionary *dict;
-        if([FileUtils checkFileExist:examDBPath isDir:NO]) {
-            dict = [ExamUtil examContentFromDBFile:examDBPath];
-        }
-        else {
-            NSString *examPath = [FileUtils coursePath:self.examId Ext:@"json"];
-            dict = [FileUtils readConfigFile:examPath];
-        }
-        _examDictContent = dict;
+    NSString *examDBPath = [FileUtils coursePath:self.examId Ext:@"db"];
+    if([FileUtils checkFileExist:examDBPath isDir:NO]) {
+        _examDictContent = [ExamUtil examContentFromDBFile:examDBPath];
     }
-    
+    else {
+        NSString *examPath = [FileUtils coursePath:self.examId Ext:@"json"];
+        _examDictContent = [FileUtils readConfigFile:examPath];
+    }
+        
     return _examDictContent;
 }
 

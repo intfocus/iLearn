@@ -17,7 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 演示pdf/视频/html
 @property (weak, nonatomic) IBOutlet UIView *statusPanel;
 @property (weak, nonatomic) IBOutlet UIButton *btnBack;
-@property (weak, nonatomic) IBOutlet UIButton *btnSwitchPanel;
 @property (weak, nonatomic) IBOutlet UILabel *labelCourseName;
 @property (assign, nonatomic) float offsetY;
 @end
@@ -28,10 +27,6 @@
     [super viewDidLoad];
     
     self.offsetY = 0.0;
-    [self.btnSwitchPanel addTarget:self action:@selector(dragMoving:withEvent:) forControlEvents:UIControlEventTouchDragInside];
-    [self.btnSwitchPanel addTarget:self action:@selector(dragEnded:withEvent:) forControlEvents:UIControlEventTouchUpOutside|UIControlEventTouchUpInside];
-    
-    [self.btnSwitchPanel addTarget:self action:@selector(actionSwitchPanel:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -83,19 +78,24 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if ([self.packageDetail isVideo]) {
+    if ([self.packageDetail isVideo] || [self.packageDetail isPDF]) {
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleShowStatusPanel)];
         tapGesture.numberOfTapsRequired = 1; //点击次数
         tapGesture.numberOfTouchesRequired = 1; //点击手指数
         tapGesture.delegate = self;
         [self.webView addGestureRecognizer:tapGesture];
-    }
-    else if([self.packageDetail isPDF]) {
-        self.webView.scrollView.delegate = self;
         
-        self.offsetY = [self.packageDetail pdfProgress];
-        [self.webView.scrollView setContentOffset:CGPointMake(0, self.offsetY) animated:NO];
+        if([self.packageDetail isPDF]) {
+            self.offsetY = [self.packageDetail pdfProgress];
+            [self.webView.scrollView setContentOffset:CGPointMake(0, self.offsetY) animated:NO];
+        }
     }
+//    else if([self.packageDetail isPDF]) {
+//        self.webView.scrollView.delegate = self;
+//        
+//        self.offsetY = [self.packageDetail pdfProgress];
+//        [self.webView.scrollView setContentOffset:CGPointMake(0, self.offsetY) animated:NO];
+//    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -108,9 +108,10 @@
 - (IBAction)actionDismiss:(id)sender {
     NSDictionary *dict;
     if([self.packageDetail isPDF]) {
-        float totalHeight = self.webView.scrollView.contentSize.height;
-        float screentHeight = [[UIScreen mainScreen] bounds].size.height;
-        float readPercentage  = (self.offsetY + screentHeight * 1.5) / totalHeight * 100.0;
+        self.offsetY         = self.webView.scrollView.contentOffset.y;
+        float totalHeight    = self.webView.scrollView.contentSize.height;
+        float screentHeight  = [[UIScreen mainScreen] bounds].size.height;
+        float readPercentage = (self.offsetY + screentHeight * 1.5) / totalHeight * 100.0;
         dict = @{@"totalHeight": [NSNumber numberWithFloat:totalHeight],
                  @"currentHeight": [NSNumber numberWithFloat:self.offsetY],
                  @"screenHeight":[NSNumber numberWithFloat:screentHeight],
@@ -132,15 +133,15 @@
 }
     
 #pragma mark - UIWebview - UIScrollView Delgate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    float currentY = scrollView.contentOffset.y;
-    BOOL isHidden  = (currentY > self.offsetY);
-    if(isHidden != self.statusPanel.hidden) {
-        self.statusPanel.hidden = isHidden;
-    }
-    //NSLog(@"currentY: %f, lastY: %f", currentY, self.offsetY);
-    self.offsetY   = currentY;
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    float currentY = scrollView.contentOffset.y;
+//    BOOL isHidden  = (currentY > self.offsetY);
+//    if(isHidden != self.statusPanel.hidden) {
+//        self.statusPanel.hidden = isHidden;
+//    }
+//    //NSLog(@"currentY: %f, lastY: %f", currentY, self.offsetY);
+//    self.offsetY   = currentY;
+//}
 
 #pragma mark - UIWebview - UIGestureRecognizer
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -148,19 +149,18 @@
 }
 
 #pragma mark - UIButton Drag
-- (void)actionSwitchPanel:(UIButton *)sender {
-    self.statusPanel.hidden = !self.statusPanel.hidden;
-    NSString *imageName = self.statusPanel.hidden ? @"iconArrowLeft" : @"iconArrowRight";
-    [self.btnSwitchPanel setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-}
-
-- (void)dragMoving:(UIButton *)btn withEvent:ev {
-    btn.tag = 1;
-    btn.center = [[[ev allTouches] anyObject] locationInView:self.view];
-}
-
-- (void)dragEnded:(UIButton *)btn withEvent:ev {
-    btn.tag = 0;
-    btn.center = [[[ev allTouches] anyObject] locationInView:self.view];
-}
+//- (void)actionSwitchPanel:(UIButton *)sender {
+//    self.statusPanel.hidden = !self.statusPanel.hidden;
+//    NSString *imageName = self.statusPanel.hidden ? @"iconArrowLeft" : @"iconArrowRight";
+//}
+//
+//- (void)dragMoving:(UIButton *)btn withEvent:ev {
+//    btn.tag = 1;
+//    btn.center = [[[ev allTouches] anyObject] locationInView:self.view];
+//}
+//
+//- (void)dragEnded:(UIButton *)btn withEvent:ev {
+//    btn.tag = 0;
+//    btn.center = [[[ev allTouches] anyObject] locationInView:self.view];
+//}
 @end

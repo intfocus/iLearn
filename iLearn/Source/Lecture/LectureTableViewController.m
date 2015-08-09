@@ -61,10 +61,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     
     self.connectionManager = [[ConnectionManager alloc] init];
     _connectionManager.delegate = self;
+    _depth = @1; // 一级: 课程包列表， 二级: 课件包、课件、考试、问卷, 三级: 二级内容的重组
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    _depth = @1; // 一级: 课程包列表， 二级: 课件包、课件、考试、问卷, 三级: 二级内容的重组
     [self syncData];
 }
 
@@ -77,12 +77,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     if ([segue.identifier isEqualToString:kShowDetailSegue]) {
 
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
-        detailVC.titleString = [sender name];
-        detailVC.descString  = [sender desc];
-        if (self.showBeginTestInfo) {
-            detailVC.delegate = self;
-        }
-        detailVC.shownFromBeginTest = self.showBeginTestInfo;
+        detailVC.titleString        = [sender name];
+        detailVC.descString         = [sender desc];
+        detailVC.delegate           = self;
+        detailVC.shownFromBeginTest = self.showBeginTestInfo = YES;
     }
 }
 
@@ -104,9 +102,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         case 1: {
             CoursePackage *coursePackage = [self.dataList objectAtIndex:indexPath.row];
             cell.titleLabel.text        = coursePackage.name;
-            cell.statusTitleLabel.text  = @"类型:";
             cell.statusLabel.text       = @"课程包";
-            cell.scoreTitleLabel.text   = @"状态:";
             cell.scoreLabel.text        = @"TODO";
             cell.scoreTitleLabel.hidden = YES;
             cell.scoreLabel.hidden      = YES;
@@ -117,12 +113,12 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         case 2:
         case 3: {
             id obj =  [self.dataList objectAtIndex:indexPath.row];
-            NSArray *statusLabelText = [obj statusLabelText];
-            cell.titleLabel.text       = [obj name];
-            cell.statusLabel.text      = [obj typeName];
-            cell.statusTitleLabel.text = @"类型:";
-            cell.scoreTitleLabel.text  = @"状态:";
-            cell.scoreLabel.text       = statusLabelText[0];
+            NSArray *statusLabelText    = [obj statusLabelText];
+            cell.titleLabel.text        = [obj name];
+            cell.statusLabel.text       = [obj typeName];
+            cell.scoreLabel.text        = statusLabelText[0];
+            cell.scoreTitleLabel.hidden = NO;
+            cell.scoreLabel.hidden      = NO;
             [cell.actionButton setTitle:statusLabelText[1] forState:UIControlStateNormal];
             [cell.infoButton setImage:[UIImage imageNamed:[obj infoButtonImage]] forState:UIControlStateNormal];
             
@@ -149,7 +145,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 
 - (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell {
-    self.showBeginTestInfo = YES;
     self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
@@ -159,6 +154,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
     
+    BOOL removeHUD = YES;
     NSInteger depth = [self.depth intValue];
     id obj = [self.dataList objectAtIndex:indexPath.row];
     switch (depth) {
@@ -183,6 +179,52 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 [self.tableView reloadData];
                 self.listViewController.courseNameLabel.text = courseWrap.name;
             }
+            else {
+                LectureTableViewCell *lectureTableViewCell = (LectureTableViewCell *)cell;
+                NSString *btnLabel = lectureTableViewCell.actionButton.titleLabel.text;
+                
+                CoursePackageDetail *packageDetail = (CoursePackageDetail *)obj;
+                if([packageDetail isCourse]) {
+                    if([btnLabel isEqualToString:@"下载"]) {
+                        if([HttpUtils isNetworkAvailable]) {
+                            self.progressHUD.labelText = @"下载中...";
+                            removeHUD = NO;
+                            [self.connectionManager downloadCourse:packageDetail.courseId Ext:packageDetail.courseExt];
+                        }
+                        else {
+                            self.progressHUD.labelText = @"无网络，不下载";
+                            [self.progressHUD hide:YES afterDelay:3.0];
+                        }
+                    }
+                    else {
+                        DisplayViewController *displayViewController = [[DisplayViewController alloc] init];
+                        displayViewController.packageDetail = packageDetail;
+                        [self presentViewController:displayViewController animated:YES completion:nil];
+                    }
+                }
+                else if([packageDetail isExam]) {
+                    if([packageDetail isExamDownload]) {
+                        if([btnLabel isEqualToString:@"查看结果"]) {
+                            [self begin];
+                        }
+                        else {
+                            self.showBeginTestInfo = YES;
+                            [self performSegueWithIdentifier:kShowDetailSegue sender:packageDetail];
+                        }
+                    }
+                    else {
+                        if([HttpUtils isNetworkAvailable]) {
+                            self.progressHUD.labelText = @"下载中...";
+                            removeHUD = NO;
+                            [_connectionManager downloadExamWithId:packageDetail.examId];
+                        }
+                        else {
+                            self.progressHUD.labelText = @"无网络，不下载";
+                            [self.progressHUD hide:YES afterDelay:3.0];
+                        }
+                    }
+                }
+            }
             break;
         }
         default:
@@ -191,7 +233,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        BOOL removeHUD = YES;
         if([HttpUtils isNetworkAvailable]) {
             switch (depth) {
                 case 1: {
@@ -203,38 +244,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                     if([array count]) {
                         _dataList = array;
                         [self.tableView reloadData];
-                    }
-                    break;
-                }
-                case 2:
-                case 3: {
-                    if(![obj isCourseWrap]) {
-                        CoursePackageDetail *packageDetail = (CoursePackageDetail *)obj;
-                        if([packageDetail isCourse]) {
-                            LectureTableViewCell *lectureTableViewCell = (LectureTableViewCell *)cell;
-                            NSString *state = lectureTableViewCell.actionButton.titleLabel.text;
-                            if([state isEqualToString:@"下载"]) {
-                                self.progressHUD.labelText = @"下载中...";
-                                removeHUD = NO;
-                                [self.connectionManager downloadCourse:packageDetail.courseId Ext:packageDetail.courseExt];
-                            }
-                            else {
-                                DisplayViewController *displayViewController = [[DisplayViewController alloc] init];
-                                displayViewController.packageDetail = packageDetail;
-                                [self presentViewController:displayViewController animated:YES completion:nil];
-                            }
-                        }
-                        else if([packageDetail isExam]) {
-                            if([packageDetail isExamDownload]) {
-                                self.showBeginTestInfo = YES;
-                                [self performSegueWithIdentifier:kShowDetailSegue sender:packageDetail];
-                            }
-                            else {
-                                self.progressHUD.labelText = @"下载中...";
-                                removeHUD = NO;
-                                 [_connectionManager downloadExamWithId:packageDetail.examId];
-                            }
-                        }
                     }
                     break;
                 }
@@ -418,7 +427,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             break;
     }
     [self.tableView reloadData];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if([HttpUtils isNetworkAvailable]) {
@@ -446,7 +454,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
 
 #pragma mark - DetailViewControllerProtocol
-- (void)begin{
+- (void)begin {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
     CoursePackageDetail *packageDetail = [self.dataList objectAtIndex:indexPath.row];
     NSMutableDictionary *content = [NSMutableDictionary dictionaryWithDictionary:packageDetail.examDictContent];

@@ -55,6 +55,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UILabel *correctionNoteLabel;
 @property (weak, nonatomic) IBOutlet UIView *correctionTypeView;
 @property (weak, nonatomic) IBOutlet UILabel *correctionTypeLabel;
+@property (weak, nonatomic) IBOutlet UIView *correctionStaticView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *questionToCorrectionSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerTableViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionTableViewHeightConstraint;
@@ -113,6 +114,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     [_questionTypeView.layer setCornerRadius:5.0];
     [_correctionTypeView.layer setCornerRadius:5.0];
+    [_correctionStaticView.layer setCornerRadius:5.0];
 
     NSNumber *score = _examContent[ExamScore];
 
@@ -169,7 +171,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [self updateOptionContents];
 
     if (!_isAnswerMode) { // Hide the answer view
-        CGFloat correctionViewHeight = _correctionView.frame.size.height;
+        //CGFloat correctionViewHeight = _correctionView.frame.size.height;
         _correctionView.hidden = YES;
         //self.correctionVIewButtonContraint.constant = -correctionViewHeight;
         //_questionToCorrectionSpaceConstraint.constant = -correctionViewHeight;
@@ -183,6 +185,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         //self.countDownView.hidden = YES;
         self.countDownViewHeightConstraint.constant = 0;
         self.squareView.backgroundColor = ILDarkRed;
+        self.correctionStaticView.hidden = NO;
+        [self.view bringSubviewToFront:self.correctionStaticView];
     }
     
     self.submitButton2.layer.cornerRadius = 4;

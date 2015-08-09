@@ -9,7 +9,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DisplayViewController">
             <connections>
                 <outlet property="btnBack" destination="705-n5-wh8" id="uFR-K8-wFy"/>
-                <outlet property="btnSwitchPanel" destination="UQG-vS-XdE" id="9Qb-yV-jEO"/>
                 <outlet property="labelCourseName" destination="lnd-K1-bkl" id="QKa-Tl-63Z"/>
                 <outlet property="statusPanel" destination="mnw-ph-9p5" id="NbS-rY-X5e"/>
                 <outlet property="view" destination="iN0-l3-epB" id="7jd-4c-Zhy"/>
@@ -57,22 +56,9 @@
                         <constraint firstAttribute="centerY" secondItem="lnd-K1-bkl" secondAttribute="centerY" id="z7n-oS-a3N"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UQG-vS-XdE">
-                    <rect key="frame" x="805" y="0.0" width="35" height="35"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="35" id="6vl-fk-EPe"/>
-                        <constraint firstAttribute="height" constant="35" id="HJH-SI-Riy"/>
-                    </constraints>
-                    <state key="normal" image="iconArrowRight">
-                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="UQG-vS-XdE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="51R-t9-aZ1"/>
-                <constraint firstAttribute="trailing" secondItem="UQG-vS-XdE" secondAttribute="trailing" constant="10" id="BDb-ku-7Vm"/>
                 <constraint firstAttribute="trailing" secondItem="q28-6c-Np6" secondAttribute="trailing" constant="-12" id="GPh-bW-5ue"/>
                 <constraint firstItem="mnw-ph-9p5" firstAttribute="leading" secondItem="q28-6c-Np6" secondAttribute="leading" id="fJs-mi-rQR"/>
                 <constraint firstItem="mnw-ph-9p5" firstAttribute="trailing" secondItem="q28-6c-Np6" secondAttribute="trailing" id="iF7-LP-m4X"/>
@@ -85,7 +71,6 @@
         </view>
     </objects>
     <resources>
-        <image name="iconArrowRight" width="22" height="22"/>
         <image name="iconBack" width="22" height="22"/>
     </resources>
 </document>

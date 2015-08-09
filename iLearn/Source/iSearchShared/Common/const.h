@@ -71,7 +71,6 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 };
 
 // Global
-#define DEBUG                   1
 #define PARAM_LANG              @"lang" // 传递给服务器的语言key
 #define APP_LANG                @"zh-CN" // 应用系统的语言
 #define BASE_URL                @"http://tsa-china.takeda.com.cn" //
