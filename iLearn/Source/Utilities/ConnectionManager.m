@@ -15,7 +15,7 @@
 #import "Url+Param.h"
 #import "ExtendNSLogFunctionality.h"
 
-static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uatui/api/v1";
+static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/api/v1";
 
 @interface ConnectionManager ()
 

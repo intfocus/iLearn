@@ -148,6 +148,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell {
     self.currentCell = cell;
     self.showBeginTestInfo = NO;
+    
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     id obj = [self.dataList objectAtIndex:[indexPath row]];
     self.showRemoveButton  = [obj canRemove];
@@ -158,9 +159,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
-    NSLog(@"didSelectActionButtonOfCell:");
-    NSLog(@"indexPath.row: %ld", (long)indexPath.row);
-    
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
     
@@ -169,7 +167,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     id obj = [self.dataList objectAtIndex:indexPath.row];
     switch (depth) {
         case 1: {
-            self.depth = @2;
+            [self depthPlus];
             CoursePackage *coursePackage = (CoursePackage *)obj;
             _dataList = [DataHelper coursePackageContent:NO pid:coursePackage.ID];
             self.listViewController.titleLabel.hidden = YES;
@@ -182,8 +180,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         }
         case 2:
         case 3: {
-            self.depth = @3;
             if([obj isCourseWrap]) {
+                [self depthPlus];
                 CourseWrap *courseWrap = (CourseWrap *)obj;
                 _dataList = courseWrap.courseList;
                 [self.tableView reloadData];
@@ -241,7 +239,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         default:
             break;
     }
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if([HttpUtils isNetworkAvailable]) {
@@ -268,6 +265,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             [self.progressHUD removeFromSuperview];
         }
     });
+    NSLog(@"enter - depth: %@", self.depth);
 }
 
 - (IBAction)actionBack:(id)sender {
@@ -295,11 +293,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             break;
     }
     [self.tableView reloadData];
-    
-    // 易混淆点: dispatch_after,tableView#cellForRowAtIndexPath 都需要使用self.depth
-    if(depth > 1) {
-        self.depth = [NSNumber numberWithInteger:(depth -1)];
-    }
+    [self depthMinus];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if([HttpUtils isNetworkAvailable]) {
@@ -326,6 +320,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     });
     
     [sender setEnabled:YES];
+    NSLog(@"back - depth: %@", self.depth);
 }
 - (void)didSelectQRCodeButtonOfCell:(ContentTableViewCell*)cell {}
 
@@ -508,6 +503,26 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
+}
+
+#pragma mark - asisstant methods
+
+- (void)depthPlus {
+    NSInteger depth = [self.depth intValue];
+    depth = depth + 1;
+    if(depth > 3) {
+        depth = 3;
+    }
+    self.depth = [NSNumber numberWithInteger:depth];
+}
+
+- (void)depthMinus {
+    NSInteger depth = [self.depth intValue];
+    depth = depth - 1;
+    if(depth < 1) {
+        depth = 1;
+    }
+    self.depth = [NSNumber numberWithInteger:depth];
 }
 
 @end
