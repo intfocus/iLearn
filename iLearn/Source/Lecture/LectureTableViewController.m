@@ -65,7 +65,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    
     [self syncData];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
 }
 
 - (void)didReceiveMemoryWarning {

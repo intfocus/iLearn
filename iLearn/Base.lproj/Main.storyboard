@@ -2196,10 +2196,10 @@
                                                             </mask>
                                                         </variation>
                                                     </view>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ybv-Vb-dGt" userLabel="Static View">
+                                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ybv-Vb-dGt" userLabel="Static View">
                                                         <rect key="frame" x="90" y="12" width="83" height="30"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="正确答案" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lse-IY-Nel">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正确答案" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lse-IY-Nel">
                                                                 <rect key="frame" x="5" y="4" width="72" height="22"/>
                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2207,6 +2207,12 @@
                                                             </label>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.26274509800000001" green="0.73333333329999995" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="lse-IY-Nel" secondAttribute="bottom" constant="4" id="2QW-Ib-JWx"/>
+                                                            <constraint firstItem="lse-IY-Nel" firstAttribute="leading" secondItem="Ybv-Vb-dGt" secondAttribute="leading" constant="5" id="6bO-a1-xRp"/>
+                                                            <constraint firstAttribute="trailing" secondItem="lse-IY-Nel" secondAttribute="trailing" constant="6" id="CrD-M4-AfI"/>
+                                                            <constraint firstItem="lse-IY-Nel" firstAttribute="top" secondItem="Ybv-Vb-dGt" secondAttribute="top" constant="4" id="jgg-Za-bqt"/>
+                                                        </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11.  您对本次培训过程中的课程时间安排是否满意？" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Em3-A5-WVH">
                                                         <rect key="frame" x="20" y="50" width="232" height="39"/>
@@ -2299,6 +2305,7 @@
                                                     <constraint firstAttribute="trailing" secondItem="xew-gk-jKw" secondAttribute="trailing" id="UkZ-kq-Qed"/>
                                                     <constraint firstItem="xew-gk-jKw" firstAttribute="leading" secondItem="vMY-rs-cXw" secondAttribute="leading" constant="20" id="Vnh-Hh-bQj"/>
                                                     <constraint firstAttribute="trailing" secondItem="Em3-A5-WVH" secondAttribute="trailing" constant="12" id="b30-Du-S2j"/>
+                                                    <constraint firstItem="Em3-A5-WVH" firstAttribute="top" secondItem="Ybv-Vb-dGt" secondAttribute="bottom" constant="8" id="gUA-Fx-pv4"/>
                                                     <constraint firstItem="NPW-rW-abb" firstAttribute="leading" secondItem="vMY-rs-cXw" secondAttribute="leading" constant="20" id="glg-U6-vnT"/>
                                                     <constraint firstItem="xew-gk-jKw" firstAttribute="top" secondItem="Em3-A5-WVH" secondAttribute="bottom" constant="18" id="jrE-x7-so9"/>
                                                     <constraint firstItem="Em3-A5-WVH" firstAttribute="top" secondItem="NPW-rW-abb" secondAttribute="bottom" constant="8" id="nhT-ab-wIs"/>

@@ -185,8 +185,6 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         //self.countDownView.hidden = YES;
         self.countDownViewHeightConstraint.constant = 0;
         self.squareView.backgroundColor = ILDarkRed;
-        self.correctionStaticView.hidden = NO;
-        [self.view bringSubviewToFront:self.correctionStaticView];
     }
     
     self.submitButton2.layer.cornerRadius = 4;
