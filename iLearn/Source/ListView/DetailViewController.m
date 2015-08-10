@@ -28,15 +28,11 @@
     UIColor *borderColor = RGBCOLOR(190.0, 190.0, 190.0);
     [self.contentView.layer setBorderColor:borderColor.CGColor];
 
-    self.titleLabel.text = _titleString;
+    self.titleLabel.text   = _titleString;
     self.descTextView.text = _descString;
-    //self.descLabel.text = _descString;
-    if (self.shownFromBeginTest) {
-        self.actionButton.hidden = NO;
-    }
-    else {
-        self.actionButton.hidden = YES;
-    }
+
+    self.actionButton.hidden = !self.showFromBeginTest;
+    self.removeButton.hidden = !self.showRemoveButton;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,6 +48,13 @@
     [self dismissViewControllerAnimated:NO completion:^{
         if ([self.delegate respondsToSelector:@selector(begin)]) {
             [self.delegate begin];
+        }
+    }];
+}
+- (IBAction)removeTouched:(id)sender {
+    [self dismissViewControllerAnimated:NO completion:^{
+        if ([self.delegate respondsToSelector:@selector(removeCourse)]) {
+            [self.delegate removeCourse];
         }
     }];
 }

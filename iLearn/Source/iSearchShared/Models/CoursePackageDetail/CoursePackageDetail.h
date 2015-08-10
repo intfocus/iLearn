@@ -50,6 +50,7 @@
 - (BOOL)isVideo;
 - (BOOL)isPDF;
 - (BOOL)isHTML;
+- (BOOL)canRemove;
 - (NSString *)infoButtonImage;
 /**
  *  pdf阅读进度

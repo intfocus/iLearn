@@ -208,6 +208,11 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
 - (BOOL)isHTML {
     return [self checkType:@"zip"];
 }
+
+- (BOOL)canRemove {
+    return ([self isPDF] || [self isVideo] || [self isHTML]) &&
+           [FileUtils isCourseDownloaded:self.courseId Ext:self.courseExt];
+}
 /**
  *  pdf阅读进度
  *

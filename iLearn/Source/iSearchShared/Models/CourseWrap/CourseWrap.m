@@ -23,6 +23,9 @@
 - (BOOL)isCourseWrap {
     return YES;
 }
+- (BOOL)canRemove {
+    return NO;
+}
 
 - (NSString *)typeName {
     return @"课件包";

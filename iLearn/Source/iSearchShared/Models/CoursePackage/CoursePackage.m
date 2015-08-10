@@ -20,4 +20,8 @@
     
     return self;
 }
+
+- (BOOL)canRemove {
+    return NO;
+}
 @end

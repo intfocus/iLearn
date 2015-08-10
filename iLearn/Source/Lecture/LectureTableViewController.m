@@ -45,6 +45,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 @property (weak, nonatomic) UIAlertView *lastAlertView;
 
 @property (assign, nonatomic) BOOL showBeginTestInfo;
+@property (assign, nonatomic) BOOL showRemoveButton;
 @property (nonatomic) ContentTableViewCell *currentCell;
 
 @property (strong, nonatomic) NSNumber *depth;
@@ -79,10 +80,11 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     if ([segue.identifier isEqualToString:kShowDetailSegue]) {
 
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
-        detailVC.titleString        = [sender name];
-        detailVC.descString         = [sender desc];
-        detailVC.delegate           = self;
-        detailVC.shownFromBeginTest = self.showBeginTestInfo = YES;
+        detailVC.titleString       = [sender name];
+        detailVC.descString        = [sender desc];
+        detailVC.delegate          = self;
+        detailVC.showFromBeginTest = self.showBeginTestInfo;
+        detailVC.showRemoveButton  = self.showRemoveButton;
     }
 }
 
@@ -119,8 +121,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             cell.titleLabel.text        = [obj name];
             cell.statusLabel.text       = [obj typeName];
             cell.scoreLabel.text        = statusLabelText[0];
-            cell.scoreTitleLabel.hidden = NO;
-            cell.scoreLabel.hidden      = NO;
+            cell.scoreTitleLabel.hidden = [statusLabelText[0] isEqualToString:@"todo"];
+            cell.scoreLabel.hidden      = [statusLabelText[0] isEqualToString:@"todo"];
             [cell.actionButton setTitle:statusLabelText[1] forState:UIControlStateNormal];
             [cell.infoButton setImage:[UIImage imageNamed:[obj infoButtonImage]] forState:UIControlStateNormal];
             
@@ -142,8 +144,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell {
     self.showBeginTestInfo = NO;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    
-    [self performSegueWithIdentifier:kShowDetailSegue sender:[self.dataList objectAtIndex:indexPath.row]];
+    id obj = [self.dataList objectAtIndex:[indexPath row]];
+    self.showRemoveButton  = [obj canRemove];
+    [self performSegueWithIdentifier:kShowDetailSegue sender:obj];
 }
 
 - (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell {
@@ -211,6 +214,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                         }
                         else {
                             self.showBeginTestInfo = YES;
+                            self.showRemoveButton  = NO;
                             [self performSegueWithIdentifier:kShowDetailSegue sender:packageDetail];
                         }
                     }
@@ -285,8 +289,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     }
     [self.tableView reloadData];
     // 易混淆点: dispatch_after,tableView#cellForRowAtIndexPath 都需要使用self.depth
-    self.depth = [NSNumber numberWithInteger:([self.depth intValue] -1)];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    if(depth > 1) {
+        self.depth = [NSNumber numberWithInteger:(depth -1)];
+    }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if([HttpUtils isNetworkAvailable]) {
@@ -463,6 +468,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     content[CommonFileName] = packageDetail.examId;
     
     [self enterExamPageForContent:[NSDictionary dictionaryWithDictionary:content]];
+}
+
+- (void)removeCourse {
+    
 }
 
 @end

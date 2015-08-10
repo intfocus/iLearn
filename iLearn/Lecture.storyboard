@@ -223,8 +223,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AOU-T4-EP5">
                                 <rect key="frame" x="242" y="196" width="540" height="376"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="OBL 培训后问卷说明 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pz8-9l-CuR">
-                                        <rect key="frame" x="150" y="16" width="241" height="32"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="OBL 培训后问卷说明 " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pz8-9l-CuR">
+                                        <rect key="frame" x="20" y="8" width="470" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -263,37 +263,43 @@
                                                     <action selector="actionTouched:" destination="lmm-uO-7JU" eventType="touchUpInside" id="L48-rn-DDi"/>
                                                 </connections>
                                             </button>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rG-s4-9PE">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m6F-e9-Pxo">
                                                 <rect key="frame" x="12" y="30" width="476" height="172"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="172" id="omd-60-04W"/>
+                                                </constraints>
                                                 <string key="text"> 目标对象: 主要针对新入司三个月内的代表。
 考题范围: 公司核心产品知识。
 题目数量: 随机从题库抽选 50 道单选或多选题。
 配分原则: 每题 2 分。
 考试时间: 50 分钟。</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m6F-e9-Pxo">
-                                                <rect key="frame" x="12" y="30" width="476" height="172"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="djo-bC-V2c">
+                                                <rect key="frame" x="12" y="232" width="476" height="40"/>
+                                                <color key="backgroundColor" red="1" green="0.023279552039999998" blue="0.002520476383" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="KaE-aF-doQ"/>
+                                                </constraints>
+                                                <state key="normal" title="删除">
+                                                    <color key="titleColor" red="0.97048952399999999" green="0.97058722040000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="m6F-e9-Pxo" firstAttribute="top" secondItem="Ppe-4g-eXW" secondAttribute="top" constant="30" id="0I7-zm-P2T"/>
-                                            <constraint firstItem="62Z-8t-Qag" firstAttribute="top" secondItem="4rG-s4-9PE" secondAttribute="bottom" constant="30" id="2ks-xD-Tde"/>
                                             <constraint firstItem="m6F-e9-Pxo" firstAttribute="leading" secondItem="Ppe-4g-eXW" secondAttribute="leading" constant="12" id="3Am-99-3yu"/>
+                                            <constraint firstItem="djo-bC-V2c" firstAttribute="centerY" secondItem="62Z-8t-Qag" secondAttribute="centerY" id="4v7-3f-mDt"/>
+                                            <constraint firstItem="djo-bC-V2c" firstAttribute="trailing" secondItem="m6F-e9-Pxo" secondAttribute="trailing" id="SJ1-6B-eET"/>
                                             <constraint firstAttribute="trailing" secondItem="m6F-e9-Pxo" secondAttribute="trailing" constant="12" id="TFo-f7-5oV"/>
                                             <constraint firstAttribute="bottom" secondItem="62Z-8t-Qag" secondAttribute="bottom" constant="20" id="Ufv-zq-QzS"/>
-                                            <constraint firstItem="4rG-s4-9PE" firstAttribute="top" secondItem="Ppe-4g-eXW" secondAttribute="top" constant="30" id="ZpG-ew-7mP"/>
-                                            <constraint firstAttribute="trailing" secondItem="4rG-s4-9PE" secondAttribute="trailing" constant="12" id="fti-FT-wdW"/>
                                             <constraint firstItem="62Z-8t-Qag" firstAttribute="top" secondItem="m6F-e9-Pxo" secondAttribute="bottom" constant="30" id="hEO-sZ-JV6"/>
+                                            <constraint firstItem="djo-bC-V2c" firstAttribute="leading" secondItem="m6F-e9-Pxo" secondAttribute="leading" id="pze-nG-TvJ"/>
                                             <constraint firstAttribute="centerX" secondItem="62Z-8t-Qag" secondAttribute="centerX" id="tMI-k6-219"/>
-                                            <constraint firstItem="4rG-s4-9PE" firstAttribute="leading" secondItem="Ppe-4g-eXW" secondAttribute="leading" constant="12" id="wVa-8z-vBu"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -305,10 +311,11 @@
                                     <constraint firstItem="Ppe-4g-eXW" firstAttribute="top" secondItem="Pz8-9l-CuR" secondAttribute="bottom" constant="16" id="DJD-ms-F0q"/>
                                     <constraint firstItem="Pz8-9l-CuR" firstAttribute="top" secondItem="AOU-T4-EP5" secondAttribute="top" constant="16" id="TYe-S5-2sd"/>
                                     <constraint firstAttribute="trailing" secondItem="Ppe-4g-eXW" secondAttribute="trailing" constant="20" id="UHC-N7-DXO"/>
-                                    <constraint firstAttribute="centerX" secondItem="Pz8-9l-CuR" secondAttribute="centerX" id="WdJ-pQ-pxC"/>
+                                    <constraint firstItem="Pz8-9l-CuR" firstAttribute="leading" secondItem="AOU-T4-EP5" secondAttribute="leading" constant="20" id="Zcl-Pq-Jd4"/>
                                     <constraint firstAttribute="height" constant="500" id="a5g-sj-qhP"/>
                                     <constraint firstItem="Ppe-4g-eXW" firstAttribute="leading" secondItem="AOU-T4-EP5" secondAttribute="leading" constant="20" id="koP-3j-df2"/>
                                     <constraint firstAttribute="bottom" secondItem="Ppe-4g-eXW" secondAttribute="bottom" constant="20" id="lh1-6k-ZIU"/>
+                                    <constraint firstItem="ZDC-f7-LeB" firstAttribute="leading" secondItem="Pz8-9l-CuR" secondAttribute="trailing" constant="2" id="nqg-HH-AwF"/>
                                     <constraint firstAttribute="trailing" secondItem="ZDC-f7-LeB" secondAttribute="trailing" constant="8" id="qoo-BA-OLA"/>
                                     <constraint firstItem="ZDC-f7-LeB" firstAttribute="top" secondItem="AOU-T4-EP5" secondAttribute="top" constant="8" id="tcl-g8-tHT"/>
                                 </constraints>
@@ -340,8 +347,8 @@
                         <outlet property="actionButton" destination="62Z-8t-Qag" id="Cme-Fp-DPL"/>
                         <outlet property="closeButton" destination="ZDC-f7-LeB" id="qoz-QG-8UT"/>
                         <outlet property="contentView" destination="AOU-T4-EP5" id="IaF-rm-9yc"/>
-                        <outlet property="descLabel" destination="4rG-s4-9PE" id="BO7-Bu-yNT"/>
                         <outlet property="descTextView" destination="m6F-e9-Pxo" id="wIB-yt-MJ1"/>
+                        <outlet property="removeButton" destination="djo-bC-V2c" id="P1m-C2-BMw"/>
                         <outlet property="titleLabel" destination="Pz8-9l-CuR" id="xjE-47-AEK"/>
                     </connections>
                 </viewController>

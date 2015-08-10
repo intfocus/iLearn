@@ -20,4 +20,5 @@
 
 // instance methods
 - (CoursePackage *)initWithData:(NSDictionary *)data;
+- (BOOL)canRemove;
 @end

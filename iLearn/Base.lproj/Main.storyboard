@@ -2546,21 +2546,17 @@
                                                     <action selector="actionTouched:" destination="40s-fu-er0" eventType="touchUpInside" id="sLp-zT-nbq"/>
                                                 </connections>
                                             </button>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5N-ca-W7p">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TV4-1H-tAf">
                                                 <rect key="frame" x="12" y="30" width="476" height="172"/>
-                                                <string key="text"> 目标对象: 主要针对新入司三个月内的代表。
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="172" id="9Hh-hG-sLh"/>
+                                                </constraints>
+                                                <string key="text">目标对象: 主要针对新入司三个月内的代表。
 考题范围: 公司核心产品知识。
 题目数量: 随机从题库抽选 50 道单选或多选题。
 配分原则: 每题 2 分。
 考试时间: 50 分钟。</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TV4-1H-tAf">
-                                                <rect key="frame" x="12" y="30" width="476" height="172"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
@@ -2569,14 +2565,10 @@
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="vpV-vc-gsY" secondAttribute="bottom" constant="20" id="36i-dz-46Q"/>
                                             <constraint firstItem="TV4-1H-tAf" firstAttribute="top" secondItem="tEC-9f-j0p" secondAttribute="top" constant="30" id="Nms-2T-rrx"/>
-                                            <constraint firstItem="vpV-vc-gsY" firstAttribute="top" secondItem="L5N-ca-W7p" secondAttribute="bottom" constant="30" id="QgT-fH-6Wb"/>
-                                            <constraint firstItem="L5N-ca-W7p" firstAttribute="top" secondItem="tEC-9f-j0p" secondAttribute="top" constant="30" id="UWH-hM-Vge"/>
                                             <constraint firstItem="TV4-1H-tAf" firstAttribute="leading" secondItem="tEC-9f-j0p" secondAttribute="leading" constant="12" id="eXk-hq-SAT"/>
                                             <constraint firstAttribute="trailing" secondItem="TV4-1H-tAf" secondAttribute="trailing" constant="12" id="fEV-ZN-hlz"/>
-                                            <constraint firstItem="L5N-ca-W7p" firstAttribute="leading" secondItem="tEC-9f-j0p" secondAttribute="leading" constant="12" id="g7Z-jC-ZZd"/>
                                             <constraint firstAttribute="centerX" secondItem="vpV-vc-gsY" secondAttribute="centerX" id="izw-dc-gmu"/>
                                             <constraint firstItem="vpV-vc-gsY" firstAttribute="top" secondItem="TV4-1H-tAf" secondAttribute="bottom" constant="30" id="kxN-1Q-FiM"/>
-                                            <constraint firstAttribute="trailing" secondItem="L5N-ca-W7p" secondAttribute="trailing" constant="12" id="zVp-Jv-bfS"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -2623,7 +2615,6 @@
                         <outlet property="actionButton" destination="vpV-vc-gsY" id="eTW-EE-prj"/>
                         <outlet property="closeButton" destination="ACV-S4-IeR" id="tqW-Ju-57J"/>
                         <outlet property="contentView" destination="Bz1-NZ-b7h" id="Y9T-mv-ebI"/>
-                        <outlet property="descLabel" destination="L5N-ca-W7p" id="BS4-zo-eXJ"/>
                         <outlet property="descTextView" destination="TV4-1H-tAf" id="6Wj-5F-vHf"/>
                         <outlet property="titleLabel" destination="If0-iP-vuv" id="qgx-js-WAy"/>
                     </connections>

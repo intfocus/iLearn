@@ -20,6 +20,7 @@
 
 - (CourseWrap *)initWithData:(NSDictionary *)data;
 - (BOOL)isCourseWrap;
+- (BOOL)canRemove;
 - (NSString *)typeName;
 - (NSArray *)statusLabelText;
 - (NSString *)infoButtonImage;
