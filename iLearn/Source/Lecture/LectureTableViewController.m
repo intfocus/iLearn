@@ -103,8 +103,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     LectureTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCellIdentifier];
     cell.delegate = self;
 
-    cell.statusTitleLabel.text = @"类型";
-    cell.scoreTitleLabel.text  = @"状态";
+    cell.statusTitleLabel.text = @"类型: ";
+    cell.scoreTitleLabel.text  = @"状态: ";
     
     switch ([self.depth intValue]) {
         case 1: {
@@ -271,6 +271,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 
 - (IBAction)actionBack:(id)sender {
+    [sender setEnabled:NO];
+    
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
     
@@ -278,21 +280,22 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     switch (depth) {
         case 2: {
             _dataList = [DataHelper coursePackages:NO];
-            self.listViewController.backButton.hidden = YES;
-            self.listViewController.titleLabel.hidden = NO;
+            self.listViewController.backButton.hidden      = YES;
+            self.listViewController.titleLabel.hidden      = NO;
             self.listViewController.courseNameLabel.hidden = YES;
-        }
             break;
+        }
         case 3: {
             _dataList = [DataHelper coursePackageContent:NO pid:self.lastCoursePackage.ID];
             self.listViewController.courseNameLabel.hidden = NO;
-            self.listViewController.courseNameLabel.text = self.lastCoursePackage.name;
-        }
+            self.listViewController.courseNameLabel.text   = self.lastCoursePackage.name;
             break;
+        }
         default:
             break;
     }
     [self.tableView reloadData];
+    
     // 易混淆点: dispatch_after,tableView#cellForRowAtIndexPath 都需要使用self.depth
     if(depth > 1) {
         self.depth = [NSNumber numberWithInteger:(depth -1)];
@@ -321,6 +324,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         }
         [self.progressHUD removeFromSuperview];
     });
+    
+    [sender setEnabled:YES];
 }
 - (void)didSelectQRCodeButtonOfCell:(ContentTableViewCell*)cell {}
 
@@ -378,17 +383,20 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 [FileUtils removeFile:zipPath];
             }
         }
-        [self.tableView beginUpdates];
         NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
+        [self.tableView beginUpdates];
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView endUpdates];
+    }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
     }
 }
 - (void)connectionManagerDidDownloadExamsForUser:(NSString *)userId withError:(NSError *)error {
     [_progressHUD hide:YES];
     
-    if (!error) {
-        //[self refreshContent];
+    if (error) {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
     }
 }
 
@@ -402,16 +410,21 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         
         [self.tableView reloadData];
     }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
+    }
 }
 
 - (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error {
     
     [_progressHUD hide:YES];
+    
     if (!error) {
         NSString *dbPath = [ExamUtil examDBPath:examId];
         [ExamUtil setExamSubmittedwithDBPath:dbPath];
-        
-        //[self refreshContent];
+    }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
     }
 }
 
@@ -426,15 +439,15 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     switch ([self.depth intValue]) {
         case 1: {
             _dataList = [DataHelper coursePackages:NO];
-            self.listViewController.backButton.hidden = YES;
-            self.listViewController.titleLabel.hidden = NO;
+            self.listViewController.backButton.hidden      = YES;
+            self.listViewController.titleLabel.hidden      = NO;
             self.listViewController.courseNameLabel.hidden = YES;
             break;
         }
         case 2: {
             _dataList = [DataHelper coursePackageContent:NO pid:self.lastCoursePackage.ID];
             self.listViewController.courseNameLabel.hidden = NO;
-            self.listViewController.courseNameLabel.text = self.lastCoursePackage.name;
+            self.listViewController.courseNameLabel.text   = self.lastCoursePackage.name;
             break;
         }
         default:
@@ -480,16 +493,16 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (void)removeCourse {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
     CoursePackageDetail *course = (CoursePackageDetail*)[self.dataList objectAtIndex:indexPath.row];
-    NSString *coursePath = [FileUtils coursePath:course.courseId Ext:course.courseExt];
     
-    if([FileUtils checkFileExist:coursePath isDir:NO]) {
-        [ViewUtils showPopupView:self.view Info:@"删除中..." while:^{
-            [FileUtils removeFile:coursePath];
-            [FileUtils removeFile:[FileUtils courseProgressPath:course.courseId Ext:course.courseExt]];
-        }];
+    if([course isExam]) {
+        [FileUtils removeFile:[FileUtils coursePath:course.examId Ext:@"json"]];
+        [FileUtils removeFile:[FileUtils coursePath:course.examId Ext:@"db"]];
     }
     else {
-        [ViewUtils showPopupView:self.view Info:@"不存在，怎删除！"];
+        [ViewUtils showPopupView:self.view Info:@"删除中..." while:^{
+            [FileUtils removeFile:[FileUtils coursePath:course.courseId Ext:course.courseExt]];
+            [FileUtils removeFile:[FileUtils courseProgressPath:course.courseId Ext:course.courseExt]];
+        }];
     }
 
     [self.tableView beginUpdates];

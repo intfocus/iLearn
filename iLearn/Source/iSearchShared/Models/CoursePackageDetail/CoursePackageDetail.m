@@ -210,8 +210,8 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
 }
 
 - (BOOL)canRemove {
-    return ([self isPDF] || [self isVideo] || [self isHTML]) &&
-           [FileUtils isCourseDownloaded:self.courseId Ext:self.courseExt];
+    return (([self isPDF] || [self isVideo]) && [FileUtils isCourseDownloaded:self.courseId Ext:self.courseExt]) ||
+            ([self isExam] && [self isExamDownload]);
 }
 /**
  *  pdf阅读进度

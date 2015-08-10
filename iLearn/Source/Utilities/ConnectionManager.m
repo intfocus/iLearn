@@ -33,6 +33,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uatui/
         NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@", [ExamUtil examFolderPathInDocument], @"Exam.json.tmp"];
 
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
+        manager.requestSerializer.timeoutInterval = 10.0;
 
         AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
@@ -72,6 +73,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uatui/
         NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@.json.tmp", [ExamUtil examFolderPathInDocument], examId];
 
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
+        manager.requestSerializer.timeoutInterval = 10.0;
 
         AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
@@ -111,12 +113,10 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uatui/
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
         
         AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            NSFileManager *fileMgr = [NSFileManager defaultManager];
             NSError *error;
             
-            [fileMgr removeItemAtPath:outputPath error:nil];
-            [fileMgr moveItemAtPath:outputPathTmp toPath:outputPath error:&error];
+            [FileUtils removeFile:outputPath];
+            [FileUtils move:outputPathTmp to:outputPath];
             
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadCourse:Ext:withError:)]) {
                 [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
@@ -125,8 +125,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uatui/
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Download Course ID: %@ Ext: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", courseID, extName, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
             
-            NSFileManager *fileMgr = [NSFileManager defaultManager];
-            [fileMgr moveItemAtPath:outputPathTmp toPath:outputPath error:&error];
+            [FileUtils removeFile:outputPathTmp];
             
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadCourse:Ext:withError:)]) {
                 [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
