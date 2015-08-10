@@ -14,6 +14,7 @@
 #import "ExamUtil.h"
 #import "FileUtils.h"
 #import "HttpUtils.h"
+#import "ViewUtils.h"
 #import <MBProgressHUD.h>
 #import <SSZipArchive.h>
 #import "ListViewController.h"
@@ -68,7 +69,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (void)viewWillAppear:(BOOL)animated {
     
     [self syncData];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,6 +102,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     LectureTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCellIdentifier];
     cell.delegate = self;
+
+    cell.statusTitleLabel.text = @"类型";
+    cell.scoreTitleLabel.text  = @"状态";
     
     switch ([self.depth intValue]) {
         case 1: {
@@ -142,6 +146,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 
 - (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell {
+    self.currentCell = cell;
     self.showBeginTestInfo = NO;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     id obj = [self.dataList objectAtIndex:[indexPath row]];
@@ -197,8 +202,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                             [self.connectionManager downloadCourse:packageDetail.courseId Ext:packageDetail.courseExt];
                         }
                         else {
-                            self.progressHUD.labelText = @"无网络，不下载";
-                            [self.progressHUD hide:YES afterDelay:3.0];
+                            [self.progressHUD removeFromSuperview];
+                            [ViewUtils showPopupView:self.view Info:@"无网络，不下载"];
                         }
                     }
                     else {
@@ -225,8 +230,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                             [_connectionManager downloadExamWithId:packageDetail.examId];
                         }
                         else {
-                            self.progressHUD.labelText = @"无网络，不下载";
-                            [self.progressHUD hide:YES afterDelay:3.0];
+                            [self.progressHUD removeFromSuperview];
+                            [ViewUtils showPopupView:self.view Info:@"无网络，不下载"];
                         }
                     }
                 }
@@ -373,8 +378,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 [FileUtils removeFile:zipPath];
             }
         }
-        
-        [self.tableView reloadData];
+        [self.tableView beginUpdates];
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView endUpdates];
     }
 }
 - (void)connectionManagerDidDownloadExamsForUser:(NSString *)userId withError:(NSError *)error {
@@ -471,7 +478,23 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 
 - (void)removeCourse {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
+    CoursePackageDetail *course = (CoursePackageDetail*)[self.dataList objectAtIndex:indexPath.row];
+    NSString *coursePath = [FileUtils coursePath:course.courseId Ext:course.courseExt];
     
+    if([FileUtils checkFileExist:coursePath isDir:NO]) {
+        [ViewUtils showPopupView:self.view Info:@"删除中..." while:^{
+            [FileUtils removeFile:coursePath];
+            [FileUtils removeFile:[FileUtils courseProgressPath:course.courseId Ext:course.courseExt]];
+        }];
+    }
+    else {
+        [ViewUtils showPopupView:self.view Info:@"不存在，怎删除！"];
+    }
+
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
 }
 
 @end

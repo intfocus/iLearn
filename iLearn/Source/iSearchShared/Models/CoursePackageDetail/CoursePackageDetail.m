@@ -13,10 +13,10 @@
  *  课程包内容明细
  */
 
-static NSString *const kPackageCourse   = @"PackageCourse";
-static NSString *const kPackageQuestion = @"PackageQuestion";
-static NSString *const kPackageExam     = @"PackageExam";
-static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
+static NSString *const kPackageCourse     = @"PackageCourse";
+static NSString *const kPackageQuestion   = @"PackageQuestion";
+static NSString *const kPackageExam       = @"PackageExam";
+static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
 
 @implementation CoursePackageDetail
 
@@ -79,7 +79,7 @@ static NSString *const kPackageCourseWrap  = @"PackageCourseWrap";
     if([self.type isEqualToString:kPackageCourse]) {
         name = @"课件";
     } else if([self.type isEqualToString:kPackageExam]) {
-        name = @"考试";
+        name = @"练习考";
     } else if([self.type isEqualToString:kPackageQuestion]) {
         name = @"问卷";
     } else {

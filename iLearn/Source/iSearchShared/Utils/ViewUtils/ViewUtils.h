@@ -72,6 +72,8 @@
  *  @param text 提示文字
  */
 + (void)showPopupView:(UIView *)view Info:(NSString*)text;
+
++ (void)showPopupView:(UIView *)view Info:(NSString*)text while:(void(^)(void))executeBlock;
 @end
 
 #endif
