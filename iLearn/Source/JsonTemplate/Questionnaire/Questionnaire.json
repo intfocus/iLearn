@@ -1,88 +1,47 @@
 {
-  "exams": [
-    {
-      "exam_id": 1023,
-      "exam_name": "顺序测试问卷",
-      "submit": 1,
-      "status": 1,
-      "type": 1,
-      "begin": 1435593600,
-      "end": 1438272000,
-      "duration": 6000,
-      "ans_type": 2,
-      "description": "一个测试问卷，内容随便填填。",
-      "location": 0,
-      "password": ""
-    },
-    {
-      "exam_id": 1031,
-      "exam_name": "长度测试问卷二测试问卷二测试问卷二测试问卷二！？？？％",
-      "submit": 1,
-      "status": 1,
-      "type": 1,
-      "begin": 1435708800,
-      "end": 1436918400,
-      "duration": 6000,
-      "ans_type": 2,
-      "description": "第二个测试问卷，内容随便填填填填填填填填填填填填填填填填填填填填填填。",
-      "location": 0,
-      "password": ""
-    },
-    {
-      "exam_id": 1033,
-      "exam_name": "过期已下载问卷测试",
-      "submit": 1,
-      "status": 1,
-      "type": 1,
-      "begin": 1436018460,
-      "end": 1435622400,
-      "duration": 7200,
-      "ans_type": 2,
-      "description": "过期已下载测试问卷，内容随便填填。",
-      "location": 0,
-      "password": ""
-    },
-    {
-      "exam_id": 1039,
-      "exam_name": "未开始问卷测试",
-      "submit": 1,
-      "status": 1,
-      "type": 1,
-      "begin": 1438387200,
-      "end": 1440892800,
-      "duration": 7200,
-      "ans_type": 2,
-      "description": "未开始测试问卷，内容随便填填。",
-      "location": 0,
-      "password": ""
-    },
-    {
-      "exam_id": 1233,
-      "exam_name": "待下载问卷测试",
-      "submit": 0,
-      "status": 1,
-      "type": 0,
-      "begin": 1438387200,
-      "end": 1440892800,
-      "duration": 6000,
-      "ans_type": 2,
-      "description": "待下载问卷测试，内容内容内容内容内容内容内容内容内容。",
-      "location": 0,
-      "password": ""
-    },
-    {
-      "exam_id": 2123,
-      "exam_name": "过期未下载问卷测试",
-      "submit": 0,
-      "status": 1,
-      "type": 0,
-      "begin": 1435593600,
-      "end": 1435672800,
-      "duration": 12000,
-      "ans_type": 2,
-      "description": "过期未下载问卷测试，内容内容内容内容内容内容内容内容内容。",
-      "location": 0,
-      "password": ""
-    }
-  ]
+    "status": 1,
+    "count": 4,
+    "data": [
+             {
+             "TemplateId": 1,
+             "Name": "问卷1",
+             "Desc": "问卷1",
+             "StartTime": "2015/07/29 16:48:30",
+             "EndTime": "2015/08/29 16:48:30",
+             "CreatedUser": 1,
+             "Status": 1,
+             "Id": 1
+             },
+             {
+             "TemplateId": 2,
+             "Name": "问卷2",
+             "Desc": "问卷2",
+             "StartTime": "2015/07/29 16:48:30",
+             "EndTime": "2015/08/29 16:48:30",
+             "CreatedUser": 1,
+             "Status": 1,
+             "Id": 2
+             },
+             {
+             "TemplateId": 3,
+             "Name": "问卷3",
+             "Desc": "问卷3",
+             "StartTime": "2015/07/29 16:48:30",
+             "EndTime": "2015/08/29 16:48:30",
+             "CreatedUser": 1,
+             "Status": 1,
+             "Id": 3
+             },
+             {
+             "TemplateId": 4,
+             "Name": "问卷4",
+             "Desc": "问卷4",
+             "StartTime": "2015/07/29 16:48:30",
+             "EndTime": "2015/08/29 16:48:30",
+             "CreatedUser": 1,
+             "Status": 1,
+             "Id": 4
+             }
+             ],
+    "result": ""
 }

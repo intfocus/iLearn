@@ -20,14 +20,14 @@ NSString *const ExamFolder = @"Exam";
 NSString *const CommonFileName = @"filename";
 
 // Questionnaires
-NSString *const Questionnaires = @"exams";
-NSString *const QuestionnaireId = @"exam_id";
-NSString *const QuestionnaireTitle = @"exam_name";
-NSString *const QuestionnaireDesc = @"description";
-NSString *const QuestionnaireBeginDate = @"begin";
-NSString *const QuestionnaireEndDate = @"end";
-NSString *const QuestionnaireQuestionnaireStart = @"questionnaire_start";;
-NSString *const QuestionnaireQuestionnaireEnd = @"questionnaire_end";;
+NSString *const Questionnaires = @"data";
+NSString *const QuestionnaireId = @"Id";
+NSString *const QuestionnaireTitle = @"Name";
+NSString *const QuestionnaireDesc = @"Desc";
+NSString *const QuestionnaireBeginDate = @"StartTime";
+NSString *const QuestionnaireEndDate = @"EndTime";
+NSString *const QuestionnaireQuestionnaireStart = @"questionnaire_start";
+NSString *const QuestionnaireQuestionnaireEnd = @"questionnaire_end";
 NSString *const QuestionnaireStatus = @"status";
 NSString *const QuestionnaireCached = @"exist_in_local";
 NSString *const QuestionnaireType = @"type";
@@ -38,13 +38,24 @@ NSString *const QuestionnaireOpened = @"opened";
 NSString *const QuestionnaireUserId = @"user_id";
 NSString *const QuestionnaireFinished = @"finished";
 
-NSString *const QuestionnaireQuestions = @"questions";
-NSString *const QuestionnaireQuestionId = @"id";
-NSString *const QuestionnaireQuestionTitle = @"description";
-NSString *const QuestionnaireQuestionType = @"type";
+NSString *const QuestionnaireQuestions = @"data";
+NSString *const QuestionnaireQuestionId = @"ProblemId";
+NSString *const QuestionnaireQuestionTitle = @"ProblemDesc";
+NSString *const QuestionnaireQuestionType = @"ProblemType";
 NSString *const QuestionnaireQuestionNote = @"memo";
-NSString *const QuestionnaireQuestionFilledAnswer = @"filled_answer";
-NSString *const QuestionnaireQuestionAnswered = @"answered";
+NSString *const QuestionnaireQuestionFilledAnswer = @"ProblemFilled";
+NSString *const QuestionnaireQuestionAnswered = @"ProblemSelected";
+
+NSString *const QuestionnaireQuestionGroup = @"GroupName";
+NSString *const QuestionnaireQuestionSelectA = @"ProblemSelectA";
+NSString *const QuestionnaireQuestionSelectB = @"ProblemSelectB";
+NSString *const QuestionnaireQuestionSelectC = @"ProblemSelectC";
+NSString *const QuestionnaireQuestionSelectD = @"ProblemSelectD";
+NSString *const QuestionnaireQuestionSelectE = @"ProblemSelectE";
+NSString *const QuestionnaireQuestionSelectF = @"ProblemSelectF";
+NSString *const QuestionnaireQuestionSelectG = @"ProblemSelectG";
+NSString *const QuestionnaireQuestionSelectH = @"ProblemSelectH";
+NSString *const QuestionnaireQuestionSelectI = @"ProblemSelectI";
 
 NSString *const QuestionnaireQuestionResult = @"result";
 NSString *const QuestionnaireQuestionResultId = @"problem_id";

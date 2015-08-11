@@ -202,8 +202,7 @@ static const BOOL inDeveloping = YES;
 + (NSString*)descFromContent:(NSDictionary*)content
 {
     // Exam start date
-    NSNumber *start = content[QuestionnaireBeginDate];
-    NSDate *beginDate = [NSDate dateWithTimeIntervalSince1970:[start longLongValue]];
+    NSDate *beginDate = [NSDate dateWithTimeIntervalSince1970:[self startDateFromContent:content]];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY/MM/dd HH:mm"];
     NSString *beginTimeString = [formatter stringFromDate:beginDate];
@@ -216,12 +215,24 @@ static const BOOL inDeveloping = YES;
 
 + (long long)startDateFromContent:(NSDictionary*)content
 {
-    return [content[QuestionnaireBeginDate] longLongValue];
+    NSString *beginDateString = content[QuestionnaireBeginDate];
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY/MM/dd HH:mm:ss"];
+    NSDate *date = [formatter dateFromString:beginDateString];
+
+    return [date timeIntervalSince1970];
 }
 
 + (long long)endDateFromContent:(NSDictionary*)content
 {
-    return [content[QuestionnaireEndDate] longLongValue];
+    NSString *endDateString = content[QuestionnaireEndDate];
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY/MM/dd HH:mm:ss"];
+    NSDate *date = [formatter dateFromString:endDateString];
+
+    return [date timeIntervalSince1970];
 }
 
 + (void)parseContentIntoDB:(NSDictionary*)content
@@ -252,12 +263,12 @@ static const BOOL inDeveloping = YES;
 
 + (void)parseInfoOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (questionnaire_id INTEGER PRIMARY KEY, questionnaire_name TEXT, submit INTEGER, status INTEGER, type INTEGER, location INTEGER, begin INTEGER, end INTEGER, questionnaire_start INTEGER, questionnaire_end INTEGER, ans_type INTEGER, description TEXT, finished INTEGER)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (questionnaire_id INTEGER PRIMARY KEY, questionnaire_name TEXT, submit INTEGER, status INTEGER, begin TEXT, end TEXT, questionnaire_start INTEGER, questionnaire_end INTEGER, description TEXT, finished INTEGER)"];
 
     NSDate *now = [NSDate date];
     long long nowInteger = [now timeIntervalSince1970];
 
-    [db executeUpdate:@"INSERT INTO info (questionnaire_id, questionnaire_name, submit, status, type, location, begin, end, questionnaire_start, ans_type, description, finished) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[QuestionnaireId], content[QuestionnaireTitle], @0, content[QuestionnaireStatus], content[QuestionnaireType], content[QuestionnaireLocation], content[QuestionnaireBeginDate], content[QuestionnaireEndDate], @(nowInteger), content[QuestionnaireAnsType], content[QuestionnaireDesc], @0];
+    [db executeUpdate:@"INSERT INTO info (questionnaire_id, questionnaire_name, submit, status, begin, end, questionnaire_start, description, finished) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", content[QuestionnaireId], content[QuestionnaireTitle], @0, content[QuestionnaireStatus], content[QuestionnaireBeginDate], content[QuestionnaireEndDate], @(nowInteger), content[QuestionnaireDesc], @0];
 }
 
 + (void)parseQuestionsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
@@ -372,13 +383,10 @@ static const BOOL inDeveloping = YES;
         content[QuestionnaireId] = @([result intForColumn:@"questionnaire_id"]);
         content[QuestionnaireTitle] = [result stringForColumn:@"questionnaire_name"];
         content[QuestionnaireStatus] = @([result intForColumn:@"status"]);
-        content[QuestionnaireType] = @([result intForColumn:@"type"]);
-        content[QuestionnaireLocation] = @([result intForColumn:@"location"]);
-        content[QuestionnaireBeginDate] = @([result longLongIntForColumn:@"begin"]);
-        content[QuestionnaireEndDate] = @([result longLongIntForColumn:@"end"]);
+        content[QuestionnaireBeginDate] = [result stringForColumn:@"begin"];
+        content[QuestionnaireEndDate] = [result stringForColumn:@"end"];
         content[QuestionnaireQuestionnaireStart] = @([result longLongIntForColumn:@"questionnaire_start"]);
         content[QuestionnaireQuestionnaireEnd] = @([result longLongIntForColumn:@"questionnaire_end"]);
-        content[QuestionnaireAnsType] = @([result intForColumn:@"ans_type"]);
         content[QuestionnaireDesc] = [result stringForColumn:@"description"];
         content[QuestionnaireSubmitted] = @([result intForColumn:@"submit"]);
         content[QuestionnaireFinished] = @([result intForColumn:@"finished"]);

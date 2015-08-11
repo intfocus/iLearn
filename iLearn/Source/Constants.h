@@ -87,6 +87,17 @@ extern NSString *const QuestionnaireQuestionNote;
 extern NSString *const QuestionnaireQuestionFilledAnswer;
 extern NSString *const QuestionnaireQuestionAnswered;
 
+extern NSString *const QuestionnaireQuestionGroup;
+extern NSString *const QuestionnaireQuestionSelectA;
+extern NSString *const QuestionnaireQuestionSelectB;
+extern NSString *const QuestionnaireQuestionSelectC;
+extern NSString *const QuestionnaireQuestionSelectD;
+extern NSString *const QuestionnaireQuestionSelectE;
+extern NSString *const QuestionnaireQuestionSelectF;
+extern NSString *const QuestionnaireQuestionSelectG;
+extern NSString *const QuestionnaireQuestionSelectH;
+extern NSString *const QuestionnaireQuestionSelectI;
+
 extern NSString *const QuestionnaireQuestionResult;
 extern NSString *const QuestionnaireQuestionResultId;
 extern NSString *const QuestionnaireQuestionResultType;

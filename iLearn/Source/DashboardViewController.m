@@ -82,9 +82,6 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
     _registrationButton.enabled = NO;
     _lectureButton.enabled = NO;
-    _questionnaireButton.enabled = NO;
-    _settingsButton.enabled = YES;
-    
 
     // Setup label contents
     self.title = NSLocalizedString(@"DASHBOARD_TITLE", nil);
