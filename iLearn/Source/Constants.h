@@ -119,6 +119,9 @@ extern NSString *const ExamPassword;
 extern NSString *const ExamScore;
 extern NSString *const ExamOpened;
 extern NSString *const ExamUserId;
+extern NSString *const ExamAllowTimes;
+extern NSString *const ExamSubmitTimes;
+extern NSString *const ExamQualify;
 
 extern NSString *const ExamQuestions;
 extern NSString *const ExamQuestionId;

@@ -12,6 +12,9 @@
 #import "QuestionnaireTableViewController.h"
 #import "NotificationViewController.h"
 
+#import "ExamTableViewController.h"
+#import "LectureTableViewController.h"
+
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 @interface ListViewController ()
@@ -54,7 +57,8 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     // Do any additional setup after loading the view, typically from a nib.
 
     _registrationButton.enabled = NO;
-    _lectureButton.enabled = NO;
+    _lectureButton.enabled = YES;
+    _questionnaireButton.enabled = YES;
     _settingsButton.enabled = NO;
 
     // Setup avatar image view
@@ -94,10 +98,16 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)switchContentViewToViewController
 {
     ContentViewController<ContentViewProtocal> *newContentViewController;
-
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main"
+                                                         bundle:nil];
     switch (_listType) {
         case ListViewTypeExam:
-            newContentViewController = _examTableViewController;
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
+            newContentViewController.listViewController = self;
+            break;
+        case ListViewTypeLecture:
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"LectureTableViewController"];
+            newContentViewController.listViewController = self;
             break;
         case ListViewTypeQuestionnaire:
             newContentViewController = _questionnaireTableViewController;

@@ -22,11 +22,11 @@ static NSString *const kShowDetailSegue = @"showDetailPage";
 static NSString *const kShowPasswordSegue = @"showPasswordPage";
 static NSString *const kShowScoreQRCode = @"showScoreQRCode";
 
-static NSString *const kExamCellIdentifier = @"ExamCell";
+static NSString *const kExamTableViewCellIdentifier = @"ExamTableViewCell";
 
 static const NSInteger kMinScanInterval = 3;
 
-@interface ExamTableViewController ()
+@interface ExamTableViewController () <DetailViewControllerProtocol>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) ConnectionManager *connectionManager;
@@ -42,6 +42,9 @@ static const NSInteger kMinScanInterval = 3;
 @property (strong, nonatomic) NSString *lastScannedResult;
 @property (assign, nonatomic) long long lastScanDate;
 @property (weak, nonatomic) UIAlertView *lastAlertView;
+
+@property (assign, nonatomic) BOOL showBeginTestInfo;
+@property (nonatomic) ContentTableViewCell *currentCell;
 
 @end
 
@@ -78,6 +81,14 @@ static const NSInteger kMinScanInterval = 3;
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
         detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
         detailVC.descString = [ExamUtil descFromContent:sender];
+        if (self.showBeginTestInfo) {
+            detailVC.delegate = self;
+            detailVC.shownFromBeginTest = self.showBeginTestInfo;
+        }
+        else {
+            detailVC.shownFromBeginTest = self.showBeginTestInfo;
+        }
+        
     }
     else if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
 
@@ -179,7 +190,7 @@ static const NSInteger kMinScanInterval = 3;
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ExamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kExamCellIdentifier];
+    ExamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kExamTableViewCellIdentifier];
     cell.delegate = self;
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
@@ -197,6 +208,7 @@ static const NSInteger kMinScanInterval = 3;
     cell.scoreTitleLabel.hidden = YES;
     cell.scoreLabel.hidden = YES;
     cell.qrCodeButton.hidden = YES;
+    cell.actionButton.enabled = YES;
 
     if ([content[ExamCached] isEqualToNumber:@1]) {
 
@@ -224,13 +236,37 @@ static const NSInteger kMinScanInterval = 3;
                     NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
 
                     scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
-                    [ExamUtil generateUploadJsonFromDBPath:dbPath];
-                    // NSLog(@"score: %lld", (long long)scoreInt);
+
+                    NSInteger qualityLine = [content[ExamQualify] integerValue];
+                    NSInteger allowTimes = [content[ExamAllowTimes] integerValue];
+                    NSInteger submitTimes = [content[ExamSubmitTimes] integerValue];
+                    NSInteger newSubmitTimes = submitTimes + 1;
+
+                    [ExamUtil updateSubmitTimes:newSubmitTimes ofDBPath:dbPath];
+
+                    ExamTypes examType = [content[ExamType] integerValue];
+
+                    if (examType == ExamTypesFormal &&
+                        scoreInt < qualityLine &&
+                        newSubmitTimes < allowTimes)
+                    { // Should test again
+
+                        [ExamUtil resetExamStatusOfDBPath:dbPath];
+                        scoreInt = -1;
+                        examStartDate = nil;
+                    }
+                    else {
+                        if (newSubmitTimes > 1) { // Has submitted, the score should be just qualified
+                            scoreInt = qualityLine;
+                            [ExamUtil updateExamScore:scoreInt ofDBPath:dbPath];
+                        }
+
+                        [ExamUtil generateUploadJsonFromDBPath:dbPath];
+                    }
                 }
             }
         }
 
-        cell.actionButton.enabled = YES;
 
         if ([startDate laterDate:now] == startDate) { // Exam is not started yet
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_STARTED", nil);
@@ -261,7 +297,10 @@ static const NSInteger kMinScanInterval = 3;
                     cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_SUBMITTED", nil);
                 }
                 else {
-                    cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_SUBMITTED", nil);
+                    NSMutableAttributedString *statusLabelString = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"LIST_STATUS_NOT_SUBMITTED", nil)];
+                    NSRange statusLabelRange = {0,[statusLabelString length]};
+                    [statusLabelString addAttributes:@{NSForegroundColorAttributeName: ILDarkRed} range:statusLabelRange];
+                    cell.statusLabel.attributedText = statusLabelString;
                     cell.qrCodeButton.hidden = NO;
                 }
                 [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil) forState:UIControlStateNormal];
@@ -320,10 +359,11 @@ static const NSInteger kMinScanInterval = 3;
 
 - (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell
 {
+    self.showBeginTestInfo = NO;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
-    NSLog(@"didSelectInfoButtonOfCell:");
-    NSLog(@"indexPath.row: %ld", (long)indexPath.row);
+    //NSLog(@"didSelectInfoButtonOfCell:");
+    //NSLog(@"indexPath.row: %ld", (long)indexPath.row);
 
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
     [self performSegueWithIdentifier:kShowDetailSegue sender:content];
@@ -331,6 +371,8 @@ static const NSInteger kMinScanInterval = 3;
 
 - (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell
 {
+    self.showBeginTestInfo = YES;
+    self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
     NSLog(@"didSelectActionButtonOfCell:");
@@ -344,20 +386,14 @@ static const NSInteger kMinScanInterval = 3;
             [self downloadExamId:examId];
         }
         else if (cell.actionButtonType == ContentTableViewCellActionView) {
-
-        NSNumber *examType = content[ExamType];
-        NSNumber *examLocation = content[ExamLocation];
-        NSNumber *examOpened = content[ExamOpened];
-
-        if ([examType isEqualToNumber:@(ExamTypesFormal)] &&
-            [examLocation isEqualToNumber:@(ExamLocationsOnsite)] &&
-            ![examOpened isEqualToNumber:@1]) {
-
-            [self performSegueWithIdentifier:kShowPasswordSegue sender:content];
-        }
-        else {
-            [self enterExamPageForContent:content];
-        }
+            
+            ExamTableViewCell *examTVC = (ExamTableViewCell *)cell;
+            if ([examTVC.actionButton.titleLabel.text isEqual:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil)]) {
+                [self beginTest: content];
+            }
+            else {
+                [self performSegueWithIdentifier:kShowDetailSegue sender:content];
+            }
     }
 }
 
@@ -515,6 +551,30 @@ static const NSInteger kMinScanInterval = 3;
     }
     [self syncScannedExamResults];
     
+}
+
+- (void)beginTest:(NSDictionary *)content {
+    NSNumber *examType = content[ExamType];
+    NSNumber *examLocation = content[ExamLocation];
+    NSNumber *examOpened = content[ExamOpened];
+    
+    if ([examType isEqualToNumber:@(ExamTypesFormal)] &&
+        [examLocation isEqualToNumber:@(ExamLocationsOnsite)] &&
+        ![examOpened isEqualToNumber:@1]) {
+        
+        [self performSegueWithIdentifier:kShowPasswordSegue sender:content];
+    }
+    else {
+        [self enterExamPageForContent:content];
+    }
+}
+
+#pragma mark - DetailViewControllerProtocol
+- (void)begin{
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
+    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+    [self beginTest:content];
 }
 
 @end

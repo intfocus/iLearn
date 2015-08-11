@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "LicenseUtil.h"
 #import "FMDB.h"
+#import "ExtendNSLogFunctionality.h"
 
 static const BOOL inDeveloping = NO;
 
@@ -66,7 +67,19 @@ static const BOOL inDeveloping = NO;
         }
     }
 
-    return exams;
+//    NSLog(@"exams: %@", [self jsonStringOfContent:exams]);
+
+    /**
+     * add#sort jay@2015/07/11
+     * 原因:
+     *     未排序，会导致考试列表（内容不变）每次进入app[考试中心],显示顺序都不一致
+     * 排序:
+     *     以考试结束时间降序，再以考试标题升序
+     */
+    NSSortDescriptor *firstSort  = [[NSSortDescriptor alloc] initWithKey:ExamEndDate ascending:NO];
+    NSSortDescriptor *secondSort = [[NSSortDescriptor alloc] initWithKey:ExamTitle ascending:YES];
+    NSArray *sortExams = [exams sortedArrayUsingDescriptors:[NSArray arrayWithObjects:firstSort, secondSort,nil]];
+    return sortExams;
 }
 
 + (NSArray*)loadExamsFromCache
@@ -269,12 +282,40 @@ static const BOOL inDeveloping = NO;
     }
     else {
         NSLog(@"DB file already exist: %@", dbPath);
+
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            FMResultSet *result = [db executeQuery:@"SELECT * FROM info LIMIT 1"];
+
+            if ([result next]) {
+
+                NSDate *now = [NSDate date];
+
+                if ([result columnIsNull:@"exam_start"]) {
+                    long long nowInteger = [now timeIntervalSince1970];
+                    [db executeUpdate:@"UPDATE info SET exam_start=?", @(nowInteger)];
+                }
+
+                if ([result columnIsNull:@"exam_end"]) {
+
+                    long long duration = [result longLongIntForColumn:@"duration"];
+                    NSDate *deadline = [now dateByAddingTimeInterval:duration];
+
+                    long long deadlineInteger = [deadline timeIntervalSince1970];
+                    [db executeUpdate:@"UPDATE info SET exam_end=?", @(deadlineInteger)];
+                }
+            }
+
+            [db close];
+        }
     }
 }
 
 + (void)parseInfoOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, location INTEGER, begin INTEGER, end INTEGER, duration INTEGER, exam_start INTEGER, exam_end INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS info (exam_id INTEGER PRIMARY KEY, exam_name TEXT, submit INTEGER, status INTEGER, type INTEGER, location INTEGER, begin INTEGER, end INTEGER, duration INTEGER, exam_start INTEGER, exam_end INTEGER, ans_type INTEGER, description TEXT, score INTEGER DEFAULT -1, password TEXT, allow_times INTEGER DEFAULT 1, submit_times INTEGER DEFAULT 0, qualify_percent INTEGER DEFAULT -1)"];
 
     long long duration = [content[ExamDuration] longLongValue];
 
@@ -284,12 +325,12 @@ static const BOOL inDeveloping = NO;
     long long nowInteger = [now timeIntervalSince1970];
     long long deadlineInteger = [deadline timeIntervalSince1970];
 
-    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, location, begin, end, duration, exam_start, exam_end, ans_type, description, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], content[ExamLocation], content[ExamBeginDate], content[ExamEndDate], content[ExamDuration], @(nowInteger), @(deadlineInteger), content[ExamAnsType], content[ExamDesc], content[ExamPassword]];
+    [db executeUpdate:@"INSERT INTO info (exam_id, exam_name, submit, status, type, location, begin, end, duration, exam_start, exam_end, ans_type, description, password, allow_times, qualify_percent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", content[ExamId], content[ExamTitle], @0, content[ExamStatus], content[ExamType], content[ExamLocation], content[ExamBeginDate], content[ExamEndDate], content[ExamDuration], @(nowInteger), @(deadlineInteger), content[ExamAnsType], content[ExamDesc], content[ExamPassword], content[ExamAllowTimes], content[ExamQualify]];
 }
 
 + (void)parseSubjectsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS subject (id INTEGER PRIMARY KEY AUTOINCREMENT, subject_id INTEGER, desc TEXT, level INTEGER, type INTEGER, score FLOAT, memo TEXT, answer TEXT, selected_answer TEXT)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS subject (id INTEGER PRIMARY KEY AUTOINCREMENT, subject_id INTEGER, desc TEXT, level INTEGER, type INTEGER, score FLOAT, memo TEXT default '', answer TEXT, selected_answer TEXT)"];
 
     [db executeUpdate:@"CREATE TABLE IF NOT EXISTS option (id INTEGER PRIMARY KEY AUTOINCREMENT, option_id INTEGER, subject_id INTEGER, seq INTEGER, desc TEXT, selected INTEGER DEFAULT 0)"];
 
@@ -318,7 +359,22 @@ static const BOOL inDeveloping = NO;
     NSArray *answers = subjectContent[ExamQuestionAnswer];
     NSString *answer = [answers componentsJoinedByString:@"+"];
 
-    [db executeUpdate:@"INSERT INTO subject (subject_id, desc, level, type, score, memo, answer) VALUES (?, ?, ?, ?, ?, ?, ?)", subjectId, subjectContent[ExamQuestionTitle], subjectContent[ExamQuestionLevel], subjectContent[ExamQuestionType], scorePerSubject, subjectContent[ExamQuestionNote], answer];
+    /**
+     *  bug#fix jay@2015/07/11
+     *  起因:
+     *      服务器端创建考题，memo字段为空时，app加载考试界面时，会因NSDictionary#memo赋值nil而crash
+     *  尝试:
+     *      数据库表subject#memo默认值为空字符串，无效，因为insert时赋值为nil起效
+     *  解决:
+     *      只能在insert时判断是否为nil,才能避免crash
+     */
+    [db executeUpdate:@"INSERT INTO subject (subject_id, desc, level, type, score, memo, answer) VALUES (?, ?, ?, ?, ?, ?, ?)", subjectId,
+     (NSString *)psd(subjectContent[ExamQuestionTitle], @"NoSet"),
+     subjectContent[ExamQuestionLevel],
+     subjectContent[ExamQuestionType],
+     scorePerSubject,
+     (NSString *)psd(subjectContent[ExamQuestionNote], @""),
+     answer];
 
 
     NSMutableArray *options = [subjectContent[ExamQuestionOptions] mutableCopy];
@@ -407,14 +463,21 @@ static const BOOL inDeveloping = NO;
         content[ExamBeginDate] = @([result longLongIntForColumn:@"begin"]);
         content[ExamEndDate] = @([result longLongIntForColumn:@"end"]);
         content[ExamDuration] = @([result longLongIntForColumn:@"duration"]);
-        content[ExamExamStart] = @([result longLongIntForColumn:@"exam_start"]);
-        content[ExamExamEnd] = @([result longLongIntForColumn:@"exam_end"]);
+        if (![result columnIsNull:@"exam_start"]) {
+            content[ExamExamStart] = @([result longLongIntForColumn:@"exam_start"]);
+        }
+        if (![result columnIsNull:@"exam_end"]) {
+            content[ExamExamEnd] = @([result longLongIntForColumn:@"exam_end"]);
+        }
         content[ExamAnsType] = @([result intForColumn:@"ans_type"]);
         content[ExamDesc] = [result stringForColumn:@"description"];
         content[ExamPassword] = [result stringForColumn:@"password"];
         content[ExamScore] = @([result intForColumn:@"score"]);
         content[ExamSubmitted] = @([result intForColumn:@"submit"]);
         content[ExamOpened] = @(1);
+        content[ExamAllowTimes] = @([result intForColumn:@"allow_times"]);
+        content[ExamSubmitTimes] = @([result intForColumn:@"submit_times"]);
+        content[ExamQualify] = @([result intForColumn:@"qualify_percent"]);
     }
 
     return content;
@@ -436,7 +499,11 @@ static const BOOL inDeveloping = NO;
         content[ExamQuestionTitle] = [result stringForColumn:@"desc"];
         content[ExamQuestionLevel] = @([result intForColumn:@"level"]);
         content[ExamQuestionType] = @([result intForColumn:@"type"]);
+        NSLog(@"%@", subjectId);
+        NSLog(@"%@po", [result stringForColumn:@"memo"]);
+        NSLog(@"%i", [result stringForColumn:@"memo"] == nil);
         content[ExamQuestionNote] = [result stringForColumn:@"memo"];
+        
 
         NSString *selecteAnswer = [result stringForColumn:@"selected_answer"];
 
@@ -536,6 +603,33 @@ static const BOOL inDeveloping = NO;
     }
 }
 
++ (void)resetExamStatusOfDBPath:(NSString*)dbPath
+{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            [db beginTransaction];
+            [db executeUpdate:@"UPDATE info SET exam_start=NULL, exam_end=NULL, score=-1"];
+            [db executeUpdate:@"UPDATE subject SET selected_answer=NULL"];
+            [db executeUpdate:@"UPDATE option SET selected=0"];
+            [db commit];
+
+            [db close];
+        }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        NSLog(@"No DB file at the path: %@", dbPath);
+    }
+}
+
 + (NSInteger)examScoreOfDBPath:(NSString*)dbPath
 {
     NSInteger score = -1;
@@ -566,20 +660,62 @@ static const BOOL inDeveloping = NO;
     return score;
 }
 
++ (void)updateExamScore:(NSInteger)score ofDBPath:(NSString*)dbPath
+{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            [db executeUpdate:@"UPDATE info SET score=?", @(score)];
+            [db close];
+        }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        //        NSLog(@"No DB file at the path: %@", dbPath);
+    }
+}
+
 + (NSInteger)calculateExamScoreOfDB:(FMDatabase*)db
 {
     [self updateSelectedAnswersOfSubjectsInDB:db];
-
-    NSInteger nowInteger = [[NSDate date] timeIntervalSince1970];
 
     NSInteger totalSubjectCount = [db intForQuery:@"SELECT COUNT(*) FROM subject"];
     NSInteger correctCount = [db intForQuery:@"SELECT COUNT(*) FROM subject WHERE answer=selected_answer"];
 
     NSInteger score = (float)correctCount/(float)totalSubjectCount * 100.0 + 0.5;
 
-    [db executeUpdate:@"UPDATE info SET score=?, end=?", @(score), @(nowInteger)];
+    [db executeUpdate:@"UPDATE info SET score=?", @(score)];
 
     return score;
+}
+
++ (void)updateSubmitTimes:(NSInteger)submitTimes ofDBPath:(NSString*)dbPath
+{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+
+            [db executeUpdate:@"UPDATE info SET submit_times=?", @(submitTimes)];
+            [db close];
+        }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        //        NSLog(@"No DB file at the path: %@", dbPath);
+    }
 }
 
 + (void)updateSelectedAnswersOfSubjectsInDB:(FMDatabase*)db
