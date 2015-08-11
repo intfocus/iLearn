@@ -182,10 +182,10 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (void)adjustSelectedItemInPanel
 {
-    _examView.backgroundColor = [UIColor clearColor];
+    _examView.backgroundColor          = [UIColor clearColor];
     _questionnaireView.backgroundColor = [UIColor clearColor];
-    _lectureView.backgroundColor = [UIColor clearColor];
-    _registrationView.backgroundColor = [UIColor clearColor];
+    _lectureView.backgroundColor       = [UIColor clearColor];
+    _registrationView.backgroundColor  = [UIColor clearColor];
     
     switch (_listType) {
         case ListViewTypeExam:
@@ -268,7 +268,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 }
 
 - (IBAction)scanButtonTouched:(id)sender {
-    
     if ([_contentViewController respondsToSelector:@selector(scanQRCode)]) {
         [_contentViewController scanQRCode];
     }
@@ -399,5 +398,18 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
         NSLog(@"dismiss NotificationDetailView.");
     }];
 }
+#pragma mark - supportedInterfaceOrientationsForWindow
 
+-(BOOL)prefersStatusBarHidden{
+    return NO;
+}
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
+}
 @end

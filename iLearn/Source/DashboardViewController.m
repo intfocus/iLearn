@@ -436,4 +436,14 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     }];
 }
 
+#pragma mark - supportedInterfaceOrientationsForWindow
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
+}
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationLandscapeLeft | UIInterfaceOrientationLandscapeRight;
+}
 @end

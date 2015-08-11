@@ -39,6 +39,11 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
      */
     self.dataList = [[NSMutableArray alloc] init];
     self.user     = [[User alloc] init];
+    
+    NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
+    [self.dataList addObject:@[@"用户名称", self.user.name]];
+    [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
+    [self.dataList addObject:@[@"版本更新", @""]];
     /**
      *  控件事件
      */
@@ -48,20 +53,6 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
                                                                    action:@selector(actionBtnClose:)];
     self.navigationItem.rightBarButtonItem = navBtnClose;
     self.navigationItem.title = @"设置";
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    if(!self.user) {
-        self.user = [[User alloc] init];
-    }
-    NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
-    
-    [self.dataList addObject:@[@"用户名称", self.user.name]];
-    [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
-    [self.dataList addObject:@[@"版本更新", @""]];
-    //[self.dataList addObject:@[@"常规设置", @""]];
 }
 
 #pragma mark - controls action

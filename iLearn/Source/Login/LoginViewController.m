@@ -149,9 +149,9 @@
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:10.0];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
-        self.cookieValue = @"E99658603";
-        [self actionOutsideLoginSuccessfully];
-        return;
+//        self.cookieValue = @"E99658603";
+//        [self actionOutsideLoginSuccessfully];
+//        return;
         
         [self actionClearCookies];
         [self actionOutsideLogin];
@@ -213,7 +213,8 @@
         [self.view sendSubviewToBack:self.labelLoginTitle];
         [self.view sendSubviewToBack:self.webViewLogin];
         [self.view sendSubviewToBack:self.btnNavBack];
-    } else {
+    }
+    else {
         [self.view bringSubviewToFront:self.labelLoginTitle];
         [self.view bringSubviewToFront:self.webViewLogin];
         [self.view bringSubviewToFront:self.btnNavBack];
