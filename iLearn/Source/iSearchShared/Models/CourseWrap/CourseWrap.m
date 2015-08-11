@@ -32,7 +32,7 @@
 }
 
 - (NSArray *)statusLabelText {
-    return @[@"todo", @"进入"];
+    return @[@"TODO", @"进入"];
 }
 
 - (NSString *)infoButtonImage {

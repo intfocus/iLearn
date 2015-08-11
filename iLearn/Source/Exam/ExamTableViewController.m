@@ -14,6 +14,7 @@
 #import "ScoreQRCodeViewController.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
+#import "ViewUtils.h"
 #import "UIImage+MDQRCode.h"
 #import <MBProgressHUD.h>
 #import "ListViewController.h"
@@ -546,6 +547,9 @@ static const NSInteger kMinScanInterval = 3;
     if (!error) {
         [self refreshContent];
     }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
+    }
 }
 
 - (void)connectionManagerDidDownloadExam:(NSString *)examId withError:(NSError *)error
@@ -554,6 +558,9 @@ static const NSInteger kMinScanInterval = 3;
     
     if (!error) {
         [self refreshContent];
+    }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
     }
 }
 
@@ -565,6 +572,9 @@ static const NSInteger kMinScanInterval = 3;
         
         [self refreshContent];
     }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
+    }
     [self syncExamResults];
 }
 
@@ -572,6 +582,9 @@ static const NSInteger kMinScanInterval = 3;
 {
     if (!error) {
         [ExamUtil setScannedResultSubmitted:result];
+    }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
     }
     [self syncScannedExamResults];
     

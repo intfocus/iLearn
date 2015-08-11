@@ -19,5 +19,6 @@
 
 - (void)popupNotificationDetailView:(NSDictionary *)notification;
 - (void)dimmissPopupNotificationDetailView;
+- (void)refreshContentView;
 
 @end

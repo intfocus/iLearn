@@ -105,6 +105,13 @@
     [self.webView loadHTMLString:html baseURL:nil];
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+
+    NSString *html = [NSString stringWithFormat:@"<html><body>收到IOS系统内存警告，请关闭该界面，重新打开，谢谢</body></html>"];
+    [self.webView loadHTMLString:html baseURL:nil];
+}
+
 - (IBAction)actionDismiss:(id)sender {
     NSDictionary *dict;
     if([self.packageDetail isPDF]) {
@@ -122,7 +129,9 @@
     }
     [self.packageDetail recordProgress:dict];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        self.webView = nil;
+    }];
 }
 
 /**

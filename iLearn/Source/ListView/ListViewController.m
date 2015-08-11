@@ -274,6 +274,12 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     }
 }
 
+- (IBAction)backButtonTouched:(id)sender {
+    if ([_contentViewController respondsToSelector:@selector(actionBack:)]) {
+        [_contentViewController actionBack:sender];
+    }
+}
+
 
 /**
  *  点击头像事件

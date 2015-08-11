@@ -50,11 +50,14 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
     NSString *name;
     if([self.type isEqualToString:kPackageCourse]) {
         name = self.courseName;
-    } else if([self.type isEqualToString:kPackageExam]) {
+    }
+    else if([self.type isEqualToString:kPackageExam]) {
         name = self.examName;
-    } else if([self.type isEqualToString:kPackageQuestion]) {
-        name = @"Question todo";
-    } else {
+    }
+    else if([self.type isEqualToString:kPackageQuestion]) {
+        name = @"Question TODO";
+    }
+    else {
         name = @"unkown type";
     }
     return name;
@@ -64,11 +67,14 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
     NSString *desc;
     if([self.type isEqualToString:kPackageCourse]) {
         desc = self.courseDesc;
-    } else if([self.type isEqualToString:kPackageExam]) {
+    }
+    else if([self.type isEqualToString:kPackageExam]) {
         desc = self.examDesc;
-    } else if([self.type isEqualToString:kPackageQuestion]) {
+    }
+    else if([self.type isEqualToString:kPackageQuestion]) {
         desc = @"Question todo";
-    } else {
+    }
+    else {
         desc = @"unkown type";
     }
     return desc;
@@ -78,11 +84,14 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
     NSString *name;
     if([self.type isEqualToString:kPackageCourse]) {
         name = @"课件";
-    } else if([self.type isEqualToString:kPackageExam]) {
+    }
+    else if([self.type isEqualToString:kPackageExam]) {
         name = @"练习考";
-    } else if([self.type isEqualToString:kPackageQuestion]) {
+    }
+    else if([self.type isEqualToString:kPackageQuestion]) {
         name = @"问卷";
-    } else {
+    }
+    else {
         name = @"unkown type";
     }
     return name;

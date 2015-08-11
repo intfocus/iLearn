@@ -14,6 +14,7 @@
 
 - (void)syncData;
 - (void)scanQRCode;
+- (void)actionBack:(id)sender;
 
 @end
 
