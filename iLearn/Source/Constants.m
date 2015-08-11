@@ -87,6 +87,7 @@ NSString *const ExamQuestionId = @"id";
 NSString *const ExamQuestionTitle = @"description";
 NSString *const ExamQuestionLevel = @"level";
 NSString *const ExamQuestionType = @"type";
+NSString *const ExamQuestionScore = @"score";
 NSString *const ExamQuestionAnswer = @"answer";
 NSString *const ExamQuestionAnswerBySeq = @"answer_by_seq";
 NSString *const ExamQuestionNote = @"memo";

@@ -128,6 +128,7 @@ extern NSString *const ExamQuestionId;
 extern NSString *const ExamQuestionTitle;
 extern NSString *const ExamQuestionLevel;
 extern NSString *const ExamQuestionType;
+extern NSString *const ExamQuestionScore;
 extern NSString *const ExamQuestionAnswer;
 extern NSString *const ExamQuestionAnswerBySeq;
 extern NSString *const ExamQuestionNote;

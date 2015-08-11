@@ -36,6 +36,8 @@
 
 // local fields
 @property (nonatomic, strong) NSString *dbVersion;
+@property (nonatomic, strong) NSString *fileSystemSize;
+@property (nonatomic, strong) NSString *fileSystemFreeSize;
 @property (nonatomic, strong) NSString *localCreatedDate;
 @property (nonatomic, strong) NSString *localUpdatedDate;
 
@@ -45,5 +47,9 @@
 - (void)reload;
 - (void)updateTimestamp;
 - (void)save;
+- (NSString *)simpleDescription;
+
+// class methods
++ (NSString *)pgy_app_id;
 @end
 #endif

@@ -9,7 +9,7 @@
 #ifndef iSearch_ViewUpgrade_h
 #define iSearch_ViewUpgrade_h
 #import <UIKit/UIKit.h>
-@class MainViewController;
+@class DashboardViewController;
 @class SettingViewController;
 
 @protocol ViewUpgradeProtocol <NSObject>
@@ -18,7 +18,7 @@
 
 @interface ViewUpgrade:UIViewController
 
-@property (nonatomic,nonatomic) MainViewController *mainViewController;
+@property (nonatomic,nonatomic) DashboardViewController *mainViewController;
 @property (nonatomic,nonatomic) SettingViewController *settingViewController;
 
 @property (nonatomic, weak) id <ViewUpgradeProtocol> delegate;

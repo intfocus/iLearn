@@ -66,7 +66,7 @@ EXAM_ANSWERED_TEMPLATE = "Answered: %lld";
 EXAM_UNANSWERED_TEMPLATE = "Unanswered: %lld";
 EXAM_CORRECT_TEMPLATE = "Correct: %lld";
 EXAM_WRONG_TEMPLATE = "Wrong: %lld";
-EXAM_CORRECTION_TEMPLATE = "Answer: %@. %@.";
+EXAM_CORRECTION_TEMPLATE = "Answer: %@";
 EXAM_TYPE_TRUE_FALSE = "True/False";
 EXAM_TYPE_SINGLE = "Single";
 EXAM_TYPE_MULTIPLE = "Multiple";
@@ -77,7 +77,7 @@ EXAM_SCORE_TITLE = "Score";
 EXAM_TOTAL_SCORE_TITLE = "Total Score";
 EXAM_SCORE_UNIT = "";
 EXAM_SCORE_TEMPLATE = "Score: %lld";
-EXAM_UNDER_QUALIFY_TEMPLATE = "Not meet the qualify line, need to test again";
+EXAM_UNDER_QUALIFY_TEMPLATE = "Got:%@, Not meet the qualify line:%@，need to test again, and left %@ opportunities。";
 EXAM_TIME_LEFT_TITLE = "Time Left:";
 EXAM_TIME_TEMPLATE = "%lld:%02lld";
 

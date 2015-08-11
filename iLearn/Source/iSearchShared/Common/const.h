@@ -87,6 +87,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define THUMBNAIL_DIRNAME       @"Thumbails" // 分类缩略图
 #define CACHE_DIRNAME           @"Caches"
 #define UPGRADE_CONFIG_FILENAME @"upgrade.json"
+#define iOSVersion [[[UIDevice currentDevice] systemVersion] floatValue]
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
@@ -249,18 +250,32 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define VERSION_CHANGELOG             @"change_log"
 #define VERSION_INSERTURL             @"insert_url"
 
+#define ACTION_DOWNLOAD          @"download"
+#define ACTION_REMOVE            @"remove"
+#define ACTION_DISPLAY           @"display"
+#define ACTION_ADD_TO_FAVORITE   @"add_to_favorite"
+
 // actionLog
-#define ACTIONLOG_TABLE_NAME          @"action_log"
+#define ACTIONLOG_TABLE_NAME          @"action_logs"
 #define ACTIONLOG_COLUMN_UID          @"user_id"
 #define ACTIONLOG_COLUMN_FUNNAME      @"function_name"
 #define ACTIONLOG_COLUMN_ACTNAME      @"action_name"
 #define ACTIONLOG_COLUMN_ACTRET       @"action_return"
 #define ACTIONLOG_COLUMN_ACTOBJ       @"action_object"
+#define LOCAL_COLUMN_SLIDE_ID         @"local_slide_id"
+#define LOCAL_COLUMN_SLIDE_TYPE       @"local_slide_type"
+#define LOCAL_COLUMN_ACTION           @"local_action"
 #define ACTIONLOG_COLUMN_ISSYNC       @"is_synced"
 #define ACTIONLOG_COLUMN_DELETED      @"is_deleted"
 
-#define ACTION_DOWNLOAD          @"download"
-#define ACTION_REMOVE            @"remove"
-#define ACTION_DISPLAY           @"display"
-#define ACTION_ADD_TO_FAVORITE   @"add_to_favorite"
+#define ACTIONLOG_FIELD_UID           @"UserId"
+#define ACTIONLOG_FIELD_FUNNAME       @"FunctionName"
+#define ACTIONLOG_FIELD_ACTNAME       @"ActionName"
+#define ACTIONLOG_FIELD_ACTTIME       @"ActionTime"
+#define ACTIONLOG_FIELD_ACTRET        @"ActionReturn"
+#define ACTIONLOG_FIELD_ACTOBJ        @"ActionObject"
+
+
+#define PGY_APP_ID @"9d8870e80c74ae536ac2039eab8a3d19"
+
 #endif
