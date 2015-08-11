@@ -191,7 +191,7 @@ static const NSInteger kMinScanInterval = 3;
 
 //- (UITableViewCell*)tableView:(UITableView *)tableView cellForQuestionnaireRowAtIndexPath:(NSIndexPath *)indexPath
 //{
-//    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
+//    ExamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
 //    cell.delegate = self;
 //
 //    NSDictionary *content = [_contents objectAtIndex:indexPath.row];

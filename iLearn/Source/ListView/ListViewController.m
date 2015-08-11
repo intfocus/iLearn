@@ -62,8 +62,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // Do any additional setup after loading the view, typically from a nib.    
-    _questionnaireView.hidden = YES;
+    // Do any additional setup after loading the view, typically from a nib.
     _lectureView.hidden = YES;
     _registrationView.hidden = YES;
 

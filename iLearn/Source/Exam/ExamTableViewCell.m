@@ -1,5 +1,5 @@
 //
-//  ExamTabelViewCell.m
+//  ExamTableViewCell.m
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/16.
@@ -9,6 +9,8 @@
 #import "ExamTableViewCell.h"
 
 @interface ExamTableViewCell ()
+
+@property (weak, nonatomic) IBOutlet UIView *bgView;
 
 @end
 

@@ -1,5 +1,5 @@
 //
-//  ExamTabelViewCell.h
+//  ExamTableViewCell.h
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/5/16.
