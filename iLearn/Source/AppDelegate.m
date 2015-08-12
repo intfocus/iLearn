@@ -57,10 +57,10 @@ void UncaughtExceptionHandler(NSException * exception) {
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     [self.window setRootViewController:loginViewController];
 
-    [[UINavigationBar appearance] setBarTintColor:RGBCOLOR(220.0, 220.0, 220.0)];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName: [UIFont boldSystemFontOfSize:22.0]}];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName: [UIFont boldSystemFontOfSize:22.0]}];
+//    [[UINavigationBar appearance] setBarTintColor:RGBCOLOR(220.0, 220.0, 220.0)];
+//    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+//    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName: [UIFont boldSystemFontOfSize:22.0]}];
+//    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName: [UIFont boldSystemFontOfSize:22.0]}];
 
     return YES;
 }

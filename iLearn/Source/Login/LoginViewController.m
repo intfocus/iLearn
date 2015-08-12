@@ -42,10 +42,11 @@
 
 #import "AFNetworking.h"
 #import "UIViewController+CWPopup.h"
+#import <MBProgressHUD.h>
 #import "ViewUpgrade.h"
 #import "LicenseUtil.h"
 
-@interface LoginViewController () <ViewUpgradeProtocol>
+@interface LoginViewController () <ViewUpgradeProtocol, UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 @property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
@@ -59,6 +60,9 @@
 
 @property (strong, nonatomic) User *user;
 @property (nonatomic, nonatomic) NSInteger timerCount;
+
+@property (strong, nonatomic) MBProgressHUD  *progressHUD;
+@property (strong, nonatomic) NSString *popupText;
 @end
 
 @implementation LoginViewController
@@ -70,6 +74,8 @@
      */
     self.user = [[User alloc] init];
     self.labelPropmt.text = @"";
+    self.webViewLogin.delegate = self;
+    self.popupText = @"跳转至SSO";
     [self hideOutsideLoginControl:YES];
     
     // CWPopup 事件
@@ -193,17 +199,19 @@
         }
     }
     if([cookieValue length] > 0) {
-        if([cookieValue isEqualToString:@"error000"]) {
-            [self hideOutsideLoginControl:YES];
-            [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
-        } else {
-            self.cookieValue = cookieValue;
-            [self actionOutsideLoginSuccessfully];
-        }
         [self.timerReadCookie invalidate];
         _timerReadCookie = nil;
         [self actionClearCookies];
         [self actionOutsideLoginRefresh];
+        
+        if([cookieValue isEqualToString:@"error000"]) {
+            [self hideOutsideLoginControl:YES];
+            [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
+        }
+        else {
+            self.cookieValue = cookieValue;
+            [self actionOutsideLoginSuccessfully];
+        }
     }
     self.timerCount++;
 }
@@ -241,7 +249,8 @@
     HttpResponse *httpResponse = [ApiHelper login:self.cookieValue];
     if(![httpResponse isValid]) {
         [loginErrors addObjectsFromArray:httpResponse.errors];
-    } else {
+    }
+    else {
         NSMutableDictionary *responseDict = httpResponse.data;
         // 服务器交互成功
         NSString *responseResult = responseDict[LOGIN_FIELD_RESULT];
@@ -267,13 +276,15 @@
             ActionLogRecordLogin(@"successfully, online");
             [self enterMainViewController];
             return;
-        } else {
+        }
+        else {
             [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", psd(responseResult,@"")]];
         }
     }
     
-    if([loginErrors count])
+    if([loginErrors count]) {
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[loginErrors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
+    }
     [self hideOutsideLoginControl:YES];
 }
 
@@ -367,4 +378,18 @@
     [self presentViewController:dashboardViewController animated:YES completion:nil];
 }
 
+#pragma mark - UIWebview Delegate
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _progressHUD.labelText = [NSString stringWithFormat:@"%@...",self.popupText];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [_progressHUD hide:YES];
+    self.popupText = @"获取用户信息";
+}
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [_progressHUD hide:YES];
+    
+    [ViewUtils simpleAlertView:self Title:[NSString stringWithFormat:@"%@失败",self.popupText] Message:[error localizedDescription] ButtonTitle:BTN_CONFIRM];
+}
 @end

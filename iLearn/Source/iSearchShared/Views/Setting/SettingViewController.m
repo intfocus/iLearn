@@ -77,16 +77,17 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"cellID";
-    NSInteger row = [indexPath row];
     UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = self.dataList[row][0];
-    cell.detailTextLabel.text = self.dataList[row][1];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    NSArray *array            = self.dataList[indexPath.row];
+    cell.textLabel.text       = array[0];
+    cell.detailTextLabel.text = array[1];
+    
+    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

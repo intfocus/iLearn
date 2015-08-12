@@ -788,4 +788,11 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - supportedInterfaceOrientationsForWindow
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
+}
 @end
