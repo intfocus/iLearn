@@ -44,7 +44,8 @@ NSString *const QuestionnaireQuestionTitle = @"ProblemDesc";
 NSString *const QuestionnaireQuestionType = @"ProblemType";
 NSString *const QuestionnaireQuestionNote = @"memo";
 NSString *const QuestionnaireQuestionFilledAnswer = @"ProblemFilled";
-NSString *const QuestionnaireQuestionAnswered = @"ProblemSelected";
+NSString *const QuestionnaireQuestionSelectedAnswer = @"ProblemSelected";
+NSString *const QuestionnaireQuestionAnswered = @"answered";
 
 NSString *const QuestionnaireQuestionGroup = @"GroupName";
 NSString *const QuestionnaireQuestionSelectA = @"ProblemSelectA";

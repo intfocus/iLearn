@@ -248,7 +248,7 @@ static const BOOL inDeveloping = YES;
         if ([db open]) {
 
             [self parseInfoOfContent:content intoDB:db];
-            [self parseQuestionContent:content intoDB:db];
+            [self parseQuestionsOfContent:content intoDB:db];
 
             [db close];
         }
@@ -273,22 +273,16 @@ static const BOOL inDeveloping = YES;
 
 + (void)parseQuestionsOfContent:(NSDictionary*)content intoDB:(FMDatabase*)db
 {
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS question (id INTEGER PRIMARY KEY AUTOINCREMENT, question_id INTEGER, desc TEXT, type INTEGER, memo TEXT, selected_answer TEXT, filled_answer TEXT)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS question (id INTEGER PRIMARY KEY AUTOINCREMENT, question_id INTEGER, desc TEXT, type INTEGER, group_name TEXT, selected_answer TEXT, filled_answer TEXT)"];
 
-    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS option (id INTEGER PRIMARY KEY AUTOINCREMENT, option_id INTEGER, question_id INTEGER, seq INTEGER, desc TEXT, selected INTEGER DEFAULT 0)"];
+    [db executeUpdate:@"CREATE TABLE IF NOT EXISTS option (id INTEGER PRIMARY KEY AUTOINCREMENT, option_id TEXT, question_id INTEGER, seq INTEGER, desc TEXT, selected INTEGER DEFAULT 0)"];
 
     NSMutableArray *questions = [content[QuestionnaireQuestions] mutableCopy];
 
     [db beginTransaction];
 
-    int index = 0;
-
-    while ([questions count]) {
-        
-        NSDictionary *question = questions[index++];
-
+    for (NSDictionary *question in questions) {
         [self parseQuestionContent:question intoDB:db];
-        [questions removeObject:question];
     }
 
     [db commit];
@@ -298,21 +292,25 @@ static const BOOL inDeveloping = YES;
 {
     NSNumber *questionId = questionContent[QuestionnaireQuestionId];
 
-    [db executeUpdate:@"INSERT INTO question (question_id, desc, type, memo) VALUES (?, ?, ?, ?)", questionId, questionContent[QuestionnaireQuestionTitle], questionContent[QuestionnaireQuestionType], questionContent[QuestionnaireQuestionNote]];
+    [db executeUpdate:@"INSERT INTO question (question_id, desc, type, group_name) VALUES (?, ?, ?, ?)", questionId, questionContent[QuestionnaireQuestionTitle], questionContent[QuestionnaireQuestionType], questionContent[QuestionnaireQuestionGroup]];
 
+    for (int i = 0; i < 9; i++) {
+        [self parseQuestionContent:questionContent selectionIndex:i questionId:questionId intoDB:db];
+    }
+}
 
-    NSMutableArray *options = [questionContent[QuestionnaireQuestionOptions] mutableCopy];
++ (void)parseQuestionContent:(NSDictionary*)content selectionIndex:(NSInteger)selectionIndex questionId:(NSNumber*)questionId intoDB:(FMDatabase*)db
+{
+    // Use ASCII to convert index into id
+    NSString *selectionId = [NSString stringWithFormat:@"%c", selectionIndex+65];
+    NSString *columnName = [NSString stringWithFormat:@"ProblemSelect%@", selectionId];
 
-    int seq = 0;
-    int index = 0;
-
-    while ([options count]) {
-
-        NSDictionary *option = options[index++];
-
-        [db executeUpdate:@"INSERT INTO option (option_id, question_id, seq, desc) VALUES (?, ?, ?, ?)", option[QuestionnaireQuestionOptionId], questionId, @(seq++), option[QuestionnaireQuestionOptionTitle]];
-        
-        [options removeObject:option];
+    if (content[columnName] != [NSNull null]) {
+        [db executeUpdate:@"INSERT INTO option (option_id, question_id, seq, desc) VALUES (?, ?, ?, ?)",
+         selectionId,
+         questionId,
+         @(selectionIndex),
+         content[columnName]];
     }
 }
 
@@ -329,7 +327,7 @@ static const BOOL inDeveloping = YES;
         if ([db open]) {
 
             [content addEntriesFromDictionary:[self questionnaireInfoFromDB:db]];
-            content[QuestionnaireQuestions] = [self questionnaireSubjectsFromDB:db];
+            content[QuestionnaireQuestions] = [self questionnaireQuestionsFromDB:db];
             content[CommonFileName] = [[dbPath lastPathComponent] stringByDeletingPathExtension];
 
             [db close];
@@ -396,9 +394,10 @@ static const BOOL inDeveloping = YES;
     return content;
 }
 
-+ (NSMutableArray*)questionnaireSubjectsFromDB:(FMDatabase*)db
++ (NSMutableArray*)questionnaireQuestionsFromDB:(FMDatabase*)db
 {
     NSMutableArray *questions = [NSMutableArray array];
+    NSMutableDictionary *groupTable = [NSMutableDictionary dictionary];
 
     FMResultSet *result = [db executeQuery:@"SELECT * FROM question"];
 
@@ -406,12 +405,11 @@ static const BOOL inDeveloping = YES;
 
         NSMutableDictionary *content = [NSMutableDictionary dictionary];
 
-        NSNumber *questionId = @([result intForColumn:@"subject_id"]);
+        NSNumber *questionId = @([result intForColumn:@"question_id"]);
 
         content[QuestionnaireQuestionId] = questionId;
         content[QuestionnaireQuestionTitle] = [result stringForColumn:@"desc"];
         content[QuestionnaireQuestionType] = @([result intForColumn:@"type"]);
-        content[QuestionnaireQuestionNote] = [result stringForColumn:@"memo"];
 
         NSMutableArray *options = [NSMutableArray array];
 
@@ -444,10 +442,40 @@ static const BOOL inDeveloping = YES;
             [options addObject:option];
         }
 
-        content[QuestionnaireQuestionOptions] = options;
+        if ([options count]) {
+            content[QuestionnaireQuestionOptions] = options;
+        }
         content[QuestionnaireQuestionAnswered] = @(answered);
-        
-        [questions addObject:content];
+
+        // Check if the question is belong to a group
+        NSString *groupName = [result stringForColumn:@"group_name"];
+
+        if (groupName != nil) {
+
+            NSMutableDictionary *group = groupTable[groupName];
+
+            if (group != nil) { // The group has been located
+
+                NSMutableArray *questions = group[QuestionnaireQuestions];
+                [questions addObject:content];
+            }
+            else {
+
+                NSMutableDictionary *newGroup = [NSMutableDictionary dictionary];
+                newGroup[QuestionnaireQuestionType] = @(QuestionnaireQuestionsTypeGroup);
+                newGroup[QuestionnaireQuestionGroup] = groupName;
+
+                NSMutableArray *groupQuestions = [NSMutableArray array];
+                [groupQuestions addObject:content];
+                newGroup[QuestionnaireQuestions] = groupQuestions;
+
+                groupTable[groupName] = newGroup;
+                [questions addObject:newGroup];
+            }
+        }
+        else {
+            [questions addObject:content];
+        }
     }
     
     return questions;
@@ -593,7 +621,7 @@ static const BOOL inDeveloping = YES;
 
                 NSMutableDictionary *questionDic = [NSMutableDictionary dictionary];
 
-                NSNumber *questionId = @([questions intForColumn:@"subject_id"]);
+                NSNumber *questionId = @([questions intForColumn:@"question_id"]);
                 NSNumber *questionType = @([questions intForColumn:@"type"]);
                 NSString *selectedAnswer = [questions stringForColumn:@"selected_answer"];
                 NSString *filledAnswer = [questions stringForColumn:@"filled_answer"];

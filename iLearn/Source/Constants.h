@@ -47,6 +47,8 @@ typedef NS_ENUM(NSUInteger, QuestionnaireQuestionTypes) {
     QuestionnaireQuestionsTypeSingle,
     QuestionnaireQuestionsTypeMultiple,
     QuestionnaireQuestionsTypeFill,
+    QuestionnaireQuestionsTypeEssay,
+    QuestionnaireQuestionsTypeGroup = 100,
 };
 
 extern NSString *const ServiceNumber;
@@ -85,6 +87,7 @@ extern NSString *const QuestionnaireQuestionTitle;
 extern NSString *const QuestionnaireQuestionType;
 extern NSString *const QuestionnaireQuestionNote;
 extern NSString *const QuestionnaireQuestionFilledAnswer;
+extern NSString *const QuestionnaireQuestionSelectedAnswer;
 extern NSString *const QuestionnaireQuestionAnswered;
 
 extern NSString *const QuestionnaireQuestionGroup;
