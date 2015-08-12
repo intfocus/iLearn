@@ -13,6 +13,7 @@
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
 #import "User.h"
+#import "GroupSelectionView.h"
 #import <MBProgressHUD.h>
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
@@ -174,6 +175,14 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
     
     _submitButton.layer.cornerRadius = 4;
+
+
+    GroupSelectionView *groupView = [[GroupSelectionView alloc] initWithFrame:CGRectMake(20, 50, 656, 1000)];
+    [self.questionView addSubview:groupView];
+    [groupView drawGrid];
+
+    self.answerVIewHeightConstraint.constant = 1200;
+    self.scrollView.scrollEnabled = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -194,6 +203,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     self.examQuestionScoreLabel.text = examQuestionScore;
     self.examQuestionScoreTitleLabel.text = examQuestionTitle;
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

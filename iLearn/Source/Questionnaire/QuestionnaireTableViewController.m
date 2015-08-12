@@ -283,7 +283,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
-//            [weakSelf performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
+            [weakSelf performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
         });
     });
 }

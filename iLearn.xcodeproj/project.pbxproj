@@ -57,6 +57,7 @@
 		CB3512481B47F6E100025B5B /* QuestionnaireTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3512441B47F6E100025B5B /* QuestionnaireTableViewController.m */; };
 		CB3512491B47F6E100025B5B /* QuestionnaireViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3512461B47F6E100025B5B /* QuestionnaireViewController.m */; };
 		CB35124C1B47F85000025B5B /* QuestionnaireTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB35124B1B47F85000025B5B /* QuestionnaireTableViewCell.m */; };
+		CB7297611B7B8D2500FFB38F /* GroupSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7297601B7B8D2500FFB38F /* GroupSelectionView.m */; };
 		CB7BD7E01B07BD2D002C6DFB /* JsonTemplate in Resources */ = {isa = PBXBuildFile; fileRef = CB7BD7DF1B07BD2D002C6DFB /* JsonTemplate */; };
 		CBC976911B3C6F0A006C104F /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768D1B3C6F0A006C104F /* PasswordViewController.m */; };
 		CBC976921B3C6F0A006C104F /* ExamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768E1B3C6F0A006C104F /* ExamTableViewCell.m */; };
@@ -194,6 +195,8 @@
 		CB3512461B47F6E100025B5B /* QuestionnaireViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionnaireViewController.m; sourceTree = "<group>"; };
 		CB35124A1B47F85000025B5B /* QuestionnaireTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionnaireTableViewCell.h; sourceTree = "<group>"; };
 		CB35124B1B47F85000025B5B /* QuestionnaireTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionnaireTableViewCell.m; sourceTree = "<group>"; };
+		CB72975F1B7B8D2500FFB38F /* GroupSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSelectionView.h; sourceTree = "<group>"; };
+		CB7297601B7B8D2500FFB38F /* GroupSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSelectionView.m; sourceTree = "<group>"; };
 		CB7BD7DF1B07BD2D002C6DFB /* JsonTemplate */ = {isa = PBXFileReference; lastKnownFileType = folder; name = JsonTemplate; path = Source/JsonTemplate; sourceTree = "<group>"; };
 		CBC976891B3C6F0A006C104F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
 		CBC9768A1B3C6F0A006C104F /* ExamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamTableViewCell.h; sourceTree = "<group>"; };
@@ -599,6 +602,8 @@
 				CB35124B1B47F85000025B5B /* QuestionnaireTableViewCell.m */,
 				CB3512451B47F6E100025B5B /* QuestionnaireViewController.h */,
 				CB3512461B47F6E100025B5B /* QuestionnaireViewController.m */,
+				CB72975F1B7B8D2500FFB38F /* GroupSelectionView.h */,
+				CB7297601B7B8D2500FFB38F /* GroupSelectionView.m */,
 			);
 			name = Questionnaire;
 			path = Source/Questionnaire;
@@ -963,14 +968,11 @@
 				CB35123B1B47F27E00025B5B /* QuestionOptionCell.m in Sources */,
 				C49731901B67889B0014048B /* NotificationViewController.m in Sources */,
 				CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */,
-				CB2BAB3D1B348D6E00D523EB /* LogUtils.m in Sources */,
-				C4357C451B39701F00854524 /* ApiUtils.m in Sources */,
 				CBC976921B3C6F0A006C104F /* ExamTableViewCell.m in Sources */,
 				C49731B11B6789C40014048B /* DatabaseUtils+ActionLog.m in Sources */,
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
 				C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
-				CB2BAB3A1B348D6E00D523EB /* ExtendNSLogFunctionality.m in Sources */,
 				CB3512481B47F6E100025B5B /* QuestionnaireTableViewController.m in Sources */,
 				CB3512321B47F0B200025B5B /* ConnectionManager.m in Sources */,
 				CBC976B71B3E7A52006C104F /* ContentViewController.m in Sources */,
@@ -978,10 +980,7 @@
 				C49731B61B6789C40014048B /* ExtendNSLogFunctionality.m in Sources */,
 				CB3512351B47F0B200025B5B /* QuestionnaireUtil.m in Sources */,
 				CB35123C1B47F27E00025B5B /* QuestionCollectionViewCell.m in Sources */,
-				CB2BAB3F1B348D6E00D523EB /* ViewUtils.m in Sources */,
-				CB2BAB3E1B348D6E00D523EB /* PopupView.m in Sources */,
 				CB35124C1B47F85000025B5B /* QuestionnaireTableViewCell.m in Sources */,
-				C4357C4A1B39706300854524 /* User.m in Sources */,
 				CB3512491B47F6E100025B5B /* QuestionnaireViewController.m in Sources */,
 				C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */,
 				CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */,
@@ -993,6 +992,7 @@
 				CBC976961B3C6F81006C104F /* ExamTableViewController.m in Sources */,
 				C49731D51B678A210014048B /* Url.m in Sources */,
 				CBE0C8361B0724C5000EA3A7 /* AppInfoViewController.m in Sources */,
+				CB7297611B7B8D2500FFB38F /* GroupSelectionView.m in Sources */,
 				C49731D01B678A210014048B /* Version+Self.m in Sources */,
 				C49731AE1B6789C40014048B /* HttpUtils.m in Sources */,
 				C48C09B61B4D258500DD4562 /* ViewUpgrade.m in Sources */,
