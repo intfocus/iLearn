@@ -328,7 +328,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSArray *options = selectedQuestion[ExamQuestionOptions];
     NSDictionary *option = options[indexPath.row];
 
-    cell.seqLabel.text = [NSString stringWithFormat:@"%ld", (indexPath.row+1)+64];
+    cell.seqLabel.text = [NSString stringWithFormat:@"%c", (indexPath.row+1)+64];
     cell.titleLabel.text = option[ExamQuestionOptionTitle];
 
     if (tableView == _questionTableView) {

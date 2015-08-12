@@ -2387,7 +2387,6 @@
                         <outlet property="squareView" destination="ld6-6s-x21" id="2uH-ht-79t"/>
                         <outlet property="subjectCollectionView" destination="i07-i1-GTv" id="YvV-jf-FYt"/>
                         <outlet property="submitButton" destination="Xd7-bf-kZd" id="j0d-cA-6Yd"/>
-                        <outlet property="submitButton2" destination="Xd7-bf-kZd" id="DQb-Vi-CPi"/>
                         <outlet property="titleLabel" destination="KV9-KH-bww" id="9eX-Ie-Bdx"/>
                         <outlet property="typeLabel" destination="dlx-bL-cTb" id="5tq-xq-6ek"/>
                         <outlet property="userAccountLabel" destination="PeN-Od-CZr" id="Vx9-EL-Ajm"/>
@@ -2510,8 +2509,8 @@
                                     <mask key="constraints">
                                         <exclude reference="0HC-RT-Msr"/>
                                         <exclude reference="aw2-Er-hHv"/>
-                                        <exclude reference="hhl-5L-fIk"/>
                                         <exclude reference="fZ3-vo-QBE"/>
+                                        <exclude reference="hhl-5L-fIk"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -2812,8 +2811,8 @@
                                     <mask key="constraints">
                                         <exclude reference="9gC-LE-0hx"/>
                                         <exclude reference="dZ7-5I-QYr"/>
-                                        <exclude reference="xNs-vL-bdt"/>
                                         <exclude reference="gDL-wO-Z3P"/>
+                                        <exclude reference="xNs-vL-bdt"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -3396,10 +3395,10 @@
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="i6z-uz-bzv"/>
                                                 <exclude reference="Bey-Kc-grN"/>
-                                                <exclude reference="Kja-Tn-PP6"/>
+                                                <exclude reference="i6z-uz-bzv"/>
                                                 <exclude reference="HD8-5U-VzK"/>
+                                                <exclude reference="Kja-Tn-PP6"/>
                                                 <exclude reference="4QS-ej-nAo"/>
                                                 <exclude reference="Jio-NP-vlw"/>
                                                 <exclude reference="YHL-N4-Zt8"/>
@@ -3692,8 +3691,8 @@
                                                         </constraints>
                                                         <variation key="default">
                                                             <mask key="constraints">
-                                                                <exclude reference="si7-Qx-xEd"/>
                                                                 <exclude reference="egh-9s-r11"/>
+                                                                <exclude reference="si7-Qx-xEd"/>
                                                             </mask>
                                                         </variation>
                                                     </view>
@@ -3757,12 +3756,12 @@
                                                                     </constraints>
                                                                     <variation key="default">
                                                                         <mask key="constraints">
-                                                                            <exclude reference="nFX-cw-nC4"/>
-                                                                            <exclude reference="9KO-uj-9uQ"/>
-                                                                            <exclude reference="Ph4-XA-U6t"/>
                                                                             <exclude reference="6OW-Eu-d1c"/>
-                                                                            <exclude reference="cxC-y4-bms"/>
+                                                                            <exclude reference="9KO-uj-9uQ"/>
                                                                             <exclude reference="Cb2-PX-KBD"/>
+                                                                            <exclude reference="Ph4-XA-U6t"/>
+                                                                            <exclude reference="cxC-y4-bms"/>
+                                                                            <exclude reference="nFX-cw-nC4"/>
                                                                         </mask>
                                                                     </variation>
                                                                 </tableViewCellContentView>
@@ -3821,14 +3820,14 @@
                                                 </constraints>
                                                 <variation key="default">
                                                     <mask key="constraints">
-                                                        <exclude reference="LeV-Dd-dgP"/>
-                                                        <exclude reference="lCi-Jc-PnX"/>
-                                                        <exclude reference="ZuE-jg-oO5"/>
-                                                        <exclude reference="U8R-nK-6E2"/>
                                                         <exclude reference="79g-oM-0BG"/>
+                                                        <exclude reference="LeV-Dd-dgP"/>
+                                                        <exclude reference="U8R-nK-6E2"/>
+                                                        <exclude reference="ZuE-jg-oO5"/>
+                                                        <exclude reference="lCi-Jc-PnX"/>
                                                         <exclude reference="oVf-ef-WnH"/>
-                                                        <exclude reference="cP4-O9-tNR"/>
                                                         <exclude reference="cGw-Qg-bfd"/>
+                                                        <exclude reference="cP4-O9-tNR"/>
                                                     </mask>
                                                 </variation>
                                             </view>
@@ -3847,10 +3846,10 @@
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="f9D-jU-ufB"/>
-                                                <exclude reference="rGz-34-GZy"/>
                                                 <exclude reference="asm-Bt-bAw"/>
+                                                <exclude reference="f9D-jU-ufB"/>
                                                 <exclude reference="kYO-wd-OVn"/>
+                                                <exclude reference="rGz-34-GZy"/>
                                             </mask>
                                         </variation>
                                     </scrollView>
@@ -3896,13 +3895,13 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="ui9-at-OYA"/>
                                 <exclude reference="6Ot-Qi-kfy"/>
                                 <exclude reference="Mxb-E9-4ZE"/>
-                                <exclude reference="kMo-Qx-Mtq"/>
                                 <exclude reference="Wqu-02-By8"/>
-                                <exclude reference="Xds-lg-SkT"/>
+                                <exclude reference="kMo-Qx-Mtq"/>
+                                <exclude reference="ui9-at-OYA"/>
                                 <exclude reference="E7y-wx-ygC"/>
+                                <exclude reference="Xds-lg-SkT"/>
                                 <exclude reference="naS-vv-6wk"/>
                                 <exclude reference="CIy-x1-rfu"/>
                             </mask>
@@ -3969,7 +3968,6 @@
                         <outlet property="squareView" destination="Zkx-NB-TIZ" id="hMm-bj-sey"/>
                         <outlet property="subjectCollectionView" destination="Wsr-oh-ttt" id="bg6-gg-fnn"/>
                         <outlet property="submitButton" destination="9ZE-1W-bbf" id="jLd-Po-eae"/>
-                        <outlet property="submitButton2" destination="9ZE-1W-bbf" id="led-hh-emX"/>
                         <outlet property="titleLabel" destination="VbP-UZ-GXA" id="F0J-I2-gVI"/>
                         <outlet property="typeLabel" destination="suW-OH-D1x" id="00X-X0-4La"/>
                         <outlet property="userAccountLabel" destination="bif-3u-44q" id="P4c-x2-DFh"/>
