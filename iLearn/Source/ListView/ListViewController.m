@@ -40,7 +40,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 @property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *serviceCallLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 
 @property (weak, nonatomic) IBOutlet UIButton *scanButton;
@@ -59,8 +58,8 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.    
     _questionnaireView.hidden = YES;
-    _lectureView.hidden = YES;
-    _registrationView.hidden = YES;
+    _lectureView.hidden       = NO;
+    _registrationView.hidden  = YES;
     
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
@@ -107,14 +106,14 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)switchContentViewToViewController
 {
     ContentViewController<ContentViewProtocal> *newContentViewController;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main"
-                                                         bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     switch (_listType) {
         case ListViewTypeExam:
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
             newContentViewController.listViewController = self;
             break;
         case ListViewTypeLecture:
+            storyboard = [UIStoryboard storyboardWithName:@"Lecture" bundle:nil];
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"LectureTableViewController"];
             newContentViewController.listViewController = self;
             break;
@@ -150,36 +149,43 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (void)adjustToolbarItems
 {
+    
+    _syncButton.hidden      = YES;
+    _scanButton.hidden      = YES;
+    _backButton.hidden      = YES;
+    _courseNameLabel.hidden = YES;
+    
     switch (_listType) {
         case ListViewTypeExam:
             self.titleLabel.text = NSLocalizedString(@"LIST_EXAM", nil);
             _syncButton.hidden = NO;
             _scanButton.hidden = NO;
             break;
+        case ListViewTypeLecture:
+            self.titleLabel.text = NSLocalizedString(@"LIST_LECTURE", nil);
+            _syncButton.hidden = NO;
+            break;
         case ListViewTypeQuestionnaire:
             self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
             _syncButton.hidden = NO;
-            _scanButton.hidden = YES;
             break;
         case ListViewTypeNotification:
             self.titleLabel.text = NSLocalizedString(@"LIST_NOTIFICATION", nil);
             _syncButton.hidden = NO;
-            _scanButton.hidden = YES;
             break;
         default:
             self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
             _syncButton.hidden = NO;
-            _scanButton.hidden = YES;
             break;
     }
 }
 
 - (void)adjustSelectedItemInPanel
 {
-    _examView.backgroundColor = [UIColor clearColor];
+    _examView.backgroundColor          = [UIColor clearColor];
     _questionnaireView.backgroundColor = [UIColor clearColor];
-    _lectureView.backgroundColor = [UIColor clearColor];
-    _registrationView.backgroundColor = [UIColor clearColor];
+    _lectureView.backgroundColor       = [UIColor clearColor];
+    _registrationView.backgroundColor  = [UIColor clearColor];
     
     switch (_listType) {
         case ListViewTypeExam:
@@ -216,9 +222,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (IBAction)lectureButtonTouched:(id)sender {
     NSLog(@"lectureButtonTouched");
-    if (_listType == ListViewTypeLecture) {
-        return;
-    }
     self.listType = ListViewTypeLecture;
     [self refreshContentView];
 }
@@ -265,9 +268,14 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 }
 
 - (IBAction)scanButtonTouched:(id)sender {
-    
     if ([_contentViewController respondsToSelector:@selector(scanQRCode)]) {
         [_contentViewController scanQRCode];
+    }
+}
+
+- (IBAction)backButtonTouched:(id)sender {
+    if ([_contentViewController respondsToSelector:@selector(actionBack:)]) {
+        [_contentViewController actionBack:sender];
     }
 }
 
@@ -390,5 +398,18 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
         NSLog(@"dismiss NotificationDetailView.");
     }];
 }
+#pragma mark - supportedInterfaceOrientationsForWindow
 
+-(BOOL)prefersStatusBarHidden{
+    return NO;
+}
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
+}
 @end

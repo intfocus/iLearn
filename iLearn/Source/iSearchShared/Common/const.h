@@ -71,10 +71,10 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 };
 
 // Global
-#define DEBUG                   1
 #define PARAM_LANG              @"lang" // 传递给服务器的语言key
 #define APP_LANG                @"zh-CN" // 应用系统的语言
 #define BASE_URL                @"http://tsa-china.takeda.com.cn" //
+#define BASE_PATH               @"uat" // 传递给服务器的语言key
 #define CONFIG_DIRNAME          @"Configs" // 所有配置档放置在些文件夹下
 #define DATE_FORMAT             @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define DATE_SIMPLE_FORMAT      @"yyyy/MM/dd" // 公告通知api使用及日历控件
@@ -90,7 +90,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define iOSVersion [[[UIDevice currentDevice] systemVersion] floatValue]
 
 // ActionLogger
-#define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
+#define ACTION_LOGGER_URL_PATH @"/api/logjson.php"
 
 #define SIZE_GRID_VIEW_CELL_WIDTH     120 // GridView Cell‘s width
 #define SIZE_GRID_VIEW_CELL_HEIGHT    80 // GridView Cell‘s width
@@ -106,7 +106,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define GRID_VIEW_DELETE_BTN_IMAGE    @"close_x.png" // GridView Delete按钮背影图片
 
 // 登陆相关
-#define LOGIN_URL_PATH         @"/uat/api/users_api.php" // 用户身份验证的url路径
+#define LOGIN_URL_PATH         @"/api/users_api.php" // 用户身份验证的url路径
 #define LOGIN_CONFIG_FILENAME  @"login.json" // 用户验证成功后，信息写入该配置档
 #define LOGIN_KEEP_HOURS       24 // 用户在线登陆成功后，可LOGIN_KEEP_HOURS小时内[离线登陆]
 #define LOGIN_DATE_FORMAT      @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
@@ -133,9 +133,9 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define USER_LOGIN_LAST        @"LoginLastTime"
 
 // 目录相关(_FILE与获取文件相关，默认获取分类)
-#define CONTENT_URL_PATH          @"/uat/api/Categories_Api.php" // 请求目录的url路径
-#define CONTENT_FILE_URL_PATH     @"/uat/api/Files_Api.php" // 请求目录的url路径
-#define CONTENT_DOWNLOAD_URL_PATH @"/uat/api/Filedown_Api.php"
+#define CONTENT_URL_PATH          @"/api/Categories_Api.php" // 请求目录的url路径
+#define CONTENT_FILE_URL_PATH     @"/api/Files_Api.php" // 请求目录的url路径
+#define CONTENT_DOWNLOAD_URL_PATH @"/api/Filedown_Api.php"
 #define CONTENT_DIRNAME           @"Contents" // [目录]成功取得后，写入本地缓存文件夹
 #define DOWNLOAD_DIRNAME          @"Downloads"// [目录]中[文件]压缩包下载文件夹
 #define SLIDE_DIRNAME             @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
@@ -174,7 +174,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_FIELD_URL        @"DownloadUrl" // 文件下载链接，代码拼接而成
 
 // 离线搜索/批量下载
-#define OFFLINE_URL_PATH         @"/uat/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
+#define OFFLINE_URL_PATH         @"/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
 #define OFFLINE_DIRNAME          @"Offlines"
 // API参数
 #define OFFLINE_PARAM_DEPTID     @"did"
@@ -199,35 +199,8 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define DB_COLUMN_UPDATED      @"updated_at"
 
 
-// 内容重组
-#define EDITPAGES_CONFIG_FILENAME  @"edit_pages.json" // 进入编辑界面
-#define ADDTAG_CONFIG_FILENAME     @"add_tag.json" // 编辑界面，选择页面后，保存信息
-#define REORGANIZE_DIRNAME         @"Save" // 内容重组后，放置些文件夹中
-#define FAVORITE_DIRNAME           @"Favorites"
-// 文档描述desc.json相关
-// TODO: 用户上传文档后可能修改文件名称、描述，所以同步目录时更新desc.json信息
-#define SLIDE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
-#define SLIDE_DICT_FILENAME         @"dict.json" // desc.json保待不变，一切操作在些文件
-#define SLIDE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
-#define SLIDE_DESC_ID               @"id"
-#define SLIDE_DESC_TYPE             @"type"
-#define SLIDE_DESC_NAME             @"name"
-#define SLIDE_DESC_DESC             @"desc"
-#define SLIDE_DESC_ORDER            @"order"
-#define SLIDE_DESC_LOCAL_CREATEAT   @"local_created_at" // 本地更新时间
-#define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
-#define SLIDE_DESC_ISDISPLAY        @"display_or_not"  // 下载后是否演示过
-#define SLIDE_DESC_FOLDERSIZE       @"slide_folder_size"  // 下载解压后文件大小
-#define SLIDE_DESC_THUMBNAIL        @"thumbnail_path"  // slidePath/thumbnailPath
-// FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
-#define PAGE_HTML_FORMAT            @"html"
-#define PAGE_IMAGE_FORMAT           @"gif"
-#define PAGE_FROM_SLIDES            @"PageFromSlides"
-
 // 公告通知
-#define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"
-#define NOTIFICATION_CACHE        @"notifications.cache"
-#define NOTIFICATION_DIRNAME      @"notifications"
+#define NOTIFICATION_URL_PATH     @"/api/News_api.php"
 #define NOTIFICATION_OCCUR_DATE   @"occur_date" // 通告与预告的区分字段
 #define NOTIFICATION_TITLE_FONT   14.0f // 公告标题字体大小
 #define NOTIFICATION_MSG_FONT     12.0f // 公告内容字体大小
@@ -275,6 +248,31 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define ACTIONLOG_FIELD_ACTRET        @"ActionReturn"
 #define ACTIONLOG_FIELD_ACTOBJ        @"ActionObject"
 
+#define COURSE_DIRNAME                @"CoursePacages"
+#define COURSE_PACKAGES_URL_PATH      @"/api/CoursePackets_Api.php"
+#define COURSE_PACKAGES_PARAMS_UID    @"uid"
+#define COURSE_PACKAGES_FIELD_DATA    @"cpdata"
+#define COURSE_PACKAGES_FIELD_ID      @"Id"
+#define COURSE_PACKAGES_FIELD_NAME    @"Name"
+#define COURSE_PACKAGES_FIELD_DESC    @"Desc"
+#define COURSE_PACKAGES_FIELD_AVTIME  @"AvailableTime"
+
+#define COURSE_PACKAGE_CONTENT_URL_PATH   @"/api/CPOne_Api.php"
+#define COURSE_PACKAGE_CONTENT_PARAMS_PID @"cpid"
+// 课程包内容
+#define COURSE_PACKAGES_FIELD_PACKAGES  @"CoursewarePacketList"
+#define COURSE_PACKAGES_FIELD_COURSES   @"CoursewareList"
+#define COURSE_PACKAGES_FIELD_QUESTIONS @"QuestionnaireList"
+#define COURSE_PACKAGES_FIELD_EXAMS     @"ExamList"
+// 课件包内容
+#define COURSE_WRAP_FIELD_NAME  @"PPTName"
+#define COURSE_WRAP_FIELD_DESC  @"PPTDesc"
+#define COURSE_WRAP_FIELD_LIST  @"PPTList"
+
+// 课程包内容
+#define COURSE_DOWNLOAD_URL_PATH      @"/api/CoursewaresDown_Api.php"
+#define COURSE_DOWNLOAD_PARAMS_CID    @"cid"
+#define COURSE_DOWNLOAD_PARAMS_EXT    @"es"
 
 #define PGY_APP_ID @"9d8870e80c74ae536ac2039eab8a3d19"
 

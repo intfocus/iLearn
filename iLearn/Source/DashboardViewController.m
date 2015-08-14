@@ -17,6 +17,7 @@
 #import "ExtendNSLogFunctionality.h"
 #import "SettingViewController.h"
 #import "UIViewController+CWPopup.h"
+#import "ActionLog.h"
 #import <AVFoundation/AVFoundation.h>
 
 static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
@@ -57,7 +58,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 @property (weak, nonatomic) IBOutlet UIButton *qrCodeButton;
 
 @property (weak, nonatomic) IBOutlet UITableView *notificationTableView;
-@property (strong, nonatomic) NSMutableArray *notificationList;
+@property (strong, nonatomic) NSArray *notificationList;
 
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -80,10 +81,10 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    _registrationButton.enabled = NO;
-    _lectureButton.enabled = NO;
+    _registrationButton.enabled  = NO;
+    _lectureButton.enabled       = YES;
     _questionnaireButton.enabled = NO;
-    _settingsButton.enabled = YES;
+    _settingsButton.enabled      = YES;
     
 
     // Setup label contents
@@ -126,7 +127,6 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     avatar.layer.masksToBounds = YES;
 }
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -134,31 +134,39 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSString *humanName = @"unkown";
     if ([segue.identifier isEqualToString:kShowQuestionnaireSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeQuestionnaire;
+        humanName = @"问卷";
     }
     else if ([segue.identifier isEqualToString:kShowExamSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeExam;
+        humanName = @"考试";
     }
     else if ([segue.identifier isEqualToString:kShowRegistrationSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeRegistration;
+        humanName = @"注册";
     }
     else if ([segue.identifier isEqualToString:kShowLectureSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeLecture;
+        humanName = @"武田学院";
     }
     else if ([segue.identifier isEqualToString:kShowNotificationSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeNotification;
+        humanName = @"通知公告";
     }
     else if ([segue.identifier isEqualToString:kShowQRCodeSegue]) {
         QRCodeViewController* qrCodeVC = (QRCodeViewController*)segue.destinationViewController;
         qrCodeVC.showCloseButton = YES;
+        humanName = @"二维码扫描";
     }
-
+    
+    ActionLogRecordDashboard(humanName);
 }
 
 #pragma mark - Helper Functions
@@ -178,12 +186,19 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 - (void)reloadNotifications
 {
     NSMutableDictionary *notificationDatas = [DataHelper notifications];
-    self.notificationList = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
-
-    // 公告通知按created_date升序
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:YES];
-    [self.notificationList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-
+    NSArray *dataListOne = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
+    NSArray *dataListTwo = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告数据
+    
+    NSSortDescriptor *descriptor;
+    // 公告通知按created_date降序
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:NO];
+    dataListOne = [dataListOne sortedArrayUsingDescriptors:@[descriptor]];
+    // 预告通知按occur_date升序
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_OCCURDATE ascending:YES];
+    dataListTwo = [dataListTwo sortedArrayUsingDescriptors:@[descriptor]];
+    
+    // todo tab switch with data one/two
+    self.notificationList = dataListOne;
     [_notificationTableView reloadData];
 }
 
@@ -236,11 +251,11 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     SettingViewController *settingVC = [[SettingViewController alloc] init];
     settingVC.delegate = self;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingVC];
-    nav.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor]};
     nav.view.frame = CGRectMake(0, 0, 400, 500);
 
     [self presentPopupViewController:nav animated:YES completion:^(void) {
         NSLog(@"popup view settingViewController");
+        ActionLogRecordDashboard(@"设置");
     }];
 }
 
@@ -283,6 +298,8 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     self.imagePickerActionSheet = [[UIActionSheet alloc] initWithTitle:@"上传头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"从相册选择" otherButtonTitles:@"现在拍照", nil];
     self.imagePickerActionSheet.delegate = self;
     [self.imagePickerActionSheet showInView:self.view];
+    
+    ActionLogRecordDashboard(@"点击头像");
 }
 
 #pragma mark - UITableViewDataSource
@@ -302,6 +319,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNotificationCellIdentifier];
     }
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
     NSInteger cellIndex = indexPath.row;
 
@@ -409,8 +427,24 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
         if (imagedata){
             UIImage *avatarImage = [UIImage imageWithData:imagedata];
             [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
+            
+            ActionLogRecordDashboard(@"头像设置成功");
         }
     }];
 }
 
+#pragma mark - status bar settings
+-(BOOL)prefersStatusBarHidden{
+    return NO;
+}
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+#pragma mark - supportedInterfaceOrientationsForWindow
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
+}
 @end

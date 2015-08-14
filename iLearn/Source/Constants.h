@@ -52,6 +52,7 @@ extern NSString *const QuestionnaireFolder;
 extern NSString *const ExamFolder;
 
 extern NSString *const CommonFileName;
+extern NSString *const CommonDBPath;
 
 extern NSString *const QuestionnaireTitle;
 extern NSString *const QuestionnaireDesc;

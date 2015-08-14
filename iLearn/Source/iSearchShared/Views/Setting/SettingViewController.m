@@ -39,6 +39,11 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
      */
     self.dataList = [[NSMutableArray alloc] init];
     self.user     = [[User alloc] init];
+    
+    NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
+    [self.dataList addObject:@[@"用户名称", self.user.name]];
+    [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
+    [self.dataList addObject:@[@"版本更新", @""]];
     /**
      *  控件事件
      */
@@ -48,20 +53,6 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
                                                                    action:@selector(actionBtnClose:)];
     self.navigationItem.rightBarButtonItem = navBtnClose;
     self.navigationItem.title = @"设置";
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    if(!self.user) {
-        self.user = [[User alloc] init];
-    }
-    NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
-    
-    [self.dataList addObject:@[@"用户名称", self.user.name]];
-    [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
-    [self.dataList addObject:@[@"版本更新", @""]];
-    //[self.dataList addObject:@[@"常规设置", @""]];
 }
 
 #pragma mark - controls action
@@ -86,16 +77,17 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"cellID";
-    NSInteger row = [indexPath row];
     UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = self.dataList[row][0];
-    cell.detailTextLabel.text = self.dataList[row][1];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    NSArray *array            = self.dataList[indexPath.row];
+    cell.textLabel.text       = array[0];
+    cell.detailTextLabel.text = array[1];
+    
+    cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

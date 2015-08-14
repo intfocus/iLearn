@@ -18,7 +18,7 @@ static NSString *const resultUploading  = @"请等待";
 static NSString *const statusUploaded   = @"成绩上传服务器成功";
 static NSString *const resultUploaded   = @"请返回";
 static NSString *const statusUploadFail = @"成绩上传服务器失败";
-static NSString *const resultUploadFail = @"请返回后刷新重试"; //或扫描二维码上传
+static NSString *const resultUploadFail = @"请返回后,联网刷新重试"; //或扫描二维码上传
 @interface UploadExamViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
@@ -72,10 +72,12 @@ static NSString *const resultUploadFail = @"请返回后刷新重试"; //或扫�
 
 - (void)connectionManagerDidDownloadExam:(NSString *)examId withError:(NSError *)error {}
 
+- (void)connectionManagerDidDownloadCourse:(NSString *)courseID Ext:(NSString *)extName withError:(NSError *)error {};
+
 - (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error
 {
     if (!error) {
-        NSString *dbPath = [ExamUtil examDBPathOfFile:examId];
+        NSString *dbPath = [ExamUtil examDBPath:examId];
         [ExamUtil setExamSubmittedwithDBPath:dbPath];
         
         self.statusLabel.text = statusUploaded;

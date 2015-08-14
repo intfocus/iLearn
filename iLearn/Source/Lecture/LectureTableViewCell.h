@@ -19,7 +19,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *actionButton;
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
-@property (weak, nonatomic) IBOutlet UIButton *qrCodeButton;
 @property (weak, nonatomic) IBOutlet UILabel *expirationDateLabel;
 
 @end

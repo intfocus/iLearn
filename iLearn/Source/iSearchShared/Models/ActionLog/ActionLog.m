@@ -26,25 +26,6 @@
     return self;
 }
 
-/**
- *  记录列表
- *
- *  @return <#return value description#>
- */
-- (NSMutableArray *)records {
-    return [self.databaseUtils actionLogs];
-}
-
-/**
- *  操作记录
- *
- *  @param slide  action object
- *  @param action action name
- */
-+ (void)recordSlide:(Slide*)slide Action:(NSString *)action {
-    [[[ActionLog alloc] init] recordSlide:slide Action:action];
-}
-
 - (void)syncRecords {
     NSMutableArray *unSyncRecords = [self.databaseUtils unSyncRecords];
     NSMutableArray *IDS = [DataHelper actionLog:unSyncRecords];

@@ -18,7 +18,7 @@
  */
 @interface FileUtils : NSObject
 
-+ (NSString *)getBasePath;
++ (NSString *)basePath;
 /**
  *  传递目录名取得沙盒中的绝对路径(一级),不存在则创建，请慎用！
  *
@@ -26,7 +26,7 @@
  *
  *  @return 沙盒中的绝对路径
  */
-+ (NSString *)getPathName: (NSString *)dirName;
++ (NSString *)dirPath: (NSString *)dirName;
 
 /**
  *  传递目录名取得沙盒中的绝对路径(二级)
@@ -36,7 +36,7 @@
  *
  *  @return 沙盒中的绝对路径
  */
-+ (NSString *)getPathName: (NSString *)dirName FileName:(NSString*) fileName;
++ (NSString *)dirPath: (NSString *)dirName FileName:(NSString*) fileName;
 
 /**
  *  检测目录路径、文件路径是否存在
@@ -60,29 +60,6 @@
 
 
 /**
- *  检测演示文档是否下载;
- *    平时扫描文件列表时，force:NO
- *    演示文稿时，force:YES;
- *    避免由于文件约束问题闪退。
- *
- *  需要考虑问题:
- *  1. Files/fileID/文件是否存在；
- *  2.（force:YES)
- *     a)Files/fileID/desc.json是否存在
- *     b)内容是否为空
- *     c)格式是否为json
- *
- *  @param fileID 文件在服务器上的文件id
- *  @param isForce 确认文件存在的逻辑强度
- *
- *  @return 存在即true, 否则false
- */
-
-+ (BOOL) checkSlideExist: (NSString *) slideID
-                     Dir:(NSString *)dirName
-                   Force:(BOOL)isForce;
-
-/**
  *  打印沙盒目录列表, 相当于`tree ./`， 测试时可以用到
  */
 + (void) printDir: (NSString *)dirName;
@@ -94,46 +71,8 @@
  *
  *  @return 是否删除成功的布尔值
  */
-+ (BOOL) removeFile:(NSString *)filePath;
-
-/**
- *  专用函数;读取文档描述文件内容；{FILE_DIRNAME,FAVORITE_DIRNAME}/fileID/desc.json(.swp)
- *
- *  @param slideID slideID
- *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
- *  @param klass   SLIDE_CONFIG_FILENAME/SLIDE_CONFIG_SWP_FILENAME
- *
- *  @return 文档配置档路径
- */
-+ (NSString *) slideDescPath:(NSString *)fileID
-                         Dir:(NSString *)dirName
-                       Klass:(NSString *)klass;
-
-/**
- *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
- *
- *
- *  @param slideID slideID
- *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
- *  @param klass   SLIDE_CONFIG_FILENAME/SLIDE_CONFIG_SWP_FILENAME
- *
- *
- *  @return 文档配置档内容;str
- */
-+ (NSString *) slideDescContent:(NSString *)slideID
-                            Dir:(NSString *)dirName
-                          Klass:(NSString *)klass;
-
-/**
- *  专用函数; 由文档演示界面进入文档页面编辑界面时，会拷贝一份描述文件，以实现[恢复]功能；
- *
- *  @param fileID fileID
- *  @param dirName FILE_DIRNAME/FAVORITE_DIRNAME
- *
- *  @return 文档配置档内容;jsonStr
- */
-+ (NSString *)copyFileDescContent:(NSString *)slideID Dir:(NSString *)dirName;
-
++ (BOOL)removeFile:(NSString *)filePath;
++ (BOOL)move:(NSString *)source to:(NSString *)target;
 
 /**
  *  文件体积大小转化为可读文字；
@@ -159,36 +98,6 @@
 + (void) writeJSON:(NSMutableDictionary *)data
               Into:(NSString *) slidePath;
 
-
-/**
- *  获取文档的缩略图，即文档中的pdf/gif文件; 文件名为PageID, 后缀应该小写
- *
- *  @param FileID fileID
- *  @param PageID pageID
- *
- *  @return pdf/gif文档路径
- */
-+ (NSString*) slideThumbnail:(NSString *)FileID
-                     PageID:(NSString *)PageID
-                        Dir:(NSString *)dir;
-
-/**
- *  在线浏览目录时，根据文档属性显示对应缩略图
- *
- *  @param slideTyoe 文档类型
- *
- *  @return 缩略图地址
- */
-+ (NSString *)slideThumbnail:(NSString *)slideTyoe;
-
-
-#pragma mark - slide download cache
-+ (NSString *)slideToDownload:(NSString *)slideID;
-+ (NSString *)slideDownloaded:(NSString *)slideID;
-+ (BOOL)isSlideDownloading:(NSString *)slideID;
-
-
-
 /**
  *  计算指定文件路径的文件大小
  *
@@ -206,6 +115,63 @@
  */
 + (NSString *)folderSize:(NSString *)folderPath;
 
+/**
+ *  课件文件路径
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *  @param UseExt   是否使用扩展名
+ *
+ *  @return 课件文件路径
+ */
++ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName UseExt:(BOOL)useExt;
+/**
+ *  课件文件路径
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return 课件文件路径
+ */
++ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName;
+
+/**
+ *  课件内容是否下载
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (BOOL)isCourseDownloaded:(NSString *)courseID Ext:(NSString *)extName;
+
+/**
+ *  课件学习进度
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (NSString *)courseProgressPath:(NSString *)courseID Ext:(NSString *)extName;
+/**
+ *  课件内容是否被阅读
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (BOOL)isCourseReaded:(NSString *)courseID Ext:(NSString *)extName;
+
+/**
+ *  记录学习进度
+ *
+ *  @param dict     学习进度配置档
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ */
++ (void)recordProgress:(NSDictionary *)dict CourseID:(NSString *)courseID Ext:(NSString *)extName;
 @end
 
 

@@ -14,7 +14,7 @@
 
 - (User *)init {
     if(self = [super init]) {
-        NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
+        NSString *configPath = [[FileUtils basePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
         NSMutableDictionary *configDict =[FileUtils readConfigFile:configPath];
         
         _configPath = configPath;
@@ -37,7 +37,7 @@
             _ID = @"0";
             NSLog(@"User#ID is nil.");
         } else {
-            _personalPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+            _personalPath = [FileUtils dirPath:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
         }
         if(!self.deptID) {
             _deptID = @"0";
@@ -68,7 +68,7 @@
 }
 
 - (void)writeInToPersonal {
-    _personalPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+    _personalPath = [FileUtils dirPath:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
     [FileUtils writeJSON:self.configDict Into:self.personalPath];
 }
 
@@ -92,7 +92,12 @@
 }
 
 + (NSMutableDictionary *)configData {
-    NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
+    NSString *configPath = [[FileUtils basePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
     return [FileUtils readConfigFile:configPath];
+}
+
+
+- (BOOL)isEverLogin {
+    return self.loginLast;
 }
 @end

@@ -26,25 +26,6 @@
 }
 
 /**
- *  目录同步,获取某分类下的文档列表
- *
- *  @return 文档列表
- */
-+ (HttpResponse *)slides:(NSString *)categoryID DeptID:(NSString *)deptID {
-    NSString *urlString = [Url slides:categoryID DeptID:deptID];
-    return [HttpUtils httpGet:urlString];
-}
-/**
- *  目录同步,获取某分类下的分类列表
- *
- *  @return 分类列表
- */
-+ (HttpResponse *)categories:(NSString *)categoryID DeptID:(NSString *)deptID {
-    NSString *urlString = [Url categories:categoryID DeptID:deptID];
-    return [HttpUtils httpGet:urlString];
-}
-
-/**
  *  通知公告列表
  *
  *  @return 数据列表
@@ -61,8 +42,34 @@
  *  @return 服务器响应信息
  */
 + (HttpResponse *)actionLog:(NSMutableDictionary *)params {
+    params[@"AppName"] = @"iLearn";
     return [HttpUtils httpPost:[Url actionLog] Params:params];
 }
 
+/**
+ *  功能：获取某个人能看到的课程包
+ *  URL：http://tsa-china.takeda.com.cn/uatui/api/CoursePackets_Api.php?uid=1
+ *
+ *  @param params uid：用户ID（和获得考卷的一样）
+ *
+ *  @return 课程包列表
+ */
++ (HttpResponse *)coursePackages:(NSString *)UID {
+    NSString *urlString = [Url coursePackages:UID];
+    return [HttpUtils httpGet:urlString];
+}
+
+/**
+ *  功能：获取单个课程包的详细信息
+ *  URL：http://tsa-china.takeda.com.cn/uatui/api/CPOne_Api.php?cpid=1
+ *
+ *  @param PID 课程包编号
+ *
+ *  @return 课程包的详细信息
+ */
++ (HttpResponse *)coursePackageContent:(NSString *)PID {
+    NSString *urlString = [Url coursePackageContent:PID];
+    return [HttpUtils httpGet:urlString];
+}
 
 @end

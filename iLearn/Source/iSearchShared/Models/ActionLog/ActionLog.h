@@ -26,19 +26,15 @@
 @property (nonatomic, strong) NSString *localCreatedDate;
 @property (nonatomic, strong) NSString *localUpdatedDate;
 
-// instance methods
-- (NSMutableArray *)records;
 /**
  *  操作记录
  *
  *  @param slide  action object
  *  @param action action name
  */
-- (void)recordSlide:(Slide*)slide Action:(NSString *)action;
 - (void)syncRecords;
 
 // class methods
-+ (void)recordSlide:(Slide*)slide Action:(NSString *)action;
 + (void)syncRecords;
 @end
 

@@ -6,8 +6,9 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#import "Url+Param.h"
+#import <Foundation/Foundation.h>
 #import "const.h"
+#import "Url+Param.h"
 #import "ExtendNSLogFunctionality.h"
 
 @implementation Url (Param)
@@ -32,73 +33,7 @@
 
     return [Url UrlConcate:urlString Param:params];
 }
-/**
- *  目录同步,获取某分类下的文档列表
- *
- *  @return urlString
- */
-+ (NSString *)slides:(NSString *)categoryID DeptID:(NSString *)deptID {
-    BOOL isParamsValid = CheckParams(GenFormat(2), categoryID, deptID);
-    if(!isParamsValid) {
-        categoryID = (NSString *)psd(categoryID, @"null");
-        deptID     = (NSString *)psd(deptID, @"null");
-    }
-    
-    NSString *urlString  = [[Url alloc] init].slides;
-    NSDictionary *params = @{CONTENT_PARAM_DEPTID: deptID, CONTENT_PARAM_FILE_CATEGORYID:categoryID};
-    
-    return [Url UrlConcate:urlString Param:params];
-}
-/**
- *  目录同步,获取某分类下的分类列表
- *
- *  @return urlString
- */
-+ (NSString *)categories:(NSString *)categoryID DeptID:(NSString *)deptID {
-    BOOL isParamsValid = CheckParams(GenFormat(2), categoryID, deptID);
-    if(!isParamsValid) {
-        categoryID = (NSString *)psd(categoryID, @"null");
-        deptID     = (NSString *)psd(deptID, @"null");
-    }
-    
-    NSString *urlString  = [[Url alloc] init].categories;
-    NSDictionary *params = @{CONTENT_PARAM_DEPTID: deptID, CONTENT_PARAM_PARENTID:categoryID};
-    
-    return [Url UrlConcate:urlString Param:params];
-}
-/**
- *  目录同步界面，点击文档进入下载
- *
- *  @return urlString
- */
-+ (NSString *)slideDownload:(NSString *)slideID {
-    BOOL isParamsValid = CheckParams(GenFormat(1), slideID);
-    if(!isParamsValid) {
-        slideID = (NSString *)psd(slideID, @"null");
-    }
-    
-    NSString *urlString  = [[Url alloc] init].slideDownload;
-    NSDictionary *params = @{CONTENT_PARAM_FILE_DWONLOADID: slideID};
-    
-    return [Url UrlConcate:urlString Param:params];
-}
 
-/**
- *  批量下载时，获取该用户有权限看到的所有文档列表
- *
- *  @return urlString
- */
-+ (NSString *)slideList:(NSString *)deptID {
-    BOOL isParamsValid = CheckParams(GenFormat(1), deptID);
-    if(!isParamsValid) {
-        deptID = (NSString *)psd(deptID, @"null");
-    }
-    
-    NSString *urlString  = [[Url alloc] init].slideList;
-    NSDictionary *params = @{OFFLINE_PARAM_DEPTID: deptID};
-    
-    return [Url UrlConcate:urlString Param:params];
-}
 /**
  *  通知公告列表
  *
@@ -117,7 +52,64 @@
     return [Url UrlConcate:urlString Param:params];
 }
 
+/**
+ *  课程包列表
+ *
+ *  @param UID 用户ID
+ *
+ *  @return 课程包列表
+ */
++ (NSString *)coursePackages:(NSString *)UID {
+    BOOL isParamsValid = CheckParams(GenFormat(1), UID);
+    if(!isParamsValid) {
+        UID = (NSString *)psd(UID, @"null");
+    }
+    
+    NSString *urlString  = [[Url alloc] init].coursePackages;
+    NSDictionary *params = @{COURSE_PACKAGES_PARAMS_UID: UID};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
 
+/**
+ *  某个课程包明细
+ *
+ *  @param PID 课程包ID
+ *
+ *  @return 课程内容
+ */
++ (NSString *)coursePackageContent:(NSString *)PID {
+    BOOL isParamsValid = CheckParams(GenFormat(1), PID);
+    if(!isParamsValid) {
+        PID = (NSString *)psd(PID, @"null");
+    }
+    
+    NSString *urlString  = [[Url alloc] init].coursePackageContent;
+    NSDictionary *params = @{COURSE_PACKAGE_CONTENT_PARAMS_PID: PID};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
+
+/**
+ *  课件下载
+ *
+ *  @param cid 课件ID
+ *  @param ext 课件文件扩展名
+ *
+ *  @return 课件下载链接
+ */
++ (NSString *)downloadCourse:(NSString *)cid Ext:(NSString *)ext {
+    BOOL isParamsValid = CheckParams(GenFormat(2), cid, ext);
+    if(!isParamsValid) {
+        cid = (NSString *)psd(cid, @"null");
+        ext = (NSString *)psd(ext, @"null");
+    }
+    
+    NSString *urlString  = [[Url alloc] init].downloadCourse;
+    NSDictionary *params = @{COURSE_DOWNLOAD_PARAMS_CID:cid, COURSE_DOWNLOAD_PARAMS_EXT:ext};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
 
 #pragma mark - GET# assistant methods
 + (NSString *)UrlConcate:(NSString *)url Param:(NSDictionary *)params {

@@ -20,10 +20,10 @@
 
 + (NSString*)examSourceFolderPath;
 + (NSString*)examFolderPathInDocument;
-+ (NSString*)examDBPathOfFile:(NSString*)fileName;
 + (void)cleanExamFolder;
 
 + (void)parseContentIntoDB:(NSDictionary*)content;
++ (void)parseContentIntoDB:(NSDictionary*)content Path:(NSString *)dbPath;
 + (NSDictionary*)examContentFromDBFile:(NSString*)dbPath;
 + (void)setOptionSelected:(BOOL)selected withSubjectId:(NSString*)subjectId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath;
 
@@ -39,5 +39,10 @@
 + (NSArray*)unsubmittedScannedResults;
 
 + (NSArray*)resultFiles;
+
++ (NSString *)examPath:(NSString *)examID;
++ (BOOL)isExamDownloaded:(NSString *)examID;
++ (NSString *)examDBPath:(NSString *)examID;
++ (NSString *)examBasePath:(NSString *)examID Ext:(NSString *)extName;
 
 @end

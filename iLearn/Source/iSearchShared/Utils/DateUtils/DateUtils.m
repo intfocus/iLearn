@@ -54,10 +54,10 @@
 + (NSMutableDictionary *) updateSlideTimestamp:(NSMutableDictionary *)dict {
     NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];
     
-    if(!dict[SLIDE_DESC_LOCAL_CREATEAT]) {
-        [dict setObject:timestamp forKey:SLIDE_DESC_LOCAL_CREATEAT];
+    if(!dict[DB_COLUMN_CREATED]) {
+        [dict setObject:timestamp forKey:DB_COLUMN_CREATED];
     }
-    [dict setObject:timestamp forKey:SLIDE_DESC_LOCAL_UPDATEAT];
+    [dict setObject:timestamp forKey:DB_COLUMN_UPDATED];
     return dict;
 }
 @end

@@ -38,14 +38,16 @@
 #import "DateUtils.h"
 #import "FileUtils.h"
 #import "ApiHelper.h"
+#import "ActionLog.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "AFNetworking.h"
 #import "UIViewController+CWPopup.h"
+#import <MBProgressHUD.h>
 #import "ViewUpgrade.h"
 #import "LicenseUtil.h"
 
-@interface LoginViewController () <ViewUpgradeProtocol>
+@interface LoginViewController () <ViewUpgradeProtocol, UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 @property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
@@ -59,6 +61,9 @@
 
 @property (strong, nonatomic) User *user;
 @property (nonatomic, nonatomic) NSInteger timerCount;
+
+@property (strong, nonatomic) MBProgressHUD  *progressHUD;
+@property (strong, nonatomic) NSString *popupText;
 @end
 
 @implementation LoginViewController
@@ -70,6 +75,7 @@
      */
     self.user = [[User alloc] init];
     self.labelPropmt.text = @"";
+    self.webViewLogin.delegate = self;
     [self hideOutsideLoginControl:YES];
     
     // CWPopup 事件
@@ -84,6 +90,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    // 跳转SSO界面，返回后，再登录
+    self.popupText = @"跳转至SSO";
     
     if([HttpUtils isNetworkAvailable]) {
         [self checkAppVersionUpgrade];
@@ -118,7 +126,6 @@
         self.btnSubmit.enabled = YES;
         [self.btnSubmit setTitle:@"登陆" forState:UIControlStateNormal];
     }];
-    
 }
 
 #pragma mark - ViewUpgradeProtocol
@@ -139,25 +146,26 @@
     [self actionClearCookies];
     if(self.timerReadCookie) {
         [self.timerReadCookie invalidate];
+        _timerReadCookie = nil;
     }
 }
 
 - (IBAction)actionSubmit:(id)sender {
     self.labelPropmt.text = @"";
     
-//    self.cookieValue = @"E99658603";
-//    [self actionOutsideLoginSuccessfully];
-//    return;
-    
-    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
+    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:10.0];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
+        
+        self.cookieValue = @"E99658603";
+        [self actionOutsideLoginSuccessfully];
+        return;
+        
         [self actionClearCookies];
         [self actionOutsideLogin];
     } else {
         [self actionLoginWithoutNetwork];
     }
-    
 }
 
 #pragma mark - assistant methods
@@ -192,25 +200,31 @@
         }
     }
     if([cookieValue length] > 0) {
+        [self.timerReadCookie invalidate];
+        _timerReadCookie = nil;
+        [self actionClearCookies];
+        [self actionOutsideLoginRefresh];
+        [self.progressHUD hide:YES];
+        
         if([cookieValue isEqualToString:@"error000"]) {
             [self hideOutsideLoginControl:YES];
             [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
-        } else {
+        }
+        else {
             self.cookieValue = cookieValue;
             [self actionOutsideLoginSuccessfully];
         }
-        [self.timerReadCookie invalidate];
-        [self actionClearCookies];
     }
     self.timerCount++;
 }
 
-- (void) hideOutsideLoginControl:(BOOL)isHidden {
+- (void)hideOutsideLoginControl:(BOOL)isHidden {
     if(isHidden) {
         [self.view sendSubviewToBack:self.labelLoginTitle];
         [self.view sendSubviewToBack:self.webViewLogin];
         [self.view sendSubviewToBack:self.btnNavBack];
-    } else {
+    }
+    else {
         [self.view bringSubviewToFront:self.labelLoginTitle];
         [self.view bringSubviewToFront:self.webViewLogin];
         [self.view bringSubviewToFront:self.btnNavBack];
@@ -237,7 +251,8 @@
     HttpResponse *httpResponse = [ApiHelper login:self.cookieValue];
     if(![httpResponse isValid]) {
         [loginErrors addObjectsFromArray:httpResponse.errors];
-    } else {
+    }
+    else {
         NSMutableDictionary *responseDict = httpResponse.data;
         // 服务器交互成功
         NSString *responseResult = responseDict[LOGIN_FIELD_RESULT];
@@ -259,15 +274,19 @@
             [self.user writeInToPersonal];
             
             // 跳至主界面
+            
+            ActionLogRecordLogin(@"successfully, online");
             [self enterMainViewController];
             return;
-        } else {
+        }
+        else {
             [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", psd(responseResult,@"")]];
         }
     }
     
-    if([loginErrors count])
+    if([loginErrors count]) {
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[loginErrors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
+    }
     [self hideOutsideLoginControl:YES];
 }
 
@@ -283,6 +302,8 @@
     
     if(![errors count]) {
         // 跳至主界面
+        
+        ActionLogRecordLogin(@"successfully, offline");
         [self enterMainViewController];
         // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
     } else {
@@ -302,6 +323,12 @@
  */
 - (NSMutableArray *) checkEnableLoginWithoutNetwork:(User *) user {
     NSMutableArray *errors = [[NSMutableArray alloc] init];
+    
+    if(!user.isEverLogin) {
+        [errors addObject:@"无网络，不登录"];
+        
+        return errors;
+    }
     
     // 上次登陆日期字符串转换成NSDate
     NSDate *lastDate    = [DateUtils strToDate:user.loginLast Format:LOGIN_DATE_FORMAT];
@@ -342,6 +369,9 @@
 #pragma mark - assistant methods
 
 -(void)enterMainViewController{
+    self.labelPropmt.text = @"上传本地记录...";
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    [ActionLog syncRecords];
     
     [LicenseUtil saveUserAccount:self.user.employeeID];
     [LicenseUtil saveUserId:self.user.ID];
@@ -354,4 +384,18 @@
     [self presentViewController:dashboardViewController animated:YES completion:nil];
 }
 
+#pragma mark - UIWebview Delegate
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _progressHUD.labelText = [NSString stringWithFormat:@"%@...",self.popupText];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [_progressHUD hide:YES];
+    self.popupText = @"获取用户信息";
+}
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [_progressHUD hide:YES];
+    
+    [ViewUtils simpleAlertView:self Title:[NSString stringWithFormat:@"%@失败",self.popupText] Message:[error localizedDescription] ButtonTitle:BTN_CONFIRM];
+}
 @end

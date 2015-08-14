@@ -18,6 +18,10 @@
 #import "ApiHelper.h"
 #import "CacheHelper.h"
 #import "ExtendNSLogFunctionality.h"
+#import "CoursePackage.h"
+#import "CoursePackageContent.h"
+#import "CoursePackageDetail.h"
+#import "CourseWrap+CoursePackageDetail.h"
 
 @interface DataHelper()
 @property (nonatomic, strong) NSMutableArray *visitData;
@@ -41,7 +45,7 @@
     
     //无网络，读缓存
     if(![HttpUtils isNetworkAvailable]) {
-        return [CacheHelper readNotifications];
+        return [CacheHelper notifications];
     }
     
     // 从服务器端获取[公告通知]
@@ -78,7 +82,9 @@
  */
 + (NSMutableArray *)actionLog:(NSMutableArray *)unSyncRecords {
     NSMutableArray *IDS = [[NSMutableArray alloc] init];
-    if([unSyncRecords count] == 0) { return IDS; }
+    if([unSyncRecords count] == 0) {
+        return IDS;
+    }
 
     NSString *ID;
     HttpResponse *httpResponse;
@@ -86,15 +92,82 @@
         ID = dict[@"id"]; [dict removeObjectForKey:@"id"];
         @try {
             httpResponse = [ApiHelper actionLog:dict];
-            if([httpResponse isSuccessfullyPostActionLog]) { [IDS addObject:ID]; }
+            if([httpResponse isSuccessfullyPostActionLog]) {
+                [IDS addObject:ID];
+            }
         } @catch (NSException *exception) {
             NSLog(@"sync action log(%@) faild for %@#%@\n %@", dict, exception.name, exception.reason);
         } @finally {
-            [IDS addObject:ID];
         }
     }
     
     return IDS;
+}
+
+/**
+ *  课程包列表
+ *
+ *  @param isNetworkAvailable 无网络读取缓存，有网络读取服务器
+ *
+ *  @return 课程包列表
+ */
++ (NSArray *)coursePackages:(BOOL)isNetworkAvailable {
+    NSMutableDictionary *packages = [[NSMutableDictionary alloc] init];
+    NSArray *dataList             = [[NSArray alloc] init];
+    NSString *PID                 = [User userID];
+    
+    if(isNetworkAvailable) {
+        HttpResponse *httpResponse = [ApiHelper coursePackages:PID];
+        packages = httpResponse.data;
+        
+        [CacheHelper writeCoursePackages:packages ID:PID];
+    }
+    else {
+        packages = [CacheHelper coursePackages:PID];
+    }
+
+    dataList = packages[COURSE_PACKAGES_FIELD_DATA];
+    if(dataList && [dataList count] > 0) {
+        NSMutableArray *sortArray = [self sortArray:[NSMutableArray arrayWithArray:dataList] Key:@"Name" Ascending:YES];
+        NSMutableArray *coursePackages = [[NSMutableArray alloc] init];
+        for(NSDictionary *data in sortArray) {
+            [coursePackages addObject: [[CoursePackage alloc] initWithData:data]];
+        }
+        dataList = [NSArray arrayWithArray:coursePackages];
+    }
+    return dataList;
+}
+
+/**
+ *  课程包内容明细
+ 
+ *  @param isNetworkAvailable 无网络读取缓存，有网络读取服务器
+ *  @param pid package ID
+ *
+ *  @return 课程包内容明细
+ */
++ (NSArray *)coursePackageContent:(BOOL)isNetworkAvaliable pid:(NSString *)PID {
+    NSMutableDictionary *packages = [[NSMutableDictionary alloc] init];
+    
+    if(isNetworkAvaliable) {
+        HttpResponse *httpResponse = [ApiHelper coursePackageContent:PID];
+        packages = httpResponse.data;
+        
+        [CacheHelper writeCoursePackageContent:packages ID:PID];
+    }
+    else {
+        packages = [CacheHelper coursePackageContent:PID];
+    }
+
+    NSDictionary *content = packages[COURSE_PACKAGES_FIELD_DATA];
+    CoursePackageContent *packageContent = [[CoursePackageContent alloc] initWithData:content];
+    NSArray *dataList = [[NSArray alloc] init];
+    dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadCourses:packageContent.courseList]];
+    dataList = [dataList arrayByAddingObjectsFromArray:[CourseWrap loadCourseWraps:packageContent.courseWrapList]];
+    dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadExams:packageContent.examList]];
+    dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadQuestions:packageContent.questionList]];
+    
+    return dataList;
 }
 
 #pragma mark - assistant methods
@@ -104,65 +177,5 @@
         [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, dict[key]]];
     }
     return [paramArray componentsJoinedByString:@"&"];
-}
-//+ (NSString *)postActionLog:(NSMutableDictionary *) params {
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    NSString *url = [ApiUtils apiUrl:ACTION_LOGGER_URL_PATH];
-//    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"JSON: %@", responseObject);
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"Error: %@", error);
-//    }];
-//    
-//    return @"";
-//}
-
-#pragma mark - funny methods
-- (void)traverseVisitContent:(NSString *)categoryID Depth:(NSInteger)depth {
-    HttpResponse *httpResponse;
-    NSDate *date = [NSDate date];
-    NSInteger categoryCount = 0, slideCount = 0;
-    
-    httpResponse = [ApiHelper slides:categoryID DeptID:[User deptID]];
-    [CacheHelper writeContents:httpResponse.data Type:CONTENT_SLIDE ID:categoryID];
-    slideCount = [httpResponse.data[CONTENT_FIELD_DATA] count];
-    
-    httpResponse = [ApiHelper categories:categoryID DeptID:[User deptID]];
-    [CacheHelper writeContents:httpResponse.data Type:CONTENT_CATEGORY ID:categoryID];
-    categoryCount = [httpResponse.data[CONTENT_FIELD_DATA] count];
-    
-    NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:date];
-    NSLog(@"depth:%i, categoryID:%@, slides: %i, categories: %i, duration: %i(ms)", depth, categoryID, slideCount, categoryCount, (int)(interval*1000));
-    [self.visitData addObject:@[[NSNumber numberWithInteger:depth], categoryID, [NSNumber numberWithInteger:slideCount], [NSNumber numberWithInteger:categoryCount], [NSNumber numberWithDouble:interval]]];
-    
-    NSMutableDictionary *responseJSON = httpResponse.data;
-    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    if(responseJSON[CONTENT_FIELD_DATA]) {
-        mutableArray = [NSMutableArray arrayWithArray:responseJSON[CONTENT_FIELD_DATA]];
-        for(NSMutableDictionary *dict in mutableArray) {
-            [self traverseVisitContent:dict[CONTENT_FIELD_ID] Depth:depth+1];
-        }
-    }
-}
-
-- (void)traverseVisitReport {
-    NSInteger maxDepth=0, maxSlides=0, maxCategories=0, slideCount=0, categoryCount=0;
-    double duration = 0.0;
-    for(NSArray *array in self.visitData) {
-        if([array[0] intValue] > maxDepth)      maxDepth      = [array[0] intValue];
-        if([array[2] intValue] > maxSlides)     maxSlides     = [array[2] intValue];
-        if([array[3] intValue] > maxCategories) maxCategories = [array[3] intValue];
-        
-        
-        slideCount    += [array[2] intValue];
-        categoryCount += [array[3] intValue];
-        duration      += [array[4] doubleValue];
-    }
-    User *user = [[User alloc] init];
-    NSLog(@"name: %@, deptID:%@, employeeID: %@", user.name, user.deptID, user.employeeID);
-    NSLog(@"maxDepth: %i, maxSlides: %i, maxCategories: %i", maxDepth, maxSlides, maxCategories);
-    NSLog(@"slideCount: %i, categoryCount: %i", slideCount, categoryCount);
-    NSLog(@"averageVisit: %i (max)", (int)(duration/categoryCount*1000));
-    NSLog(@"self:%i, caculate: %i, isValid: %i", [self.visitData count], categoryCount, [self.visitData count] == categoryCount);
 }
 @end

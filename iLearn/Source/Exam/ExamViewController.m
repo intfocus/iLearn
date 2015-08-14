@@ -55,6 +55,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UILabel *correctionNoteLabel;
 @property (weak, nonatomic) IBOutlet UIView *correctionTypeView;
 @property (weak, nonatomic) IBOutlet UILabel *correctionTypeLabel;
+@property (weak, nonatomic) IBOutlet UIView *correctionStaticView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *questionToCorrectionSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerTableViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionTableViewHeightConstraint;
@@ -113,6 +114,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     [_questionTypeView.layer setCornerRadius:5.0];
     [_correctionTypeView.layer setCornerRadius:5.0];
+    [_correctionStaticView.layer setCornerRadius:5.0];
 
     NSNumber *score = _examContent[ExamScore];
 
@@ -169,7 +171,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [self updateOptionContents];
 
     if (!_isAnswerMode) { // Hide the answer view
-        CGFloat correctionViewHeight = _correctionView.frame.size.height;
+        //CGFloat correctionViewHeight = _correctionView.frame.size.height;
         _correctionView.hidden = YES;
         //self.correctionVIewButtonContraint.constant = -correctionViewHeight;
         //_questionToCorrectionSpaceConstraint.constant = -correctionViewHeight;
@@ -329,7 +331,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     NSArray *options = selectedQuestion[ExamQuestionOptions];
     NSDictionary *option = options[indexPath.row];
 
-    cell.seqLabel.text = [NSString stringWithFormat:@"%ld", (indexPath.row+1)+64];
+    // ascii num to alpha, eg: 65 => A
+    cell.seqLabel.text = [NSString stringWithFormat:@"%c", (int)(indexPath.row+1)+64];
     cell.titleLabel.text = option[ExamQuestionOptionTitle];
 
     if (tableView == _questionTableView) {
@@ -489,14 +492,14 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     NSMutableDictionary *subject = _examContent[ExamQuestions][_selectedCellIndex];
     NSString *subjectId = subject[ExamQuestionId];
-    NSString *fileName = _examContent[CommonFileName];
+    //NSString *fileName = _examContent[CommonFileName];
 
     for (int i = 0; i<[subject[ExamQuestionOptions] count]; i++) {
 
         NSMutableDictionary *option = subject[ExamQuestionOptions][i];
         NSString *optionId = option[ExamQuestionOptionId];
 
-        NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+        NSString *dbPath = _examContent[CommonDBPath];
 
         BOOL selected = [_selectedRowsOfSubject containsObject:@(i)];
 
@@ -666,8 +669,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         [self saveSelections];
 
-        NSString *fileName = _examContent[CommonFileName];
-        NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+        //NSString *fileName = _examContent[CommonFileName];
+        NSString *dbPath = _examContent[CommonDBPath];
 
         NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
 
@@ -680,24 +683,28 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         ExamTypes examType = [_examContent[ExamType] integerValue];
         BOOL isUploadExamResult = YES;
+        scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
 
-        if (examType == ExamTypesFormal &&
-            score < qualityLine &&
-            newSubmitTimes < allowTimes) { // Should test again
+        if (examType == ExamTypesFormal) {
+            if(score < qualityLine && newSubmitTimes < allowTimes) { // Should test again
 
             [ExamUtil resetExamStatusOfDBPath:dbPath];
             scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNDER_QUALIFY_TEMPLATE", nil), [NSNumber numberWithInteger:qualityLine],[NSNumber numberWithInteger:score], [NSNumber numberWithInteger:(allowTimes - newSubmitTimes)]];
             isUploadExamResult = NO;
-        }
-        else {
-            if (newSubmitTimes > 1 && score > qualityLine) { // Qualitied and has submitted, the score should be just qualified
-                score = qualityLine;
-                [ExamUtil updateExamScore:score ofDBPath:dbPath];
+                
             }
-            
-            [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
-            scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
-            isUploadExamResult = YES;
+            else {
+                if (newSubmitTimes > 1 && score > qualityLine) { // Qualitied and has submitted, the score should be just qualified
+                    score = qualityLine;
+                    [ExamUtil updateExamScore:score ofDBPath:dbPath];
+                }
+                
+                [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+                isUploadExamResult = YES;
+            }
+        }
+        else if(examType == ExamTypesPractice) {
+            isUploadExamResult = NO;
         }
        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
@@ -781,4 +788,11 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - supportedInterfaceOrientationsForWindow
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
+}
 @end

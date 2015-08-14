@@ -14,6 +14,7 @@
 #import "ScoreQRCodeViewController.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
+#import "ViewUtils.h"
 #import "UIImage+MDQRCode.h"
 #import <MBProgressHUD.h>
 #import "ListViewController.h"
@@ -85,10 +86,10 @@ static const NSInteger kMinScanInterval = 3;
         detailVC.descString = [ExamUtil descFromContent:sender];
         if (self.showBeginTestInfo) {
             detailVC.delegate = self;
-            detailVC.shownFromBeginTest = self.showBeginTestInfo;
+            detailVC.showFromBeginTest = self.showBeginTestInfo;
         }
         else {
-            detailVC.shownFromBeginTest = self.showBeginTestInfo;
+            detailVC.showFromBeginTest = self.showBeginTestInfo;
         }
         
     }
@@ -255,7 +256,7 @@ static const NSInteger kMinScanInterval = 3;
                 
                 if (score == nil || [score isEqualToNumber:@(-1)]) { // Not calculated score yet
                     NSString *fileName = content[CommonFileName];
-                    NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+                    NSString *dbPath = [ExamUtil examDBPath:fileName];
                     
                     scoreInt = [ExamUtil examScoreOfDBPath:dbPath];
                     
@@ -470,11 +471,11 @@ static const NSInteger kMinScanInterval = 3;
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [ExamUtil parseContentIntoDB:content];
-        
-        NSString *dbPath = [ExamUtil examDBPathOfFile:content[CommonFileName]];
+        NSString *dbPath = [ExamUtil examDBPath:content[CommonFileName]];
+        [ExamUtil parseContentIntoDB:content Path:dbPath];
         
         NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
+        [dbContent setValue:dbPath forKey:CommonDBPath];
         //NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -546,6 +547,9 @@ static const NSInteger kMinScanInterval = 3;
     if (!error) {
         [self refreshContent];
     }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
+    }
 }
 
 - (void)connectionManagerDidDownloadExam:(NSString *)examId withError:(NSError *)error
@@ -555,15 +559,21 @@ static const NSInteger kMinScanInterval = 3;
     if (!error) {
         [self refreshContent];
     }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
+    }
 }
 
 - (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error
 {
     if (!error) {
-        NSString *dbPath = [ExamUtil examDBPathOfFile:examId];
+        NSString *dbPath = [ExamUtil examDBPath:examId];
         [ExamUtil setExamSubmittedwithDBPath:dbPath];
         
         [self refreshContent];
+    }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
     }
     [self syncExamResults];
 }
@@ -572,6 +582,9 @@ static const NSInteger kMinScanInterval = 3;
 {
     if (!error) {
         [ExamUtil setScannedResultSubmitted:result];
+    }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
     }
     [self syncScannedExamResults];
     

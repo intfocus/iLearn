@@ -32,6 +32,7 @@ SETTINGS_APPLICATION_ABOUT = "Version Information";
 SETTINGS_APPLICATION_VERSION = "Version";
 
 LIST_EXAM = "Exam";
+LIST_LECTURE = "Learn";
 LIST_QUESTIONNAIRE = "Questionnaire";
 LIST_NOTIFICATION = "Notification";
 LIST_DETAIL = "detail";

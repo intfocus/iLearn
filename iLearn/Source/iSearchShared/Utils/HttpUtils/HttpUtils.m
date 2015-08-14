@@ -38,7 +38,7 @@
     NSLog(@"%@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     HttpResponse *httpResponse = [[HttpResponse alloc] init];
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:timeoutInterval];
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:timeoutInterval];
     NSError *error;
     NSURLResponse *response;
     httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
@@ -47,20 +47,20 @@
     if(!isOK) {
         [httpResponse.errors addObject:(NSString *)psd([error localizedDescription], @"http get未知错误")];
     }
-
+    
     return httpResponse;
 }
 
 
 /**
- *  应用从服务器获取数据，设置超时时间为: 3.0秒
+ *  应用从服务器获取数据，设置超时时间为: 15.0秒
  *
  *  @param urlString 服务器链接
  *
  *  @return Http#Get HttpResponse
  */
 + (HttpResponse *)httpGet:(NSString *)urlString {
-    return [HttpUtils httpGet:urlString timeoutInterval:3.0];
+    return [HttpUtils httpGet:urlString timeoutInterval:15.0];
 }
 
 /**
@@ -77,7 +77,9 @@
     NSURL *url = [NSURL URLWithString:urlString];
     //params     = [params stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:3.0];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                           timeoutInterval:3.0];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error: &error];
@@ -92,8 +94,8 @@
     if(!isOK) {
         [httpResponse.errors addObject:(NSString *)psd([error localizedDescription], @"http get未知错误")];
     }
-
-
+    
+    
     return httpResponse;
 }
 
@@ -102,14 +104,14 @@
  *
  *  @return 有网络则为true
  */
-+ (BOOL)isNetworkAvailable:(NSString *)urlString {
-    HttpResponse *httpResponse = [HttpUtils httpGet:urlString timeoutInterval:1];
-    
-    return (httpResponse.statusCode && [httpResponse.statusCode isEqual: @200]);
++ (BOOL)isNetworkAvailable {
+    return [self isNetworkAvailable:1.0];
 }
 
-+ (BOOL)isNetworkAvailable {
-    return [HttpUtils isNetworkAvailable:@"http://www.apple.com"];
++ (BOOL)isNetworkAvailable:(NSTimeInterval)timeoutInterval {
+    HttpResponse *httpResponse = [HttpUtils httpGet:@"http://www.apple.com" timeoutInterval:timeoutInterval];
+    
+    return (httpResponse.statusCode && ([httpResponse.statusCode intValue] == 200));
 }
 
 /**

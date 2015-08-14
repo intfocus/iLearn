@@ -12,20 +12,25 @@
 
 - (void)begin;
 
+@optional
+- (void)removeCourse;
+
 @end
 
 @interface DetailViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *descLabel;
 @property (weak, nonatomic) IBOutlet UITextView *descTextView;
 @property (weak, nonatomic) IBOutlet UIButton *actionButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
+// 武田学院，课件已下载时，通过[明细]界面移除
+@property (weak, nonatomic) IBOutlet UIButton *removeButton;
 
 @property (strong, nonatomic) NSString *titleString;
 @property (strong, nonatomic) NSString *descString;
 
-@property (assign, nonatomic) BOOL shownFromBeginTest;
+@property (assign, nonatomic) BOOL showFromBeginTest;
+@property (assign, nonatomic) BOOL showRemoveButton;
 @property (weak, nonatomic) id <DetailViewControllerProtocol> delegate;
 
 @end

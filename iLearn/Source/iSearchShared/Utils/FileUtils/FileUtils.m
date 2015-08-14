@@ -17,7 +17,7 @@
 
 @implementation FileUtils
 
-+ (NSString *)getBasePath {
++ (NSString *)basePath {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
     return [paths objectAtIndex:0];
 }
@@ -28,10 +28,10 @@
  *
  *  @return 沙盒中的绝对路径
  */
-+ (NSString *)getPathName: (NSString *)dirName {
++ (NSString *)dirPath: (NSString *)dirName {
     //获取应用程序沙盒的Documents目录
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *basePath = [FileUtils getBasePath];
+    NSString *basePath = [FileUtils basePath];
     BOOL isDir = true, existed;
     
     NSString *configPath = [basePath stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
@@ -57,9 +57,9 @@
  *
  *  @return 沙盒中的绝对路径
  */
-+ (NSString *)getPathName: (NSString *)dirName FileName:(NSString*) fileName {
++ (NSString *)dirPath: (NSString *)dirName FileName:(NSString*) fileName {
     // 一级目录路径， 不存在则创建
-    NSString *pathname = [self getPathName:dirName];
+    NSString *pathname = [self dirPath:dirName];
     // 二级文件名称或二级目录名称
     pathname = [pathname stringByAppendingPathComponent:fileName];
     
@@ -74,12 +74,89 @@
  *
  *  @return 布尔类型，存在即TRUE，否则为FALSE
  */
-+ (BOOL) checkFileExist: (NSString*) pathname isDir: (BOOL) isDir {
++ (BOOL)checkFileExist:(NSString*)pathname isDir:(BOOL)isDir {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL isExist = [fileManager fileExistsAtPath:pathname isDirectory:&isDir];
     return isExist;
 }
 
+/**
+ *  课件文件路径
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *  @param UseExt   是否使用扩展名
+ *
+ *  @return 课件文件路径
+ */
++ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName UseExt:(BOOL)useExt {
+    NSString *courseName;
+    if(useExt) {
+        courseName = [NSString stringWithFormat:@"%@.%@", courseID, extName];
+    }
+    else {
+        courseName = courseID;
+    }
+    return [self dirPath:COURSE_DIRNAME FileName:courseName];
+}
+
++ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName {
+    return [self coursePath:courseID Ext:extName UseExt:YES];
+}
+/**
+ *  课件内容是否下载
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (BOOL)isCourseDownloaded:(NSString *)courseID Ext:(NSString *)extName {
+    NSString *coursePath = [self coursePath:courseID Ext:extName];
+    
+    if([extName isEqualToString:@"zip"]) {
+        coursePath = [coursePath stringByDeletingPathExtension];
+        return [self checkFileExist:coursePath isDir:YES];
+    }
+    
+    return [self checkFileExist:coursePath isDir:NO];
+}
+
+/**
+ *  课件学习进度
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (NSString *)courseProgressPath:(NSString *)courseID Ext:(NSString *)extName {
+    NSString *coursePath = [self coursePath:courseID Ext:extName];
+    return [NSString stringWithFormat:@"%@.read-progress", coursePath];
+}
+
+/**
+ *  课件内容是否被阅读
+ *
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ *
+ *  @return BOOL
+ */
++ (BOOL)isCourseReaded:(NSString *)courseID Ext:(NSString *)extName {
+    return [self checkFileExist:[self courseProgressPath:courseID Ext:extName] isDir:NO];
+}
+
+/**
+ *  记录学习进度
+ *
+ *  @param dict     学习进度配置档
+ *  @param courseID 课程名称 ID
+ *  @param extName  课件文件扩展名
+ */
++ (void)recordProgress:(NSDictionary *)dict CourseID:(NSString *)courseID Ext:(NSString *)extName {
+    [dict writeToFile:[self courseProgressPath:courseID Ext:extName] atomically:YES];
+}
 /**
  *  读取配置档，有则读取。
  *  默认为NSMutableDictionary，若读取后为空，则按JSON字符串转NSMutableDictionary处理。
@@ -88,7 +165,7 @@
  *
  *  @return 返回配置信息NSMutableDictionary
  */
-+ (NSMutableDictionary*) readConfigFile: (NSString*) pathName {
++ (NSMutableDictionary*)readConfigFile:(NSString*) pathName {
     NSMutableDictionary *dict = [NSMutableDictionary alloc];
     //NSLog(@"pathname: %@", pathname);
     if([self checkFileExist:pathName isDir:false]) {
@@ -109,56 +186,6 @@
     }
     return dict;
 }
-
-/**
- *  检测演示文档是否下载; 
- *    平时扫描文件列表时，force:NO
- *    演示文稿时，force:YES; 
- *    避免由于文件约束问题闪退。
- *
- *  需要考虑问题:
- *  1. Files/fileID/文件是否存在；
- *  2.（force:YES)
- *     a)Files/fileID/desc.json是否存在
- *     b)内容是否为空
- *     c)格式是否为json
- *
- *  @param fileID 文件在服务器上的文件id
- *  @param isForce 确认文件存在的逻辑强度
- *
- *  @return 存在即true, 否则false
- */
-+ (BOOL) checkSlideExist:(NSString *) slideID
-                     Dir:(NSString *) dirName
-                   Force:(BOOL) isForce {
-    NSMutableArray *errors = [[NSMutableArray alloc] init];
-    NSString *filePath = [FileUtils getPathName:dirName FileName:slideID];
-    // 1. Files/fileID/文件是否存在
-    if(![FileUtils checkFileExist:filePath isDir:YES]) {
-        [errors addObject:@"fileID文件夹不存在."];
-    }
-    
-    // 2. a)Files/fileID/desc.json是否存在，b)内容是否为空，c)格式是否为json
-    NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_DICT_FILENAME];
-    if(isForce && errors && [errors count] == 0) {
-        // a)Files/fileID/desc.json是否存在
-        if(![FileUtils checkFileExist:descPath isDir:NO]) {
-            [errors addObject:@"fileID/desc.json文件不存在."];
-        }
-    
-        // b)内容是否为空，c)格式是否为json
-        if(errors && [errors count] == 0) {
-            // b)内容是否为空，
-            NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
-            if(!descDict) {
-                [errors addObject:@"desc is nil"];
-            }
-        }
-    }
-
-    return ([errors count] == 0);
-}
-
 /**
  *  打印沙盒目录列表, 相当于`tree ./`， 测试时可以用到
  */
@@ -180,7 +207,7 @@
  *
  *  @return 是否删除成功的布尔值
  */
-+ (BOOL) removeFile:(NSString *)filePath {
++ (BOOL)removeFile:(NSString *)filePath {
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL removed = [fileManager removeItemAtPath: filePath error: &error];
@@ -191,63 +218,14 @@
 }
 
 
-/**
- *  专用函数;读取文档描述文件内容；{FILE_DIRNAME,FAVORITE_DIRNAME}/fileID/desc.json(.swp)
- *
- *  @param slideID slideID
- *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
- *  @param klass   SLIDE_CONFIG_FILENAME/SLIDE_CONFIG_SWP_FILENAME
- *
- *  @return 文档配置档路径
- */
-+ (NSString *) slideDescPath:(NSString *)fileID
-                         Dir:(NSString *)dirName
-                       Klass:(NSString *)klass {
-    NSString *slidePath = [FileUtils getPathName:dirName FileName:fileID];
-    NSString *descPath = [slidePath stringByAppendingPathComponent:klass];
-    
-    return descPath;
-}
-
-/**
- *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
- *
- *
- *  @param slideID slideID
- *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
- *  @param klass   SLIDE_CONFIG_FILENAME/SLIDE_CONFIG_SWP_FILENAME
- *
- *
- *  @return 文档配置档内容;str
- */
-+ (NSString *) slideDescContent:(NSString *)slideID
-                            Dir:(NSString *)dirName
-                          Klass:(NSString *)klass {
++ (BOOL)move:(NSString *)source to:(NSString *)target {
     NSError *error;
-    NSString *descPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:klass];
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"slideID#%@, dirName#%@, klass#%@ - %@", slideID, dirName, klass, descPath);
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL moved = [fileManager moveItemAtPath:source toPath:target error:&error];
+    if(error)
+        NSLog(@"<# move %@ => %@ failed for %@", source, target, [error localizedDescription]);
     
-    return descContent;
-}
-
-/**
- *  专用函数; 由文档演示界面进入文档页面编辑界面时，会拷贝一份描述文件，以实现[恢复]功能；
- *
- *  @param fileID fileID
- *  @param dirName FILE_DIRNAME/FAVORITE_DIRNAME
- *
- *  @return 文档配置档内容;jsonStr
- */
-+ (NSString *)copyFileDescContent:(NSString *)slideID Dir:(NSString *)dirName {
-    NSString *descContent = [FileUtils slideDescContent:slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
-    NSString *descSwpPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
-    
-    NSError *error;
-    [descContent writeToFile:descSwpPath atomically:true encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"slideID#%@, dirName#%@; desc write into desc.swp: %@", slideID, dirName, descSwpPath);
-    
-    return descContent;
+    return moved;
 }
 
 /**
@@ -307,93 +285,6 @@
         }
     }
 }
-/**
- *  获取文档的缩略图，即文档中的pdf/gif文件; 文件名为PageID, 后缀应该小写
- *
- *  @param FileID fileID
- *  @param PageID pageID
- *
- *  @return pdf/gif文档路径
- */
-+ (NSString*) slideThumbnail:(NSString *)slideID
-                      PageID:(NSString *)pageID
-                         Dir:(NSString *)dirName {
-    NSString *slidePath  = [FileUtils getPathName:dirName FileName:slideID];
-    NSString *pagePath   = [slidePath stringByAppendingPathComponent:pageID];
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-    
-    //return [bundlePath stringByAppendingPathComponent:@"thumbnailPageVideo.png"];
-    NSString *thumbnailPath, *format;
-    BOOL isVideo = NO, isSlide = NO;
-
-    for(format in @[@"Gif",@"gif"]) { // never load pdf, @"pdf"
-        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
-        if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
-            isSlide = YES; break;
-        }
-    }
-    if(isSlide) { return thumbnailPath; }
-    
-    for(format in @[@"mp4", @"mpg"]) {
-        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
-        if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
-            isVideo = YES; break;
-        }
-    }
-    if(isVideo) {
-        thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailPageVideo.png"];
-        return thumbnailPath;
-    };
-    
-    thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];
-    return thumbnailPath;
-}
-
-/**
- *  在线浏览目录时，根据文档属性显示对应缩略图
- *
- *  @param slideTyoe 文档类型
- *
- *  @return 缩略图地址
- */
-+ (NSString *)slideThumbnail:(NSString *)slideTyoe {
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-    NSString *thumbnailName;
-    if([@[@"1",@"2",@"4"] containsObject:slideTyoe]) {
-        thumbnailName = @"thumbnailPageSlide.png";
-    } else if ([slideTyoe isEqualToString:@"3"]) {
-        thumbnailName = @"thumbnailPageVideo.png";
-    } else {
-        thumbnailName = @"thumbnailPageSlide.png";
-    }
-    return [bundlePath stringByAppendingPathComponent:thumbnailName];
-}
-
-#pragma mark - slide download cache
-+ (NSString *)slideDownloadCachePath:(NSString *)slideID {
-    NSString *cacheName = [NSString stringWithFormat:@"%@.downloading", slideID];
-    NSString *cachePath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:cacheName];
-    return cachePath;
-}
-+ (NSString *)slideToDownload:(NSString *)slideID {
-    NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
-    [@"downloading" writeToFile:cachePath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
-    
-    return cachePath;
-}
-+ (NSString *)slideDownloaded:(NSString *)slideID {
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
-    [fileManager removeItemAtPath:cachePath error:NULL];
-    
-    return cachePath;
-}
-+ (BOOL)isSlideDownloading:(NSString *)slideID {
-    NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
-    return [FileUtils checkFileExist:cachePath isDir:NO];
-}
-
-
 /**
  *  计算指定文件路径的文件大小
  *

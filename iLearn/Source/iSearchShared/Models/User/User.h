@@ -47,5 +47,7 @@
  *  @return 部门ID
  */
 + (NSString *)deptID;
+
+- (BOOL)isEverLogin;
 @end
 #endif
