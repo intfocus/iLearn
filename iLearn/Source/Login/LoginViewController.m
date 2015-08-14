@@ -38,6 +38,7 @@
 #import "DateUtils.h"
 #import "FileUtils.h"
 #import "ApiHelper.h"
+#import "ActionLog.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "AFNetworking.h"
@@ -75,7 +76,6 @@
     self.user = [[User alloc] init];
     self.labelPropmt.text = @"";
     self.webViewLogin.delegate = self;
-    self.popupText = @"跳转至SSO";
     [self hideOutsideLoginControl:YES];
     
     // CWPopup 事件
@@ -90,6 +90,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    // 跳转SSO界面，返回后，再登录
+    self.popupText = @"跳转至SSO";
     
     if([HttpUtils isNetworkAvailable]) {
         [self checkAppVersionUpgrade];
@@ -124,7 +126,6 @@
         self.btnSubmit.enabled = YES;
         [self.btnSubmit setTitle:@"登陆" forState:UIControlStateNormal];
     }];
-    
 }
 
 #pragma mark - ViewUpgradeProtocol
@@ -155,16 +156,16 @@
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:10.0];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
-//        self.cookieValue = @"E99658603";
-//        [self actionOutsideLoginSuccessfully];
-//        return;
+        
+        self.cookieValue = @"E99658603";
+        [self actionOutsideLoginSuccessfully];
+        return;
         
         [self actionClearCookies];
         [self actionOutsideLogin];
     } else {
         [self actionLoginWithoutNetwork];
     }
-    
 }
 
 #pragma mark - assistant methods
@@ -203,6 +204,7 @@
         _timerReadCookie = nil;
         [self actionClearCookies];
         [self actionOutsideLoginRefresh];
+        [self.progressHUD hide:YES];
         
         if([cookieValue isEqualToString:@"error000"]) {
             [self hideOutsideLoginControl:YES];
@@ -216,7 +218,7 @@
     self.timerCount++;
 }
 
-- (void) hideOutsideLoginControl:(BOOL)isHidden {
+- (void)hideOutsideLoginControl:(BOOL)isHidden {
     if(isHidden) {
         [self.view sendSubviewToBack:self.labelLoginTitle];
         [self.view sendSubviewToBack:self.webViewLogin];
@@ -367,6 +369,10 @@
 #pragma mark - assistant methods
 
 -(void)enterMainViewController{
+    self.labelPropmt.text = @"上传本地记录...";
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    [ActionLog syncRecords];
+    
     [LicenseUtil saveUserAccount:self.user.employeeID];
     [LicenseUtil saveUserId:self.user.ID];
     [LicenseUtil saveUserName:self.user.name];

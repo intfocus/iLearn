@@ -64,8 +64,8 @@
 @property (weak, nonatomic) IBOutlet UIView *viewCalendar;                // 全部显示时，会隐藏掉日历控件
 @property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemTMP;
 @property (strong, nonatomic) NSMutableDictionary *dataList; // 通告预告混合数据
-@property (strong, nonatomic) NSMutableArray *dataListOne;   // 通告数据列表
-@property (strong, nonatomic) NSMutableArray *dataListTwo;   // 预告数据列表
+@property (strong, nonatomic) NSArray *dataListOne;   // 通告数据列表
+@property (strong, nonatomic) NSArray *dataListTwo;   // 预告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwoDate; // 预告列表日期去重，为日历控件加效果时使用
 @property (strong, nonatomic) NSNumber *widthOne;
 @property (strong, nonatomic) NSNumber *widthTwo;
@@ -88,8 +88,8 @@
      * 实例变量初始化/赋值
      */
     self.dataList        = [[NSMutableDictionary alloc] init];
-    self.dataListOne     = [[NSMutableArray alloc] init];
-    self.dataListTwo     = [[NSMutableArray alloc] init];
+    self.dataListOne     = [[NSArray alloc] init];
+    self.dataListTwo     = [[NSArray alloc] init];
     self.dataListTwoDate = [[NSMutableArray alloc] init];
     self.widthOne = [[NSNumber alloc] init];
     self.widthTwo = [[NSNumber alloc] init];
@@ -283,12 +283,13 @@
             [self.dataListTwoDate addObject:occurDate];
     }
 
-    // 公告通知按created_date升序
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:YES];
-    [self.dataListOne sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+    NSSortDescriptor *descriptor;
+    // 公告通知按created_date降序
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:NO];
+    self.dataListOne = [self.dataListOne sortedArrayUsingDescriptors:@[descriptor]];
     // 预告通知按occur_date升序
     descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_OCCURDATE ascending:YES];
-    [self.dataListTwo sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+    self.dataListTwo = [self.dataListTwo sortedArrayUsingDescriptors:@[descriptor]];
 }
 #pragma mark - JTCalendarDataSource
 /**

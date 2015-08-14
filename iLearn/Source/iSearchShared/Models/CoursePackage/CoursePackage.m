@@ -21,6 +21,10 @@
     return self;
 }
 
+
+- (NSString *)desc {
+    return [NSString stringWithFormat:@"描述:\n%@", _desc];
+}
 - (BOOL)canRemove {
     return NO;
 }

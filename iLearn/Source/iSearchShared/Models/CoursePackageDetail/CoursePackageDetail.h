@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSString *courseDesc;
 @property (nonatomic, strong) NSString *courseFile;
 @property (nonatomic, strong) NSString *courseExt;
+@property (nonatomic, strong) NSString *courseFileSize;
 
 // 考试字段
 @property (nonatomic, strong) NSString *examId;

@@ -27,6 +27,9 @@
     return NO;
 }
 
+- (NSString *)desc {
+    return [NSString stringWithFormat:@"描述:\n%@", _desc];
+}
 - (NSString *)typeName {
     return @"课件包";
 }

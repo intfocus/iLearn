@@ -67,54 +67,7 @@
     
     [self executeSQL:sql];
 }
-/**
- *  我的记录，需要使用的数据
- *
- *  @returnNSMutableArray
- */
-- (NSMutableArray *)actionLogs {
-    NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
-    
-    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, max(%@) from %@ \
-                     where %@ = '%@' and %@ = '%@' and %@ = 0    \
-                     group by %@, %@                             \
-                     limit 15;",
-                     LOCAL_COLUMN_SLIDE_ID, LOCAL_COLUMN_SLIDE_TYPE, DB_COLUMN_CREATED, ACTIONLOG_TABLE_NAME,
-                     LOCAL_COLUMN_ACTION, ACTION_DISPLAY, ACTIONLOG_COLUMN_UID, self.userID, ACTIONLOG_COLUMN_DELETED,
-                     LOCAL_COLUMN_SLIDE_ID, LOCAL_COLUMN_SLIDE_TYPE];
-    NSString *slideID, *slideType, *createdAt;
-    
-    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
-    if ([db open]) {
-        FMResultSet *s = [db executeQuery:sql];
-        while([s next]) {
-            slideID   = [s stringForColumnIndex:0];
-            slideType = [s stringForColumnIndex:1];
-            createdAt = [s stringForColumnIndex:2];
-            
-            NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
-            mutableDictionary[LOCAL_COLUMN_SLIDE_ID]   = slideID;
-            mutableDictionary[LOCAL_COLUMN_SLIDE_TYPE] = slideType;
-            mutableDictionary[DB_COLUMN_CREATED]       = createdAt;
-            
-//            if([FileUtils checkSlideExist:slideID Dir:slideType Force:NO]) {
-//                [mutableArray addObject: mutableDictionary];
-//            } else {
-//                NSLog(@"bug# should update deleted=1");
-//            }
-        }
-        [db close];
-    } else {
-        NSLog(@"%@", [NSString stringWithFormat:@"DatabaseUtils#executeSQL \n%@", sql]);
-    }
-    
-    if([mutableArray count] > 0) {
-        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:DB_COLUMN_CREATED ascending:NO];
-        mutableArray = [NSMutableArray arrayWithArray:[mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]]];
-    }
-    
-    return mutableArray;
-}
+
 
 /**
  *  未同步数据到服务器的数据列表
@@ -122,7 +75,7 @@
  *  @return NSMutableArray
  */
 - (NSMutableArray *)unSyncRecords {
-    NSMutableArray *array = [[NSMutableArray alloc]init];
+    NSMutableArray *array = [NSMutableArray array];
     
     NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@ from %@ \
                      where %@ = '%@' and %@ = 0 ;",
@@ -138,7 +91,7 @@
     int ID;
     NSString *funName, *actObj, *actName, *actRet, *actTime;
     
-    FMDatabase *db            = [FMDatabase databaseWithPath:self.dbPath];
+    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
     if ([db open]) {
         FMResultSet *s = [db executeQuery:sql];
@@ -180,6 +133,17 @@
                            ACTIONLOG_COLUMN_ISSYNC,
                            [IDS componentsJoinedByString:@","]];
     [self executeSQL:updateSQL];
+    
+    [self clearSyncedRecords];
+}
+
+/**
+ *  删除已上传数据只留播放文档的最近15方记录
+ */
+- (void)clearSyncedRecords {
+    NSString *deleteSQL = [NSString stringWithFormat:@"delete from action_logs where is_synced = 1"];
+    
+    [self executeSQL:deleteSQL];
 }
 
 @end

@@ -13,13 +13,6 @@
 @interface DatabaseUtils (ActionLog)
 
 /**
- *  我的记录，需要使用的数据
- *
- *  @returnNSMutableArray
- */
-- (NSMutableArray *)actionLogs;
-
-/**
  *  update #deleted when remove slide
  *
  *  @param FunName NoUse

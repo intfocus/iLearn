@@ -58,7 +58,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 @property (weak, nonatomic) IBOutlet UIButton *qrCodeButton;
 
 @property (weak, nonatomic) IBOutlet UITableView *notificationTableView;
-@property (strong, nonatomic) NSMutableArray *notificationList;
+@property (strong, nonatomic) NSArray *notificationList;
 
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -127,16 +127,6 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     avatar.layer.masksToBounds = YES;
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        if([HttpUtils isNetworkAvailable]) {
-            [ActionLog syncRecords];
-        }
-    });
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -196,12 +186,19 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 - (void)reloadNotifications
 {
     NSMutableDictionary *notificationDatas = [DataHelper notifications];
-    self.notificationList = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
-
-    // 公告通知按created_date升序
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:YES];
-    [self.notificationList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-
+    NSArray *dataListOne = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
+    NSArray *dataListTwo = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告数据
+    
+    NSSortDescriptor *descriptor;
+    // 公告通知按created_date降序
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:NO];
+    dataListOne = [dataListOne sortedArrayUsingDescriptors:@[descriptor]];
+    // 预告通知按occur_date升序
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_OCCURDATE ascending:YES];
+    dataListTwo = [dataListTwo sortedArrayUsingDescriptors:@[descriptor]];
+    
+    // todo tab switch with data one/two
+    self.notificationList = dataListOne;
     [_notificationTableView reloadData];
 }
 
@@ -322,6 +319,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNotificationCellIdentifier];
     }
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
     NSInteger cellIndex = indexPath.row;
 

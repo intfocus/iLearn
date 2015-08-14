@@ -29,6 +29,7 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
         _courseDesc         = data[@"CoursewareDesc"];
         _courseFile         = data[@"CoursewareFile"];
         _courseExt          = data[@"Extension"];
+        _courseFileSize     = data[@"FileSize"];
 
         _examId             = data[@"ExamId"];
         _examName           = data[@"ExamName"];
@@ -66,10 +67,10 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
 - (NSString *)desc {
     NSString *desc;
     if([self.type isEqualToString:kPackageCourse]) {
-        desc = self.courseDesc;
+        desc = [NSString stringWithFormat:@"文件大小: %@\n\n描述:\n%@", [FileUtils humanFileSize:self.courseFileSize], self.courseDesc];
     }
     else if([self.type isEqualToString:kPackageExam]) {
-        desc = self.examDesc;
+        desc = [NSString stringWithFormat:@"描述:\n%@", self.examDesc];
     }
     else if([self.type isEqualToString:kPackageQuestion]) {
         desc = @"Question todo";

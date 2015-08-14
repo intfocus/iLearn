@@ -26,15 +26,6 @@
     return self;
 }
 
-/**
- *  记录列表
- *
- *  @return <#return value description#>
- */
-- (NSMutableArray *)records {
-    return [self.databaseUtils actionLogs];
-}
-
 - (void)syncRecords {
     NSMutableArray *unSyncRecords = [self.databaseUtils unSyncRecords];
     NSMutableArray *IDS = [DataHelper actionLog:unSyncRecords];

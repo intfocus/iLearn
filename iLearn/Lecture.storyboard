@@ -264,10 +264,10 @@
                                                 </connections>
                                             </button>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m6F-e9-Pxo">
-                                                <rect key="frame" x="12" y="30" width="476" height="172"/>
+                                                <rect key="frame" x="12" y="8" width="476" height="194"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="172" id="omd-60-04W"/>
+                                                    <constraint firstAttribute="height" constant="194" id="omd-60-04W"/>
                                                 </constraints>
                                                 <string key="text"> 目标对象: 主要针对新入司三个月内的代表。
 考题范围: 公司核心产品知识。
@@ -294,7 +294,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="m6F-e9-Pxo" firstAttribute="top" secondItem="Ppe-4g-eXW" secondAttribute="top" constant="30" id="0I7-zm-P2T"/>
+                                            <constraint firstItem="m6F-e9-Pxo" firstAttribute="top" secondItem="Ppe-4g-eXW" secondAttribute="top" constant="8" id="0I7-zm-P2T"/>
                                             <constraint firstItem="m6F-e9-Pxo" firstAttribute="leading" secondItem="Ppe-4g-eXW" secondAttribute="leading" constant="12" id="3Am-99-3yu"/>
                                             <constraint firstItem="djo-bC-V2c" firstAttribute="centerY" secondItem="62Z-8t-Qag" secondAttribute="centerY" id="4v7-3f-mDt"/>
                                             <constraint firstItem="djo-bC-V2c" firstAttribute="trailing" secondItem="m6F-e9-Pxo" secondAttribute="trailing" id="SJ1-6B-eET"/>
