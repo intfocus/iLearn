@@ -61,6 +61,15 @@
  *  @return 课程包内容明细
  */
 + (NSArray *)coursePackageContent:(BOOL)isNetworkAvaliable pid:(NSString *)PID;
+
+/**
+ *  培训班课程列表
+ *
+ *  @param isNetworkAvaliable 网络环境
+ *
+ *  @return 培训班列表
+ */
++ (NSArray *)trainCourses:(BOOL)isNetworkAvaliable;
 @end
 
 #endif

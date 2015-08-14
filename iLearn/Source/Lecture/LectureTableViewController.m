@@ -64,8 +64,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     self.connectionManager = [[ConnectionManager alloc] init];
     _connectionManager.delegate = self;
     _depth = @1; // 一级: 课程包列表， 二级: 课件包、课件、考试、问卷, 三级: 二级内容的重组
-    
-    NSLog(@"hello world.");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -270,7 +268,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 
 - (IBAction)actionBack:(id)sender {
-
     [sender setEnabled:NO];
     
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];

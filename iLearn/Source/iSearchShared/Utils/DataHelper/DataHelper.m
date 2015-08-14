@@ -22,6 +22,7 @@
 #import "CoursePackageContent.h"
 #import "CoursePackageDetail.h"
 #import "CourseWrap+CoursePackageDetail.h"
+#import "TrainCourse.h"
 
 @interface DataHelper()
 @property (nonatomic, strong) NSMutableArray *visitData;
@@ -147,7 +148,7 @@
  *  @return 课程包内容明细
  */
 + (NSArray *)coursePackageContent:(BOOL)isNetworkAvaliable pid:(NSString *)PID {
-    NSMutableDictionary *packages = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *packages = [NSMutableDictionary dictionary];
     
     if(isNetworkAvaliable) {
         HttpResponse *httpResponse = [ApiHelper coursePackageContent:PID];
@@ -161,13 +162,37 @@
 
     NSDictionary *content = packages[COURSE_PACKAGES_FIELD_DATA];
     CoursePackageContent *packageContent = [[CoursePackageContent alloc] initWithData:content];
-    NSArray *dataList = [[NSArray alloc] init];
+    NSArray *dataList = [NSArray array];
     dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadCourses:packageContent.courseList]];
     dataList = [dataList arrayByAddingObjectsFromArray:[CourseWrap loadCourseWraps:packageContent.courseWrapList]];
     dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadExams:packageContent.examList]];
     dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadQuestions:packageContent.questionList]];
     
     return dataList;
+}
+
+/**
+ *  培训班课程列表
+ *
+ *  @param isNetworkAvaliable 网络环境
+ *
+ *  @return 培训班列表
+ */
++ (NSArray *)trainCourses:(BOOL)isNetworkAvaliable {
+    NSMutableDictionary *trainCourses = [NSMutableDictionary dictionary];
+    NSString *uid = [User userID];
+    
+    if(isNetworkAvaliable) {
+        HttpResponse *response = [ApiHelper trainCourses:uid];;
+        trainCourses = response.data;
+        
+        [CacheHelper writeTrainCourses:trainCourses UID:uid];
+    }
+    else {
+        trainCourses = [CacheHelper trainCourses:uid];
+    }
+    
+    return [TrainCourse loadData:trainCourses[@"trainingsdata"]];
 }
 
 #pragma mark - assistant methods

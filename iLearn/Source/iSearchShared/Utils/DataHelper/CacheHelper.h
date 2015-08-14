@@ -68,4 +68,21 @@
  *  @return 课程包内容
  */
 + (NSMutableDictionary *)coursePackageContent:(NSString *)ID;
+
+
+/**
+ *  报名课程列表写入缓存文件
+ *
+ *  @param trainCourses 报名课程列表
+ *  @param UID          用户ID
+ */
++ (void)writeTrainCourses:(NSMutableDictionary*)trainCourses UID:(NSString *)UID;
+/**
+ *  缓存文件读取报名课程列表
+ *
+ *  @param UID 用户ID
+ *
+ *  @return 报名课程列表
+ */
++ (NSMutableDictionary *)trainCourses:(NSString *)UID;
 @end

@@ -111,6 +111,21 @@
     return [Url UrlConcate:urlString Param:params];
 }
 
+/**
+ *  培训班报名
+ *
+ *  @param uid 用户ID
+ *
+ *  @return 培训班报名链接
+ */
++ (NSString *)trainCourses:(NSString *)uid {
+    NSString *urlString  = [[Url alloc] init].trainCourses;
+    NSDictionary *params = @{@"uid":uid, @"edate":[DateUtils dateToStr:[NSDate date] Format:DATE_SIMPLE_FORMAT]};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
+
+
 #pragma mark - GET# assistant methods
 + (NSString *)UrlConcate:(NSString *)url Param:(NSDictionary *)params {
     NSString *paramString = [Url _parameters:params];

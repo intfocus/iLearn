@@ -15,6 +15,7 @@
 #import "SettingViewController.h"
 #import "UIViewController+CWPopup.h"
 #import "NotificationDetailView.h"
+#import "RegistrationTableViewController.h"
 
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
@@ -33,7 +34,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) ContentViewController<ContentViewProtocal> *contentViewController;
-@property (strong, nonatomic) NotificationViewController *notificationViewController;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -56,10 +56,8 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.    
+    // Do any additional setup after loading the view, typically from a nib.
     _questionnaireView.hidden = YES;
-    _lectureView.hidden       = NO;
-    _registrationView.hidden  = YES;
     
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
@@ -69,12 +67,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _avatarImageView.clipsToBounds = YES;
     
     _userNameLabel.text = [LicenseUtil userName];
-    
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
-    
-    self.notificationViewController = [[NotificationViewController alloc] init];
-    self.notificationViewController.masterViewController = self;
-    self.notificationViewController.listViewController = self;
     
     [self refreshContentView];
     
@@ -108,18 +101,30 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     ContentViewController<ContentViewProtocal> *newContentViewController;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     switch (_listType) {
-        case ListViewTypeExam:
+        case ListViewTypeExam: {
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
             newContentViewController.listViewController = self;
             break;
-        case ListViewTypeLecture:
+        }
+        case ListViewTypeLecture: {
             storyboard = [UIStoryboard storyboardWithName:@"Lecture" bundle:nil];
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"LectureTableViewController"];
             newContentViewController.listViewController = self;
             break;
-        case ListViewTypeNotification:
-            newContentViewController = _notificationViewController;
+        }
+        case ListViewTypeNotification: {
+            NotificationViewController *notificationViewController = [[NotificationViewController alloc] init];
+            notificationViewController.masterViewController = self;
+            notificationViewController.listViewController = self;
+            newContentViewController = notificationViewController;
             break;
+        }
+        case ListViewTypeRegistration: {
+            storyboard = [UIStoryboard storyboardWithName:@"Registration" bundle:nil];
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"RegistrationTableViewController"];
+            newContentViewController.listViewController = self;
+            break;
+        }
         default:
             break;
     }
@@ -213,9 +218,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (IBAction)registrationButtonTouched:(id)sender {
     NSLog(@"registrationButtonTouched");
-    if (_listType == ListViewTypeRegistration) {
-        return;
-    }
     self.listType = ListViewTypeRegistration;
     [self refreshContentView];
 }

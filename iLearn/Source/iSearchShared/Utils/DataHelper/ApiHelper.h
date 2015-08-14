@@ -57,4 +57,13 @@
  *  @return 课程包的详细信息
  */
 + (HttpResponse *)coursePackageContent:(NSString *)PID;
+
+/**
+ *  培训报名列表
+ *
+ *  @param UID 用户ID
+ *
+ *  @return 培训报名列表
+ */
++ (HttpResponse *)trainCourses:(NSString *)UID;
 @end

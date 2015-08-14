@@ -1,14 +1,14 @@
 //
-//  LectureTableViewCell.h
+//  RegistrationTableViewCell.h
 //  iLearn
 //
-//  Created by lijunjie on 15/7/14.
+//  Created by lijunjie on 15/8/14.
 //  Copyright (c) 2015年 intFocus. All rights reserved.
 //
 
 #import "ContentTableViewCell.h"
 
-@interface LectureTableViewCell : ContentTableViewCell
+@interface RegistrationTableViewCell : ContentTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusTitleLabel;

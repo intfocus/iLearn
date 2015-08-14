@@ -72,4 +72,16 @@
     return [HttpUtils httpGet:urlString];
 }
 
+/**
+ *  培训报名列表
+ *
+ *  @param UID 用户ID
+ *
+ *  @return 培训报名列表
+ */
++ (HttpResponse *)trainCourses:(NSString *)UID {
+    NSString *urlString = [Url trainCourses:UID];
+    return [HttpUtils httpGet:urlString];
+}
+
 @end

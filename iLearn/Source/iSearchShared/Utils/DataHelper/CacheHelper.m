@@ -100,6 +100,36 @@
     return package;
 }
 
+/**
+ *  报名课程列表写入缓存文件
+ *
+ *  @param trainCourses 报名课程列表
+ *  @param UID          用户ID
+ */
++ (void)writeTrainCourses:(NSMutableDictionary*)trainCourses UID:(NSString *)UID {
+    if(!trainCourses)  return;
+    
+    NSString *cachePath = [self cachePath:@"train" Type:@"course" ID:UID];
+    [FileUtils writeJSON:trainCourses Into:cachePath];
+}
+/**
+ *  缓存文件读取报名课程列表
+ *
+ *  @param UID 用户ID
+ *
+ *  @return 报名课程列表
+ */
++ (NSMutableDictionary *)trainCourses:(NSString *)UID {
+    NSString *cachePath = [self cachePath:@"train" Type:@"course" ID:UID];
+    
+    NSMutableDictionary *trainCourses = [NSMutableDictionary dictionary];
+    if([FileUtils checkFileExist:cachePath isDir:NO]) {
+        trainCourses = [FileUtils readConfigFile:cachePath];
+    }
+    
+    return trainCourses;
+}
+
 
 #pragma mark - asisstant methods
 /**

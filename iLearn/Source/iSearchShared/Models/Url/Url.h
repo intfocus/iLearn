@@ -24,4 +24,6 @@
 @property (nonatomic, strong) NSString *coursePackages;
 @property (nonatomic, strong) NSString *coursePackageContent;
 @property (nonatomic, strong) NSString *downloadCourse;
+// 培训报名
+@property (nonatomic, strong) NSString *trainCourses; // 报名
 @end

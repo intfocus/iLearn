@@ -63,4 +63,13 @@
  *  @return 课件下载链接
  */
 + (NSString *)downloadCourse:(NSString *)cid Ext:(NSString *)ext;
+
+/**
+ *  培训班报名
+ *
+ *  @param uid 用户ID
+ *
+ *  @return 培训班报名链接
+ */
++ (NSString *)trainCourses:(NSString *)uid;
 @end

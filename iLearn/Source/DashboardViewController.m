@@ -81,7 +81,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    _registrationButton.enabled  = NO;
+    _registrationButton.enabled  = YES;
     _lectureButton.enabled       = YES;
     _questionnaireButton.enabled = NO;
     _settingsButton.enabled      = YES;
@@ -148,7 +148,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     else if ([segue.identifier isEqualToString:kShowRegistrationSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
         listVC.listType = ListViewTypeRegistration;
-        humanName = @"注册";
+        humanName = @"报名";
     }
     else if ([segue.identifier isEqualToString:kShowLectureSegue]) {
         ListViewController* listVC = (ListViewController*)segue.destinationViewController;
