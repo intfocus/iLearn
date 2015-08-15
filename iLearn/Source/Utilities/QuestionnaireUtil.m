@@ -419,7 +419,7 @@ static const BOOL inDeveloping = YES;
 
         NSString *filledAnswer = [result stringForColumn:@"filled_answer"];
 
-        if (filledAnswer != nil) {
+        if ([filledAnswer length] > 0) {
             content[QuestionnaireQuestionFilledAnswer] = filledAnswer;
             answered = 1;
         }

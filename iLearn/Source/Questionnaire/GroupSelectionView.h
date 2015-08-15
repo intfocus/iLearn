@@ -10,6 +10,7 @@
 
 @interface GroupSelectionView : UIView
 
+- (void)setQuestionnaireData:(NSArray*)data;
 - (void)drawGrid;
 
 @end

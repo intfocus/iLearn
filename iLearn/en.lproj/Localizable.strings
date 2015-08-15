@@ -81,3 +81,9 @@ EXAM_UNDER_QUALIFY_TEMPLATE = "Got:%@, Not meet the qualify line:%@，need to te
 EXAM_TIME_LEFT_TITLE = "Time Left:";
 EXAM_TIME_TEMPLATE = "%lld:%02lld";
 
+QUETIONNAIRE_TYPE_TRUE_FALSE = "True/False";
+QUETIONNAIRE_TYPE_SINGLE = "Single";
+QUETIONNAIRE_TYPE_MULTIPLE = "Multiple";
+QUETIONNAIRE_TYPE_FILL = "Fill";
+QUETIONNAIRE_TYPE_ESSAY = "Essay";
+

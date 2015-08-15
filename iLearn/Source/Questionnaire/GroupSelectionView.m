@@ -7,18 +7,30 @@
 //
 
 #import "GroupSelectionView.h"
+#import "Constants.h"
 
 static const CGFloat kFontSize = 15.0;
 static const CGFloat kOptionHeightOffset = 10.0;
+static const CGFloat kQuestionHeightOffset = 16.0;
+static const CGFloat kQuestionWidthOffset = 8.0;
 static const NSInteger kMaxTextNumberPerColumn = 5;
-static const CGFloat kDescColumnWidth = 150.0;
+static const CGFloat kQuestionColumnWidth = 150.0;
 static const CGFloat kOptionColumnWidth = 56.0;
+static const CGFloat kSeparatorWidth = 1.0;
+static const CGFloat kMinQuestionHeight = 52.0;
 
 
 @interface GroupSelectionView ()
+{
+    BOOL isSingleSelect;
+}
 
-@property (strong, nonatomic) NSArray *options;
-@property (strong, nonatomic) NSArray *questions;
+@property (strong, nonatomic) NSMutableArray *options;
+@property (strong, nonatomic) NSMutableArray *questions;
+@property (strong, nonatomic) NSMutableArray *optionHeightCache;
+@property (strong, nonatomic) NSMutableArray *questionHeightCache;
+@property (strong, nonatomic) NSNumber *maxHeight;
+@property (strong, nonatomic) NSMutableArray *checkedOptionMatrix;
 
 @end
 
@@ -32,51 +44,144 @@ static const CGFloat kOptionColumnWidth = 56.0;
 }
 */
 
+- (void)setQuestionnaireData:(NSArray*)data
+{
+    NSDictionary *firstQuestion = [data firstObject];
+
+    if (firstQuestion == nil) {
+        return;
+    }
+
+    NSArray *options = firstQuestion[QuestionnaireQuestionOptions];
+    self.options = [NSMutableArray array];
+    for (NSDictionary *option in options) {
+        [_options addObject:option[QuestionnaireQuestionOptionTitle]];
+    }
+
+    self.questions = [NSMutableArray array];
+    for (NSDictionary *question in data) {
+        [_questions addObject:question[QuestionnaireQuestionTitle]];
+    }
+
+    [self resetCheckedMatrix];
+
+    QuestionnaireQuestionTypes type = [firstQuestion[QuestionnaireQuestionType] integerValue];
+    isSingleSelect =  type == QuestionnaireQuestionsTypeMultiple? NO: YES;
+
+    for (int questionIndex = 0; questionIndex < [_questions count]; questionIndex++) {
+
+        NSDictionary *question = data[questionIndex];
+        NSArray *options = question[QuestionnaireQuestionOptions];
+        NSInteger selectedOptions = 0;
+
+        for (NSInteger optionIndex = 0; optionIndex < [_options count]; optionIndex++) {
+
+            NSDictionary *option = options[optionIndex];
+            BOOL selected = [option[QuestionnaireQuestionOptionSelected] boolValue];
+
+            if (selected) {
+                selectedOptions |= 1 << optionIndex;
+            }
+        }
+
+        _checkedOptionMatrix[questionIndex] = @(selectedOptions);
+    }
+}
+
 - (void)drawGrid
 {
-    self.options = @[@"非常不滿意非常不滿意", @"不滿意不滿意", @"普通普通", @"滿意", @"非常滿意非常滿意", @"非常不滿意非常不滿意", @"不滿意不滿意", @"普通普通", @"滿意"];
-    self.questions = @[@"question_1", @"question_2", @"question_3", @"question_4", @"question_5"];
+//    _checkedOptionMatrix[1] = @7;
+//    _checkedOptionMatrix[2] = @129;
+//    _checkedOptionMatrix[4] = @256;
 
+//    isSingleSelect = NO;
+
+    [self resetCache];
     [self addOptionLabels];
     [self addQuestionLables];
     [self addSeparators];
     [self addCheckButtons];
 }
 
+- (void)resetCache
+{
+    self.maxHeight = @0;
+    self.questionHeightCache = [NSMutableArray arrayWithCapacity:[_questions count]];
+    for (int i = 0; i < [_questions count]; i++) {
+        [_questionHeightCache addObject:@0];
+    }
+    self.optionHeightCache = [NSMutableArray arrayWithCapacity:[_options count]];
+    for (int i = 0; i < [_options count]; i++) {
+        [_optionHeightCache addObject:@0];
+    }
+}
+
+- (void)resetCheckedMatrix
+{
+    self.checkedOptionMatrix = [NSMutableArray arrayWithCapacity:[_questions count]];
+    for (int i = 0; i < [_questions count]; i++) {
+        [_checkedOptionMatrix addObject:@0];
+    }
+}
+
 - (CGFloat)maxHeightOfOptions:(NSArray*)options
 {
-    CGFloat maxHeight = 0;
+    if (![_maxHeight isEqualToNumber:@0]) {
+        return [_maxHeight floatValue];
+    }
 
-    for (int i = 0; i < [options count]; i++) {
+    NSNumber *maxHeight = @0;
 
-        NSString *option = options[i];
+    for (int i = 0; i < [_optionHeightCache count]; i++) {
 
-        if ([option length] > kMaxTextNumberPerColumn) {
-            option = [option substringToIndex:kMaxTextNumberPerColumn];
-        }
+        NSNumber *optionHeight = _optionHeightCache[i];
 
-        CGFloat height = [self heightOfString:option];
-        if (height > maxHeight) {
-            maxHeight = height;
+        if ([optionHeight compare:maxHeight] == NSOrderedDescending) {
+            maxHeight = optionHeight;
         }
     }
 
-    return maxHeight;
+    self.maxHeight = maxHeight;
+    return [maxHeight floatValue];
 }
 
-- (CGFloat)heightOfString:(NSString*)string
+- (CGFloat)heightOfString:(NSString*)string withFontSize:(CGFloat)fontSize inWidth:(CGFloat)width
 {
-    CGSize constraint = CGSizeMake(kFontSize, 20000.0f);
-    CGSize size = [string sizeWithFont:[UIFont systemFontOfSize:kFontSize] constrainedToSize:constraint lineBreakMode:NSLineBreakByCharWrapping];
+    CGSize constraint = CGSizeMake(width, 20000.0f);
+    CGSize size = [string sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:constraint lineBreakMode:NSLineBreakByCharWrapping];
     return size.height;
+}
+
+- (CGFloat)heightOfOption:(NSString*)option
+{
+    return [self heightOfString:option withFontSize:kFontSize inWidth:kFontSize];
+}
+
+- (CGFloat)heightOfQuestion:(NSString*)question
+{
+    CGFloat height = [self heightOfString:question withFontSize:kFontSize inWidth:kQuestionColumnWidth - kQuestionWidthOffset] + kQuestionHeightOffset;
+    height = height < kMinQuestionHeight? kMinQuestionHeight: height;
+
+    return height;
+}
+
+- (CGFloat)totalQuestionHeightBeforeIndex:(NSInteger)index
+{
+    CGFloat totalHeight = 0;
+
+    for (int i = 0; i < index; i++) {
+        totalHeight += [_questionHeightCache[i] floatValue];
+    }
+
+    return totalHeight;
 }
 
 - (CGFloat)totalHeightOfContent
 {
     CGFloat totalHeight = [self maxHeightOfOptions:_options] + kOptionHeightOffset;
 
-    for (int i = 0; i < [_questions count]; i++) {
-        totalHeight += 50.0;
+    for (int i = 0; i < [_questionHeightCache count]; i++) {
+        totalHeight += [_questionHeightCache[i] floatValue];
     }
 
     return totalHeight;
@@ -84,7 +189,7 @@ static const CGFloat kOptionColumnWidth = 56.0;
 
 - (CGFloat)totalWidthOfContent
 {
-    CGFloat totalWidth = kDescColumnWidth;
+    CGFloat totalWidth = kQuestionColumnWidth;
 
     for (int i = 0; i < [_options count]; i++) {
         totalWidth += kOptionColumnWidth;
@@ -101,41 +206,42 @@ static const CGFloat kOptionColumnWidth = 56.0;
 
         if ([option length] > kMaxTextNumberPerColumn) {
 
-            NSString *subString = [option substringToIndex:kMaxTextNumberPerColumn];
+            NSString *leftColumnString = [option substringToIndex:kMaxTextNumberPerColumn];
 
-            CGFloat height = [self heightOfString:subString];
-            UILabel *selectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(kDescColumnWidth + (kOptionColumnWidth/2 - kFontSize) + kOptionColumnWidth*i, 0, kFontSize, height)];
-            selectionLabel.text = subString;
-            selectionLabel.textColor = [UIColor blackColor];
-            selectionLabel.font = [UIFont systemFontOfSize:kFontSize];
-            selectionLabel.lineBreakMode = NSLineBreakByCharWrapping;
-            selectionLabel.numberOfLines = 0;
+            CGFloat height = [self heightOfOption:leftColumnString];
+            _optionHeightCache[i] = @(height);
+            UILabel *optionLabelLeft = [[UILabel alloc] initWithFrame:CGRectMake(kQuestionColumnWidth + (kOptionColumnWidth/2 - kFontSize) + kOptionColumnWidth*i, 0, kFontSize, height)];
+            optionLabelLeft.text = leftColumnString;
+            optionLabelLeft.textColor = [UIColor blackColor];
+            optionLabelLeft.font = [UIFont systemFontOfSize:kFontSize];
+            optionLabelLeft.lineBreakMode = NSLineBreakByCharWrapping;
+            optionLabelLeft.numberOfLines = 0;
 
-            [self addSubview:selectionLabel];
+            [self addSubview:optionLabelLeft];
 
-            NSString *subString2 = [option substringFromIndex:kMaxTextNumberPerColumn];
+            NSString *rightColumnString = [option substringFromIndex:kMaxTextNumberPerColumn];
 
-            height = [self heightOfString:subString2];
-            UILabel *selectionLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(kDescColumnWidth + kOptionColumnWidth/2 + kOptionColumnWidth*i, 0, kFontSize, height)];
-            selectionLabel2.text = subString2;
-            selectionLabel2.textColor = [UIColor blackColor];
-            selectionLabel2.font = [UIFont systemFontOfSize:kFontSize];
-            selectionLabel2.lineBreakMode = NSLineBreakByCharWrapping;
-            selectionLabel2.numberOfLines = 0;
+            height = [self heightOfOption:rightColumnString];
+            UILabel *optionLabelRight = [[UILabel alloc] initWithFrame:CGRectMake(kQuestionColumnWidth + kOptionColumnWidth/2 + kOptionColumnWidth*i, 0, kFontSize, height)];
+            optionLabelRight.text = rightColumnString;
+            optionLabelRight.textColor = [UIColor blackColor];
+            optionLabelRight.font = [UIFont systemFontOfSize:kFontSize];
+            optionLabelRight.lineBreakMode = NSLineBreakByCharWrapping;
+            optionLabelRight.numberOfLines = 0;
 
-            [self addSubview:selectionLabel2];
-
+            [self addSubview:optionLabelRight];
         }
         else {
-            CGFloat height = [self heightOfString:option];
-            UILabel *selectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(kDescColumnWidth + (kOptionColumnWidth/2 - kFontSize/2) + kOptionColumnWidth*i, 0, kFontSize, height)];
-            selectionLabel.text = option;
-            selectionLabel.textColor = [UIColor blackColor];
-            selectionLabel.font = [UIFont systemFontOfSize:kFontSize];
-            selectionLabel.lineBreakMode = NSLineBreakByCharWrapping;
-            selectionLabel.numberOfLines = 0;
+            CGFloat height = [self heightOfOption:option];
+            _optionHeightCache[i] = @(height);
+            UILabel *optionLabel = [[UILabel alloc] initWithFrame:CGRectMake(kQuestionColumnWidth + (kOptionColumnWidth/2 - kFontSize/2) + kOptionColumnWidth*i, 0, kFontSize, height)];
+            optionLabel.text = option;
+            optionLabel.textColor = [UIColor blackColor];
+            optionLabel.font = [UIFont systemFontOfSize:kFontSize];
+            optionLabel.lineBreakMode = NSLineBreakByCharWrapping;
+            optionLabel.numberOfLines = 0;
             
-            [self addSubview:selectionLabel];
+            [self addSubview:optionLabel];
         }
     }
 }
@@ -147,7 +253,13 @@ static const CGFloat kOptionColumnWidth = 56.0;
     for (int i = 0; i < [_questions count]; i++) {
 
         NSString *question = _questions[i];
-        UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, optionHeight + 50*i, kDescColumnWidth, 50)];
+
+        CGFloat height = [self heightOfQuestion:question];
+        _questionHeightCache[i] = @(height);
+
+        CGFloat totalQuestionHeightBefore = [self totalQuestionHeightBeforeIndex:i];
+
+        UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, optionHeight + totalQuestionHeightBefore, kQuestionColumnWidth - kQuestionWidthOffset, height)];
         descLabel.text = question;
         descLabel.textColor = [UIColor blackColor];
         descLabel.font = [UIFont systemFontOfSize:kFontSize];
@@ -169,13 +281,15 @@ static const CGFloat kOptionColumnWidth = 56.0;
     CGFloat totalWidth = [self totalWidthOfContent];
     CGFloat optionHeight = [self maxHeightOfOptions:_options] + kOptionHeightOffset;
 
-    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, optionHeight, totalWidth, 1)];
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, optionHeight, totalWidth, kSeparatorWidth)];
     separator.backgroundColor = [UIColor lightGrayColor];
     [self addSubview:separator];
 
     for (int i = 0; i < [_questions count]; i++) {
 
-        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, optionHeight + (i + 1) * 50, totalWidth, 1)];
+        CGFloat totalQuestionHeightToThis = [self totalQuestionHeightBeforeIndex:i+1];
+
+        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, optionHeight + totalQuestionHeightToThis, totalWidth, kSeparatorWidth)];
         separator.backgroundColor = [UIColor lightGrayColor];
         [self addSubview:separator];
     }
@@ -186,13 +300,13 @@ static const CGFloat kOptionColumnWidth = 56.0;
     CGFloat totalHeight = [self totalHeightOfContent];
     CGFloat optionHeight = [self maxHeightOfOptions:_options] + kOptionHeightOffset;
 
-    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(kDescColumnWidth, optionHeight, 1, totalHeight - optionHeight)];
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(kQuestionColumnWidth, optionHeight, kSeparatorWidth, totalHeight - optionHeight)];
     separator.backgroundColor = [UIColor lightGrayColor];
     [self addSubview:separator];
 
     for (int i = 0; i < [_options count]; i++) {
 
-        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(kDescColumnWidth + (i + 1) * kOptionColumnWidth, optionHeight, 1, totalHeight - optionHeight)];
+        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(kQuestionColumnWidth + (i + 1) * kOptionColumnWidth, optionHeight, kSeparatorWidth, totalHeight - optionHeight)];
         separator.backgroundColor = [UIColor lightGrayColor];
         [self addSubview:separator];
     }
@@ -202,29 +316,95 @@ static const CGFloat kOptionColumnWidth = 56.0;
 {
     CGFloat optionHeight = [self maxHeightOfOptions:_options] + kOptionHeightOffset;
 
+    [self printCheckedOptionsMatrix];
+
     for (int rowIndex = 0; rowIndex < [_questions count]; rowIndex++) {
 
+        NSInteger checkedOptions = [_checkedOptionMatrix[rowIndex] integerValue];
 
         for (int columnIndex = 0; columnIndex < [_options count]; columnIndex++) {
 
-            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(kDescColumnWidth + 5 + columnIndex * kOptionColumnWidth, optionHeight + 5 + rowIndex * 50, 32, 32)];
+            CGFloat totalQuestionHeightToThis = [self totalQuestionHeightBeforeIndex:rowIndex];
 
-            [button setImage:[UIImage imageNamed:@"img_unchecked"] forState:UIControlStateNormal];
+            CGFloat leftX = kQuestionColumnWidth + columnIndex * kOptionColumnWidth;
+            CGFloat upperY = optionHeight + totalQuestionHeightToThis;
+
+            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(leftX, upperY, kOptionColumnWidth, [_questionHeightCache[rowIndex] floatValue])];
+            NSInteger mask = 1 << columnIndex;
+            BOOL checked = (checkedOptions & mask) > 0;
+            button.selected = checked;
+
+            [button setContentMode:UIViewContentModeCenter];
             [button setImage:[UIImage imageNamed:@"img_checked"] forState:UIControlStateSelected];
             button.tag = rowIndex * 100 + columnIndex;
             [button addTarget:self action:@selector(buttonTouched:) forControlEvents:UIControlEventTouchUpInside];
 
             [self addSubview:button];
         }
-
     }
-
 }
 
 - (void)buttonTouched:(id)sender
 {
     UIButton *button = sender;
-    button.selected = !button.selected;
+    BOOL newValue = !button.selected;
+
+    NSInteger tag = button.tag;
+    NSInteger questionIndex = tag/100;
+    NSInteger optionIndex = tag%100;
+
+    NSInteger checkedOptions = [_checkedOptionMatrix[questionIndex] integerValue];
+    NSInteger mask = 1 << optionIndex;
+
+    if (newValue) { // Is going to be checked
+
+        if (!isSingleSelect || checkedOptions == 0) {
+            _checkedOptionMatrix[questionIndex] = @(checkedOptions | mask);
+            button.selected = newValue;
+        }
+    }
+    else {
+        _checkedOptionMatrix[questionIndex] = @(checkedOptions ^ mask);
+        button.selected = newValue;
+    }
+
+    [self printCheckedOptionsMatrix];
+}
+
+- (BOOL)allQuestionsAnswered
+{
+    BOOL allAnswered = YES;
+
+    for (NSNumber *checked in _checkedOptionMatrix) {
+
+        NSInteger checkedOptions = [checked integerValue];
+
+        if (checkedOptions == 0) {
+            allAnswered = NO;
+            break;
+        }
+    }
+
+    return allAnswered;
+}
+
+- (void)printCheckedOptionsMatrix
+{
+    for (NSNumber *checked in _checkedOptionMatrix) {
+
+        NSInteger value = [checked integerValue];
+        NSString *str = @"";
+        for (NSUInteger i = 0; i < 9 ; i++) {
+            // Prepend "0" or "1", depending on the bit
+            str = [NSString stringWithFormat:@"%@%@", str, value & 1 ? @"1" : @"0"];
+            value >>= 1;
+        }
+
+        NSLog(@"%@", str);
+    }
+    NSLog(@"=========");
+    NSLog(@"allQuestionsAnswered: %@", [self allQuestionsAnswered]? @"YES": @"NO");
+    NSLog(@"=========");
 }
 
 @end

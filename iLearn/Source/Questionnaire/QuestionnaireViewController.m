@@ -11,7 +11,7 @@
 #import "QuestionOptionCell.h"
 #import "Constants.h"
 #import "LicenseUtil.h"
-#import "ExamUtil.h"
+#import "QuestionnaireUtil.h"
 #import "User.h"
 #import "GroupSelectionView.h"
 #import <MBProgressHUD.h>
@@ -43,15 +43,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UITableView *questionTableView;
 @property (weak, nonatomic) IBOutlet UIView *questionTypeView;
 @property (weak, nonatomic) IBOutlet UILabel *questionTypeLabel;
-@property (weak, nonatomic) IBOutlet UIView *correctionView;
-@property (weak, nonatomic) IBOutlet UILabel *correctionTitleLabel;
-@property (weak, nonatomic) IBOutlet UITableView *correctionTableView;
-@property (weak, nonatomic) IBOutlet UILabel *correctionNoteLabel;
-@property (weak, nonatomic) IBOutlet UIView *correctionTypeView;
-@property (weak, nonatomic) IBOutlet UILabel *correctionTypeLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *questionToCorrectionSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerTableViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionTableViewHeightConstraint;
 
 @property (strong, nonatomic) NSMutableArray *cellStatus;
 @property (assign, nonatomic) NSUInteger selectedCellIndex;
@@ -60,34 +52,17 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
 @property (strong, nonatomic) NSDate *examEndDate;
-@property (strong, nonatomic) NSTimer *timeLeftTimer;
-@property (strong, nonatomic) NSTimer *timeOutTimer;
-
-@property (assign, nonatomic) BOOL isAnswerMode; //答案模式
 
 @property (weak, nonatomic) IBOutlet UIView *fakeNavBarView;
 @property (weak, nonatomic) IBOutlet UIView *squareView;
-
-@property (weak, nonatomic) IBOutlet UILabel *countDownTitleLabel;
-@property (weak, nonatomic) IBOutlet UIView *countDownView;
-@property (weak, nonatomic) IBOutlet UILabel *countDownHourLabel;
-@property (weak, nonatomic) IBOutlet UILabel *countDownMinuteLabel;
-@property (weak, nonatomic) IBOutlet UILabel *countDownSecondLabel;
-@property (weak, nonatomic) IBOutlet UILabel *examQuestionCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *examQuestionCountTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *examQuestionScoreLabel;
-@property (weak, nonatomic) IBOutlet UILabel *examQuestionScoreTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *examQuestionScoreUnitLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *countDownViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionVIewButtonContraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *correctionViewTopConstraint;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerVIewHeightConstraint;
 @property (nonatomic, nonatomic) User *user;
 
 @property (weak, nonatomic) IBOutlet UITextView *fillTextView;
-
+@property (weak, nonatomic) IBOutlet UILabel *textViewPlaceholderLabel;
+@property (weak, nonatomic) GroupSelectionView *gridView;
 
 @end
 
@@ -100,57 +75,22 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     self.user = [[User alloc] init];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Img_background"]]];
 
-    _titleLabel.text = _questionnaireContent[ExamTitle];
-    _typeLabel.text = NSLocalizedString(@"LIST_EXAM", nil);
+    _titleLabel.text = _questionnaireContent[QuestionnaireTitle];
+    _typeLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
     _userAccountTitle.text = NSLocalizedString(@"COMMON_ACCOUNT", nil);
     _userAccountLabel.text = [LicenseUtil userAccount];
     _userNameTitle.text = NSLocalizedString(@"COMMON_NAME", nil);
     _userNameLabel.text = [LicenseUtil userName];
 
     [_questionTypeView.layer setCornerRadius:5.0];
-    [_correctionTypeView.layer setCornerRadius:5.0];
-
-    _examQuestionCountTitleLabel.text = NSLocalizedString(@"EXAM_TOTAL_NUMBER_TITLE", nil);
-    _examQuestionScoreUnitLabel.text = NSLocalizedString(@"EXAM_SCORE_UNIT", nil);
-    _countDownTitleLabel.text = NSLocalizedString(@"EXAM_TIME_LEFT_TITLE", nil);
-
-    NSNumber *score = _questionnaireContent[ExamScore];
-
-    ExamTypes examType = [_questionnaireContent[ExamType] integerValue];
-
-    if (score != nil && [score integerValue] != -1) {
-        self.isAnswerMode = YES;
-        _questionTableView.userInteractionEnabled = NO;
-    }
-    else if (examType == ExamTypesPractice) {
-        self.isAnswerMode = NO;
-    }
-    else {
-        self.isAnswerMode = NO;
-
-        NSNumber *endTime = _questionnaireContent[ExamExamEnd];
-
-        if (endTime) {
-
-            self.examEndDate = [NSDate dateWithTimeIntervalSince1970:[endTime longLongValue]];
-
-            [self updateTimeLeft];
-
-            self.timeLeftTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimeLeft) userInfo:nil repeats:YES];
-
-            NSTimeInterval timeLeft = [_examEndDate timeIntervalSinceNow];
-
-            self.timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:timeLeft target:self selector:@selector(timeOut) userInfo:nil repeats:NO];
-        }
-    }
 
     [self.submitButton setTitle:NSLocalizedString(@"COMMON_SUBMIT", nil) forState:UIControlStateNormal];
 
     // Setup CellStatus (answered, normal, correct, wrong...)
     self.cellStatus = [NSMutableArray array];
-    for (NSDictionary *subject in _questionnaireContent[ExamQuestions]) {
+    for (NSDictionary *subject in _questionnaireContent[QuestionnaireQuestions]) {
 
-        if ([subject[ExamQuestionAnswered] isEqualToNumber:@(1)]) {
+        if ([subject[QuestionnaireQuestionAnswered] isEqualToNumber:@(1)]) {
             [_cellStatus addObject:@(CellStatusAnswered)];
         }
         else {
@@ -164,44 +104,16 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [self updateSelections];
     [self updateOptionContents];
 
-    if (!_isAnswerMode) { // Hide the answer view
-        _correctionView.hidden = YES;
-        self.scrollView.scrollEnabled = NO;
-        self.answerVIewHeightConstraint.constant = 704;
-    }
-    else {
-        self.countDownViewHeightConstraint.constant = 0;
-        self.squareView.backgroundColor = ILDarkRed;
-    }
-    
+    self.answerVIewHeightConstraint.constant = 704;
+
     _submitButton.layer.cornerRadius = 4;
 
-
-    GroupSelectionView *groupView = [[GroupSelectionView alloc] initWithFrame:CGRectMake(20, 50, 656, 1000)];
-    [self.questionView addSubview:groupView];
-    [groupView drawGrid];
-
-    self.answerVIewHeightConstraint.constant = 1200;
-    self.scrollView.scrollEnabled = YES;
+    _fillTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _fillTextView.layer.borderWidth = 1.0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    self.examQuestionCountLabel.text = [NSString stringWithFormat:@"%ld", (long)[_questionnaireContent[ExamQuestions] count]];
-
-    NSString *examQuestionScore, *examQuestionTitle;
-
-    if([_questionnaireContent[ExamScore] intValue] < 0) {
-        examQuestionScore = @"100";
-        examQuestionTitle = NSLocalizedString(@"EXAM_TOTAL_SCORE_TITLE", nil);
-    }
-    else {
-        examQuestionScore = [NSString stringWithFormat:@"%@", _questionnaireContent[ExamScore]];
-        examQuestionTitle = NSLocalizedString(@"EXAM_SCORE_TITLE", nil);
-    }
-    self.examQuestionScoreLabel.text = examQuestionScore;
-    self.examQuestionScoreTitleLabel.text = examQuestionTitle;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -213,7 +125,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSArray *subjects = _questionnaireContent[ExamQuestions];
+    NSArray *subjects = _questionnaireContent[QuestionnaireQuestions];
     return [subjects count];
 }
 
@@ -223,46 +135,18 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     cell.numberLabel.text = [NSString stringWithFormat:@"%d", indexPath.row+1];
 
-    if (_isAnswerMode) {
-
-        NSDictionary *subjectContent = _questionnaireContent[ExamQuestions][indexPath.row];
-        
-        if (indexPath.row == _selectedCellIndex) {
-
-            cell.backgroundColor = ILDarkRed;
-            cell.numberLabel.textColor = [UIColor whiteColor];
-            if ([subjectContent[ExamQuestionCorrect] isEqualToNumber:@1]) {
-                cell.backgroundColor = ILLightGreen;
-            }
-            else {
-                cell.backgroundColor = ILDarkRed;
-            }
-        }
-        else {
-            cell.backgroundColor = [UIColor clearColor];
-            if ([subjectContent[ExamQuestionCorrect] isEqualToNumber:@1]) {
-                cell.numberLabel.textColor = ILLightGreen;
-            }
-            else {
-                cell.numberLabel.textColor = ILDarkRed;
-            }
-        }
+    if (indexPath.row == _selectedCellIndex) {
+        cell.backgroundColor = ILLightGreen;
+        cell.numberLabel.textColor = [UIColor whiteColor];
     }
     else {
-        
-        if (indexPath.row == _selectedCellIndex) {
-            cell.backgroundColor = ILLightGreen;
-            cell.numberLabel.textColor = [UIColor whiteColor];
+        cell.backgroundColor = [UIColor clearColor];
+
+        if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
+            cell.numberLabel.textColor = ILLightGreen;
         }
         else {
-            cell.backgroundColor = [UIColor clearColor];
-
-            if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
-                cell.numberLabel.textColor = ILLightGreen;
-            }
-            else {
-                cell.numberLabel.textColor = ILLightGray;
-            }
+            cell.numberLabel.textColor = ILLightGray;
         }
     }
 
@@ -282,10 +166,10 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *selectedQuestion = _questionnaireContent[ExamQuestions][_selectedCellIndex];
-    NSArray *options = selectedQuestion[ExamQuestionOptions];
+    NSDictionary *selectedQuestion = _questionnaireContent[QuestionnaireQuestions][_selectedCellIndex];
+    NSArray *options = selectedQuestion[QuestionnaireQuestionOptions];
     NSDictionary *option = options[indexPath.row];
-    NSString *title = option[ExamQuestionOptionTitle];
+    NSString *title = option[QuestionnaireQuestionOptionTitle];
 
     return [self calculateOptionLabelHeightForText:title] + 10.0;
 }
@@ -301,8 +185,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSDictionary *selectedQuestion = _questionnaireContent[ExamQuestions][_selectedCellIndex];
-    NSArray *options = selectedQuestion[ExamQuestionOptions];
+    NSDictionary *selectedQuestion = _questionnaireContent[QuestionnaireQuestions][_selectedCellIndex];
+    NSArray *options = selectedQuestion[QuestionnaireQuestionOptions];
     return [options count];
 }
 
@@ -310,40 +194,21 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     QuestionOptionCell *cell = (QuestionOptionCell*)[tableView dequeueReusableCellWithIdentifier:kQuestionOptionCellIdentifier];
 
-    NSDictionary *selectedQuestion = _questionnaireContent[ExamQuestions][_selectedCellIndex];
-    NSArray *options = selectedQuestion[ExamQuestionOptions];
+    NSDictionary *selectedQuestion = _questionnaireContent[QuestionnaireQuestions][_selectedCellIndex];
+    NSArray *options = selectedQuestion[QuestionnaireQuestionOptions];
     NSDictionary *option = options[indexPath.row];
 
     cell.seqLabel.text = [NSString stringWithFormat:@"%c", (indexPath.row+1)+64];
-    cell.titleLabel.text = option[ExamQuestionOptionTitle];
+    cell.titleLabel.text = option[QuestionnaireQuestionOptionTitle];
 
     if (tableView == _questionTableView) {
         // Set cell background color when answering
         UIView *backgroundView = [UIView new];
-
-        BOOL correct = [selectedQuestion[ExamQuestionCorrect] boolValue];
-
-        if (_isAnswerMode && !correct) {
-            backgroundView.backgroundColor = ILDarkRed;
-        }
-        else {
-            backgroundView.backgroundColor = ILLightGreen;
-        }
+        backgroundView.backgroundColor = ILLightGreen;
         cell.selectedBackgroundView = backgroundView;
 
         if ([_selectedRowsOfSubject containsObject:@(indexPath.row)]) {
             [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        }
-    }
-    else if (tableView == _correctionTableView) {
-        // Set cell background color of correction
-        NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
-
-        if ([answersBySeq containsObject:@(indexPath.row)]) {
-            cell.backgroundColor = ILLightGreen;
-        }
-        else {
-            cell.backgroundColor = [UIColor whiteColor];
         }
     }
 
@@ -370,127 +235,198 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     self.selectedRowsOfSubject = [NSMutableArray array];
 
-    NSArray *questions = _questionnaireContent[ExamQuestions];
+    NSArray *questions = _questionnaireContent[QuestionnaireQuestions];
     if (questions.count > 0) {
         NSDictionary *subject = questions[_selectedCellIndex];
-        for (int i = 0; i<[subject[ExamQuestionOptions] count]; i++) {
+        for (int i = 0; i<[subject[QuestionnaireQuestionOptions] count]; i++) {
             
-            NSDictionary *option = subject[ExamQuestionOptions][i];
-            BOOL selected = [option[ExamQuestionOptionSelected] integerValue];
+            NSDictionary *option = subject[QuestionnaireQuestionOptions][i];
+            BOOL selected = [option[QuestionnaireQuestionOptionSelected] integerValue];
             
             if (selected) {
-                NSNumber *optionSeq = option[ExamQuestionOptionSeq];
+                NSNumber *optionSeq = option[QuestionnaireQuestionOptionSeq];
                 [_selectedRowsOfSubject addObject:optionSeq];
             }
         }
     }
 }
 
+- (void)showGridViewOfContent:(NSDictionary*)content
+{
+    GroupSelectionView *groupView = [[GroupSelectionView alloc] initWithFrame:CGRectMake(20, 100, 656, 600)];
+    [self.questionView addSubview:groupView];
+    [groupView setQuestionnaireData:content[QuestionnaireQuestions]];
+    [groupView drawGrid];
+    self.gridView = groupView;
+
+    self.answerVIewHeightConstraint.constant = 1200;
+    self.scrollView.scrollEnabled = YES;
+}
+
 - (void)updateOptionContents
 {
-    NSDictionary *selectedQuestion = _questionnaireContent[ExamQuestions][_selectedCellIndex];
-    NSString *questionTitle = selectedQuestion[ExamQuestionTitle];
-    NSNumber *questionType = selectedQuestion[ExamQuestionType];
-    NSString *typeString;
+    NSDictionary *selectedQuestion = _questionnaireContent[QuestionnaireQuestions][_selectedCellIndex];
+    QuestionnaireQuestionTypes questionType = [selectedQuestion[QuestionnaireQuestionType] integerValue];
 
-    switch ([questionType integerValue]) {
-        case ExamSubjectTypeTrueFalse:
-            typeString = NSLocalizedString(@"EXAM_TYPE_TRUE_FALSE", Nil);
-            _questionTableView.allowsMultipleSelection = NO;
-            break;
-        case ExamSubjectTypeSingle:
-            typeString = NSLocalizedString(@"EXAM_TYPE_SINGLE", Nil);
-            _questionTableView.allowsMultipleSelection = NO;
-            break;
-        case ExamSubjectTypeMultiple:
-            typeString = NSLocalizedString(@"EXAM_TYPE_MULTIPLE", Nil);
-            _questionTableView.allowsMultipleSelection = YES;
-            break;
-        default:
-            break;
+    [_gridView removeFromSuperview];
+    [_scrollView setContentOffset:CGPointZero];
+
+    if (questionType <= QuestionnaireQuestionsTypeEssay) {
+
+        NSString *typeString;
+
+        switch (questionType) {
+            case QuestionnaireQuestionsTypeTrueFalse:
+                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_TRUE_FALSE", Nil);
+                _questionTableView.allowsMultipleSelection = NO;
+                break;
+            case QuestionnaireQuestionsTypeSingle:
+                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_SINGLE", Nil);
+                _questionTableView.allowsMultipleSelection = NO;
+                break;
+            case QuestionnaireQuestionsTypeMultiple:
+                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_MULTIPLE", Nil);
+                _questionTableView.allowsMultipleSelection = YES;
+                break;
+            case QuestionnaireQuestionsTypeFill:
+                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_FILL", Nil);
+                break;
+            case QuestionnaireQuestionsTypeEssay:
+                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_ESSAY", Nil);
+                break;
+            default:
+                break;
+        }
+        
+        _questionTypeLabel.text = typeString;
+
+        NSString *questionTitle = selectedQuestion[QuestionnaireQuestionTitle];
+        NSString *title = [NSString stringWithFormat:@"%d. %@", _selectedCellIndex+1, questionTitle];
+        _questionTitleLabel.text = title;
+
+        if (questionType <= QuestionnaireQuestionsTypeMultiple) {
+
+            _questionTableView.hidden = NO;
+            _fillTextView.hidden = YES;
+            _textViewPlaceholderLabel.hidden = YES;
+
+            [_questionTableView reloadData];
+
+            CGFloat height = _questionTableView.contentSize.height;
+            _answerTableViewHeightConstraint.constant = height;
+        }
+        else {
+            _questionTableView.hidden = YES;
+            _fillTextView.hidden = NO;
+
+            NSString *filledAnswer = selectedQuestion[QuestionnaireQuestionFilledAnswer];
+
+            if ([filledAnswer length] == 0) {
+                _textViewPlaceholderLabel.hidden = NO;
+                _fillTextView.text = @"";
+            }
+            else {
+                _textViewPlaceholderLabel.hidden = YES;
+                _fillTextView.text = filledAnswer;
+            }
+
+        }
+
+        _answerVIewHeightConstraint.constant = 704.0;
+        self.scrollView.scrollEnabled = NO;
     }
+    else {
 
-    _questionTypeLabel.text = typeString;
-    _correctionTypeLabel.text = typeString;
+        NSDictionary *firstSubQuestion = [selectedQuestion[QuestionnaireQuestions] firstObject];
+        QuestionnaireQuestionTypes firstSubQuestionType = [firstSubQuestion[QuestionnaireQuestionType] integerValue];
 
-    NSString *title = [NSString stringWithFormat:@"%d. %@", _selectedCellIndex+1, questionTitle];
+        NSString *typeString;
 
-    _questionTitleLabel.text = title;
-    _correctionTitleLabel.text = title;
+        switch (firstSubQuestionType) {
+            case QuestionnaireQuestionsTypeTrueFalse:
+                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_TRUE_FALSE", Nil);
+                break;
+            case QuestionnaireQuestionsTypeSingle:
+                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_SINGLE", Nil);
+                break;
+            case QuestionnaireQuestionsTypeMultiple:
+                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_MULTIPLE", Nil);
+                break;
+            default:
+                break;
+        }
 
-    NSArray *answersBySeq = selectedQuestion[ExamQuestionAnswerBySeq];
-    NSMutableString *answerString = [NSMutableString string];
-    for (NSNumber *seq in answersBySeq) {
-        [answerString appendString:[NSString stringWithFormat:@"%c", ([seq integerValue] + 1) + 64]];
+        _questionTypeLabel.text = typeString;
+
+        NSString *questionTitle = selectedQuestion[QuestionnaireQuestionGroup];
+        NSString *title = [NSString stringWithFormat:@"%d. %@", _selectedCellIndex+1, questionTitle];
+        _questionTitleLabel.text = title;
+
+        [self showGridViewOfContent:selectedQuestion];
+
+        _questionTableView.hidden = YES;
+        _fillTextView.hidden = YES;
+        _textViewPlaceholderLabel.hidden = YES;
     }
-
-    NSString *correctionNote = selectedQuestion[ExamQuestionNote];
-    NSString *correctionString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_CORRECTION_TEMPLATE", nil), answerString, correctionNote];
-
-    _correctionNoteLabel.text = correctionString;
-
-    [_questionTableView reloadData];
-    [_correctionTableView reloadData];
-
-    CGFloat height = _questionTableView.contentSize.height;
-    _answerTableViewHeightConstraint.constant = height;
-    _correctionTableViewHeightConstraint.constant = height;
 
     _nextButton.hidden = _selectedCellIndex == [_cellStatus count]-1? YES: NO;
 }
 
 - (void)updateSubmitButtonStatus
 {
-    if (_isAnswerMode) {
-        _submitButton.hidden = YES;
-    }
-    else {
-        for (NSNumber *status in _cellStatus) {
-            if ([status isEqualToNumber:@(CellStatusNone)]) {
-                _submitButton.hidden = YES;
-                return;
-            }
+    for (NSNumber *status in _cellStatus) {
+        if ([status isEqualToNumber:@(CellStatusNone)]) {
+            _submitButton.hidden = YES;
+            return;
         }
-        _submitButton.hidden = NO;
     }
+    _submitButton.hidden = NO;
 }
 
 - (void)saveSelections
 {
-    if (_isAnswerMode) {
-        return;
-    }
-
-    NSMutableDictionary *subject = _questionnaireContent[ExamQuestions][_selectedCellIndex];
-    NSString *subjectId = subject[ExamQuestionId];
+    NSMutableDictionary *subject = _questionnaireContent[QuestionnaireQuestions][_selectedCellIndex];
+    NSString *subjectId = subject[QuestionnaireQuestionId];
     NSString *fileName = _questionnaireContent[CommonFileName];
+    QuestionnaireQuestionTypes questionType = [subject[QuestionnaireQuestionType] integerValue];
+    NSString *dbPath = [QuestionnaireUtil questionnaireDBPathOfFile:fileName];
 
-    for (int i = 0; i<[subject[ExamQuestionOptions] count]; i++) {
+    if (questionType <= QuestionnaireQuestionsTypeMultiple) {
+        for (int i = 0; i < [subject[QuestionnaireQuestionOptions] count]; i++) {
 
-        NSMutableDictionary *option = subject[ExamQuestionOptions][i];
-        NSString *optionId = option[ExamQuestionOptionId];
+            NSMutableDictionary *option = subject[QuestionnaireQuestionOptions][i];
+            NSString *optionId = option[QuestionnaireQuestionOptionId];
 
-        NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+            BOOL selected = [_selectedRowsOfSubject containsObject:@(i)];
 
-        BOOL selected = [_selectedRowsOfSubject containsObject:@(i)];
-
-        option[ExamQuestionOptionSelected] = @(selected);
-        [ExamUtil setOptionSelected:selected withQuestionId:subjectId optionId:optionId andDBPath:dbPath];
+            option[QuestionnaireQuestionOptionSelected] = @(selected);
+            [QuestionnaireUtil setOptionSelected:selected withQuestionId:subjectId optionId:optionId andDBPath:dbPath];
+        }
     }
+    else if (questionType <= QuestionnaireQuestionsTypeEssay) {
+
+        NSString *textContent = _fillTextView.text;
+        subject[QuestionnaireQuestionFilledAnswer] = textContent;
+        [QuestionnaireUtil saveFilledAnswer:textContent withQuestionId:subjectId andDBPath:dbPath];
+    }
+    else {
+        
+    }
+
 }
 
 - (void)updateSubjectsStatus
 {
-    NSMutableDictionary *subject = _questionnaireContent[ExamQuestions][_selectedCellIndex];
+    NSMutableDictionary *subject = _questionnaireContent[QuestionnaireQuestions][_selectedCellIndex];
 
     // Update collectionView cell status
     if ([_selectedRowsOfSubject count]) {
         _cellStatus[_selectedCellIndex] = @(CellStatusAnswered);
-        subject[ExamQuestionAnswered] = @(1);
+        subject[QuestionnaireQuestionAnswered] = @(1);
     }
     else {
         _cellStatus[_selectedCellIndex] = @(CellStatusNone);
-        subject[ExamQuestionAnswered] = @(0);
+        subject[QuestionnaireQuestionAnswered] = @(0);
     }
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedCellIndex inSection:0];
@@ -503,58 +439,30 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateStringLabels
 {
-    if (_isAnswerMode) {
-        NSInteger numberOfSubjects = [_questionnaireContent[ExamQuestions] count];
-        NSInteger numberOfCorrectSubjects = [self numberOfCorrectSubjects];
+    NSInteger numberOfSubjects = [_cellStatus count];
+    NSInteger numberOfAnsweredSubjects = [self numberOfAnsweredSubjects];
 
-        NSString *correctString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_CORRECT_TEMPLATE", nil), numberOfCorrectSubjects];
-        NSString *correctNumberString = [NSString stringWithFormat:@"%lld", (long long)numberOfCorrectSubjects];
-        NSRange correctNumberRange = [correctString rangeOfString:correctNumberString];
-        NSRange correctTextRange = NSMakeRange(0, correctNumberRange.location);
+    NSString *answeredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_ANSWERED_TEMPLATE", nil), numberOfAnsweredSubjects];
+    NSString *answeredNumberString = [NSString stringWithFormat:@"%lld", (long long)numberOfAnsweredSubjects];
+    NSRange answeredNumberRange = [answeredString rangeOfString:answeredNumberString];
+    NSRange answeredTextRange = NSMakeRange(0, answeredNumberRange.location);
 
-        NSMutableAttributedString *correctAttrString = [[NSMutableAttributedString alloc] initWithString:correctString];
-        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:ILDarkGray, NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:correctTextRange];
-        [correctAttrString setAttributes:@{NSForegroundColorAttributeName:ILLightGreen, NSFontAttributeName:[UIFont boldSystemFontOfSize:20]} range:correctNumberRange];
+    NSMutableAttributedString *answeredAttrString = [[NSMutableAttributedString alloc] initWithString:answeredString];
+    [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:ILDarkGray, NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:answeredTextRange];
+    [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:ILGreen, NSFontAttributeName:[UIFont boldSystemFontOfSize:20]} range:answeredNumberRange];
 
-        _leftStatusLabel.attributedText = correctAttrString;
+    _leftStatusLabel.attributedText = answeredAttrString;
 
-        NSString *wrongString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_WRONG_TEMPLATE", nil), numberOfSubjects-numberOfCorrectSubjects];
-        NSString *wrongNumberString = [NSString stringWithFormat:@"%lld", (long long)(numberOfSubjects-numberOfCorrectSubjects)];
-        NSRange wrongNumberRange = [wrongString rangeOfString:wrongNumberString];
-        NSRange wrongTextRange = NSMakeRange(0, wrongNumberRange.location);
+    NSString *unansweredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNANSWERED_TEMPLATE", nil), numberOfSubjects-numberOfAnsweredSubjects];
+    NSString *unansweredNumberString = [NSString stringWithFormat:@"%lld", (long long)(numberOfSubjects-numberOfAnsweredSubjects)];
+    NSRange unansweredNumberRange = [unansweredString rangeOfString:unansweredNumberString];
+    NSRange unansweredTextRange = NSMakeRange(0, unansweredNumberRange.location);
 
-        NSMutableAttributedString *wrongAttrString = [[NSMutableAttributedString alloc] initWithString:wrongString];
-        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:ILDarkGray, NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:wrongTextRange];
-        [wrongAttrString setAttributes:@{NSForegroundColorAttributeName:ILRed, NSFontAttributeName:[UIFont boldSystemFontOfSize:20]} range:wrongNumberRange];
+    NSMutableAttributedString *unansweredAttrString = [[NSMutableAttributedString alloc] initWithString:unansweredString];
+    [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:ILDarkGray, NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:unansweredTextRange];
+    [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:20]} range:unansweredNumberRange];
 
-        _rightStatusLabel.attributedText = wrongAttrString;
-    }
-    else {
-        NSInteger numberOfSubjects = [_cellStatus count];
-        NSInteger numberOfAnsweredSubjects = [self numberOfAnsweredSubjects];
-
-        NSString *answeredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_ANSWERED_TEMPLATE", nil), numberOfAnsweredSubjects];
-        NSString *answeredNumberString = [NSString stringWithFormat:@"%lld", (long long)numberOfAnsweredSubjects];
-        NSRange answeredNumberRange = [answeredString rangeOfString:answeredNumberString];
-        NSRange answeredTextRange = NSMakeRange(0, answeredNumberRange.location);
-
-        NSMutableAttributedString *answeredAttrString = [[NSMutableAttributedString alloc] initWithString:answeredString];
-        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:ILDarkGray, NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:answeredTextRange];
-        [answeredAttrString setAttributes:@{NSForegroundColorAttributeName:ILGreen, NSFontAttributeName:[UIFont boldSystemFontOfSize:20]} range:answeredNumberRange];
-
-        _leftStatusLabel.attributedText = answeredAttrString;
-
-        NSString *unansweredString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_UNANSWERED_TEMPLATE", nil), numberOfSubjects-numberOfAnsweredSubjects];
-        NSString *unansweredNumberString = [NSString stringWithFormat:@"%lld", (long long)(numberOfSubjects-numberOfAnsweredSubjects)];
-        NSRange unansweredNumberRange = [unansweredString rangeOfString:unansweredNumberString];
-        NSRange unansweredTextRange = NSMakeRange(0, unansweredNumberRange.location);
-
-        NSMutableAttributedString *unansweredAttrString = [[NSMutableAttributedString alloc] initWithString:unansweredString];
-        [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:ILDarkGray, NSFontAttributeName:[UIFont boldSystemFontOfSize:14]} range:unansweredTextRange];
-        [unansweredAttrString setAttributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:20]} range:unansweredNumberRange];
-
-        _rightStatusLabel.attributedText = unansweredAttrString;
-    }
+    _rightStatusLabel.attributedText = unansweredAttrString;
 }
 
 - (NSInteger)numberOfAnsweredSubjects
@@ -567,18 +475,6 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         }
     }
     return numberOfAnsweredSubjects;
-}
-
-- (NSInteger)numberOfCorrectSubjects
-{
-    NSInteger numberOfCorrectSubjects = 0;
-
-    for (NSDictionary *subject in _questionnaireContent[ExamQuestions]) {
-        if ([subject[ExamQuestionCorrect] isEqualToNumber:@(1)]) {
-            numberOfCorrectSubjects++;
-        }
-    }
-    return numberOfCorrectSubjects;
 }
 
 - (void)changeSubjectToIndex:(NSInteger)index
@@ -595,40 +491,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [_subjectCollectionView reloadItemsAtIndexPaths:reloadCollectionCells];
 }
 
-- (void)updateTimeLeft
-{
-    NSInteger timeLeft = [_examEndDate timeIntervalSinceNow];
-
-    if (timeLeft < 0) {
-        timeLeft = 0;
-    }
-
-    NSInteger minute = timeLeft / 60;
-    NSInteger hour;
-    if (minute > 60) {
-        hour = minute / 60;
-    }
-    else {
-        hour = 0;
-    }
-    NSInteger second = timeLeft % 60;
-    minute = minute % 60;
-
-    self.countDownHourLabel.text = [NSString stringWithFormat:@"%02ld", (long)hour];
-    self.countDownMinuteLabel.text = [NSString stringWithFormat:@"%02ld", (long)minute];
-    self.countDownSecondLabel.text = [NSString stringWithFormat:@"%02ld", (long)second];
-}
-
-- (void)timeOut
-{
-    [self submit];
-}
-
 - (void)submit
 {
-    [_timeLeftTimer invalidate];
-    [_timeOutTimer invalidate];
-
     __weak QuestionnaireViewController *weakSelf = self;
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -639,15 +503,11 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         [self saveSelections];
 
         NSString *fileName = _questionnaireContent[CommonFileName];
-        NSString *dbPath = [ExamUtil examDBPathOfFile:fileName];
+        NSString *dbPath = [QuestionnaireUtil questionnaireDBPathOfFile:fileName];
 
-        NSInteger score = [ExamUtil examScoreOfDBPath:dbPath];
+        [QuestionnaireUtil generateUploadJsonFromDBPath:dbPath];
 
-        [ExamUtil generateUploadJsonFromDBPath:dbPath];
-
-        NSString *scoreString = [NSString stringWithFormat:NSLocalizedString(@"EXAM_SCORE_TEMPLATE", nil), score];
-
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:scoreString delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:@"SUCCESS" delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
@@ -691,6 +551,18 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (IBAction)submit:(UIButton *)sender {
     [self submit];
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    if ([textView.text length] == 0) {
+        _textViewPlaceholderLabel.hidden = NO;
+    }
+    else {
+        _textViewPlaceholderLabel.hidden = YES;
+    }
 }
 
 @end
