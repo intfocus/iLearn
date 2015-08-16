@@ -3929,48 +3929,6 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="cwf-mG-ZeS">
-                        <barButtonItem key="leftBarButtonItem" image="icon_back" style="plain" id="dXi-D7-AVz">
-                            <color key="tintColor" red="0.1058823529" green="0.64705882349999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="backButtonTouched:" destination="gUf-bC-CZt" id="7to-Vu-Brc"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="WoF-2x-p11">
-                            <view key="customView" contentMode="scaleToFill" id="Sz2-QT-uq9">
-                                <rect key="frame" x="0.0" y="0.0" width="227" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3O-1t-2pc">
-                                        <rect key="frame" x="147" y="0.0" width="80" height="34"/>
-                                        <color key="backgroundColor" red="0.1058823529" green="0.64705882349999999" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="BYt-wX-cnv"/>
-                                        </constraints>
-                                        <state key="normal" title="提交">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="submitButtonTouched:" destination="gUf-bC-CZt" eventType="touchUpInside" id="yyj-12-Ngz"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="Y3O-1t-2pc" firstAttribute="leading" secondItem="Sz2-QT-uq9" secondAttribute="leading" id="7cg-Tu-S2q"/>
-                                    <constraint firstAttribute="centerY" secondItem="Y3O-1t-2pc" secondAttribute="centerY" id="o86-wj-K7K"/>
-                                    <constraint firstAttribute="trailing" secondItem="Y3O-1t-2pc" secondAttribute="trailing" id="png-0w-fjM"/>
-                                    <constraint firstAttribute="trailing" secondItem="Y3O-1t-2pc" secondAttribute="trailing" id="rVl-Mu-HJs"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="7cg-Tu-S2q"/>
-                                        <exclude reference="png-0w-fjM"/>
-                                    </mask>
-                                </variation>
-                            </view>
-                        </barButtonItem>
-                    </navigationItem>
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>

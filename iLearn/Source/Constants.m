@@ -31,38 +31,26 @@ NSString *const QuestionnaireQuestionnaireEnd = @"questionnaire_end";
 NSString *const QuestionnaireStatus = @"status";
 NSString *const QuestionnaireCached = @"exist_in_local";
 NSString *const QuestionnaireType = @"type";
-NSString *const QuestionnaireLocation = @"location";
-NSString *const QuestionnaireAnsType = @"ans_type";
 NSString *const QuestionnaireSubmitted = @"submit";
 NSString *const QuestionnaireOpened = @"opened";
-NSString *const QuestionnaireUserId = @"user_id";
 NSString *const QuestionnaireFinished = @"finished";
 
 NSString *const QuestionnaireQuestions = @"data";
 NSString *const QuestionnaireQuestionId = @"ProblemId";
 NSString *const QuestionnaireQuestionTitle = @"ProblemDesc";
 NSString *const QuestionnaireQuestionType = @"ProblemType";
-NSString *const QuestionnaireQuestionNote = @"memo";
 NSString *const QuestionnaireQuestionFilledAnswer = @"ProblemFilled";
 NSString *const QuestionnaireQuestionSelectedAnswer = @"ProblemSelected";
 NSString *const QuestionnaireQuestionAnswered = @"answered";
-
 NSString *const QuestionnaireQuestionGroup = @"GroupName";
-NSString *const QuestionnaireQuestionSelectA = @"ProblemSelectA";
-NSString *const QuestionnaireQuestionSelectB = @"ProblemSelectB";
-NSString *const QuestionnaireQuestionSelectC = @"ProblemSelectC";
-NSString *const QuestionnaireQuestionSelectD = @"ProblemSelectD";
-NSString *const QuestionnaireQuestionSelectE = @"ProblemSelectE";
-NSString *const QuestionnaireQuestionSelectF = @"ProblemSelectF";
-NSString *const QuestionnaireQuestionSelectG = @"ProblemSelectG";
-NSString *const QuestionnaireQuestionSelectH = @"ProblemSelectH";
-NSString *const QuestionnaireQuestionSelectI = @"ProblemSelectI";
+
+NSString *const QuestionnaireResultUserId = @"UserId";
+NSString *const QuestionnaireResultId = @"QuestionId";
+NSString *const QuestionnaireResultSubmitDate = @"SubmitDate";
 
 NSString *const QuestionnaireQuestionResult = @"result";
 NSString *const QuestionnaireQuestionResultId = @"problem_id";
-NSString *const QuestionnaireQuestionResultType = @"type";
-NSString *const QuestionnaireQuestionResultSelected = @"selected_answer";
-NSString *const QuestionnaireQuestionResultFilled = @"filled_answer";
+NSString *const QuestionnaireQuestionResultAnswer = @"SubmitAnswer";
 
 NSString *const QuestionnaireQuestionOptions = @"selectors";
 NSString *const QuestionnaireQuestionOptionId = @"id";

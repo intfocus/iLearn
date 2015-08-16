@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupSelectionView.h"
+#import "UploadQuestionnaireViewController.h"
 
-@interface QuestionnaireViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UITextViewDelegate>
+@interface QuestionnaireViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UITextViewDelegate, GroupSelectionViewDelegate, UploadQuestionnaireViewControllerDelegate>
 
-@property (strong, nonatomic) NSDictionary *questionnaireContent;
+@property (strong, nonatomic) NSMutableDictionary *questionnaireContent;
 
 @end

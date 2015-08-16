@@ -13,11 +13,11 @@
 #import "LicenseUtil.h"
 #import "QuestionnaireUtil.h"
 #import "User.h"
-#import "GroupSelectionView.h"
 #import <MBProgressHUD.h>
 
 static NSString *const kSubjectCollectionCellIdentifier = @"subjectCollectionViewCell";
 static NSString *const kQuestionOptionCellIdentifier = @"QuestionAnswerCell";
+static NSString *const kUploadQuestionnaireViewController = @"UploadQuestionnaireViewController";
 
 typedef NS_ENUM(NSUInteger, CellStatus) {
     CellStatusNone,
@@ -64,6 +64,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UILabel *textViewPlaceholderLabel;
 @property (weak, nonatomic) GroupSelectionView *gridView;
 
+@property (assign, nonatomic) BOOL isAnswerMode; //答案模式
+
 @end
 
 @implementation QuestionnaireViewController
@@ -85,6 +87,13 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     [_questionTypeView.layer setCornerRadius:5.0];
 
     [self.submitButton setTitle:NSLocalizedString(@"COMMON_SUBMIT", nil) forState:UIControlStateNormal];
+
+    BOOL isFinished = [_questionnaireContent[QuestionnaireFinished] boolValue];
+    if (isFinished) {
+        self.isAnswerMode = YES;
+        [_questionTableView setUserInteractionEnabled:NO];
+        [_fillTextView setUserInteractionEnabled:NO];
+    }
 
     // Setup CellStatus (answered, normal, correct, wrong...)
     self.cellStatus = [NSMutableArray array];
@@ -253,14 +262,23 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)showGridViewOfContent:(NSDictionary*)content
 {
-    GroupSelectionView *groupView = [[GroupSelectionView alloc] initWithFrame:CGRectMake(20, 100, 656, 600)];
+    CGRect frame = CGRectMake(20, 100, 656, 600);
+    GroupSelectionView *groupView = [[GroupSelectionView alloc] initWithFrame:frame];
     [self.questionView addSubview:groupView];
     [groupView setQuestionnaireData:content[QuestionnaireQuestions]];
     [groupView drawGrid];
+    groupView.delegate = self;
+    CGFloat groupViewHeight = [groupView totalHeightOfContent];
+    frame.size.height = groupViewHeight;
+    groupView.frame = frame;
     self.gridView = groupView;
 
-    self.answerVIewHeightConstraint.constant = 1200;
+    self.answerVIewHeightConstraint.constant = groupViewHeight + 300;
     self.scrollView.scrollEnabled = YES;
+
+    if (_isAnswerMode) {
+        [groupView setUserInteractionEnabled:NO];
+    }
 }
 
 - (void)updateOptionContents
@@ -329,7 +347,6 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
                 _textViewPlaceholderLabel.hidden = YES;
                 _fillTextView.text = filledAnswer;
             }
-
         }
 
         _answerVIewHeightConstraint.constant = 704.0;
@@ -374,6 +391,11 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
 - (void)updateSubmitButtonStatus
 {
+    if (_isAnswerMode) {
+        _submitButton.hidden = YES;
+        return;
+    }
+
     for (NSNumber *status in _cellStatus) {
         if ([status isEqualToNumber:@(CellStatusNone)]) {
             _submitButton.hidden = YES;
@@ -383,8 +405,12 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     _submitButton.hidden = NO;
 }
 
-- (void)saveSelections
+- (void)saveAnswers
 {
+    if (_isAnswerMode) {
+        return;
+    }
+
     NSMutableDictionary *subject = _questionnaireContent[QuestionnaireQuestions][_selectedCellIndex];
     NSString *subjectId = subject[QuestionnaireQuestionId];
     NSString *fileName = _questionnaireContent[CommonFileName];
@@ -410,7 +436,21 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         [QuestionnaireUtil saveFilledAnswer:textContent withQuestionId:subjectId andDBPath:dbPath];
     }
     else {
-        
+
+        for (NSDictionary *subQuestion in subject[QuestionnaireQuestions]) {
+
+            NSString *subQuestionId = subQuestion[QuestionnaireQuestionId];
+
+            for (int i = 0; i < [subQuestion[QuestionnaireQuestionOptions] count]; i++) {
+
+                NSMutableDictionary *option = subQuestion[QuestionnaireQuestionOptions][i];
+                NSString *optionId = option[QuestionnaireQuestionOptionId];
+
+                BOOL selected = [option[QuestionnaireQuestionOptionSelected] boolValue];
+
+                [QuestionnaireUtil setOptionSelected:selected withQuestionId:subQuestionId optionId:optionId andDBPath:dbPath];
+            }
+        }
     }
 
 }
@@ -418,16 +458,26 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 - (void)updateSubjectsStatus
 {
     NSMutableDictionary *subject = _questionnaireContent[QuestionnaireQuestions][_selectedCellIndex];
+    QuestionnaireQuestionTypes questionType = [subject[QuestionnaireQuestionType] integerValue];
 
-    // Update collectionView cell status
-    if ([_selectedRowsOfSubject count]) {
-        _cellStatus[_selectedCellIndex] = @(CellStatusAnswered);
-        subject[QuestionnaireQuestionAnswered] = @(1);
+    BOOL answered;
+
+    if (questionType <= QuestionnaireQuestionsTypeMultiple) {
+
+        // Update collectionView cell status
+        answered = [_selectedRowsOfSubject count]? YES: NO;
+    }
+    else if (questionType <= QuestionnaireQuestionsTypeEssay) {
+
+        answered = [_fillTextView.text length] > 0;
     }
     else {
-        _cellStatus[_selectedCellIndex] = @(CellStatusNone);
-        subject[QuestionnaireQuestionAnswered] = @(0);
+
+        answered = [_gridView allQuestionsAnswered];
     }
+
+    _cellStatus[_selectedCellIndex] = answered? @(CellStatusAnswered): @(CellStatusNone);
+    subject[QuestionnaireQuestionAnswered] = answered? @1: @0;
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedCellIndex inSection:0];
     [_subjectCollectionView reloadItemsAtIndexPaths:@[indexPath]];
@@ -484,7 +534,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     NSArray *reloadCollectionCells = @[originalIndex, nextIndex];
 
-    [self saveSelections];
+    [self saveAnswers];
     self.selectedCellIndex = index;
     [self updateSelections];
     [self updateOptionContents];
@@ -500,18 +550,24 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
-        [self saveSelections];
+        [weakSelf saveAnswers];
 
         NSString *fileName = _questionnaireContent[CommonFileName];
         NSString *dbPath = [QuestionnaireUtil questionnaireDBPathOfFile:fileName];
 
+        _questionnaireContent[QuestionnaireFinished] = @1;
+        [QuestionnaireUtil setQuestionnaireSubmitDateWithDBPath:dbPath];
         [QuestionnaireUtil generateUploadJsonFromDBPath:dbPath];
 
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXAM_SCORE_TITLE", nil) message:@"SUCCESS" delegate:weakSelf cancelButtonTitle:NSLocalizedString(@"COMMON_OK", nil) otherButtonTitles:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"UploadQuestionnaire" bundle:nil];
+        UploadQuestionnaireViewController *uploadQuestionnaireVC = (UploadQuestionnaireViewController*)[storyboard instantiateViewControllerWithIdentifier:kUploadQuestionnaireViewController];
+        uploadQuestionnaireVC.questionnaireID = _questionnaireContent[QuestionnaireId];
+        uploadQuestionnaireVC.delegate = weakSelf;
+        uploadQuestionnaireVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 
         dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf presentViewController:uploadQuestionnaireVC animated:YES completion:nil];
             [hud hide:YES];
-            [alert show];
         });
     });
 }
@@ -519,13 +575,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 #pragma mark - UIAction
 
 - (IBAction)back:(id)sender {
-    [self saveSelections];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)backButtonTouched:(id)sender
-{
-    [self saveSelections];
+    [self saveAnswers];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -537,8 +587,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     }
 }
 
-- (IBAction)submitButtonTouched:(id)sender
-{
+- (IBAction)submit:(UIButton *)sender {
     [self submit];
 }
 
@@ -547,10 +596,6 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)submit:(UIButton *)sender {
-    [self submit];
 }
 
 #pragma mark - UITextViewDelegate
@@ -563,6 +608,20 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     else {
         _textViewPlaceholderLabel.hidden = YES;
     }
+    [self updateSubjectsStatus];
+}
+
+#pragma mark - GroupSelectionViewDelegate
+
+- (void)groupViewButtonTouched
+{
+    [self updateSubjectsStatus];
+}
+
+#pragma mark - UploadExamViewControllerProtocol
+
+- (void)backToListView {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -3,7 +3,7 @@
 //  iLearn
 //
 //  Created by Charlie Hung on 2015/8/12.
-//  Copyright (c) 2015年 intFocus. All rights reserved.
+//  Copyright (c) 2015 intFocus. All rights reserved.
 //
 
 #import "GroupSelectionView.h"
@@ -25,6 +25,7 @@ static const CGFloat kMinQuestionHeight = 52.0;
     BOOL isSingleSelect;
 }
 
+@property (strong, nonatomic) NSMutableArray *questionnaires;
 @property (strong, nonatomic) NSMutableArray *options;
 @property (strong, nonatomic) NSMutableArray *questions;
 @property (strong, nonatomic) NSMutableArray *optionHeightCache;
@@ -44,8 +45,10 @@ static const CGFloat kMinQuestionHeight = 52.0;
 }
 */
 
-- (void)setQuestionnaireData:(NSArray*)data
+- (void)setQuestionnaireData:(NSMutableArray*)data
 {
+    self.questionnaires = data;
+
     NSDictionary *firstQuestion = [data firstObject];
 
     if (firstQuestion == nil) {
@@ -359,16 +362,30 @@ static const CGFloat kMinQuestionHeight = 52.0;
     if (newValue) { // Is going to be checked
 
         if (!isSingleSelect || checkedOptions == 0) {
-            _checkedOptionMatrix[questionIndex] = @(checkedOptions | mask);
+            NSInteger checkedStatus = checkedOptions | mask;
+            _checkedOptionMatrix[questionIndex] = @(checkedStatus);
+            _questionnaires[questionIndex][QuestionnaireQuestionAnswered] = checkedStatus > 0? @1: @0;
             button.selected = newValue;
+
+            NSArray *options = _questionnaires[questionIndex][QuestionnaireQuestionOptions];
+            options[optionIndex][QuestionnaireQuestionOptionSelected] = @(newValue);
         }
     }
     else {
-        _checkedOptionMatrix[questionIndex] = @(checkedOptions ^ mask);
+        NSInteger checkedStatus = checkedOptions ^ mask;
+        _checkedOptionMatrix[questionIndex] = @(checkedStatus);
+        _questionnaires[questionIndex][QuestionnaireQuestionAnswered] = checkedStatus > 0? @1: @0;
         button.selected = newValue;
+
+        NSArray *options = _questionnaires[questionIndex][QuestionnaireQuestionOptions];
+        options[optionIndex][QuestionnaireQuestionOptionSelected] = @(newValue);
     }
 
-    [self printCheckedOptionsMatrix];
+    if ([_delegate respondsToSelector:@selector(groupViewButtonTouched)]) {
+        [_delegate performSelector:@selector(groupViewButtonTouched)];
+    }
+
+//    [self printCheckedOptionsMatrix];
 }
 
 - (BOOL)allQuestionsAnswered

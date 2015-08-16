@@ -188,7 +188,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
             if (finished) {
                 // Questinnare is completed
 
-                NSNumber *submitted = content[ExamSubmitted];
+                NSNumber *submitted = content[QuestionnaireSubmitted];
 
                 if ([submitted isEqualToNumber:@1]) {
                     cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_SUBMITTED", nil);

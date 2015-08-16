@@ -28,6 +28,7 @@
 + (void)saveFilledAnswer:(NSString*)filledAnswer withQuestionId:(NSString*)questionId andDBPath:(NSString*)dbPath;
 
 + (void)setQuestionnaireSubmittedwithDBPath:(NSString*)dbPath;
++ (void)setQuestionnaireSubmitDateWithDBPath:(NSString*)dbPath;
 + (void)generateUploadJsonFromDBPath:(NSString*)dbPath;
 
 + (NSArray*)resultFiles;

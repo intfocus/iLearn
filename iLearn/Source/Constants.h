@@ -74,38 +74,26 @@ extern NSString *const QuestionnaireQuestionnaireEnd;
 extern NSString *const QuestionnaireStatus;
 extern NSString *const QuestionnaireCached;
 extern NSString *const QuestionnaireType;
-extern NSString *const QuestionnaireLocation;
-extern NSString *const QuestionnaireAnsType;
 extern NSString *const QuestionnaireSubmitted;
 extern NSString *const QuestionnaireOpened;
-extern NSString *const QuestionnaireUserId;
 extern NSString *const QuestionnaireFinished;
 
 extern NSString *const QuestionnaireQuestions;
 extern NSString *const QuestionnaireQuestionId;
 extern NSString *const QuestionnaireQuestionTitle;
 extern NSString *const QuestionnaireQuestionType;
-extern NSString *const QuestionnaireQuestionNote;
 extern NSString *const QuestionnaireQuestionFilledAnswer;
 extern NSString *const QuestionnaireQuestionSelectedAnswer;
 extern NSString *const QuestionnaireQuestionAnswered;
-
 extern NSString *const QuestionnaireQuestionGroup;
-extern NSString *const QuestionnaireQuestionSelectA;
-extern NSString *const QuestionnaireQuestionSelectB;
-extern NSString *const QuestionnaireQuestionSelectC;
-extern NSString *const QuestionnaireQuestionSelectD;
-extern NSString *const QuestionnaireQuestionSelectE;
-extern NSString *const QuestionnaireQuestionSelectF;
-extern NSString *const QuestionnaireQuestionSelectG;
-extern NSString *const QuestionnaireQuestionSelectH;
-extern NSString *const QuestionnaireQuestionSelectI;
+
+extern NSString *const QuestionnaireResultUserId;
+extern NSString *const QuestionnaireResultId;
+extern NSString *const QuestionnaireResultSubmitDate;
 
 extern NSString *const QuestionnaireQuestionResult;
 extern NSString *const QuestionnaireQuestionResultId;
-extern NSString *const QuestionnaireQuestionResultType;
-extern NSString *const QuestionnaireQuestionResultSelected;
-extern NSString *const QuestionnaireQuestionResultFilled;
+extern NSString *const QuestionnaireQuestionResultAnswer;
 
 extern NSString *const QuestionnaireQuestionOptions;
 extern NSString *const QuestionnaireQuestionOptionId;

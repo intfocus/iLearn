@@ -458,6 +458,10 @@ static const BOOL inDeveloping = YES;
 
                 NSMutableArray *questions = group[QuestionnaireQuestions];
                 [questions addObject:content];
+
+                if (!answered) {
+                    group[QuestionnaireQuestionAnswered] = @0;
+                }
             }
             else {
 
@@ -468,6 +472,7 @@ static const BOOL inDeveloping = YES;
                 NSMutableArray *groupQuestions = [NSMutableArray array];
                 [groupQuestions addObject:content];
                 newGroup[QuestionnaireQuestions] = groupQuestions;
+                newGroup[QuestionnaireQuestionAnswered] = answered? @1: @0;
 
                 groupTable[groupName] = newGroup;
                 [questions addObject:newGroup];
@@ -562,6 +567,28 @@ static const BOOL inDeveloping = YES;
     }
 }
 
++ (void)setQuestionnaireSubmitDateWithDBPath:(NSString*)dbPath
+{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    BOOL isFolder;
+
+    if ([fileMgr fileExistsAtPath:dbPath isDirectory:&isFolder]) {
+        FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+
+        if ([db open]) {
+            long long nowTimeInterval = [[NSDate date] timeIntervalSince1970];
+            [db executeUpdate:@"UPDATE info SET questionnaire_end=?, finished=1", @(nowTimeInterval)];
+            [db close];
+        }
+        else {
+            NSLog(@"Cannot open DB at the path: %@", dbPath);
+        }
+    }
+    else {
+        NSLog(@"No DB file at the path: %@", dbPath);
+    }
+}
+
 + (void)updateSelectedAnswersOfQuestionsInDB:(FMDatabase*)db
 {
     FMResultSet *questions = [db executeQuery:@"SELECT * FROM question"];
@@ -605,13 +632,23 @@ static const BOOL inDeveloping = YES;
 
         if ([db open]) {
 
+            [self updateSelectedAnswersOfQuestionsInDB:db];
+
             NSNumber *questionnaireId = @([db intForQuery:@"SELECT questionnaire_id FROM info"]);
             NSNumber *userId = @([[LicenseUtil userId] integerValue]);
 
             outputPath = [NSString stringWithFormat:@"%@/%@.result", [self questionnaireFolderPathInDocument], questionnaireId];
 
-            jsonDic[QuestionnaireId] = questionnaireId;
-            jsonDic[QuestionnaireUserId] = userId;
+            long questionnaireSubmitDate = [db longForQuery:@"SELECT questionnaire_end FROM info"];
+            NSDate *submitDate = [NSDate dateWithTimeIntervalSince1970:questionnaireSubmitDate];
+
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"YYYY/MM/dd HH:mm:ss"];
+            NSString *submitDateString = [formatter stringFromDate:submitDate];
+
+            jsonDic[QuestionnaireResultId] = questionnaireId;
+            jsonDic[QuestionnaireResultUserId] = userId;
+            jsonDic[QuestionnaireResultSubmitDate] = submitDateString;
 
             NSMutableArray *resultArray = [NSMutableArray array];
 
@@ -622,15 +659,21 @@ static const BOOL inDeveloping = YES;
                 NSMutableDictionary *questionDic = [NSMutableDictionary dictionary];
 
                 NSNumber *questionId = @([questions intForColumn:@"question_id"]);
-                NSNumber *questionType = @([questions intForColumn:@"type"]);
+                QuestionnaireQuestionTypes type = [questions intForColumn:@"type"];
                 NSString *selectedAnswer = [questions stringForColumn:@"selected_answer"];
                 NSString *filledAnswer = [questions stringForColumn:@"filled_answer"];
-                NSArray *selectedAnsArray = [selectedAnswer componentsSeparatedByString:@"+"];
+
+                NSString *answer = @"";
+
+                if (type <= QuestionnaireQuestionsTypeMultiple) {
+                    answer = [selectedAnswer stringByReplacingOccurrencesOfString:@"+" withString:@""];
+                }
+                else {
+                    answer = filledAnswer;
+                }
 
                 questionDic[QuestionnaireQuestionResultId] = questionId;
-                questionDic[QuestionnaireQuestionResultType] = questionType;
-                questionDic[QuestionnaireQuestionResultSelected] = selectedAnsArray;
-                questionDic[QuestionnaireQuestionResultFilled] = filledAnswer;
+                questionDic[QuestionnaireQuestionResultAnswer] = answer;
 
                 [resultArray addObject:questionDic];
             }
