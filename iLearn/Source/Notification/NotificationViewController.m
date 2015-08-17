@@ -209,7 +209,7 @@
             }
             NSString *monthText = [[dateFormatter standaloneMonthSymbols][currentMonthIndex - 1] capitalizedString];
             
-            return [NSString stringWithFormat:@"%@/%ld", monthText, comps.year];
+            return [NSString stringWithFormat:@"%@/%ld", monthText, (long)comps.year];
         };
         
     }

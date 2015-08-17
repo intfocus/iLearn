@@ -8,6 +8,8 @@
 
 #import "ListViewController.h"
 #import "LicenseUtil.h"
+#import "ExamTableViewController.h"
+#import "QuestionnaireTableViewController.h"
 #import "NotificationViewController.h"
 
 #import "ExamTableViewController.h"
@@ -33,6 +35,8 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) ContentViewController<ContentViewProtocal> *contentViewController;
+@property (strong, nonatomic) ExamTableViewController *examTableViewController;
+@property (strong, nonatomic) QuestionnaireTableViewController *questionnaireTableViewController;
 @property (strong, nonatomic) NotificationViewController *notificationViewController;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
@@ -56,11 +60,10 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.    
-    _questionnaireView.hidden = YES;
-    _lectureView.hidden       = NO;
-    _registrationView.hidden  = YES;
-    
+
+    // Do any additional setup after loading the view, typically from a nib.
+    _registrationView.hidden = YES;
+
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
     [_avatarImageView.layer setCornerRadius:width/2.0];
@@ -71,7 +74,16 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _userNameLabel.text = [LicenseUtil userName];
     
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
-    
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main"
+                                                         bundle:nil];
+
+    self.examTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
+    _examTableViewController.listViewController = self;
+
+    self.questionnaireTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"QuestionnaireTableViewController"];
+    _questionnaireTableViewController.listViewController = self;
+
     self.notificationViewController = [[NotificationViewController alloc] init];
     self.notificationViewController.masterViewController = self;
     self.notificationViewController.listViewController = self;
@@ -116,6 +128,9 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
             storyboard = [UIStoryboard storyboardWithName:@"Lecture" bundle:nil];
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"LectureTableViewController"];
             newContentViewController.listViewController = self;
+            break;
+        case ListViewTypeQuestionnaire:
+            newContentViewController = _questionnaireTableViewController;
             break;
         case ListViewTypeNotification:
             newContentViewController = _notificationViewController;

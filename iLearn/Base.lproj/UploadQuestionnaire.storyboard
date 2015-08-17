@@ -5,10 +5,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
-        <!--Upload Exam View Controller-->
+        <!--Upload Questionnaire View Controller-->
         <scene sceneID="y1a-PI-Ab8">
             <objects>
-                <viewController storyboardIdentifier="UploadExamViewController" modalPresentationStyle="overCurrentContext" id="sdy-vE-bbS" customClass="UploadExamViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UploadQuestionnaireViewController" modalPresentationStyle="overCurrentContext" id="sdy-vE-bbS" customClass="UploadQuestionnaireViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DY6-Wd-QnT"/>
                         <viewControllerLayoutGuide type="bottom" id="3hW-bB-M9P"/>
@@ -22,9 +22,9 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YhW-Pc-e6Q">
-                                <rect key="frame" x="242" y="246" width="540" height="276"/>
+                                <rect key="frame" x="242" y="260" width="540" height="249"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提交考试成绩" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1VV-Uf-toi">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提交问卷结果" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1VV-Uf-toi">
                                         <rect key="frame" x="192" y="16" width="156" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -44,10 +44,10 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oGN-vu-v9Z">
-                                        <rect key="frame" x="20" y="63" width="500" height="193"/>
+                                        <rect key="frame" x="20" y="64" width="500" height="165"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CXT-Nt-vyP">
-                                                <rect key="frame" x="190" y="132" width="120" height="40"/>
+                                                <rect key="frame" x="190" y="105" width="120" height="40"/>
                                                 <color key="backgroundColor" red="0.1058823529" green="0.64705882349999999" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="58s-sK-tDq"/>
@@ -64,39 +64,31 @@
                                                     <action selector="actionTouched:" destination="sdy-vE-bbS" eventType="touchUpInside" id="5nq-mS-cHm"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请返回后刷新重试或扫描二维码上传" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yol-Yx-9Ly">
-                                                <rect key="frame" x="12" y="95" width="476" height="29"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请返回后刷新重试" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yol-Yx-9Ly">
+                                                <rect key="frame" x="12" y="68" width="476" height="29"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="成绩上传服务器中..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EOe-f3-Jn4">
-                                                <rect key="frame" x="12" y="67" width="476" height="29"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="问卷上传服务器中..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EOe-f3-Jn4">
+                                                <rect key="frame" x="12" y="40" width="476" height="29"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="得分: 加载中..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mpf-PS-AgA">
-                                                <rect key="frame" x="12" y="22" width="476" height="32"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="EOe-f3-Jn4" firstAttribute="top" secondItem="mpf-PS-AgA" secondAttribute="bottom" constant="14" id="FGg-3o-f5y"/>
                                             <constraint firstItem="CXT-Nt-vyP" firstAttribute="top" secondItem="Yol-Yx-9Ly" secondAttribute="bottom" constant="8" id="H6y-NV-Fmg"/>
                                             <constraint firstItem="Yol-Yx-9Ly" firstAttribute="top" secondItem="oGN-vu-v9Z" secondAttribute="top" constant="30" id="NMU-ke-xWb"/>
                                             <constraint firstAttribute="centerX" secondItem="CXT-Nt-vyP" secondAttribute="centerX" id="QyF-Q8-t6o"/>
                                             <constraint firstItem="EOe-f3-Jn4" firstAttribute="leading" secondItem="oGN-vu-v9Z" secondAttribute="leading" constant="12" id="RMl-rT-WsZ"/>
-                                            <constraint firstItem="mpf-PS-AgA" firstAttribute="top" secondItem="oGN-vu-v9Z" secondAttribute="top" constant="22" id="Rvs-Ku-VxI"/>
                                             <constraint firstItem="Yol-Yx-9Ly" firstAttribute="top" secondItem="EOe-f3-Jn4" secondAttribute="bottom" constant="-1" id="W8T-CL-pdE"/>
                                             <constraint firstAttribute="bottom" secondItem="CXT-Nt-vyP" secondAttribute="bottom" constant="20" id="XUE-Ec-207"/>
                                             <constraint firstItem="Yol-Yx-9Ly" firstAttribute="leading" secondItem="oGN-vu-v9Z" secondAttribute="leading" constant="12" id="bgh-nD-gvm"/>
-                                            <constraint firstItem="mpf-PS-AgA" firstAttribute="leading" secondItem="oGN-vu-v9Z" secondAttribute="leading" constant="12" id="hXH-r9-CuV"/>
                                             <constraint firstAttribute="trailing" secondItem="EOe-f3-Jn4" secondAttribute="trailing" constant="12" id="jUt-BY-s7J"/>
                                             <constraint firstAttribute="trailing" secondItem="Yol-Yx-9Ly" secondAttribute="trailing" constant="12" id="khJ-no-DOe"/>
-                                            <constraint firstAttribute="trailing" secondItem="mpf-PS-AgA" secondAttribute="trailing" constant="12" id="ujQ-Ct-Z6j"/>
+                                            <constraint firstItem="EOe-f3-Jn4" firstAttribute="top" secondItem="oGN-vu-v9Z" secondAttribute="top" constant="40" id="os9-MX-pgE"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -136,7 +128,6 @@
                         <outlet property="closeButton" destination="Wbs-mc-RgO" id="ZOc-E5-mxR"/>
                         <outlet property="contentView" destination="YhW-Pc-e6Q" id="Gf2-vu-ctg"/>
                         <outlet property="resultLabel" destination="Yol-Yx-9Ly" id="F5P-oC-sdS"/>
-                        <outlet property="scoreLabel" destination="mpf-PS-AgA" id="2h7-ST-K4V"/>
                         <outlet property="statusLabel" destination="EOe-f3-Jn4" id="63e-yt-gaE"/>
                     </connections>
                 </viewController>
