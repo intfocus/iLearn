@@ -82,35 +82,35 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 - (void)syncData
 {
-//    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-//    _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
-//
-//    self.unsubmittedQuestionnaireResults = [[QuestionnaireUtil resultFiles] mutableCopy];
-//
-//    [self downloadQuestionnaires];
-//    [self syncQuestionnaireResults];
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+
+    self.unsubmittedQuestionnaireResults = [[QuestionnaireUtil resultFiles] mutableCopy];
+
+    [self downloadQuestionnaires];
+    [self syncQuestionnaireResults];
 }
 
 - (void)syncQuestionnaireResults
 {
-//    NSString *filePath = [_unsubmittedQuestionnaireResults firstObject];
-//
-//    if (filePath) {
-//        [_unsubmittedQuestionnaireResults removeObjectAtIndex:0];
-//        [_connectionManager uploadQuestionnaireResultWithPath:filePath];
-//    }
+    NSString *filePath = [_unsubmittedQuestionnaireResults firstObject];
+
+    if (filePath) {
+        [_unsubmittedQuestionnaireResults removeObjectAtIndex:0];
+        [_connectionManager uploadQuestionnaireResultWithPath:filePath];
+    }
 }
 
 - (void)downloadQuestionnaires
 {
-//    [_connectionManager downloadQuestionnairesForUser:[LicenseUtil userId]];
+    [_connectionManager downloadQuestionnaires];
 }
 
-- (void)downloadQuestionnaireId:(NSString*)examId
+- (void)downloadQuestionnaireId:(NSString*)questionnaireId
 {
-//    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-//    _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
-//    [_connectionManager downloadQuestionnaireWithId:examId];
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    [_connectionManager downloadQuestionnaireWithId:questionnaireId];
 }
 
 - (void)refreshContent
@@ -290,7 +290,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 #pragma mark - ConnectionManagerDelegate
 
-- (void)connectionManagerDidDownloadQuestionnairesForUser:(NSString *)userId withError:(NSError *)error
+- (void)connectionManagerDidDownloadQuestionnairesWithError:(NSError *)error
 {
     [_progressHUD hide:YES];
 
@@ -308,7 +308,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     }
 }
 
-- (void)connectionManagerDidUploadQuestionnaireResult:(NSString *)questionnaireId withError:(NSError *)error
+- (void)connectionManagerDidUploadQuestionnaireResult:(NSString*)questionnaireId withError:(NSError *)error
 {
     if (!error) {
         NSString *dbPath = [QuestionnaireUtil questionnaireDBPathOfFile:questionnaireId];

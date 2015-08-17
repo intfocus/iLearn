@@ -11,7 +11,7 @@
 #import "LicenseUtil.h"
 #import <FMDB.h>
 
-static const BOOL inDeveloping = YES;
+static const BOOL inDeveloping = NO;
 
 @implementation QuestionnaireUtil
 
@@ -555,7 +555,6 @@ static const BOOL inDeveloping = YES;
         if ([db open]) {
 
             [db executeUpdate:@"UPDATE info SET submit=1"];
-
             [db close];
         }
         else {

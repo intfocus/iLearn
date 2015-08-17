@@ -16,7 +16,7 @@
 - (void)connectionManagerDidUploadExamResult:(NSString*)examId withError:(NSError*)error;
 - (void)connectionManagerDidUploadExamScannedResult:(NSString*)result withError:(NSError*)error;
 
-- (void)connectionManagerDidDownloadQuestionnairesForUser:(NSString*)userId withError:(NSError*)error;
+- (void)connectionManagerDidDownloadQuestionnairesWithError:(NSError*)error;
 - (void)connectionManagerDidDownloadQuestionnaire:(NSString*)questionnaireId withError:(NSError*)error;
 - (void)connectionManagerDidUploadQuestionnaireResult:(NSString*)questionnaireId withError:(NSError*)error;
 
@@ -31,8 +31,8 @@
 - (void)uploadExamResultWithPath:(NSString*)resultPath;
 - (void)uploadExamScannedResult:(NSString*)result;
 
-- (void)downloadQuestionnairesForUser:(NSString*)userId;
-- (void)downloadQuestionnaireWithId:(NSString*)examId;
+- (void)downloadQuestionnaires;
+- (void)downloadQuestionnaireWithId:(NSString*)questionnaireId;
 - (void)uploadQuestionnaireResultWithPath:(NSString*)resultPath;
 
 @end

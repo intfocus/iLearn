@@ -48,8 +48,8 @@ NSString *const QuestionnaireResultUserId = @"UserId";
 NSString *const QuestionnaireResultId = @"QuestionId";
 NSString *const QuestionnaireResultSubmitDate = @"SubmitDate";
 
-NSString *const QuestionnaireQuestionResult = @"result";
-NSString *const QuestionnaireQuestionResultId = @"problem_id";
+NSString *const QuestionnaireQuestionResult = @"Results";
+NSString *const QuestionnaireQuestionResultId = @"ProblemId";
 NSString *const QuestionnaireQuestionResultAnswer = @"SubmitAnswer";
 
 NSString *const QuestionnaireQuestionOptions = @"selectors";
