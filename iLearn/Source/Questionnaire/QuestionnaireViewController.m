@@ -43,6 +43,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (weak, nonatomic) IBOutlet UITableView *questionTableView;
 @property (weak, nonatomic) IBOutlet UIView *questionTypeView;
 @property (weak, nonatomic) IBOutlet UILabel *questionTypeLabel;
+@property (weak, nonatomic) IBOutlet UIView *questionSubtypeView;
+@property (weak, nonatomic) IBOutlet UILabel *questionSubtypeLabel;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *answerTableViewHeightConstraint;
 
 @property (strong, nonatomic) NSMutableArray *cellStatus;
@@ -85,6 +88,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     _userNameLabel.text = [LicenseUtil userName];
 
     [_questionTypeView.layer setCornerRadius:5.0];
+    [_questionSubtypeView.layer setCornerRadius:5.0];
 
     [self.submitButton setTitle:NSLocalizedString(@"COMMON_SUBMIT", nil) forState:UIControlStateNormal];
 
@@ -317,6 +321,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         }
         
         _questionTypeLabel.text = typeString;
+        _questionSubtypeView.hidden = YES;
 
         NSString *questionTitle = selectedQuestion[QuestionnaireQuestionTitle];
         NSString *title = [NSString stringWithFormat:@"%d. %@", _selectedCellIndex+1, questionTitle];
@@ -357,23 +362,26 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         NSDictionary *firstSubQuestion = [selectedQuestion[QuestionnaireQuestions] firstObject];
         QuestionnaireQuestionTypes firstSubQuestionType = [firstSubQuestion[QuestionnaireQuestionType] integerValue];
 
-        NSString *typeString;
+        NSString *typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_GROUP", Nil);;
+        NSString *subtypeString = @"";
 
         switch (firstSubQuestionType) {
             case QuestionnaireQuestionsTypeTrueFalse:
-                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_TRUE_FALSE", Nil);
+                subtypeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_TRUE_FALSE", Nil);
                 break;
             case QuestionnaireQuestionsTypeSingle:
-                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_SINGLE", Nil);
+                subtypeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_SINGLE", Nil);
                 break;
             case QuestionnaireQuestionsTypeMultiple:
-                typeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_MULTIPLE", Nil);
+                subtypeString = NSLocalizedString(@"QUETIONNAIRE_TYPE_MULTIPLE", Nil);
                 break;
             default:
                 break;
         }
 
         _questionTypeLabel.text = typeString;
+        _questionSubtypeLabel.text = subtypeString;
+        _questionSubtypeView.hidden = NO;
 
         NSString *questionTitle = selectedQuestion[QuestionnaireQuestionGroup];
         NSString *title = [NSString stringWithFormat:@"%d. %@", _selectedCellIndex+1, questionTitle];

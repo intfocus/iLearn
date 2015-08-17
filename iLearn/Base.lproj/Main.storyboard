@@ -3512,6 +3512,32 @@
                                                             </mask>
                                                         </variation>
                                                     </view>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tTk-gp-HjG" userLabel="Subtype View">
+                                                        <rect key="frame" x="80" y="12" width="52" height="30"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="单选" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmB-Us-hWw">
+                                                                <rect key="frame" x="8" y="4" width="36" height="22"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <color key="backgroundColor" red="0.26274509800000001" green="0.73333333329999995" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="20" id="EpP-IZ-yeo"/>
+                                                            <constraint firstAttribute="width" constant="40" id="bbC-cS-ilf"/>
+                                                            <constraint firstItem="jmB-Us-hWw" firstAttribute="top" secondItem="tTk-gp-HjG" secondAttribute="top" constant="4" id="sWU-9D-2Vt"/>
+                                                            <constraint firstAttribute="trailing" secondItem="jmB-Us-hWw" secondAttribute="trailing" constant="8" id="t3h-Gm-nvq"/>
+                                                            <constraint firstItem="jmB-Us-hWw" firstAttribute="leading" secondItem="tTk-gp-HjG" secondAttribute="leading" constant="8" id="wFs-mf-iO7"/>
+                                                            <constraint firstAttribute="bottom" secondItem="jmB-Us-hWw" secondAttribute="bottom" constant="4" id="yeM-7n-y6O"/>
+                                                        </constraints>
+                                                        <variation key="default">
+                                                            <mask key="constraints">
+                                                                <exclude reference="EpP-IZ-yeo"/>
+                                                                <exclude reference="bbC-cS-ilf"/>
+                                                            </mask>
+                                                        </variation>
+                                                    </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11.  您对本次培训过程中的课程时间安排是否满意？" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="656" translatesAutoresizingMaskIntoConstraints="NO" id="GIc-y0-ZeP">
                                                         <rect key="frame" x="20" y="50" width="656" height="22"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -3633,6 +3659,7 @@
                                                     <constraint firstAttribute="trailing" secondItem="GIc-y0-ZeP" secondAttribute="trailing" constant="12" id="KuE-rh-a0q"/>
                                                     <constraint firstItem="GIc-y0-ZeP" firstAttribute="top" secondItem="MSp-BA-XgJ" secondAttribute="top" constant="50" id="LeV-Dd-dgP"/>
                                                     <constraint firstItem="XBN-gj-Bbq" firstAttribute="trailing" secondItem="dAu-xp-kox" secondAttribute="trailing" id="M6A-iq-EUo"/>
+                                                    <constraint firstItem="tTk-gp-HjG" firstAttribute="leading" secondItem="ZxC-ep-cOD" secondAttribute="trailing" constant="8" id="MJB-WW-EDX"/>
                                                     <constraint firstItem="dAu-xp-kox" firstAttribute="top" secondItem="GIc-y0-ZeP" secondAttribute="bottom" constant="50" id="O18-ah-9JO"/>
                                                     <constraint firstItem="dAu-xp-kox" firstAttribute="leading" secondItem="bnw-mM-aqk" secondAttribute="leading" constant="-10" id="Qdt-BO-Ub4"/>
                                                     <constraint firstItem="XBN-gj-Bbq" firstAttribute="top" secondItem="dAu-xp-kox" secondAttribute="top" id="THL-YB-WzF"/>
@@ -3643,8 +3670,10 @@
                                                     <constraint firstAttribute="trailing" secondItem="lo7-dp-bZj" secondAttribute="trailing" constant="20" id="cGw-Qg-bfd"/>
                                                     <constraint firstItem="lo7-dp-bZj" firstAttribute="leading" secondItem="MSp-BA-XgJ" secondAttribute="leading" constant="20" id="cP4-O9-tNR"/>
                                                     <constraint firstItem="dAu-xp-kox" firstAttribute="top" secondItem="bnw-mM-aqk" secondAttribute="top" constant="-10" id="dYU-ty-4JH"/>
+                                                    <constraint firstItem="GIc-y0-ZeP" firstAttribute="top" secondItem="tTk-gp-HjG" secondAttribute="bottom" constant="8" id="eMz-vQ-WSE"/>
                                                     <constraint firstItem="XBN-gj-Bbq" firstAttribute="top" secondItem="GIc-y0-ZeP" secondAttribute="bottom" constant="16" id="f4h-AY-UWI"/>
                                                     <constraint firstAttribute="trailing" secondItem="lo7-dp-bZj" secondAttribute="trailing" constant="105" id="fVb-vJ-iOp"/>
+                                                    <constraint firstItem="tTk-gp-HjG" firstAttribute="top" secondItem="MSp-BA-XgJ" secondAttribute="top" constant="12" id="fvz-mK-q78"/>
                                                     <constraint firstAttribute="trailing" secondItem="XBN-gj-Bbq" secondAttribute="trailing" constant="10" id="gt2-O9-bfT"/>
                                                     <constraint firstItem="ZxC-ep-cOD" firstAttribute="top" secondItem="MSp-BA-XgJ" secondAttribute="top" constant="12" id="hu8-0k-YBe"/>
                                                     <constraint firstItem="GIc-y0-ZeP" firstAttribute="top" secondItem="MSp-BA-XgJ" secondAttribute="top" constant="34" id="lCi-Jc-PnX"/>
@@ -3754,6 +3783,8 @@
                         <outlet property="fillTextView" destination="dAu-xp-kox" id="RDV-Jr-aY7"/>
                         <outlet property="leftStatusLabel" destination="1wS-7q-YRz" id="cPh-YL-hdJ"/>
                         <outlet property="nextButton" destination="lo7-dp-bZj" id="3ks-Ox-3SL"/>
+                        <outlet property="questionSubtypeLabel" destination="jmB-Us-hWw" id="b77-gl-vBB"/>
+                        <outlet property="questionSubtypeView" destination="tTk-gp-HjG" id="wN8-fo-t4T"/>
                         <outlet property="questionTableView" destination="XBN-gj-Bbq" id="xn1-gK-OTp"/>
                         <outlet property="questionTitleLabel" destination="GIc-y0-ZeP" id="lsA-lx-wj7"/>
                         <outlet property="questionTypeLabel" destination="9WM-lO-u16" id="pMh-Jb-ZRX"/>
