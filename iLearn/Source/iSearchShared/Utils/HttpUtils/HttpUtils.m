@@ -94,8 +94,7 @@
     if(!isOK) {
         [httpResponse.errors addObject:(NSString *)psd([error localizedDescription], @"http get未知错误")];
     }
-    
-    
+
     return httpResponse;
 }
 

@@ -10,8 +10,9 @@
 
 @implementation TrainCourse
 
-- (TrainCourse *)initData:(NSDictionary *)dict {
+- (TrainCourse *)initData:(NSDictionary *)dict type:(NSString *)typeName {
     if(self = [super init]) {
+        _type           = typeName;
         _ID             = dict[@"Id"];
         _name           = dict[@"Name"];
         _lecturer       = dict[@"SpeakerName"];
@@ -30,10 +31,60 @@
     return self;
 }
 
-+ (NSArray *)loadData:(NSArray *)dataList {
+- (BOOL)isCourse {
+    return [self.type isEqualToString:@"course"];
+}
+- (BOOL)isSignin {
+    return [self.type isEqualToString:@"signin"];
+}
+
+- (NSString *)actionButtonLabel {
+    NSString *label = @"TODO";
+    
+    if([self isCourse]) {
+        label = @"我要报名";
+    }
+    else {
+        label = @"签到管理";
+    }
+    
+    return label;
+}
+- (NSString *)statusName {
+    NSString *status = @"TODO";
+    
+    if([self isCourse]) {
+        if(!self.traineesStatus || [self.traineesStatus isEqual:[NSNull null]]) {
+            status = @"可接受报名";
+        }
+        else if([self.traineesStatus intValue] < [self.approreLevel intValue]) {
+            status = @"审核中...";
+        }
+        else if([self.traineesStatus intValue] == [self.approreLevel intValue]) {
+            status = @"报名成功";
+        }
+        else {
+            status =  @"unkown error";
+        }
+    }
+    else {
+        status = @"未开始";
+    }
+    
+    return status;
+}
+
++ (NSArray *)loadCourseData:(NSArray *)dataList {
+    return [self loadData:dataList type:@"course"];
+}
++ (NSArray *)loadSigninData:(NSArray *)dataList {
+    return [self loadData:dataList type:@"signin"];
+}
+
++ (NSArray *)loadData:(NSArray *)dataList type:(NSString *)typeName {
     NSMutableArray *mutableArray = [NSMutableArray array];
     for(NSDictionary *dict in dataList) {
-        [mutableArray addObject:[[TrainCourse alloc] initData:dict]];
+        [mutableArray addObject:[[TrainCourse alloc] initData:dict type:typeName]];
     }
     
     return [NSArray arrayWithArray:mutableArray];

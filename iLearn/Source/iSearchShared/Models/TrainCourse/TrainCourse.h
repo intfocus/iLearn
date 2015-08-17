@@ -24,8 +24,16 @@
 @property (nonatomic, strong) NSString *approreLevel;
 @property (nonatomic, strong) NSString *traineesStatus;
 
+@property (nonatomic, strong) NSString *type;
+
 // instance methods
-- (TrainCourse *)initData:(NSDictionary *)dict;
++ (NSArray *)loadCourseData:(NSArray *)dataList;
++ (NSArray *)loadSigninData:(NSArray *)dataList;
+
++ (NSArray *)loadData:(NSArray *)dataList type:(NSString *)typeName;
 - (NSString *)desc;
-+ (NSArray *)loadData:(NSArray *)dataList;
+- (BOOL)isCourse;
+- (BOOL)isSignin;
+- (NSString *)statusName;
+- (NSString *)actionButtonLabel;
 @end

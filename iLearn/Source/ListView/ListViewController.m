@@ -99,17 +99,20 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)switchContentViewToViewController
 {
     ContentViewController<ContentViewProtocal> *newContentViewController;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboard;
     switch (_listType) {
         case ListViewTypeExam: {
+            storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
             newContentViewController.listViewController = self;
+            
             break;
         }
         case ListViewTypeLecture: {
             storyboard = [UIStoryboard storyboardWithName:@"Lecture" bundle:nil];
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"LectureTableViewController"];
             newContentViewController.listViewController = self;
+            
             break;
         }
         case ListViewTypeNotification: {
@@ -117,12 +120,28 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
             notificationViewController.masterViewController = self;
             notificationViewController.listViewController = self;
             newContentViewController = notificationViewController;
+            
             break;
         }
         case ListViewTypeRegistration: {
             storyboard = [UIStoryboard storyboardWithName:@"Registration" bundle:nil];
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"RegistrationTableViewController"];
             newContentViewController.listViewController = self;
+            
+            break;
+        }
+        case ListViewTypeSigninAdmin: {
+            storyboard = [UIStoryboard storyboardWithName:@"Registration" bundle:nil];
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"SigninAdminTableViewController"];
+            newContentViewController.listViewController = self;
+            
+            break;
+        }
+        case ListViewTypeSigninUser: {
+            storyboard = [UIStoryboard storyboardWithName:@"Registration" bundle:nil];
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"SigninUserTableViewController"];
+            newContentViewController.listViewController = self;
+            
             break;
         }
         default:
@@ -161,27 +180,63 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _courseNameLabel.hidden = YES;
     
     switch (_listType) {
-        case ListViewTypeExam:
+        case ListViewTypeExam: {
             self.titleLabel.text = NSLocalizedString(@"LIST_EXAM", nil);
             _syncButton.hidden = NO;
             _scanButton.hidden = NO;
+            
             break;
-        case ListViewTypeLecture:
+        }
+        case ListViewTypeLecture: {
             self.titleLabel.text = NSLocalizedString(@"LIST_LECTURE", nil);
             _syncButton.hidden = NO;
+            
             break;
-        case ListViewTypeQuestionnaire:
+        }
+        case ListViewTypeQuestionnaire: {
             self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
             _syncButton.hidden = NO;
+            
             break;
-        case ListViewTypeNotification:
+        }
+        case ListViewTypeNotification: {
             self.titleLabel.text = NSLocalizedString(@"LIST_NOTIFICATION", nil);
             _syncButton.hidden = NO;
+            
             break;
-        default:
+        }
+        case ListViewTypeRegistration: {
+            self.titleLabel.hidden = NO;
+            self.titleLabel.text = @"培训报名";
+            break;
+        }
+        case ListViewTypeSigninAdmin: {
+            self.syncButton.hidden      = NO;
+            self.backButton.hidden      = NO;
+            self.titleLabel.hidden      = YES;
+            self.courseNameLabel.text   = @"TODO";
+            self.courseNameLabel.hidden = NO;
+            self.scanButton.hidden      = NO;
+            [self.scanButton setTitle:@"创建签到" forState:UIControlStateNormal];
+            
+            break;
+        }
+        case ListViewTypeSigninUser: {
+            self.syncButton.hidden      = NO;
+            self.backButton.hidden      = NO;
+            self.titleLabel.hidden      = YES;
+            self.courseNameLabel.text   = @"TODO";
+            self.courseNameLabel.hidden = NO;
+            self.scanButton.hidden      = NO;
+            [self.scanButton setTitle:@"过滤" forState:UIControlStateNormal];
+            
+            break;
+        }
+        default: {
             self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
             _syncButton.hidden = NO;
             break;
+        }
     }
 }
 

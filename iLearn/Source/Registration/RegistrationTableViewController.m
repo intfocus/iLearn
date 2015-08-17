@@ -23,7 +23,6 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
 
 @interface RegistrationTableViewController()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) ConnectionManager *connectionManager;
 
 @property (strong, nonatomic) NSArray *dataList;
 
@@ -42,9 +41,6 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     _dataList = [NSArray array];
-    
-    self.connectionManager = [[ConnectionManager alloc] init];
-    _connectionManager.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,7 +71,8 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
 
     TrainCourse *trainCourse = [self.dataList objectAtIndex:indexPath.row];
     cell.titleLabel.text        = trainCourse.name;
-    cell.statusLabel.text       = @"TODO";
+    cell.statusLabel.text       = trainCourse.statusName;
+    [cell.actionButton setTitle:trainCourse.actionButtonLabel forState:UIControlStateNormal];
     
     return cell;
 }
@@ -106,7 +103,15 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
 }
 
 - (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell {
-
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    TrainCourse *trainCourse = self.dataList[indexPath.row];
+    if([trainCourse isSignin]) {
+        self.listViewController.listType = ListViewTypeSigninAdmin;
+        [self.listViewController refreshContentView];
+    }
+    else {
+        [DataHelper trainSignup:trainCourse.ID];
+    }
 }
 
 - (IBAction)actionBack:(id)sender {
@@ -137,7 +142,7 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
 }
 
 - (void)syncData {
-    _dataList = [DataHelper trainCourses:[HttpUtils isNetworkAvailable]];
+    _dataList = [DataHelper trainCourses:YES];
     [self.tableView reloadData];
 }
 

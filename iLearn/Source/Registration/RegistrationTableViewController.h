@@ -7,12 +7,11 @@
 //
 
 #import "ContentViewController.h"
-#import "ConnectionManager.h"
-#import "ExamTabelViewCell.h"
 #import "ContentViewController.h"
+#import "ExamTabelViewCell.h"
 /**
  *  培训报名
  */
-@interface RegistrationTableViewController : ContentViewController<ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate, ConnectionManagerDelegate>
+@interface RegistrationTableViewController : ContentViewController<ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate>
 
 @end

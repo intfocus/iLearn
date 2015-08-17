@@ -66,4 +66,12 @@
  *  @return 培训报名列表
  */
 + (HttpResponse *)trainCourses:(NSString *)UID;
+/**
+ *  报名
+ *
+ *  @param params 课程ID与UserId
+ *
+ *  @return who care
+ */
++ (HttpResponse *)trainSignup:(NSMutableDictionary *)params;
 @end

@@ -21,7 +21,8 @@
         _coursePackageContent = [self concate:COURSE_PACKAGE_CONTENT_URL_PATH];
         _downloadCourse       = [self concate:COURSE_DOWNLOAD_URL_PATH];
 
-        _trainCourses         = @"http://tsa-china.takeda.com.cn/uatui/api/Trainings_Api.php";
+        _trainCourses         = @"http://tsa-china.takeda.com.cn/uat/api/Trainings_Api.php";
+        _trainSignup          = @"http://tsa-china.takeda.com.cn/uat/api/Trainee_Api.php";
     }
     return self;
 }

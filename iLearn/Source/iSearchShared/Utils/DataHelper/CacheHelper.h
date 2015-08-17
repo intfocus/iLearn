@@ -85,4 +85,21 @@
  *  @return 报名课程列表
  */
 + (NSMutableDictionary *)trainCourses:(NSString *)UID;
+
+/**
+ *  某课程的签到列表
+ *
+ *  @param CID 课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSMutableDictionary *)signins:(NSString *)CID;
+/**
+ *  某课程的签到学员列表
+ *
+ *  @param CID 课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSMutableDictionary *)signinUsers:(NSString *)CID;
 @end

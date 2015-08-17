@@ -56,6 +56,12 @@
 		C4A4FDC41B663B1700741BF3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */; };
 		C4A579EB1B62182D0093C98A /* UploadExamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */; };
 		C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */; };
+		C4BD421E1B817A6D00083F11 /* SigninAdminTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BD421D1B817A6D00083F11 /* SigninAdminTableViewController.m */; };
+		C4BD42211B817C1E00083F11 /* SigninAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BD42201B817C1E00083F11 /* SigninAdminTableViewCell.m */; };
+		C4BD42241B81902C00083F11 /* SigninUserTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BD42231B81902C00083F11 /* SigninUserTableViewController.m */; };
+		C4BD42271B81904100083F11 /* SigninUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BD42261B81904100083F11 /* SigninUserTableViewCell.m */; };
+		C4BD422A1B81CA2B00083F11 /* SigninFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BD42291B81CA2B00083F11 /* SigninFormViewController.m */; };
+		C4BD422C1B81E6D300083F11 /* postTrainee.rb in Resources */ = {isa = PBXBuildFile; fileRef = C4BD422B1B81E6D300083F11 /* postTrainee.rb */; };
 		C4BFC0951B7DCE4900C1DBEA /* RegistrationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BFC0941B7DCE4900C1DBEA /* RegistrationTableViewController.m */; };
 		C4BFC0981B7DCEAE00C1DBEA /* RegistrationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BFC0971B7DCEAE00C1DBEA /* RegistrationTableViewCell.m */; };
 		C4BFC09A1B7DCEE100C1DBEA /* Registration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4BFC0991B7DCEE100C1DBEA /* Registration.storyboard */; };
@@ -198,6 +204,17 @@
 		C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadExamViewController.xib; sourceTree = "<group>"; };
 		C4A579ED1B622C3C0093C98A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UploadExam.storyboard; sourceTree = "<group>"; };
+		C4BD421C1B817A6D00083F11 /* SigninAdminTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SigninAdminTableViewController.h; path = iLearn/Source/Registration/SigninAdminTableViewController.h; sourceTree = SOURCE_ROOT; };
+		C4BD421D1B817A6D00083F11 /* SigninAdminTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SigninAdminTableViewController.m; path = iLearn/Source/Registration/SigninAdminTableViewController.m; sourceTree = SOURCE_ROOT; };
+		C4BD421F1B817C1E00083F11 /* SigninAdminTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SigninAdminTableViewCell.h; path = iLearn/Source/Registration/SigninAdminTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		C4BD42201B817C1E00083F11 /* SigninAdminTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SigninAdminTableViewCell.m; path = iLearn/Source/Registration/SigninAdminTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		C4BD42221B81902C00083F11 /* SigninUserTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SigninUserTableViewController.h; path = iLearn/Source/Registration/SigninUserTableViewController.h; sourceTree = SOURCE_ROOT; };
+		C4BD42231B81902C00083F11 /* SigninUserTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SigninUserTableViewController.m; path = iLearn/Source/Registration/SigninUserTableViewController.m; sourceTree = SOURCE_ROOT; };
+		C4BD42251B81904100083F11 /* SigninUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SigninUserTableViewCell.h; path = iLearn/Source/Registration/SigninUserTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		C4BD42261B81904100083F11 /* SigninUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SigninUserTableViewCell.m; path = iLearn/Source/Registration/SigninUserTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		C4BD42281B81CA2B00083F11 /* SigninFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SigninFormViewController.h; path = iLearn/Source/Registration/SigninFormViewController.h; sourceTree = SOURCE_ROOT; };
+		C4BD42291B81CA2B00083F11 /* SigninFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SigninFormViewController.m; path = iLearn/Source/Registration/SigninFormViewController.m; sourceTree = SOURCE_ROOT; };
+		C4BD422B1B81E6D300083F11 /* postTrainee.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = postTrainee.rb; sourceTree = "<group>"; };
 		C4BFC0931B7DCE4900C1DBEA /* RegistrationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegistrationTableViewController.h; path = iLearn/Source/Registration/RegistrationTableViewController.h; sourceTree = SOURCE_ROOT; };
 		C4BFC0941B7DCE4900C1DBEA /* RegistrationTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegistrationTableViewController.m; path = iLearn/Source/Registration/RegistrationTableViewController.m; sourceTree = SOURCE_ROOT; };
 		C4BFC0961B7DCEAE00C1DBEA /* RegistrationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegistrationTableViewCell.h; path = iLearn/Source/Registration/RegistrationTableViewCell.h; sourceTree = SOURCE_ROOT; };
@@ -605,6 +622,16 @@
 				C4BFC0941B7DCE4900C1DBEA /* RegistrationTableViewController.m */,
 				C4BFC0961B7DCEAE00C1DBEA /* RegistrationTableViewCell.h */,
 				C4BFC0971B7DCEAE00C1DBEA /* RegistrationTableViewCell.m */,
+				C4BD421C1B817A6D00083F11 /* SigninAdminTableViewController.h */,
+				C4BD421D1B817A6D00083F11 /* SigninAdminTableViewController.m */,
+				C4BD421F1B817C1E00083F11 /* SigninAdminTableViewCell.h */,
+				C4BD42201B817C1E00083F11 /* SigninAdminTableViewCell.m */,
+				C4BD42221B81902C00083F11 /* SigninUserTableViewController.h */,
+				C4BD42231B81902C00083F11 /* SigninUserTableViewController.m */,
+				C4BD42251B81904100083F11 /* SigninUserTableViewCell.h */,
+				C4BD42261B81904100083F11 /* SigninUserTableViewCell.m */,
+				C4BD42281B81CA2B00083F11 /* SigninFormViewController.h */,
+				C4BD42291B81CA2B00083F11 /* SigninFormViewController.m */,
 			);
 			name = Registration;
 			path = Source/registration;
@@ -889,6 +916,7 @@
 				DCA7880E1B038ED00049098C /* iLearnTests.m */,
 				DCA7880C1B038ED00049098C /* Supporting Files */,
 				C49ACF5A1B6A04E600EB7E40 /* testDataHelper.m */,
+				C4BD422B1B81E6D300083F11 /* postTrainee.rb */,
 			);
 			path = iLearnTests;
 			sourceTree = "<group>";
@@ -1018,6 +1046,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4BD422C1B81E6D300083F11 /* postTrainee.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1069,10 +1098,12 @@
 				C49731D11B678A210014048B /* Version.m in Sources */,
 				CBE0C8301B072483000EA3A7 /* PersonalInfoViewController.m in Sources */,
 				C497318C1B67889B0014048B /* NotificationCell.m in Sources */,
+				C4BD422A1B81CA2B00083F11 /* SigninFormViewController.m in Sources */,
 				CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */,
 				C4A4FDB81B66292000741BF3 /* SettingViewController.m in Sources */,
 				DCA787F51B038ED00049098C /* main.m in Sources */,
 				CBE0C8501B072DC2000EA3A7 /* split.c in Sources */,
+				C4BD42211B817C1E00083F11 /* SigninAdminTableViewCell.m in Sources */,
 				CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */,
 				C49731B71B6789C40014048B /* DateUtils.m in Sources */,
 				CB3512281B47F06500025B5B /* ExamViewController.m in Sources */,
@@ -1080,6 +1111,7 @@
 				C4BFC0981B7DCEAE00C1DBEA /* RegistrationTableViewCell.m in Sources */,
 				CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */,
 				CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */,
+				C4BD42241B81902C00083F11 /* SigninUserTableViewController.m in Sources */,
 				CBE0C84E1B072DC2000EA3A7 /* qrspec.c in Sources */,
 				C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */,
 				C49731B21B6789C40014048B /* DatabaseUtils.m in Sources */,
@@ -1099,6 +1131,7 @@
 				CBC976921B3C6F0A006C104F /* ExamTabelViewCell.m in Sources */,
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
 				C4BFC0951B7DCE4900C1DBEA /* RegistrationTableViewController.m in Sources */,
+				C4BD421E1B817A6D00083F11 /* SigninAdminTableViewController.m in Sources */,
 				C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
 				C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */,
@@ -1122,6 +1155,7 @@
 				C49731D01B678A210014048B /* Version+Self.m in Sources */,
 				C49731AE1B6789C40014048B /* HttpUtils.m in Sources */,
 				C4BFC09E1B7DE69700C1DBEA /* TrainCourse.m in Sources */,
+				C4BD42271B81904100083F11 /* SigninUserTableViewCell.m in Sources */,
 				C48C09B61B4D258500DD4562 /* ViewUpgrade.m in Sources */,
 				CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */,
 				C4A4FDC01B66293B00741BF3 /* SettingDataInfo.m in Sources */,

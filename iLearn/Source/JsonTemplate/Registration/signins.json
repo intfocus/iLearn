@@ -1,0 +1,37 @@
+{
+    "status": 1,
+    "count": 1,
+    "data": [
+             {
+             "UID": "1430",
+             "Name": "hello world1",
+             "UserName": "RBUtst1",
+             "EmployeeID": "E99658603",
+             },
+             {
+             "UID": "1431",
+             "Name": "hello world2",
+             "UserName": "RBUtst2",
+             "EmployeeID": "E99658603",
+             },
+             {
+             "UID": "1432",
+             "Name": "hello world3",
+             "UserName": "RBUtst3",
+             "EmployeeID": "E99658603",
+             },
+             {
+             "UID": "1433",
+             "Name": "hello world4",
+             "UserName": "RBUtst4",
+             "EmployeeID": "E99658603",
+             },
+             {
+             "UID": "1434",
+             "Name": "hello world5",
+             "UserName": "RBUtst5",
+             "EmployeeID": "E99658603",
+             }
+             ],
+    "result": ""
+}

@@ -70,6 +70,33 @@
  *  @return 培训班列表
  */
 + (NSArray *)trainCourses:(BOOL)isNetworkAvaliable;
+
+/**
+ *  某课程的签到列表
+ *
+ *  @param isNetworkAvailabel 网络环境
+ *  @param CID                课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSArray *)signins:(BOOL)isNetworkAvailabel cid:(NSString *)CID;
+
+/**
+ *  某课程的签到学员列表
+ *
+ *  @param isNetworkAvailabel 网络环境
+ *  @param CID                课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSArray *)signinUsers:(BOOL)isNetworkAvailabel cid:(NSString *)CID;
+
+/**
+ *  报名POST
+ *
+ *  @param TID 课程ID
+ */
++ (void)trainSignup:(NSString *)TID;
 @end
 
 #endif

@@ -93,9 +93,9 @@
     // 跳转SSO界面，返回后，再登录
     self.popupText = @"跳转至SSO";
     
-    if([HttpUtils isNetworkAvailable]) {
-        [self checkAppVersionUpgrade];
-    }
+//    if([HttpUtils isNetworkAvailable]) {
+//        [self checkAppVersionUpgrade];
+//    }
 }
 
 #pragma mark memory management

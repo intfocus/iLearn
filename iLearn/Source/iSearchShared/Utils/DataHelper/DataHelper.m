@@ -191,8 +191,52 @@
     else {
         trainCourses = [CacheHelper trainCourses:uid];
     }
+    NSArray *courses = [TrainCourse loadCourseData:trainCourses[@"trainingsdata"]];
+    NSArray *signins = [TrainCourse loadSigninData:trainCourses[@"tmanagerdata"]];
     
-    return [TrainCourse loadData:trainCourses[@"trainingsdata"]];
+    return [courses arrayByAddingObjectsFromArray:signins];
+}
+
+/**
+ *  某课程的签到列表
+ *
+ *  @param isNetworkAvailabel 网络环境
+ *  @param CID                课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSArray *)signins:(BOOL)isNetworkAvailabel cid:(NSString *)CID {
+    NSMutableDictionary *signins = [NSMutableDictionary dictionary];
+    signins = [CacheHelper signins:CID];
+    
+    return signins[@"data"];
+}
+
+/**
+ *  某课程的签到学员列表
+ *
+ *  @param isNetworkAvailabel 网络环境
+ *  @param CID                课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSArray *)signinUsers:(BOOL)isNetworkAvailabel cid:(NSString *)CID {
+    NSMutableDictionary *signins = [NSMutableDictionary dictionary];
+    signins = [CacheHelper signinUsers:CID];
+    
+    return signins[@"data"];
+}
+
+/**
+ *  报名POST
+ *
+ *  @param TID 课程ID
+ */
++ (void)trainSignup:(NSString *)TID {
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"UserId"]     = [User userID];
+    param[@"TrainingId"] = TID;
+    HttpResponse *response = [ApiHelper trainSignup:param];
 }
 
 #pragma mark - assistant methods

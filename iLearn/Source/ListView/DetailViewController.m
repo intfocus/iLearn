@@ -53,8 +53,8 @@
 }
 - (IBAction)removeTouched:(id)sender {
     [self dismissViewControllerAnimated:NO completion:^{
-        if ([self.delegate respondsToSelector:@selector(removeCourse)]) {
-            [self.delegate removeCourse];
+        if ([self.delegate respondsToSelector:@selector(actionRemove)]) {
+            [self.delegate actionRemove];
         }
     }];
 }

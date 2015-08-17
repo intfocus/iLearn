@@ -121,6 +121,7 @@
  */
 + (NSMutableDictionary *)trainCourses:(NSString *)UID {
     NSString *cachePath = [self cachePath:@"train" Type:@"course" ID:UID];
+   //cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/courses.json"];
     
     NSMutableDictionary *trainCourses = [NSMutableDictionary dictionary];
     if([FileUtils checkFileExist:cachePath isDir:NO]) {
@@ -128,6 +129,44 @@
     }
     
     return trainCourses;
+}
+
+/**
+ *  某课程的签到列表
+ *
+ *  @param CID 课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSMutableDictionary *)signins:(NSString *)CID {
+    NSString *cachePath = [self cachePath:@"train" Type:@"course" ID:CID];
+    cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/signins.json"];
+    
+    NSMutableDictionary *singins = [NSMutableDictionary dictionary];
+    if([FileUtils checkFileExist:cachePath isDir:NO]) {
+        singins = [FileUtils readConfigFile:cachePath];
+    }
+    
+    return singins;
+}
+
+/**
+ *  某课程的签到学员列表
+ *
+ *  @param CID 课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSMutableDictionary *)signinUsers:(NSString *)CID {
+    NSString *cachePath = [self cachePath:@"train" Type:@"course" ID:CID];
+    cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/users.json"];
+    
+    NSMutableDictionary *singins = [NSMutableDictionary dictionary];
+    if([FileUtils checkFileExist:cachePath isDir:NO]) {
+        singins = [FileUtils readConfigFile:cachePath];
+    }
+    
+    return singins;
 }
 
 

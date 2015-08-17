@@ -22,6 +22,8 @@ typedef NS_ENUM(NSUInteger, ListViewType) {
     ListViewTypeExam,
     ListViewTypeQuestionnaire,
     ListViewTypeRegistration,
+    ListViewTypeSigninAdmin,
+    ListViewTypeSigninUser,
     ListViewTypeLecture,
     ListViewTypeNotification
 };

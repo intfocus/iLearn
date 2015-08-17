@@ -84,4 +84,15 @@
     return [HttpUtils httpGet:urlString];
 }
 
+/**
+ *  报名
+ *
+ *  @param params 课程ID与UserId
+ *
+ *  @return who care
+ */
++ (HttpResponse *)trainSignup:(NSMutableDictionary *)params {
+
+    return [HttpUtils httpPost:[[[Url alloc] init] trainSignup] Params:params];
+}
 @end

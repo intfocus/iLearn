@@ -103,6 +103,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     LectureTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCellIdentifier];
     cell.delegate = self;
 
+    cell.expirationDateLabel.hidden = YES;
     cell.statusTitleLabel.text = @"类型: ";
     cell.scoreTitleLabel.text  = @"状态: ";
     
@@ -397,7 +398,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 
 - (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error {
-    
     [_progressHUD hide:YES];
     
     if (!error) {
@@ -488,7 +488,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     [self enterExamPageForContent:[NSDictionary dictionaryWithDictionary:content]];
 }
 
-- (void)removeCourse {
+- (void)actionRemove {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
     CoursePackageDetail *course = (CoursePackageDetail*)[self.dataList objectAtIndex:indexPath.row];
     
