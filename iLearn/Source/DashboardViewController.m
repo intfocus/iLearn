@@ -81,11 +81,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    _registrationButton.enabled  = NO;
-    _lectureButton.enabled       = YES;
-    _questionnaireButton.enabled = NO;
-    _settingsButton.enabled      = YES;
-    
+    _registrationButton.enabled = NO;
 
     // Setup label contents
     self.title = NSLocalizedString(@"DASHBOARD_TITLE", nil);
@@ -245,8 +241,6 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 #pragma mark - IBActions
 
 - (IBAction)settingsTouched:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    // [self performSegueWithIdentifier:kShowSettingsSegue sender:nil];
 
     SettingViewController *settingVC = [[SettingViewController alloc] init];
     settingVC.delegate = self;
@@ -260,32 +254,26 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 }
 
 - (IBAction)registrationTouced:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self performSegueWithIdentifier:kShowRegistrationSegue sender:nil];
 }
 
 - (IBAction)lectureTouched:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self performSegueWithIdentifier:kShowLectureSegue sender:nil];
 }
 
 - (IBAction)notificationTouched:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self performSegueWithIdentifier:kShowNotificationSegue sender:nil];
 }
 
 - (IBAction)questionnaireTouched:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self performSegueWithIdentifier:kShowQuestionnaireSegue sender:nil];
 }
 
 - (IBAction)examTouched:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self performSegueWithIdentifier:kShowExamSegue sender:nil];
 }
 
 - (IBAction)qrCodeTouched:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self performSegueWithIdentifier:kShowQRCodeSegue sender:nil];
 }
 
