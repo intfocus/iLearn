@@ -33,7 +33,6 @@
     if(self.navigationItem) {
         self.navigationItem.title = @"版本更新";
     }
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {

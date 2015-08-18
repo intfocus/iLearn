@@ -75,11 +75,11 @@
  *  某课程的签到列表
  *
  *  @param isNetworkAvailabel 网络环境
- *  @param CID                课程ID
+ *  @param tid                课程ID
  *
  *  @return 课程的签到列表
  */
-+ (NSArray *)signins:(BOOL)isNetworkAvailabel cid:(NSString *)CID;
++ (NSArray *)trainSingins:(BOOL)isNetworkAvailable tid:(NSString *)tid;
 
 /**
  *  某课程的签到学员列表

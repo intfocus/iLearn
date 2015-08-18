@@ -106,11 +106,19 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     TrainCourse *trainCourse = self.dataList[indexPath.row];
     if([trainCourse isSignin]) {
+        [FileUtils shareData:trainCourse.originalDict];
+        
         self.listViewController.listType = ListViewTypeSigninAdmin;
         [self.listViewController refreshContentView];
     }
     else {
-        [DataHelper trainSignup:trainCourse.ID];
+        if([trainCourse.statusName isEqualToString:@"可接受报名"]) {
+            [DataHelper trainSignup:trainCourse.ID];
+            [self syncData];
+        }
+        else {
+            [ViewUtils showPopupView:self.listViewController.view Info:@"报名审核中，请耐心等候."];
+        }
     }
 }
 
@@ -142,8 +150,13 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
 }
 
 - (void)syncData {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    
     _dataList = [DataHelper trainCourses:YES];
     [self.tableView reloadData];
+    
+    [self.progressHUD hide:YES];
 }
 
 

@@ -87,13 +87,20 @@
 + (NSMutableDictionary *)trainCourses:(NSString *)UID;
 
 /**
+ *  某培训班的签到列表写入缓存
+ *
+ *  @param trainSignins 某培训班的签到列表
+ *  @param tid          某培训班的ID
+ */
++ (void)writeTrainSignins:(NSMutableDictionary *)trainSignins tid:(NSString *)tid;
+/**
  *  某课程的签到列表
  *
  *  @param CID 课程ID
  *
  *  @return 课程的签到列表
  */
-+ (NSMutableDictionary *)signins:(NSString *)CID;
++ (NSMutableDictionary *)trainSignins:(NSString *)tid;
 /**
  *  某课程的签到学员列表
  *

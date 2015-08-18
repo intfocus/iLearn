@@ -74,4 +74,28 @@
  *  @return who care
  */
 + (HttpResponse *)trainSignup:(NSMutableDictionary *)params;
+/**
+ *  培训班的签到列表
+ *
+ *  @param tid 培训片ID
+ *
+ *  @return 培训班的签到列表
+ */
++ (HttpResponse *)trainSignins:(NSString *)tid;
+
+/**
+ *  培训班的签到CRUD
+ *
+ *  @param params
+ *{
+ *    UserId: "8",//创建用户
+ *    CheckInName: "ccssdd",//签到名称
+ *    CheckInId: "5",//签到ID，修改和删除时生效
+ *    Status: "-1"，//状态（0：新增，1：修改，-1：删除）
+ *    TrainingId: "1"//课程编号
+ *}
+ *
+ *  @return 服务器状态
+ */
++ (HttpResponse *)trainSignin:(NSMutableDictionary *)params;
 @end

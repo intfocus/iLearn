@@ -40,6 +40,7 @@ PODS:
   - ObjectiveSugar (1.1.0)
   - QRCodeReaderViewController (3.5.2)
   - Reachability (3.2)
+  - SCLAlertView-Objective-C (0.7.4)
   - SSZipArchive (0.3.2)
 
 DEPENDENCIES:
@@ -53,6 +54,7 @@ DEPENDENCIES:
   - ObjectiveSugar (~> 1.1.0)
   - QRCodeReaderViewController (~> 3.5.2)
   - Reachability (~> 3.2)
+  - SCLAlertView-Objective-C
   - SSZipArchive (~> 0.3.2)
 
 SPEC CHECKSUMS:
@@ -66,6 +68,7 @@ SPEC CHECKSUMS:
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   QRCodeReaderViewController: f20275985c41ae551099641493ab364691d9113e
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  SCLAlertView-Objective-C: 15ebfdac06ca289ba1f29fe34b5a03da6bd3fe37
   SSZipArchive: 11801759495fa4efb7512ef652eb0042d68305d7
 
-COCOAPODS: 0.38.0.beta.2
+COCOAPODS: 0.38.2

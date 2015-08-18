@@ -13,11 +13,14 @@
 #import "DetailViewController.h"
 #import "SigninFormViewController.h"
 #import "UIImage+MDQRCode.h"
+#import "TrainCourse.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
 #import "DataHelper.h"
+#import "FileUtils.h"
 
 static const NSInteger kMinScanInterval = 3;
+static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
 
 @interface SigninAdminTableViewController ()
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
@@ -26,6 +29,8 @@ static const NSInteger kMinScanInterval = 3;
 @property (nonatomic) ContentTableViewCell *currentCell;
 @property (strong, nonatomic) NSString *lastScannedResult;
 @property (assign, nonatomic) long long lastScanDate;
+@property (strong, nonatomic) TrainCourse *trainCourse;
+@property (strong, nonatomic) NSDictionary *currentTrainSingin;
 @end
 
 @implementation SigninAdminTableViewController
@@ -34,6 +39,10 @@ static const NSInteger kMinScanInterval = 3;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _dataList = [NSArray array];
+    _currentTrainSingin = [NSDictionary dictionary];
+    
+    _trainCourse = [[TrainCourse alloc] initCourseData:[FileUtils shareData]];
+    self.listViewController.courseNameLabel.text = self.trainCourse.name;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,17 +75,19 @@ static const NSInteger kMinScanInterval = 3;
     NSDictionary *dict = _dataList[indexPath.row];
     
     cell.titleLabel.text = dict[@"Name"];
-    cell.statusLabel.text = [NSString stringWithFormat:@"%@ (%@)", dict[@"UserName"], dict[@"EmployeeID"]];
+    cell.statusLabel.text = [NSString stringWithFormat:@"%@ (%@)", dict[@"UserName"], dict[@"EmployeeId"]];
     
     return cell;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"SigninCRUD"]) {
+    if ([segue.identifier isEqualToString:kTrainSigninFormIdentifier]) {
         SigninFormViewController *formVC = (SigninFormViewController*)segue.destinationViewController;
-        formVC.delegate  = self;
-        formVC.isCreated = [sender[@"isCreated"] boolValue];
-        formVC.name = sender[@"Name"];
+        formVC.delegate    = self;
+        formVC.isCreated   = [sender boolValue];
+        formVC.trainCourse = self.trainCourse;
+        formVC.trainSignin = self.currentTrainSingin;
+        //formVC.listViewController = self.listViewController;
     }
 }
 #pragma mark - UITableViewDelegate
@@ -86,11 +97,15 @@ static const NSInteger kMinScanInterval = 3;
 }
 
 - (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell {
-    self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    NSMutableDictionary *dict = self.dataList[indexPath.row];
-    dict[@"isCreated"] = @NO;
-    [self performSegueWithIdentifier:@"SigninCRUD" sender:dict];
+    self.currentTrainSingin = [self.dataList objectAtIndex:[indexPath row]];
+    
+    if(self.currentTrainSingin[@"Id"]) {
+        [self performSegueWithIdentifier:kTrainSigninFormIdentifier sender:@NO];
+    }
+    else {
+        [ViewUtils showPopupView:self.listViewController.view Info:@"缺少签到ID，请联系管理员"];
+    }
 }
 
 - (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell {
@@ -105,7 +120,7 @@ static const NSInteger kMinScanInterval = 3;
     NSLog(@"didSelectQRCodeButtonOfCell:");
     NSLog(@"indexPath.row: %ld", (long)indexPath.row);
     
-    NSDictionary *content = [self.dataList objectAtIndex:indexPath.row];
+    // NSDictionary *content = [self.dataList objectAtIndex:indexPath.row];
     
     if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
         static QRCodeReaderViewController *reader = nil;
@@ -174,7 +189,7 @@ static const NSInteger kMinScanInterval = 3;
 }
 
 - (void)syncData {
-    _dataList = [DataHelper signins:NO cid:@"1"];
+    _dataList = [DataHelper trainSingins:[HttpUtils isNetworkAvailable] tid:self.trainCourse.ID];
     [self.tableView reloadData];
 }
 
@@ -182,17 +197,18 @@ static const NSInteger kMinScanInterval = 3;
  *  创建签到
  */
 - (void)scanQRCode {
-    [self performSegueWithIdentifier:@"SigninCRUD" sender:@{@"isCreated": @YES,@"name": @""}];
+    self.currentTrainSingin = [NSDictionary dictionary];
+    [self performSegueWithIdentifier:kTrainSigninFormIdentifier sender:@YES];
 }
 
 - (void)actionEdit {
-    NSLog(@"actionEdit");
+    [self syncData];
 }
 - (void)actionSubmit {
-    NSLog(@"actionSubmit");
+    [self syncData];
 }
 - (void)actionRemove {
-    NSLog(@"actionRemove");
+    [self syncData];
 }
 
 @end

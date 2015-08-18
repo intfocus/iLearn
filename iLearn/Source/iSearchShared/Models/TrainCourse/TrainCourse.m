@@ -27,8 +27,17 @@
         _approreLevel   = dict[@"ApproreLevel"];
         _traineesStatus = dict[@"TraineesStatus"];
     }
+    _originalDict = dict;
     
     return self;
+}
+
+- (TrainCourse *)initCourseData:(NSDictionary *)dict {
+    return [self initData:dict type:@"course"];
+}
+
+- (TrainCourse *)initSigninData:(NSDictionary *)dict {
+    return [self initData:dict type:@"signin"];
 }
 
 - (BOOL)isCourse {
@@ -57,8 +66,11 @@
         if(!self.traineesStatus || [self.traineesStatus isEqual:[NSNull null]]) {
             status = @"可接受报名";
         }
+        else if([self.traineesStatus intValue] == 0) {
+             status = @"等待审核";
+        }
         else if([self.traineesStatus intValue] < [self.approreLevel intValue]) {
-            status = @"审核中...";
+            status = [NSString stringWithFormat:@"审核至%i层(共%i层)", [self.traineesStatus intValue], [self.approreLevel intValue]];
         }
         else if([self.traineesStatus intValue] == [self.approreLevel intValue]) {
             status = @"报名成功";

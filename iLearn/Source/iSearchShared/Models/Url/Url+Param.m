@@ -125,6 +125,19 @@
     return [Url UrlConcate:urlString Param:params];
 }
 
+/**
+ *  获取签到列表
+ *
+ *  @param tid 培训班ID
+ *
+ *  @return 签到列表
+ */
++ (NSString *)trainSignins:(NSString *)tid {
+    NSString *urlString  = [[Url alloc] init].trainSignins;
+    NSDictionary *params = @{@"tid":tid};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
 
 #pragma mark - GET# assistant methods
 + (NSString *)UrlConcate:(NSString *)url Param:(NSDictionary *)params {

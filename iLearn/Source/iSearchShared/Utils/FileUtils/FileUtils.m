@@ -326,4 +326,18 @@
     }
     return [NSString stringWithFormat:@"%lld", folderSize];
 }
+
+/**
+ *  界面切换时保存数据
+ *
+ *  @param dict 数据
+ */
++ (void)shareData:(NSDictionary *)dict {
+    [FileUtils writeJSON:[NSMutableDictionary dictionaryWithDictionary:dict]
+                    Into:[FileUtils dirPath:CONFIG_DIRNAME FileName:@"shareData.json"]];
+}
+
++ (NSDictionary *)shareData {
+    return [FileUtils readConfigFile:[FileUtils dirPath:CONFIG_DIRNAME FileName:@"shareData.json"]];
+}
 @end

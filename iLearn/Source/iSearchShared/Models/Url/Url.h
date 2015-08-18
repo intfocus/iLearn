@@ -27,4 +27,6 @@
 // 培训报名
 @property (nonatomic, strong) NSString *trainCourses; // 报名列表
 @property (nonatomic, strong) NSString *trainSignup; // 报名POST
+@property (nonatomic, strong) NSString *trainSignins; // 培训报表签到列表
+@property (nonatomic, strong) NSString *trainSignin; // 培训报表签到CRUD
 @end

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
@@ -686,7 +685,7 @@
                                         <rect key="frame" x="20" y="64" width="500" height="292"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ref-cs-61C">
-                                                <rect key="frame" x="12" y="8" width="476" height="109"/>
+                                                <rect key="frame" x="12" y="38" width="476" height="150"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="194" id="8rp-sj-cmk"/>
@@ -732,14 +731,22 @@
                                                     <action selector="actionTouched:" destination="PaD-Tw-gun" eventType="touchUpInside" id="4Ap-qT-QFi"/>
                                                 </connections>
                                             </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="签到名称" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uK2-eD-b3W">
+                                                <rect key="frame" x="19" y="9" width="180" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="8HA-Wy-D43" secondAttribute="bottom" constant="56" id="3va-XZ-biq"/>
                                             <constraint firstAttribute="centerX" secondItem="8HA-Wy-D43" secondAttribute="centerX" id="6GL-eE-l7y"/>
+                                            <constraint firstItem="Ref-cs-61C" firstAttribute="leading" secondItem="uK2-eD-b3W" secondAttribute="leading" id="D2x-dh-uFb"/>
+                                            <constraint firstItem="uK2-eD-b3W" firstAttribute="top" secondItem="nUl-LA-YtC" secondAttribute="top" constant="9" id="NG4-nT-kZg"/>
                                             <constraint firstAttribute="trailing" secondItem="Ref-cs-61C" secondAttribute="trailing" constant="12" id="Thk-Em-juK"/>
                                             <constraint firstItem="7uW-Rg-Opb" firstAttribute="leading" secondItem="Ref-cs-61C" secondAttribute="leading" id="Ukv-HB-Fp8"/>
-                                            <constraint firstItem="Ref-cs-61C" firstAttribute="top" secondItem="nUl-LA-YtC" secondAttribute="top" constant="8" id="ZH4-wC-f4F"/>
+                                            <constraint firstItem="Ref-cs-61C" firstAttribute="top" secondItem="uK2-eD-b3W" secondAttribute="bottom" constant="8" id="ZSx-5O-fzd"/>
                                             <constraint firstItem="8HA-Wy-D43" firstAttribute="top" secondItem="Ref-cs-61C" secondAttribute="bottom" constant="79" id="e97-js-00K"/>
                                             <constraint firstItem="Ref-cs-61C" firstAttribute="leading" secondItem="nUl-LA-YtC" secondAttribute="leading" constant="12" id="eO2-aZ-U5e"/>
                                             <constraint firstItem="7uW-Rg-Opb" firstAttribute="trailing" secondItem="Ref-cs-61C" secondAttribute="trailing" id="knM-3Z-YPT"/>
@@ -760,22 +767,12 @@
                                     <constraint firstAttribute="width" constant="540" id="3fI-Xz-fhb"/>
                                     <constraint firstItem="nUl-LA-YtC" firstAttribute="top" secondItem="UEW-pq-N2t" secondAttribute="bottom" constant="16" id="3kM-rN-W7g"/>
                                     <constraint firstAttribute="trailing" secondItem="nUl-LA-YtC" secondAttribute="trailing" constant="20" id="4Lh-lb-10a"/>
-                                    <constraint firstAttribute="height" constant="620" id="VzZ-GK-1sg"/>
                                     <constraint firstItem="nUl-LA-YtC" firstAttribute="leading" secondItem="bMG-wX-Xar" secondAttribute="leading" constant="20" id="Wb5-Cg-IBd"/>
-                                    <constraint firstItem="nUl-LA-YtC" firstAttribute="top" secondItem="tOV-f8-LQd" secondAttribute="bottom" constant="8" id="Wtd-xQ-tYx"/>
                                     <constraint firstAttribute="trailing" secondItem="tOV-f8-LQd" secondAttribute="trailing" constant="8" id="g86-uE-4Eb"/>
                                     <constraint firstItem="UEW-pq-N2t" firstAttribute="leading" secondItem="bMG-wX-Xar" secondAttribute="leading" constant="20" id="mty-ed-bem"/>
                                     <constraint firstItem="tOV-f8-LQd" firstAttribute="top" secondItem="bMG-wX-Xar" secondAttribute="top" constant="8" id="qvf-RQ-dKG"/>
                                     <constraint firstItem="UEW-pq-N2t" firstAttribute="top" secondItem="bMG-wX-Xar" secondAttribute="top" constant="16" id="s0d-Dg-uxZ"/>
-                                    <constraint firstAttribute="height" constant="500" id="vOp-Ik-T4s"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="VzZ-GK-1sg"/>
-                                        <exclude reference="vOp-Ik-T4s"/>
-                                        <exclude reference="Wtd-xQ-tYx"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -787,8 +784,8 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="zTv-R3-280"/>
                                 <exclude reference="yeu-dL-2Do"/>
+                                <exclude reference="zTv-R3-280"/>
                             </mask>
                         </variation>
                     </view>
@@ -796,7 +793,7 @@
                     <connections>
                         <outlet property="actionButton" destination="8HA-Wy-D43" id="hDF-BX-WtU"/>
                         <outlet property="closeButton" destination="tOV-f8-LQd" id="Kcb-oU-Omb"/>
-                        <outlet property="descTextView" destination="Ref-cs-61C" id="zU6-hg-YPI"/>
+                        <outlet property="nameTextView" destination="Ref-cs-61C" id="3iV-Rm-Lu9"/>
                         <outlet property="removeButton" destination="7uW-Rg-Opb" id="N0D-bS-aAd"/>
                         <outlet property="titleLabel" destination="UEW-pq-N2t" id="qkv-Fe-2Ip"/>
                     </connections>

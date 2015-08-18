@@ -132,14 +132,26 @@
 }
 
 /**
+ *  某培训班的签到列表写入缓存
+ *
+ *  @param trainSignins 某培训班的签到列表
+ *  @param tid          某培训班的ID
+ */
++ (void)writeTrainSignins:(NSMutableDictionary *)trainSignins tid:(NSString *)tid {
+    if(!trainSignins)  return;
+    
+    NSString *cachePath = [self cachePath:@"train" Type:@"signins" ID:tid];
+    [FileUtils writeJSON:trainSignins Into:cachePath];
+}
+/**
  *  某课程的签到列表
  *
  *  @param CID 课程ID
  *
  *  @return 课程的签到列表
  */
-+ (NSMutableDictionary *)signins:(NSString *)CID {
-    NSString *cachePath = [self cachePath:@"train" Type:@"course" ID:CID];
++ (NSMutableDictionary *)trainSignins:(NSString *)tid {
+    NSString *cachePath = [self cachePath:@"train" Type:@"signins" ID:tid];
     cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/signins.json"];
     
     NSMutableDictionary *singins = [NSMutableDictionary dictionary];

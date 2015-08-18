@@ -23,6 +23,8 @@
 
         _trainCourses         = @"http://tsa-china.takeda.com.cn/uat/api/Trainings_Api.php";
         _trainSignup          = @"http://tsa-china.takeda.com.cn/uat/api/Trainee_Api.php";
+        _trainSignins         = @"http://tsa-china.takeda.com.cn/uat/api/CheckInList_Api.php";
+        _trainSignin          = @"http://tsa-china.takeda.com.cn/uat/api/CheckIn_Api.php";
     }
     return self;
 }

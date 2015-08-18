@@ -10,9 +10,7 @@
 #import "ExamTabelViewCell.h"
 #import "SigninFormViewController.h"
 #import "QRCodeReaderViewController.h"
-#import "TrainCourse.h"
 
 @interface SigninAdminTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate, SigninFormViewControllerProtocol, QRCodeReaderDelegate>
 
-@property (strong, nonatomic) TrainCourse *trainCourse;
 @end

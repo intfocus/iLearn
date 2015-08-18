@@ -172,6 +172,14 @@
  *  @param extName  课件文件扩展名
  */
 + (void)recordProgress:(NSDictionary *)dict CourseID:(NSString *)courseID Ext:(NSString *)extName;
+
+/**
+ *  界面切换时保存数据
+ *
+ *  @param dict 数据
+ */
++ (void)shareData:(NSDictionary *)dict;
++ (NSDictionary *)shareData;
 @end
 
 

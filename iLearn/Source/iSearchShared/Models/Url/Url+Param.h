@@ -72,4 +72,13 @@
  *  @return 培训班报名链接
  */
 + (NSString *)trainCourses:(NSString *)uid;
+
+/**
+ *  获取签到列表
+ *
+ *  @param tid 培训班ID
+ *
+ *  @return 签到列表
+ */
++ (NSString *)trainSignins:(NSString *)tid;
 @end

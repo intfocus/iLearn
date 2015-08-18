@@ -25,12 +25,15 @@
 @property (nonatomic, strong) NSString *traineesStatus;
 
 @property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSDictionary *originalDict;
 
 // instance methods
 + (NSArray *)loadCourseData:(NSArray *)dataList;
 + (NSArray *)loadSigninData:(NSArray *)dataList;
 
 + (NSArray *)loadData:(NSArray *)dataList type:(NSString *)typeName;
+- (TrainCourse *)initCourseData:(NSDictionary *)dict;
+- (TrainCourse *)initSigninData:(NSDictionary *)dict;
 - (NSString *)desc;
 - (BOOL)isCourse;
 - (BOOL)isSignin;

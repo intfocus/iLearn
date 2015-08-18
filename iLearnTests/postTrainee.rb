@@ -14,7 +14,9 @@ def postForm(url, param, info)
         end
     rescue => e
       puts "#{info} 失败 for #{e.message}"
+      puts %Q{curl -l -H "Content-type: application/json" -X POST -d  '#{param.to_json}' #{url}}
     end
+    puts "="*20
 end
 
 # 学员报名信息维护
@@ -35,7 +37,8 @@ hash = {
     IssueDate: "2015/07/18 14:33:43",
     Status: "1",
     Reason: "等快递快递收到伐",
-    CreatedUser: "1"
+    CreatedUser: "1",
+    CheckInId: "1"
 }
 postForm(url, hash, "上传点名信息维护")
 

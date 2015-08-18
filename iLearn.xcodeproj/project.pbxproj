@@ -618,20 +618,10 @@
 		C4BFC0921B7DCE0500C1DBEA /* Registration */ = {
 			isa = PBXGroup;
 			children = (
-				C4BFC0931B7DCE4900C1DBEA /* RegistrationTableViewController.h */,
-				C4BFC0941B7DCE4900C1DBEA /* RegistrationTableViewController.m */,
-				C4BFC0961B7DCEAE00C1DBEA /* RegistrationTableViewCell.h */,
-				C4BFC0971B7DCEAE00C1DBEA /* RegistrationTableViewCell.m */,
-				C4BD421C1B817A6D00083F11 /* SigninAdminTableViewController.h */,
-				C4BD421D1B817A6D00083F11 /* SigninAdminTableViewController.m */,
-				C4BD421F1B817C1E00083F11 /* SigninAdminTableViewCell.h */,
-				C4BD42201B817C1E00083F11 /* SigninAdminTableViewCell.m */,
-				C4BD42221B81902C00083F11 /* SigninUserTableViewController.h */,
-				C4BD42231B81902C00083F11 /* SigninUserTableViewController.m */,
-				C4BD42251B81904100083F11 /* SigninUserTableViewCell.h */,
-				C4BD42261B81904100083F11 /* SigninUserTableViewCell.m */,
-				C4BD42281B81CA2B00083F11 /* SigninFormViewController.h */,
-				C4BD42291B81CA2B00083F11 /* SigninFormViewController.m */,
+				C4FE14EF1B82D83D0095892E /* 报名/签到管理 */,
+				C4FE14F01B82D8550095892E /* 签到管理明细 */,
+				C4FE14F11B82D8670095892E /* 签到员工列表状态 */,
+				C4FE14F21B82D8770095892E /* 签到CRUD */,
 			);
 			name = Registration;
 			path = Source/registration;
@@ -675,6 +665,48 @@
 				C4DC385E1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m */,
 			);
 			path = CourseWrap;
+			sourceTree = "<group>";
+		};
+		C4FE14EF1B82D83D0095892E /* 报名/签到管理 */ = {
+			isa = PBXGroup;
+			children = (
+				C4BFC0931B7DCE4900C1DBEA /* RegistrationTableViewController.h */,
+				C4BFC0941B7DCE4900C1DBEA /* RegistrationTableViewController.m */,
+				C4BFC0961B7DCEAE00C1DBEA /* RegistrationTableViewCell.h */,
+				C4BFC0971B7DCEAE00C1DBEA /* RegistrationTableViewCell.m */,
+			);
+			name = "报名/签到管理";
+			sourceTree = "<group>";
+		};
+		C4FE14F01B82D8550095892E /* 签到管理明细 */ = {
+			isa = PBXGroup;
+			children = (
+				C4BD421C1B817A6D00083F11 /* SigninAdminTableViewController.h */,
+				C4BD421D1B817A6D00083F11 /* SigninAdminTableViewController.m */,
+				C4BD421F1B817C1E00083F11 /* SigninAdminTableViewCell.h */,
+				C4BD42201B817C1E00083F11 /* SigninAdminTableViewCell.m */,
+			);
+			name = "签到管理明细";
+			sourceTree = "<group>";
+		};
+		C4FE14F11B82D8670095892E /* 签到员工列表状态 */ = {
+			isa = PBXGroup;
+			children = (
+				C4BD42221B81902C00083F11 /* SigninUserTableViewController.h */,
+				C4BD42231B81902C00083F11 /* SigninUserTableViewController.m */,
+				C4BD42251B81904100083F11 /* SigninUserTableViewCell.h */,
+				C4BD42261B81904100083F11 /* SigninUserTableViewCell.m */,
+			);
+			name = "签到员工列表状态";
+			sourceTree = "<group>";
+		};
+		C4FE14F21B82D8770095892E /* 签到CRUD */ = {
+			isa = PBXGroup;
+			children = (
+				C4BD42281B81CA2B00083F11 /* SigninFormViewController.h */,
+				C4BD42291B81CA2B00083F11 /* SigninFormViewController.m */,
+			);
+			name = "签到CRUD";
 			sourceTree = "<group>";
 		};
 		CB2BAB0F1B348C9800D523EB /* Login */ = {
