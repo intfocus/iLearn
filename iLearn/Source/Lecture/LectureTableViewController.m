@@ -168,15 +168,21 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     id obj = [self.dataList objectAtIndex:indexPath.row];
     switch (depth) {
         case 1: {
-            [self depthPlus];
             CoursePackage *coursePackage = (CoursePackage *)obj;
-            _dataList = [DataHelper coursePackageContent:NO pid:coursePackage.ID];
-            self.listViewController.titleLabel.hidden = YES;
-            self.listViewController.backButton.hidden = NO;
-            self.listViewController.courseNameLabel.hidden = NO;
-            self.listViewController.courseNameLabel.text = coursePackage.name;
-            self.lastCoursePackage = coursePackage;
-            [self.tableView reloadData];
+            if(coursePackage.ID) {
+                [self depthPlus];
+                _dataList = [DataHelper coursePackageContent:NO pid:coursePackage.ID];
+                self.listViewController.titleLabel.hidden = YES;
+                self.listViewController.backButton.hidden = NO;
+                self.listViewController.courseNameLabel.hidden = NO;
+                self.listViewController.courseNameLabel.text = coursePackage.name;
+                self.lastCoursePackage = coursePackage;
+                [self.tableView reloadData];
+            }
+            else {
+                [ViewUtils showPopupView:self.listViewController.view Info:@"请联系管理员，课程ID未设置"];
+            }
+            
             break;
         }
         case 2:
@@ -242,10 +248,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if([HttpUtils isNetworkAvailable]) {
+        CoursePackage *coursePackage = (CoursePackage *)obj;
+        if([HttpUtils isNetworkAvailable] && coursePackage.ID) {
             switch (depth) {
                 case 1: {
-                    CoursePackage *coursePackage = (CoursePackage *)obj;
                     NSArray *array = [NSArray array];
                     array = [DataHelper coursePackageContent:YES pid:coursePackage.ID];
                     self.listViewController.courseNameLabel.text = coursePackage.name;
