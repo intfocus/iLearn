@@ -82,21 +82,33 @@
 + (NSArray *)trainSingins:(BOOL)isNetworkAvailable tid:(NSString *)tid;
 
 /**
- *  某课程的签到学员列表
- *
- *  @param isNetworkAvailabel 网络环境
- *  @param CID                课程ID
- *
- *  @return 课程的签到列表
- */
-+ (NSArray *)signinUsers:(BOOL)isNetworkAvailabel cid:(NSString *)CID;
-
-/**
  *  报名POST
  *
  *  @param TID 课程ID
  */
 + (void)trainSignup:(NSString *)TID;
+
+/**
+ *  某课程的签到学员列表(含状态)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSArray *)trainSigninScannedUsers:(BOOL)isNetworkAvailable tid:(NSString *)tid ciid:(NSString *)ciid;
+
+/**
+ *  某课程的签到学员列表(所有)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSDictionary *)trainSigninUsers:(BOOL)isNetworkAvailable tid:(NSString *)tid;
 @end
 
 #endif

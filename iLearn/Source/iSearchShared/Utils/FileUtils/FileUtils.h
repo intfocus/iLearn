@@ -177,9 +177,14 @@
  *  界面切换时保存数据
  *
  *  @param dict 数据
+ *  @param fileName 文件名称
  */
-+ (void)shareData:(NSDictionary *)dict;
-+ (NSDictionary *)shareData;
++ (void)shareData:(NSDictionary *)dict fileName:(NSString *)fileName;
+
+/**
+ *  @param fileName 文件名称
+ */
++ (NSDictionary *)shareData:(NSString *)fileName;
 @end
 
 

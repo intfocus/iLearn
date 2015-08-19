@@ -81,4 +81,22 @@
  *  @return 签到列表
  */
 + (NSString *)trainSignins:(NSString *)tid;
+
+/**
+ *  签到的员工列表(含状态)
+ *
+ *  @param tid  培训班ID
+ *  @param ciid 签到ID
+ *
+ *  @return 签到的员工列表
+ */
++ (NSString *)trainSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid;
+/**
+ *  签到的员工列表(所有)
+ *
+ *  @param tid  培训班ID
+ *
+ *  @return 签到的员工列表
+ */
++ (NSString *)trainSigninUsers:(NSString *)tid;
 @end

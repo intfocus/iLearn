@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9E68D22279AD2B12DB817E6E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E92B1ED4A0E3997FEF469AD5 /* libPods.a */; };
+		C41CDE3B1B8341D500DC8882 /* TrainCourseScanForm.m in Sources */ = {isa = PBXBuildFile; fileRef = C41CDE3A1B8341D500DC8882 /* TrainCourseScanForm.m */; };
 		C42611281B5FA0FD006786CD /* UploadExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42611261B5FA0FD006786CD /* UploadExamViewController.m */; };
 		C452E1C51B6B82600024A950 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C452E1BD1B6B82600024A950 /* DisplayViewController.m */; };
 		C452E1C61B6B82600024A950 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C452E1BE1B6B82600024A950 /* DisplayViewController.xib */; };
@@ -127,6 +128,8 @@
 
 /* Begin PBXFileReference section */
 		A5051085F083B61256CF0478 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C41CDE391B8341D500DC8882 /* TrainCourseScanForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrainCourseScanForm.h; path = iLearn/Source/Registration/TrainCourseScanForm.h; sourceTree = SOURCE_ROOT; };
+		C41CDE3A1B8341D500DC8882 /* TrainCourseScanForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TrainCourseScanForm.m; path = iLearn/Source/Registration/TrainCourseScanForm.m; sourceTree = SOURCE_ROOT; };
 		C42611261B5FA0FD006786CD /* UploadExamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UploadExamViewController.m; path = iLearn/Source/SubjectView/UploadExamViewController.m; sourceTree = SOURCE_ROOT; };
 		C42611271B5FA0FD006786CD /* UploadExamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadExamViewController.h; path = iLearn/Source/SubjectView/UploadExamViewController.h; sourceTree = SOURCE_ROOT; };
 		C452E1BC1B6B82600024A950 /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
@@ -361,6 +364,15 @@
 				E92B1ED4A0E3997FEF469AD5 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C41CDE381B8341B800DC8882 /* ScannForm */ = {
+			isa = PBXGroup;
+			children = (
+				C41CDE391B8341D500DC8882 /* TrainCourseScanForm.h */,
+				C41CDE3A1B8341D500DC8882 /* TrainCourseScanForm.m */,
+			);
+			name = ScannForm;
 			sourceTree = "<group>";
 		};
 		C42611291B5FA16A006786CD /* StoryBoards */ = {
@@ -618,10 +630,11 @@
 		C4BFC0921B7DCE0500C1DBEA /* Registration */ = {
 			isa = PBXGroup;
 			children = (
-				C4FE14EF1B82D83D0095892E /* 报名/签到管理 */,
-				C4FE14F01B82D8550095892E /* 签到管理明细 */,
-				C4FE14F11B82D8670095892E /* 签到员工列表状态 */,
-				C4FE14F21B82D8770095892E /* 签到CRUD */,
+				C41CDE381B8341B800DC8882 /* ScannForm */,
+				C4FE14EF1B82D83D0095892E /* trainSignin */,
+				C4FE14F01B82D8550095892E /* trainSigninAdmin */,
+				C4FE14F11B82D8670095892E /* trainSignUsers */,
+				C4FE14F21B82D8770095892E /* trainSignForm */,
 			);
 			name = Registration;
 			path = Source/registration;
@@ -667,7 +680,7 @@
 			path = CourseWrap;
 			sourceTree = "<group>";
 		};
-		C4FE14EF1B82D83D0095892E /* 报名/签到管理 */ = {
+		C4FE14EF1B82D83D0095892E /* trainSignin */ = {
 			isa = PBXGroup;
 			children = (
 				C4BFC0931B7DCE4900C1DBEA /* RegistrationTableViewController.h */,
@@ -675,10 +688,10 @@
 				C4BFC0961B7DCEAE00C1DBEA /* RegistrationTableViewCell.h */,
 				C4BFC0971B7DCEAE00C1DBEA /* RegistrationTableViewCell.m */,
 			);
-			name = "报名/签到管理";
+			name = trainSignin;
 			sourceTree = "<group>";
 		};
-		C4FE14F01B82D8550095892E /* 签到管理明细 */ = {
+		C4FE14F01B82D8550095892E /* trainSigninAdmin */ = {
 			isa = PBXGroup;
 			children = (
 				C4BD421C1B817A6D00083F11 /* SigninAdminTableViewController.h */,
@@ -686,10 +699,10 @@
 				C4BD421F1B817C1E00083F11 /* SigninAdminTableViewCell.h */,
 				C4BD42201B817C1E00083F11 /* SigninAdminTableViewCell.m */,
 			);
-			name = "签到管理明细";
+			name = trainSigninAdmin;
 			sourceTree = "<group>";
 		};
-		C4FE14F11B82D8670095892E /* 签到员工列表状态 */ = {
+		C4FE14F11B82D8670095892E /* trainSignUsers */ = {
 			isa = PBXGroup;
 			children = (
 				C4BD42221B81902C00083F11 /* SigninUserTableViewController.h */,
@@ -697,16 +710,16 @@
 				C4BD42251B81904100083F11 /* SigninUserTableViewCell.h */,
 				C4BD42261B81904100083F11 /* SigninUserTableViewCell.m */,
 			);
-			name = "签到员工列表状态";
+			name = trainSignUsers;
 			sourceTree = "<group>";
 		};
-		C4FE14F21B82D8770095892E /* 签到CRUD */ = {
+		C4FE14F21B82D8770095892E /* trainSignForm */ = {
 			isa = PBXGroup;
 			children = (
 				C4BD42281B81CA2B00083F11 /* SigninFormViewController.h */,
 				C4BD42291B81CA2B00083F11 /* SigninFormViewController.m */,
 			);
-			name = "签到CRUD";
+			name = trainSignForm;
 			sourceTree = "<group>";
 		};
 		CB2BAB0F1B348C9800D523EB /* Login */ = {
@@ -1165,6 +1178,7 @@
 				C4BFC0951B7DCE4900C1DBEA /* RegistrationTableViewController.m in Sources */,
 				C4BD421E1B817A6D00083F11 /* SigninAdminTableViewController.m in Sources */,
 				C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */,
+				C41CDE3B1B8341D500DC8882 /* TrainCourseScanForm.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
 				C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */,
 				CB3512321B47F0B200025B5B /* ConnectionManager.m in Sources */,

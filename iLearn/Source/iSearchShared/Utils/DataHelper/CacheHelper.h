@@ -101,12 +101,40 @@
  *  @return 课程的签到列表
  */
 + (NSMutableDictionary *)trainSignins:(NSString *)tid;
+
 /**
- *  某课程的签到学员列表
+ *  签到员工列表写入缓存(含状态)
  *
- *  @param CID 课程ID
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ */
++ (void)writeTrainSigninScannedUsers:(NSMutableDictionary *)trainSigninUsers tid:(NSString *)tid ciid:(NSString *)ciid;
+
+/**
+ *  某课程的签到学员列表(含状态)
+ *
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
  *
  *  @return 课程的签到列表
  */
-+ (NSMutableDictionary *)signinUsers:(NSString *)CID;
++ (NSMutableDictionary *)trainSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid;
+
+/**
+ *  签到员工列表写入缓存(所有)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ */
++ (void)writeTrainSigninUsers:(NSMutableDictionary *)trainSigninUsers tid:(NSString *)tid;
+
+/**
+ *  某课程的签到学员列表(所有)
+ *
+ *  @param tid              培训班ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSMutableDictionary *)trainSigninUsers:(NSString *)tid;
 @end

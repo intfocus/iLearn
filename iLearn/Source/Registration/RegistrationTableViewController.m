@@ -106,7 +106,7 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     TrainCourse *trainCourse = self.dataList[indexPath.row];
     if([trainCourse isSignin]) {
-        [FileUtils shareData:trainCourse.originalDict];
+        [FileUtils shareData:trainCourse.originalDict fileName:@"train"];
         
         self.listViewController.listType = ListViewTypeSigninAdmin;
         [self.listViewController refreshContentView];

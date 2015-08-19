@@ -109,18 +109,23 @@ typedef NS_ENUM(NSInteger, TrainSigninFormState) {
         [self.removeButton setTitle:@"删除" forState:UIControlStateNormal];
         [self.removeButton setBackgroundColor:[UIColor redColor]];
         [self.actionButton setTitle:@"编辑" forState:UIControlStateNormal];
+        self.titleLabel.text       = @"签到明细";
     }
     else {
         SCLAlertView *alert = [[SCLAlertView alloc] init];
         
         [alert addButton:@"确认" actionBlock:^(void) {
             self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            self.progressHUD.labelText = @"提交中...";
+            self.progressHUD.labelText = @"删除中...";
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+            
             [self postForm:TrainSigninFormDelete id:self.trainSignin[@"Id"]];
+            
             [self.progressHUD hide:YES];
             if ([self.delegate respondsToSelector:@selector(actionRemove)]) {
                 [self.delegate actionRemove];
             }
+            [self dismissViewControllerAnimated:NO completion:^{}];
         }];
         
         [alert showError:self title:@"确认删除" subTitle:self.trainSignin[@"Name"] closeButtonTitle:@"取消" duration:0.0f];

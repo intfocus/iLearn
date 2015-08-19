@@ -223,18 +223,53 @@
 }
 
 /**
- *  某课程的签到学员列表
+ *  某课程的签到学员列表(含状态)
  *
- *  @param isNetworkAvailabel 网络环境
- *  @param CID                课程ID
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
  *
  *  @return 课程的签到列表
  */
-+ (NSArray *)signinUsers:(BOOL)isNetworkAvailabel cid:(NSString *)CID {
-    NSMutableDictionary *signins = [NSMutableDictionary dictionary];
-    signins = [CacheHelper signinUsers:CID];
++ (NSArray *)trainSigninScannedUsers:(BOOL)isNetworkAvailable tid:(NSString *)tid ciid:(NSString *)ciid {
+    NSMutableDictionary *trainSigninUsers = [NSMutableDictionary dictionary];
     
-    return signins[@"data"];
+    if(isNetworkAvailable) {
+        HttpResponse *response = [ApiHelper trainSigninScannedUsers:tid ciid:ciid];;
+        trainSigninUsers = response.data;
+        
+        [CacheHelper writeTrainSigninScannedUsers:trainSigninUsers tid:tid ciid:ciid];
+    }
+    else {
+        trainSigninUsers = [CacheHelper trainSigninScannedUsers:tid ciid:ciid];
+    }
+    
+    return trainSigninUsers[@"traineesdata"];
+}
+
+/**
+ *  某课程的签到学员列表(所有)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSDictionary *)trainSigninUsers:(BOOL)isNetworkAvailable tid:(NSString *)tid {
+    NSMutableDictionary *trainSigninUsers = [NSMutableDictionary dictionary];
+    
+    if(isNetworkAvailable) {
+        HttpResponse *response = [ApiHelper trainSigninUsers:tid];;
+        trainSigninUsers = response.data;
+        
+        [CacheHelper writeTrainSigninUsers:trainSigninUsers tid:tid];
+    }
+    else {
+        trainSigninUsers = [CacheHelper trainSigninUsers:tid];
+    }
+    
+    return trainSigninUsers;
 }
 
 /**

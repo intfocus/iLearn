@@ -41,8 +41,8 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
     _dataList = [NSArray array];
     _currentTrainSingin = [NSDictionary dictionary];
     
-    _trainCourse = [[TrainCourse alloc] initCourseData:[FileUtils shareData]];
-    self.listViewController.courseNameLabel.text = self.trainCourse.name;
+    _trainCourse = [[TrainCourse alloc] initCourseData:[FileUtils shareData:@"train"]];
+    self.listViewController.centerLabel.text = self.trainCourse.name;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -109,6 +109,12 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
 }
 
 - (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    NSDictionary *content  = [self.dataList objectAtIndex:[indexPath row]];
+    
+    NSDictionary *dict = @{@"tid": self.trainCourse.ID, @"ciid": content[@"Id"], @"name": content[@"Name"]};
+    [FileUtils shareData:dict fileName:@"signin-users"];
+    
     self.listViewController.listType = ListViewTypeSigninUser;
     [self.listViewController refreshContentView];
 }

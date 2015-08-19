@@ -66,14 +66,15 @@
         if(!self.traineesStatus || [self.traineesStatus isEqual:[NSNull null]]) {
             status = @"可接受报名";
         }
-        else if([self.traineesStatus intValue] == 0) {
-             status = @"等待审核";
-        }
         else if([self.traineesStatus intValue] < [self.approreLevel intValue]) {
             status = [NSString stringWithFormat:@"审核至%i层(共%i层)", [self.traineesStatus intValue], [self.approreLevel intValue]];
         }
         else if([self.traineesStatus intValue] == [self.approreLevel intValue]) {
             status = @"报名成功";
+        }
+        // 如果审核级数为0,则提交即报名成功
+        else if([self.traineesStatus intValue] == 0) {
+            status = @"等待审核";
         }
         else {
             status =  @"unkown error";

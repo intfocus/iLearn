@@ -331,13 +331,19 @@
  *  界面切换时保存数据
  *
  *  @param dict 数据
+ *  @param fileName 文件名称
  */
-+ (void)shareData:(NSDictionary *)dict {
++ (void)shareData:(NSDictionary *)dict fileName:(NSString *)fileName {
+    fileName = [NSString stringWithFormat:@"data-%@.share", fileName];
     [FileUtils writeJSON:[NSMutableDictionary dictionaryWithDictionary:dict]
-                    Into:[FileUtils dirPath:CONFIG_DIRNAME FileName:@"shareData.json"]];
+                    Into:[FileUtils dirPath:CONFIG_DIRNAME FileName:fileName]];
 }
 
-+ (NSDictionary *)shareData {
-    return [FileUtils readConfigFile:[FileUtils dirPath:CONFIG_DIRNAME FileName:@"shareData.json"]];
+/**
+ *  @param fileName 文件名称
+ */
++ (NSDictionary *)shareData:(NSString *)fileName {
+    fileName = [NSString stringWithFormat:@"data-%@.share", fileName];
+    return [FileUtils readConfigFile:[FileUtils dirPath:CONFIG_DIRNAME FileName:fileName]];
 }
 @end

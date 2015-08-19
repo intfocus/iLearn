@@ -29,4 +29,7 @@
 @property (nonatomic, strong) NSString *trainSignup; // 报名POST
 @property (nonatomic, strong) NSString *trainSignins; // 培训报表签到列表
 @property (nonatomic, strong) NSString *trainSignin; // 培训报表签到CRUD
+@property (nonatomic, strong) NSString *trainSigninUsers; // 培训报表签到员工列表（所有）
+@property (nonatomic, strong) NSString *trainSigninScannedUsers; // 培训报表签到员工列表（只有含状态)
+@property (nonatomic, strong) NSString *trainSigninUser; // 点名POST
 @end

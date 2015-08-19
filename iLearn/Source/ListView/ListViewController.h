@@ -14,7 +14,7 @@
 
 @property (assign, nonatomic) ListViewType listType;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *courseNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *centerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 - (void)popupNotificationDetailView:(NSDictionary *)notification;

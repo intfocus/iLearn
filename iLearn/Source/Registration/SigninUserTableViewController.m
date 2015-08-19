@@ -13,11 +13,14 @@
 #import "HttpUtils.h"
 #import "ViewUtils.h"
 #import "DataHelper.h"
+#import "FileUtils.h"
 
 @interface SigninUserTableViewController ()
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *dataList;
+@property (strong, nonatomic) NSString *tid;
+@property (strong, nonatomic) NSString *ciid;
 @property (nonatomic) ContentTableViewCell *currentCell;
 
 @end
@@ -28,6 +31,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _dataList = [NSArray array];
+    NSDictionary *dict = [FileUtils shareData:@"signin-users"];
+    _tid  = dict[@"tid"];
+    _ciid = dict[@"ciid"];
+    self.listViewController.centerLabel.text = dict[@"name"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -113,7 +120,8 @@
 }
 
 - (void)syncData {
-    _dataList = [DataHelper signinUsers:NO cid:@"1"];
+    NSDictionary *dict = [DataHelper trainSigninUsers:[HttpUtils isNetworkAvailable] tid:self.tid];
+    _dataList = dict[@"traineesdata"];
     [self.tableView reloadData];
 }
 

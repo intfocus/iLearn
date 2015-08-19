@@ -174,8 +174,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 _dataList = [DataHelper coursePackageContent:NO pid:coursePackage.ID];
                 self.listViewController.titleLabel.hidden = YES;
                 self.listViewController.backButton.hidden = NO;
-                self.listViewController.courseNameLabel.hidden = NO;
-                self.listViewController.courseNameLabel.text = coursePackage.name;
+                self.listViewController.centerLabel.hidden = NO;
+                self.listViewController.centerLabel.text = coursePackage.name;
                 self.lastCoursePackage = coursePackage;
                 [self.tableView reloadData];
             }
@@ -192,7 +192,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 CourseWrap *courseWrap = (CourseWrap *)obj;
                 _dataList = courseWrap.courseList;
                 [self.tableView reloadData];
-                self.listViewController.courseNameLabel.text = courseWrap.name;
+                self.listViewController.centerLabel.text = courseWrap.name;
             }
             else {
                 LectureTableViewCell *lectureTableViewCell = (LectureTableViewCell *)cell;
@@ -200,45 +200,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 
                 CoursePackageDetail *packageDetail = (CoursePackageDetail *)obj;
                 if([packageDetail isCourse]) {
-                    if([btnLabel isEqualToString:@"下载"]) {
-                        if([HttpUtils isNetworkAvailable]) {
-                            self.progressHUD.labelText = @"下载中...";
-                            removeHUD = NO;
-                            [self.connectionManager downloadCourse:packageDetail.courseId Ext:packageDetail.courseExt];
-                        }
-                        else {
-                            [self.progressHUD removeFromSuperview];
-                            [ViewUtils showPopupView:self.listViewController.view Info:@"无网络，不下载"];
-                        }
-                    }
-                    else {
-                        DisplayViewController *displayViewController = [[DisplayViewController alloc] init];
-                        displayViewController.packageDetail = packageDetail;
-                        [self presentViewController:displayViewController animated:YES completion:nil];
-                    }
+                    removeHUD = [self dealWithCourse:packageDetail state:btnLabel removeHUD:removeHUD];
                 }
                 else if([packageDetail isExam]) {
-                    if([packageDetail isExamDownload]) {
-                        if([btnLabel isEqualToString:@"查看结果"]) {
-                            [self begin];
-                        }
-                        else {
-                            self.showBeginTestInfo = YES;
-                            self.showRemoveButton  = NO;
-                            [self performSegueWithIdentifier:kShowDetailSegue sender:packageDetail];
-                        }
-                    }
-                    else {
-                        if([HttpUtils isNetworkAvailable]) {
-                            self.progressHUD.labelText = @"下载中...";
-                            removeHUD = NO;
-                            [_connectionManager downloadExamWithId:packageDetail.examId];
-                        }
-                        else {
-                            [_progressHUD hide:YES];
-                            [ViewUtils showPopupView:self.listViewController.view Info:@"无网络，不下载"];
-                        }
-                    }
+                    removeHUD = [self dealWithExam:packageDetail state:btnLabel removeHUD:removeHUD];
                 }
             }
             break;
@@ -248,22 +213,22 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CoursePackage *coursePackage = (CoursePackage *)obj;
-        if([HttpUtils isNetworkAvailable] && coursePackage.ID) {
-            switch (depth) {
-                case 1: {
+        if(depth == 1) {
+            if([obj isMemberOfClass:[CoursePackage class]]) {
+                CoursePackage *coursePackage = (CoursePackage *)obj;
+                if([HttpUtils isNetworkAvailable] && coursePackage.ID) {
                     NSArray *array = [NSArray array];
                     array = [DataHelper coursePackageContent:YES pid:coursePackage.ID];
-                    self.listViewController.courseNameLabel.text = coursePackage.name;
+                    self.listViewController.centerLabel.text = coursePackage.name;
                     self.lastCoursePackage = coursePackage;
                     if([array count]) {
                         _dataList = array;
                         [self.tableView reloadData];
                     }
-                    break;
                 }
-                default:
-                    break;
+            }
+            else {
+                [ViewUtils showPopupView:self.listViewController.view Info:@"请联系管理员，一级目录应该全为课程包."];
             }
         }
         
@@ -273,6 +238,60 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     });
     NSLog(@"enter - depth: %@", self.depth);
 }
+
+#pragma mark - didSelectAction asisstant methods
+- (BOOL)dealWithCourse:(CoursePackageDetail *)packageDetail state:(NSString *)state removeHUD:(BOOL)removeHUD {
+    if([state isEqualToString:@"下载"]) {
+        if(packageDetail.courseId && packageDetail.courseExt) {
+            if([HttpUtils isNetworkAvailable]) {
+                self.progressHUD.labelText = @"下载中...";
+                removeHUD = NO;
+                [self.connectionManager downloadCourse:packageDetail.courseId Ext:packageDetail.courseExt];
+            }
+            else {
+                [self.progressHUD removeFromSuperview];
+                [ViewUtils showPopupView:self.listViewController.view Info:@"无网络，不下载"];
+            }
+        }
+        else {
+            [ViewUtils showPopupView:self.listViewController.view Info:@"请联系管理员，课程ID与扩展名不全."];
+        }
+    }
+    else {
+        DisplayViewController *displayViewController = [[DisplayViewController alloc] init];
+        displayViewController.packageDetail = packageDetail;
+        [self presentViewController:displayViewController animated:YES completion:nil];
+    }
+    
+    return removeHUD;
+}
+
+- (BOOL)dealWithExam:(CoursePackageDetail *)packageDetail state:(NSString *)state removeHUD:(BOOL)removeHUD {
+    if([packageDetail isExamDownload]) {
+        if([state isEqualToString:@"查看结果"]) {
+            [self begin];
+        }
+        else {
+            self.showBeginTestInfo = YES;
+            self.showRemoveButton  = NO;
+            [self performSegueWithIdentifier:kShowDetailSegue sender:packageDetail];
+        }
+    }
+    else {
+        if([HttpUtils isNetworkAvailable]) {
+            self.progressHUD.labelText = @"下载中...";
+            removeHUD = NO;
+            [_connectionManager downloadExamWithId:packageDetail.examId];
+        }
+        else {
+            [_progressHUD hide:YES];
+            [ViewUtils showPopupView:self.listViewController.view Info:@"无网络，不下载"];
+        }
+    }
+    return removeHUD;
+}
+
+#pragma mark - IBAction
 
 - (IBAction)actionBack:(id)sender {
     [sender setEnabled:NO];
@@ -292,8 +311,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     }
     else if(depth == 3) {
         _dataList = [DataHelper coursePackageContent:NO pid:self.lastCoursePackage.ID];
-        self.listViewController.courseNameLabel.hidden = NO;
-        self.listViewController.courseNameLabel.text   = self.lastCoursePackage.name;
+        self.listViewController.centerLabel.hidden = NO;
+        self.listViewController.centerLabel.text   = self.lastCoursePackage.name;
         [self.tableView reloadData];
         [self depthMinus];
     }
@@ -317,7 +336,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 - (void)didSelectQRCodeButtonOfCell:(ContentTableViewCell*)cell {}
 
-#pragma mark - IBAction
 
 - (void)enterExamPageForContent:(NSDictionary*)content {
     __weak LectureTableViewController *weakSelf = self;
@@ -443,14 +461,14 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             _dataList = [DataHelper coursePackages:NO];
             self.listViewController.backButton.hidden      = YES;
             self.listViewController.titleLabel.hidden      = NO;
-            self.listViewController.courseNameLabel.hidden = YES;
+            self.listViewController.centerLabel.hidden = YES;
             
             break;
         }
         case 2: {
             _dataList = [DataHelper coursePackageContent:NO pid:self.lastCoursePackage.ID];
-            self.listViewController.courseNameLabel.hidden = NO;
-            self.listViewController.courseNameLabel.text   = self.lastCoursePackage.name;
+            self.listViewController.centerLabel.hidden = NO;
+            self.listViewController.centerLabel.text   = self.lastCoursePackage.name;
             
             break;
         }

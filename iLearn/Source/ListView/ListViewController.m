@@ -177,7 +177,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _syncButton.hidden      = YES;
     _scanButton.hidden      = YES;
     _backButton.hidden      = YES;
-    _courseNameLabel.hidden = YES;
+    _centerLabel.hidden = YES;
     
     switch (_listType) {
         case ListViewTypeExam: {
@@ -206,15 +206,16 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
             break;
         }
         case ListViewTypeRegistration: {
+            self.syncButton.hidden = NO;
             self.titleLabel.hidden = NO;
-            self.titleLabel.text = @"培训报名";
+            self.titleLabel.text   = @"培训报名";
             break;
         }
         case ListViewTypeSigninAdmin: {
             self.syncButton.hidden      = NO;
             self.backButton.hidden      = NO;
             self.titleLabel.hidden      = YES;
-            self.courseNameLabel.hidden = NO;
+            self.centerLabel.hidden = NO;
             self.scanButton.hidden      = NO;
             [self.scanButton setTitle:@"创建签到" forState:UIControlStateNormal];
             
@@ -224,7 +225,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
             self.syncButton.hidden      = NO;
             self.backButton.hidden      = NO;
             self.titleLabel.hidden      = YES;
-            self.courseNameLabel.hidden = NO;
+            self.centerLabel.hidden = NO;
             self.scanButton.hidden      = NO;
             [self.scanButton setTitle:@"过滤" forState:UIControlStateNormal];
             

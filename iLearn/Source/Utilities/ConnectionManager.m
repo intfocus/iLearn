@@ -104,36 +104,33 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 
 - (void)downloadCourse:(NSString*)courseID Ext:(NSString *)extName
 {
-    if (courseID) {
+    NSString *requestUrl    = [Url downloadCourse:courseID Ext:extName];
+    NSString *outputPath    = [FileUtils coursePath:courseID Ext:extName];
+    NSString *outputPathTmp = [NSString stringWithFormat:@"%@.json.tmp", outputPath];
+    
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
+    
+    AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSError *error;
         
-        NSString *requestUrl    = [Url downloadCourse:courseID Ext:extName];
-        NSString *outputPath    = [FileUtils coursePath:courseID Ext:extName];
-        NSString *outputPathTmp = [NSString stringWithFormat:@"%@.json.tmp", outputPath];
+        [FileUtils removeFile:outputPath];
+        [FileUtils move:outputPathTmp to:outputPath];
         
-        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
+        if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadCourse:Ext:withError:)]) {
+            [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
+        }
         
-        AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSError *error;
-            
-            [FileUtils removeFile:outputPath];
-            [FileUtils move:outputPathTmp to:outputPath];
-            
-            if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadCourse:Ext:withError:)]) {
-                [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
-            }
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Download Course ID: %@ Ext: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", courseID, extName, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
-            
-            [FileUtils removeFile:outputPathTmp];
-            
-            if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadCourse:Ext:withError:)]) {
-                [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
-            }
-        }];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Download Course ID: %@ Ext: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", courseID, extName, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
         
-        op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
-    }
+        [FileUtils removeFile:outputPathTmp];
+        
+        if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadCourse:Ext:withError:)]) {
+            [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
+        }
+    }];
+    
+    op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
 }
 
 - (void)uploadExamResultWithPath:(NSString*)resultPath

@@ -130,4 +130,49 @@
 + (HttpResponse *)trainSignin:(NSMutableDictionary *)params {
     return [HttpUtils httpPost:[[[Url alloc] init] trainSignin] Params:params];
 }
+
+/**
+ *  签到的员工列表(含状态)
+ *
+ *  @param tid  培训班ID
+ *  @param ciid 签到ID
+ *
+ *  @return 签到的员工列表
+ */
++ (HttpResponse *)trainSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid {
+    NSString *urlString = [Url trainSigninScannedUsers:tid ciid:ciid];
+    return [HttpUtils httpGet:urlString];
+}
+
+/**
+ *  签到的员工列表(所有)
+ *
+ *  @param tid  培训班ID
+ *  @param ciid 签到ID
+ *
+ *  @return 签到的员工列表
+ */
++ (HttpResponse *)trainSigninUsers:(NSString *)tid {
+    NSString *urlString = [Url trainSigninUsers:tid];
+    return [HttpUtils httpGet:urlString];
+}
+
+/**
+ *  培训班签到点名
+ *
+ * {
+ *     TrainingId: "1",
+ *     UserId: "2",
+ *     IssueDate: "2015/07/18 14:33:43",
+ *     Status: "1",
+ *     Reason: "等快递快递收到伐",
+ *     CreatedUser: "1",
+ *     CheckInId: "1"
+ * }
+ *
+ *  @return 服务器响应
+ */
++ (HttpResponse *)trainSigninUser:(NSMutableDictionary *)params {
+    return [HttpUtils httpPost:[[[Url alloc] init] trainSigninUser] Params:params];
+}
 @end
