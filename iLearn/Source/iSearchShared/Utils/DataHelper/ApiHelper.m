@@ -79,7 +79,7 @@
  *
  *  @return 培训报名列表
  */
-+ (HttpResponse *)trainCourses:(NSString *)UID {
++ (HttpResponse *)courseCourses:(NSString *)UID {
     NSString *urlString = [Url trainCourses:UID];
     return [HttpUtils httpGet:urlString];
 }
@@ -91,13 +91,13 @@
  *
  *  @return who care
  */
-+ (HttpResponse *)trainSignup:(NSMutableDictionary *)params {
-    return [HttpUtils httpPost:[[[Url alloc] init] trainSignup] Params:params];
++ (HttpResponse *)courseSignup:(NSMutableDictionary *)params {
+    return [HttpUtils httpPost:[[[Url alloc] init] courseSignup] Params:params];
 }
 
 + (HttpResponse *)trainSigninCreate:(NSMutableDictionary *)params {
     
-    return [HttpUtils httpPost:[[[Url alloc] init] trainSignup] Params:params];
+    return [HttpUtils httpPost:[[[Url alloc] init] courseSignup] Params:params];
 }
 
 
@@ -108,7 +108,7 @@
  *
  *  @return 培训班的签到列表
  */
-+ (HttpResponse *)trainSignins:(NSString *)tid {
++ (HttpResponse *)courseSignins:(NSString *)tid {
     NSString *urlString = [Url trainSignins:tid];
     return [HttpUtils httpGet:urlString];
 }
@@ -127,8 +127,8 @@
  *
  *  @return 服务器状态
  */
-+ (HttpResponse *)trainSignin:(NSMutableDictionary *)params {
-    return [HttpUtils httpPost:[[[Url alloc] init] trainSignin] Params:params];
++ (HttpResponse *)courseSignin:(NSMutableDictionary *)params {
+    return [HttpUtils httpPost:[[[Url alloc] init] courseSignin] Params:params];
 }
 
 /**
@@ -139,7 +139,7 @@
  *
  *  @return 签到的员工列表
  */
-+ (HttpResponse *)trainSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid {
++ (HttpResponse *)courseSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid {
     NSString *urlString = [Url trainSigninScannedUsers:tid ciid:ciid];
     return [HttpUtils httpGet:urlString];
 }
@@ -152,7 +152,7 @@
  *
  *  @return 签到的员工列表
  */
-+ (HttpResponse *)trainSigninUsers:(NSString *)tid {
++ (HttpResponse *)courseSigninUsers:(NSString *)tid {
     NSString *urlString = [Url trainSigninUsers:tid];
     return [HttpUtils httpGet:urlString];
 }
@@ -172,7 +172,7 @@
  *
  *  @return 服务器响应
  */
-+ (HttpResponse *)trainSigninUser:(NSMutableDictionary *)params {
-    return [HttpUtils httpPost:[[[Url alloc] init] trainSigninUser] Params:params];
++ (HttpResponse *)courseSigninUser:(NSMutableDictionary *)params {
+    return [HttpUtils httpPost:[[[Url alloc] init] courseSigninUser] Params:params];
 }
 @end

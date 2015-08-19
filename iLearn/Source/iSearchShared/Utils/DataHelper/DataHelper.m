@@ -183,7 +183,7 @@
     NSString *uid = [User userID];
     
     if(isNetworkAvaliable) {
-        HttpResponse *response = [ApiHelper trainCourses:uid];;
+        HttpResponse *response = [ApiHelper courseCourses:uid];;
         trainCourses = response.data;
         
         [CacheHelper writeTrainCourses:trainCourses UID:uid];
@@ -209,7 +209,7 @@
     NSMutableDictionary *signins = [NSMutableDictionary dictionary];
     
     if(isNetworkAvailable) {
-        HttpResponse *response = [ApiHelper trainSignins:tid];;
+        HttpResponse *response = [ApiHelper courseSignins:tid];;
         signins = response.data;
         
         [CacheHelper writeTrainSignins:signins tid:tid];
@@ -235,7 +235,7 @@
     NSMutableDictionary *trainSigninUsers = [NSMutableDictionary dictionary];
     
     if(isNetworkAvailable) {
-        HttpResponse *response = [ApiHelper trainSigninScannedUsers:tid ciid:ciid];;
+        HttpResponse *response = [ApiHelper courseSigninScannedUsers:tid ciid:ciid];;
         trainSigninUsers = response.data;
         
         [CacheHelper writeTrainSigninScannedUsers:trainSigninUsers tid:tid ciid:ciid];
@@ -260,7 +260,7 @@
     NSMutableDictionary *trainSigninUsers = [NSMutableDictionary dictionary];
     
     if(isNetworkAvailable) {
-        HttpResponse *response = [ApiHelper trainSigninUsers:tid];;
+        HttpResponse *response = [ApiHelper courseSigninUsers:tid];;
         trainSigninUsers = response.data;
         
         [CacheHelper writeTrainSigninUsers:trainSigninUsers tid:tid];
@@ -281,7 +281,7 @@
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"UserId"]     = [User userID];
     param[@"TrainingId"] = TID;
-    HttpResponse *response = [ApiHelper trainSignup:param];
+    HttpResponse *response = [ApiHelper courseSignup:param];
 }
 
 #pragma mark - assistant methods

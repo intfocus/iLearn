@@ -12,6 +12,7 @@
 #import "SigninAdminTableViewCell.h"
 #import "DetailViewController.h"
 #import "SigninFormViewController.h"
+#import "CourseSigninScanForm.h"
 #import "UIImage+MDQRCode.h"
 #import "TrainCourse.h"
 #import "HttpUtils.h"
@@ -20,7 +21,9 @@
 #import "FileUtils.h"
 
 static const NSInteger kMinScanInterval = 3;
-static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
+static NSString *const kCourseSigninCRUDFormIdentifier = @"CourseSigninCRUDForm";
+static NSString *const kCourseSigninScanFormIdentifier = @"CourseSigninScanForm";
+
 
 @interface SigninAdminTableViewController ()
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
@@ -30,7 +33,8 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
 @property (strong, nonatomic) NSString *lastScannedResult;
 @property (assign, nonatomic) long long lastScanDate;
 @property (strong, nonatomic) TrainCourse *trainCourse;
-@property (strong, nonatomic) NSDictionary *currentTrainSingin;
+@property (strong, nonatomic) NSDictionary *currentCourseSignin;
+@property (strong, nonatomic) NSArray *CourseSigninEmployees;
 @end
 
 @implementation SigninAdminTableViewController
@@ -39,16 +43,18 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _dataList = [NSArray array];
-    _currentTrainSingin = [NSDictionary dictionary];
+    _currentCourseSignin = [NSDictionary dictionary];
+    _CourseSigninEmployees = [NSArray array];
     
     _trainCourse = [[TrainCourse alloc] initCourseData:[FileUtils shareData:@"train"]];
     self.listViewController.centerLabel.text = self.trainCourse.name;
+    
+    [self syncData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self syncData];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
 }
 
@@ -73,7 +79,6 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
     cell.delegate = self;
     
     NSDictionary *dict = _dataList[indexPath.row];
-    
     cell.titleLabel.text = dict[@"Name"];
     cell.statusLabel.text = [NSString stringWithFormat:@"%@ (%@)", dict[@"UserName"], dict[@"EmployeeId"]];
     
@@ -81,13 +86,18 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:kTrainSigninFormIdentifier]) {
+    if ([segue.identifier isEqualToString:kCourseSigninCRUDFormIdentifier]) {
         SigninFormViewController *formVC = (SigninFormViewController*)segue.destinationViewController;
         formVC.delegate    = self;
         formVC.isCreated   = [sender boolValue];
         formVC.trainCourse = self.trainCourse;
-        formVC.trainSignin = self.currentTrainSingin;
-        //formVC.listViewController = self.listViewController;
+        formVC.trainSignin = self.currentCourseSignin;
+    }
+    else if([segue.identifier isEqualToString:kCourseSigninScanFormIdentifier]) {
+        CourseSigninScanForm *formVC = (CourseSigninScanForm*)segue.destinationViewController;
+        formVC.employee = sender;
+        formVC.courseSignin = self.currentCourseSignin;
+        formVC.masterViewController = self;
     }
 }
 #pragma mark - UITableViewDelegate
@@ -98,10 +108,10 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
 
 - (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    self.currentTrainSingin = [self.dataList objectAtIndex:[indexPath row]];
+    self.currentCourseSignin = [self.dataList objectAtIndex:[indexPath row]];
     
-    if(self.currentTrainSingin[@"Id"]) {
-        [self performSegueWithIdentifier:kTrainSigninFormIdentifier sender:@NO];
+    if(self.currentCourseSignin[@"Id"]) {
+        [self performSegueWithIdentifier:kCourseSigninCRUDFormIdentifier sender:@NO];
     }
     else {
         [ViewUtils showPopupView:self.listViewController.view Info:@"缺少签到ID，请联系管理员"];
@@ -120,14 +130,18 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
 }
 
 - (void)didSelectQRCodeButtonOfCell:(ContentTableViewCell*)cell {
-    NSLog(@"didSelectQRCodeButtonOfCell");
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    self.currentCourseSignin = [self.dataList objectAtIndex:[indexPath row]];
     
-    NSLog(@"didSelectQRCodeButtonOfCell:");
-    NSLog(@"indexPath.row: %ld", (long)indexPath.row);
-    
-    // NSDictionary *content = [self.dataList objectAtIndex:indexPath.row];
-    
+    [self setupQRCodeReader];
+}
+
+- (IBAction)actionBack:(id)sender {
+    self.listViewController.listType = ListViewTypeRegistration;
+    [self.listViewController refreshContentView];
+}
+
+- (void)setupQRCodeReader {
     if ([QRCodeReader supportsMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]]) {
         static QRCodeReaderViewController *reader = nil;
         static dispatch_once_t onceToken;
@@ -146,12 +160,6 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
         [alert show];
     }
 }
-
-- (IBAction)actionBack:(id)sender {
-    self.listViewController.listType = ListViewTypeRegistration;
-    [self.listViewController refreshContentView];
-}
-
 #pragma mark - QRCodeReader Delegate Methods
 
 - (void)reader:(QRCodeReaderViewController *)reader didScanResult:(NSString *)result {
@@ -163,58 +171,87 @@ static NSString *const kTrainSigninFormIdentifier = @"SigninCRUD";
     }
     _lastScanDate = nowInterval;
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"result" message:result delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    
-    [alert show];
+
+    if(result) {
+        NSDictionary *scannedEmployee = nil;
+        for(NSDictionary *dict in self.CourseSigninEmployees) {
+            if([dict[@"EmployeeId"] isEqualToString:result]) {
+                scannedEmployee = dict;
+                break;
+            }
+        }
+        
+        if(scannedEmployee) {
+            [self dismissViewControllerAnimated:YES completion:^{
+                [self performSegueWithIdentifier:kCourseSigninScanFormIdentifier sender:scannedEmployee];
+            }];
+        }
+        else {
+            NSString *message = [NSString stringWithFormat:@"员工(%@)不在报名列表中！", result];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alert show];
+        }
+    }
+    else {
+        [ViewUtils showPopupView:self.listViewController.view Info:@"nothing"];
+    }
 }
 
-- (void)readerDidCancel:(QRCodeReaderViewController *)reader
-{
+- (void)readerDidCancel:(QRCodeReaderViewController *)reader{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - ConnectionManagerDelegate
 
-- (void)connectionManagerDidDownloadCourse:(NSString *)courseID Ext:(NSString *)extName withError:(NSError *)error {
-    [_progressHUD hide:YES];
-}
-- (void)connectionManagerDidDownloadExamsForUser:(NSString *)userId withError:(NSError *)error {
-    [_progressHUD hide:YES];
-}
-
-- (void)connectionManagerDidDownloadExam:(NSString *)examId withError:(NSError *)error {
-    [_progressHUD hide:YES];
-}
-
-- (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error {
-    [_progressHUD hide:YES];
-}
-
-- (void)connectionManagerDidUploadExamScannedResult:(NSString *)result withError:(NSError *)error {
-    [_progressHUD hide:YES];
-}
+- (void)connectionManagerDidDownloadCourse:(NSString *)courseID Ext:(NSString *)extName withError:(NSError *)error {}
+- (void)connectionManagerDidDownloadExamsForUser:(NSString *)userId withError:(NSError *)error {}
+- (void)connectionManagerDidDownloadExam:(NSString *)examId withError:(NSError *)error {}
+- (void)connectionManagerDidUploadExamResult:(NSString *)examId withError:(NSError *)error {}
+- (void)connectionManagerDidUploadExamScannedResult:(NSString *)result withError:(NSError *)error {}
 
 - (void)syncData {
+    [self syncDataWithDownloadEmployeeList:YES];
+}
+
+- (void)syncDataWithDownloadEmployeeList:(BOOL)yeath {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    
+    if(yeath) {
+        self.progressHUD.labelText = @"下载报名员工列表";
+        NSDictionary *dict = [DataHelper trainSigninUsers:YES tid:self.trainCourse.ID];
+        _CourseSigninEmployees = dict[@"traineesdata"];
+    }
+    
+    self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
     _dataList = [DataHelper trainSingins:[HttpUtils isNetworkAvailable] tid:self.trainCourse.ID];
     [self.tableView reloadData];
+    [self.progressHUD hide:YES];
+    
+
+    if(yeath && (!self.CourseSigninEmployees || [self.CourseSigninEmployees count] == 0)) {
+        [ViewUtils showPopupView:self.listViewController.view Info:@"温馨提示: 培训班员工列表为空！"];
+    }
 }
 
 /**
  *  创建签到
  */
 - (void)scanQRCode {
-    self.currentTrainSingin = [NSDictionary dictionary];
-    [self performSegueWithIdentifier:kTrainSigninFormIdentifier sender:@YES];
+    self.currentCourseSignin = [NSDictionary dictionary];
+    [self performSegueWithIdentifier:kCourseSigninCRUDFormIdentifier sender:@YES];
 }
 
 - (void)actionEdit {
-    [self syncData];
+    [self syncDataWithDownloadEmployeeList:NO];
+
 }
 - (void)actionSubmit {
-    [self syncData];
+    [self syncDataWithDownloadEmployeeList:NO];
+
 }
 - (void)actionRemove {
-    [self syncData];
+    [self syncDataWithDownloadEmployeeList:NO];
+
 }
 
 @end

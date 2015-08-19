@@ -26,10 +26,10 @@
 @property (nonatomic, strong) NSString *downloadCourse;
 // 培训报名
 @property (nonatomic, strong) NSString *trainCourses; // 报名列表
-@property (nonatomic, strong) NSString *trainSignup; // 报名POST
-@property (nonatomic, strong) NSString *trainSignins; // 培训报表签到列表
-@property (nonatomic, strong) NSString *trainSignin; // 培训报表签到CRUD
-@property (nonatomic, strong) NSString *trainSigninUsers; // 培训报表签到员工列表（所有）
-@property (nonatomic, strong) NSString *trainSigninScannedUsers; // 培训报表签到员工列表（只有含状态)
-@property (nonatomic, strong) NSString *trainSigninUser; // 点名POST
+@property (nonatomic, strong) NSString *courseSignup; // 报名POST
+@property (nonatomic, strong) NSString *courseSignins; // 培训报表签到列表
+@property (nonatomic, strong) NSString *courseSignin; // 培训报表签到CRUD
+@property (nonatomic, strong) NSString *courseSigninUsers; // 培训报表签到员工列表（所有）
+@property (nonatomic, strong) NSString *courseSigninScannedUsers; // 培训报表签到员工列表（只有含状态)
+@property (nonatomic, strong) NSString *courseSigninUser; // 点名POST
 @end

@@ -73,6 +73,9 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
     cell.titleLabel.text        = trainCourse.name;
     cell.statusLabel.text       = trainCourse.statusName;
     [cell.actionButton setTitle:trainCourse.actionButtonLabel forState:UIControlStateNormal];
+    if([trainCourse isCourse] && [cell.statusLabel.text isEqualToString:@"报名成功"]) {
+        [self enabledBtn:cell.actionButton Enabeld:NO];
+    }
     
     return cell;
 }
@@ -159,5 +162,22 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
     [self.progressHUD hide:YES];
 }
 
+
+#pragma mark - asisstant methods
+- (void)enabledBtn:(UIButton *)sender
+           Enabeld:(BOOL)enabled {
+    if(enabled == sender.enabled) return;
+    
+    sender.enabled = enabled;
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:sender.titleLabel.text];
+    NSRange strRange = {0,[str length]};
+    if(enabled) {
+        [str removeAttribute:NSStrikethroughStyleAttributeName range:strRange];
+        
+    } else {
+        [str addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+    }
+    [sender setAttributedTitle:str forState:UIControlStateNormal];
+}
 
 @end

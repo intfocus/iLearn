@@ -13,4 +13,6 @@
 
 @interface SigninAdminTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate, SigninFormViewControllerProtocol, QRCodeReaderDelegate>
 
+
+- (void)setupQRCodeReader;
 @end

@@ -14,11 +14,13 @@
 #import "ViewUtils.h"
 #import "DataHelper.h"
 #import "FileUtils.h"
+#import "const.h"
 
 @interface SigninUserTableViewController ()
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *dataList;
+@property (strong, nonatomic) NSMutableArray *stateList;
 @property (strong, nonatomic) NSString *tid;
 @property (strong, nonatomic) NSString *ciid;
 @property (nonatomic) ContentTableViewCell *currentCell;
@@ -31,6 +33,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _dataList = [NSArray array];
+    _stateList = [NSMutableArray array];
+    
     NSDictionary *dict = [FileUtils shareData:@"signin-users"];
     _tid  = dict[@"tid"];
     _ciid = dict[@"ciid"];
@@ -66,8 +70,21 @@
     
     NSDictionary *dict = _dataList[indexPath.row];
     cell.labelUserName.text   = dict[@"UserName"];
-    cell.labelEmployeeID.text = dict[@"EmployeeID"];
+    cell.labelEmployeeID.text = dict[@"EmployeeId"];
+    
+    if(self.stateList && [self.stateList count] > 0) {
+        NSDictionary *temp = [NSDictionary dictionary];
+        for(NSInteger i=0; i < [self.stateList count]; i++) {
+            temp = self.stateList[i];
+            if([dict[@"UserId"] isEqualToString:temp[@"UserId"]]) {
+                cell.choices = temp[@"Reason"];
 
+                [self.stateList removeObjectAtIndex:i];
+                break;
+            }
+        }
+    }
+ 
     return cell;
 }
 
@@ -122,6 +139,12 @@
 - (void)syncData {
     NSDictionary *dict = [DataHelper trainSigninUsers:[HttpUtils isNetworkAvailable] tid:self.tid];
     _dataList = dict[@"traineesdata"];
+    
+    NSArray *array = [DataHelper trainSigninScannedUsers:[HttpUtils isNetworkAvailable] tid:self.tid ciid:self.ciid];
+    _stateList = [NSMutableArray arrayWithArray:array];
+    
+    //NSString *scannedFileName = [NSString stringWithFormat:@"%@-%@.scanned", self.tid, self.ciid];
+    //NSString *scannedFilePath = [FileUtils dirPath:CACHE_DIRNAME FileName:scannedFileName];
     [self.tableView reloadData];
 }
 

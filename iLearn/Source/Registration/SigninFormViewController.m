@@ -139,7 +139,7 @@ typedef NS_ENUM(NSInteger, TrainSigninFormState) {
     params[@"CheckInId"]   = ID;
     params[@"Status"]      = [NSNumber numberWithInteger:postType];
     params[@"TrainingId"]  = self.trainCourse.ID;
-    HttpResponse *response = [ApiHelper trainSignin:params];
+    HttpResponse *response = [ApiHelper courseSignin:params];
     
     if([response.errors count]) {
         self.progressHUD.labelText = [response.errors componentsJoinedByString:@"\n"];

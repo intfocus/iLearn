@@ -65,7 +65,7 @@
  *
  *  @return 培训报名列表
  */
-+ (HttpResponse *)trainCourses:(NSString *)UID;
++ (HttpResponse *)courseCourses:(NSString *)UID;
 /**
  *  报名
  *
@@ -73,7 +73,7 @@
  *
  *  @return who care
  */
-+ (HttpResponse *)trainSignup:(NSMutableDictionary *)params;
++ (HttpResponse *)courseSignup:(NSMutableDictionary *)params;
 /**
  *  培训班的签到列表
  *
@@ -81,7 +81,7 @@
  *
  *  @return 培训班的签到列表
  */
-+ (HttpResponse *)trainSignins:(NSString *)tid;
++ (HttpResponse *)courseSignins:(NSString *)tid;
 
 /**
  *  培训班的签到CRUD
@@ -97,7 +97,7 @@
  *
  *  @return 服务器状态
  */
-+ (HttpResponse *)trainSignin:(NSMutableDictionary *)params;
++ (HttpResponse *)courseSignin:(NSMutableDictionary *)params;
 
 /**
  *  签到的员工列表(含状态)
@@ -107,7 +107,7 @@
  *
  *  @return 签到的员工列表
  */
-+ (HttpResponse *)trainSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid;
++ (HttpResponse *)courseSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid;
 
 /**
  *  签到的员工列表(所有)
@@ -117,7 +117,7 @@
  *
  *  @return 签到的员工列表
  */
-+ (HttpResponse *)trainSigninUsers:(NSString *)tid;
++ (HttpResponse *)courseSigninUsers:(NSString *)tid;
 /**
  *  培训班签到点名
  *
@@ -133,5 +133,5 @@
  *
  *  @return 服务器响应
  */
-+ (HttpResponse *)trainSigninUser:(NSMutableDictionary *)params;
++ (HttpResponse *)courseSigninUser:(NSMutableDictionary *)params;
 @end

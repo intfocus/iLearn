@@ -11,8 +11,10 @@
 @interface SigninUserTableViewCell : ContentTableViewCell
 @property (nonatomic, weak) IBOutlet UILabel *labelUserName;
 @property (nonatomic, weak) IBOutlet UILabel *labelEmployeeID;
-@property (nonatomic, weak) IBOutlet UISwitch *switchOne;
-@property (nonatomic, weak) IBOutlet UISwitch *switchTwo;
-@property (nonatomic, weak) IBOutlet UISwitch *switchThree;
+@property (nonatomic, weak) IBOutlet UISwitch *oneSwitch;
+@property (nonatomic, weak) IBOutlet UISwitch *twoSwitch;
+@property (nonatomic, weak) IBOutlet UISwitch *threeSwitch;
+
+@property (strong, nonatomic) NSString *choices;
 
 @end

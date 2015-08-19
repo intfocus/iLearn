@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9E68D22279AD2B12DB817E6E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E92B1ED4A0E3997FEF469AD5 /* libPods.a */; };
-		C41CDE3B1B8341D500DC8882 /* TrainCourseScanForm.m in Sources */ = {isa = PBXBuildFile; fileRef = C41CDE3A1B8341D500DC8882 /* TrainCourseScanForm.m */; };
+		C41CDE3B1B8341D500DC8882 /* CourseSigninScanForm.m in Sources */ = {isa = PBXBuildFile; fileRef = C41CDE3A1B8341D500DC8882 /* CourseSigninScanForm.m */; };
 		C42611281B5FA0FD006786CD /* UploadExamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42611261B5FA0FD006786CD /* UploadExamViewController.m */; };
 		C452E1C51B6B82600024A950 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C452E1BD1B6B82600024A950 /* DisplayViewController.m */; };
 		C452E1C61B6B82600024A950 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C452E1BE1B6B82600024A950 /* DisplayViewController.xib */; };
@@ -67,6 +67,7 @@
 		C4BFC0981B7DCEAE00C1DBEA /* RegistrationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BFC0971B7DCEAE00C1DBEA /* RegistrationTableViewCell.m */; };
 		C4BFC09A1B7DCEE100C1DBEA /* Registration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4BFC0991B7DCEE100C1DBEA /* Registration.storyboard */; };
 		C4BFC09E1B7DE69700C1DBEA /* TrainCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BFC09D1B7DE69700C1DBEA /* TrainCourse.m */; };
+		C4D0D9D51B84973200F1C067 /* CourseSignin.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D0D9D41B84973200F1C067 /* CourseSignin.m */; };
 		C4D4F7C11B6A42AF00C435C4 /* CoursePackageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */; };
 		C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */; };
 		C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */; };
@@ -128,8 +129,8 @@
 
 /* Begin PBXFileReference section */
 		A5051085F083B61256CF0478 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		C41CDE391B8341D500DC8882 /* TrainCourseScanForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrainCourseScanForm.h; path = iLearn/Source/Registration/TrainCourseScanForm.h; sourceTree = SOURCE_ROOT; };
-		C41CDE3A1B8341D500DC8882 /* TrainCourseScanForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TrainCourseScanForm.m; path = iLearn/Source/Registration/TrainCourseScanForm.m; sourceTree = SOURCE_ROOT; };
+		C41CDE391B8341D500DC8882 /* CourseSigninScanForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CourseSigninScanForm.h; path = iLearn/Source/Registration/CourseSigninScanForm.h; sourceTree = SOURCE_ROOT; };
+		C41CDE3A1B8341D500DC8882 /* CourseSigninScanForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CourseSigninScanForm.m; path = iLearn/Source/Registration/CourseSigninScanForm.m; sourceTree = SOURCE_ROOT; };
 		C42611261B5FA0FD006786CD /* UploadExamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UploadExamViewController.m; path = iLearn/Source/SubjectView/UploadExamViewController.m; sourceTree = SOURCE_ROOT; };
 		C42611271B5FA0FD006786CD /* UploadExamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadExamViewController.h; path = iLearn/Source/SubjectView/UploadExamViewController.h; sourceTree = SOURCE_ROOT; };
 		C452E1BC1B6B82600024A950 /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
@@ -225,6 +226,8 @@
 		C4BFC0991B7DCEE100C1DBEA /* Registration.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Registration.storyboard; sourceTree = "<group>"; };
 		C4BFC09C1B7DE69700C1DBEA /* TrainCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrainCourse.h; sourceTree = "<group>"; };
 		C4BFC09D1B7DE69700C1DBEA /* TrainCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrainCourse.m; sourceTree = "<group>"; };
+		C4D0D9D31B84973200F1C067 /* CourseSignin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseSignin.h; sourceTree = "<group>"; };
+		C4D0D9D41B84973200F1C067 /* CourseSignin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseSignin.m; sourceTree = "<group>"; };
 		C4D4F7BF1B6A42AF00C435C4 /* CoursePackageContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackageContent.h; sourceTree = "<group>"; };
 		C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackageContent.m; sourceTree = "<group>"; };
 		C4D4F7C21B6A470E00C435C4 /* CoursePackageContent+CoursePackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoursePackageContent+CoursePackage.h"; sourceTree = "<group>"; };
@@ -366,13 +369,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C41CDE381B8341B800DC8882 /* ScannForm */ = {
+		C41CDE381B8341B800DC8882 /* Level-2-ScanForm */ = {
 			isa = PBXGroup;
 			children = (
-				C41CDE391B8341D500DC8882 /* TrainCourseScanForm.h */,
-				C41CDE3A1B8341D500DC8882 /* TrainCourseScanForm.m */,
+				C41CDE391B8341D500DC8882 /* CourseSigninScanForm.h */,
+				C41CDE3A1B8341D500DC8882 /* CourseSigninScanForm.m */,
 			);
-			name = ScannForm;
+			name = "Level-2-ScanForm";
 			sourceTree = "<group>";
 		};
 		C42611291B5FA16A006786CD /* StoryBoards */ = {
@@ -389,6 +392,7 @@
 		C4357C461B39706300854524 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C4D0D9D21B84971C00F1C067 /* CourseSignin */,
 				C4BFC09B1B7DE68800C1DBEA /* TrainCourse */,
 				C4DC38591B6DBC4F00AC0C20 /* CourseWrap */,
 				C4D4F7C51B6A491900C435C4 /* CoursePackageDetail */,
@@ -630,11 +634,9 @@
 		C4BFC0921B7DCE0500C1DBEA /* Registration */ = {
 			isa = PBXGroup;
 			children = (
-				C41CDE381B8341B800DC8882 /* ScannForm */,
-				C4FE14EF1B82D83D0095892E /* trainSignin */,
-				C4FE14F01B82D8550095892E /* trainSigninAdmin */,
-				C4FE14F11B82D8670095892E /* trainSignUsers */,
-				C4FE14F21B82D8770095892E /* trainSignForm */,
+				C4FE14EF1B82D83D0095892E /* Level-1-TrainCourse */,
+				C4FE14F01B82D8550095892E /* Level-2-CourseSignin */,
+				C4FE14F11B82D8670095892E /* Level-3-EmployeeLisst */,
 			);
 			name = Registration;
 			path = Source/registration;
@@ -647,6 +649,15 @@
 				C4BFC09D1B7DE69700C1DBEA /* TrainCourse.m */,
 			);
 			path = TrainCourse;
+			sourceTree = "<group>";
+		};
+		C4D0D9D21B84971C00F1C067 /* CourseSignin */ = {
+			isa = PBXGroup;
+			children = (
+				C4D0D9D31B84973200F1C067 /* CourseSignin.h */,
+				C4D0D9D41B84973200F1C067 /* CourseSignin.m */,
+			);
+			path = CourseSignin;
 			sourceTree = "<group>";
 		};
 		C4D4F7BE1B6A429800C435C4 /* CoursePackageContent */ = {
@@ -680,7 +691,7 @@
 			path = CourseWrap;
 			sourceTree = "<group>";
 		};
-		C4FE14EF1B82D83D0095892E /* trainSignin */ = {
+		C4FE14EF1B82D83D0095892E /* Level-1-TrainCourse */ = {
 			isa = PBXGroup;
 			children = (
 				C4BFC0931B7DCE4900C1DBEA /* RegistrationTableViewController.h */,
@@ -688,21 +699,23 @@
 				C4BFC0961B7DCEAE00C1DBEA /* RegistrationTableViewCell.h */,
 				C4BFC0971B7DCEAE00C1DBEA /* RegistrationTableViewCell.m */,
 			);
-			name = trainSignin;
+			name = "Level-1-TrainCourse";
 			sourceTree = "<group>";
 		};
-		C4FE14F01B82D8550095892E /* trainSigninAdmin */ = {
+		C4FE14F01B82D8550095892E /* Level-2-CourseSignin */ = {
 			isa = PBXGroup;
 			children = (
+				C4FE14F21B82D8770095892E /* Level-2-SigninCRUDForm */,
+				C41CDE381B8341B800DC8882 /* Level-2-ScanForm */,
 				C4BD421C1B817A6D00083F11 /* SigninAdminTableViewController.h */,
 				C4BD421D1B817A6D00083F11 /* SigninAdminTableViewController.m */,
 				C4BD421F1B817C1E00083F11 /* SigninAdminTableViewCell.h */,
 				C4BD42201B817C1E00083F11 /* SigninAdminTableViewCell.m */,
 			);
-			name = trainSigninAdmin;
+			name = "Level-2-CourseSignin";
 			sourceTree = "<group>";
 		};
-		C4FE14F11B82D8670095892E /* trainSignUsers */ = {
+		C4FE14F11B82D8670095892E /* Level-3-EmployeeLisst */ = {
 			isa = PBXGroup;
 			children = (
 				C4BD42221B81902C00083F11 /* SigninUserTableViewController.h */,
@@ -710,16 +723,16 @@
 				C4BD42251B81904100083F11 /* SigninUserTableViewCell.h */,
 				C4BD42261B81904100083F11 /* SigninUserTableViewCell.m */,
 			);
-			name = trainSignUsers;
+			name = "Level-3-EmployeeLisst";
 			sourceTree = "<group>";
 		};
-		C4FE14F21B82D8770095892E /* trainSignForm */ = {
+		C4FE14F21B82D8770095892E /* Level-2-SigninCRUDForm */ = {
 			isa = PBXGroup;
 			children = (
 				C4BD42281B81CA2B00083F11 /* SigninFormViewController.h */,
 				C4BD42291B81CA2B00083F11 /* SigninFormViewController.m */,
 			);
-			name = trainSignForm;
+			name = "Level-2-SigninCRUDForm";
 			sourceTree = "<group>";
 		};
 		CB2BAB0F1B348C9800D523EB /* Login */ = {
@@ -1151,6 +1164,7 @@
 				C4BD42211B817C1E00083F11 /* SigninAdminTableViewCell.m in Sources */,
 				CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */,
 				C49731B71B6789C40014048B /* DateUtils.m in Sources */,
+				C4D0D9D51B84973200F1C067 /* CourseSignin.m in Sources */,
 				CB3512281B47F06500025B5B /* ExamViewController.m in Sources */,
 				C49731B41B6789C40014048B /* CacheHelper.m in Sources */,
 				C4BFC0981B7DCEAE00C1DBEA /* RegistrationTableViewCell.m in Sources */,
@@ -1178,7 +1192,7 @@
 				C4BFC0951B7DCE4900C1DBEA /* RegistrationTableViewController.m in Sources */,
 				C4BD421E1B817A6D00083F11 /* SigninAdminTableViewController.m in Sources */,
 				C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */,
-				C41CDE3B1B8341D500DC8882 /* TrainCourseScanForm.m in Sources */,
+				C41CDE3B1B8341D500DC8882 /* CourseSigninScanForm.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
 				C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */,
 				CB3512321B47F0B200025B5B /* ConnectionManager.m in Sources */,
@@ -1359,8 +1373,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1380,8 +1394,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

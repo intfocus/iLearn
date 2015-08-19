@@ -228,7 +228,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 }
             }
             else {
-                [ViewUtils showPopupView:self.listViewController.view Info:@"请联系管理员，一级目录应该全为课程包."];
+                [ViewUtils showPopupView:self.listViewController.view Info:@"请联系管理员，一级目录应全为课程包."];
             }
         }
         
@@ -318,14 +318,11 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if([HttpUtils isNetworkAvailable]) {
-            if(depth == 3) {
-                NSArray *array = [DataHelper coursePackageContent:YES pid:self.lastCoursePackage.ID];
-                if([array count] > 0) {
-                    _dataList = array;
-                    [self.tableView reloadData];
-                }
-            
+        if(depth == 3 && [HttpUtils isNetworkAvailable]) {
+            NSArray *array = [DataHelper coursePackageContent:YES pid:self.lastCoursePackage.ID];
+            if([array count] > 0) {
+                _dataList = array;
+                [self.tableView reloadData];
             }
         }
         [_progressHUD hide:YES];
