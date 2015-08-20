@@ -152,7 +152,7 @@
  */
 + (NSMutableDictionary *)trainSignins:(NSString *)tid {
     NSString *cachePath = [self cachePath:@"train" Type:@"signins" ID:tid];
-    cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/signins.json"];
+    //cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/signins.json"];
     
     NSMutableDictionary *singins = [NSMutableDictionary dictionary];
     if([FileUtils checkFileExist:cachePath isDir:NO]) {

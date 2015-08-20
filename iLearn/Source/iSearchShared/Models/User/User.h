@@ -49,5 +49,8 @@
 + (NSString *)deptID;
 
 - (BOOL)isEverLogin;
+
+- (void)userIDmapEmployeeID:(NSMutableDictionary *)mapDict;
+- (NSMutableDictionary *)userIDmapEmployeeID;
 @end
 #endif

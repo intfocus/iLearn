@@ -24,8 +24,8 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
     CourseSigninTypeLeaveEarly = 2
 };
 @interface CourseSigninScanForm ()
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *employeeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *employeeNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *employeeIDLabel;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIButton *actionButton;
 @property (weak, nonatomic) IBOutlet UISwitch *oneSwitch;
@@ -43,9 +43,9 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _courseID = self.courseSignin[@"TrainingId"];
-    _signinID = self.courseSignin[@"Id"];
-    _employee = self.employee[@"EmployeeId"];
+    _courseID   = self.courseSignin[@"TrainingId"];
+    _signinID   = self.courseSignin[@"Id"];
+    _employeeID = self.employee[@"EmployeeId"];
     
     UISwitch *control;
     NSArray *controls = @[_oneSwitch, _twoSwitch, _threeSwitch];
@@ -58,12 +58,20 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
     self.choices = [CourseSignin findChoices:self.employeeID
                                     courseID:self.courseID
                                     signinID:self.signinID];
+    // 默认[签到]
+    if([self.choices length] == 0) {
+        self.choices = @"0";
+    }
     
     NSArray *choosed = [self.choices componentsSeparatedByString:@","];
+    
     for(control in controls) {
         BOOL isChoosed = [choosed containsObject:[NSString stringWithFormat:@"%li", (long)control.tag]];
         [control setOn:isChoosed];
     }
+    
+    self.employeeNameLabel.text = [NSString stringWithFormat:@"%@", self.employee[@"UserName"]];// make sure display "(null)" when nil
+    self.employeeIDLabel.text   = [NSString stringWithFormat:@"%@", self.employee[@"EmployeeId"]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -134,14 +142,4 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
                      createrID:createrID];
     
 }
-
-#pragma mark - rewrite setter
-
-- (void)setEmployee:(NSDictionary *)employee {
-    self.nameLabel.text     = [NSString stringWithFormat:@"%@", employee[@"UserName"]];// make sure display "(null)" when nil
-    self.employeeLabel.text = [NSString stringWithFormat:@"%@", employee[@"EmployeeId"]];
-    
-    _employee = employee;
-}
-
 @end

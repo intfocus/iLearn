@@ -319,11 +319,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if(depth == 3 && [HttpUtils isNetworkAvailable]) {
-            NSArray *array = [DataHelper coursePackageContent:YES pid:self.lastCoursePackage.ID];
-            if([array count] > 0) {
-                _dataList = array;
-                [self.tableView reloadData];
-            }
+            _dataList = [DataHelper coursePackageContent:YES pid:self.lastCoursePackage.ID];
+            [self.tableView reloadData];
         }
         [_progressHUD hide:YES];
     });

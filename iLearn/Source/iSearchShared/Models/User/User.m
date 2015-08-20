@@ -100,4 +100,20 @@
 - (BOOL)isEverLogin {
     return self.loginLast;
 }
+
+
+- (void)userIDmapEmployeeID:(NSMutableDictionary *)mapDict {
+    NSString *mapPath = [FileUtils dirPath:CACHE_DIRNAME FileName:@"userID-employeeID.map"];
+    
+    [FileUtils writeJSON:mapDict Into:mapPath];
+}
+- (NSMutableDictionary *)userIDmapEmployeeID {
+    NSString *mapPath = [FileUtils dirPath:CACHE_DIRNAME FileName:@"userID-employeeID.map"];
+    NSMutableDictionary *mapDict = [NSMutableDictionary dictionary];
+    if([FileUtils checkFileExist:mapPath isDir:NO]) {
+        mapDict = [FileUtils readConfigFile:mapPath];
+    }
+    
+    return mapDict;
+}
 @end

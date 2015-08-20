@@ -76,11 +76,11 @@
     cell.signinID      = self.signinID;
     
     if(self.stateList && [self.stateList count] > 0) {
-        NSDictionary *temp = [NSDictionary dictionary];
+        CourseSignin *courseSignin;
         for(NSInteger i=0; i < [self.stateList count]; i++) {
-            temp = self.stateList[i];
-            if([dict[@"UserId"] isEqualToString:temp[@"UserId"]]) {
-                cell.choices = temp[@"Reason"];
+            courseSignin = [[CourseSignin alloc] initLocalData:self.stateList[i]];
+            if([courseSignin.employeeID isEqualToString:dict[@"EmployeeId"]]) {
+                cell.choices = courseSignin.choices;
 
                 [self.stateList removeObjectAtIndex:i];
                 break;

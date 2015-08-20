@@ -35,6 +35,7 @@ static NSString *const kCourseSigninScanFormIdentifier = @"CourseSigninScanForm"
 @property (strong, nonatomic) TrainCourse *trainCourse;
 @property (strong, nonatomic) NSDictionary *currentCourseSignin;
 @property (strong, nonatomic) NSArray *CourseSigninEmployees;
+@property (weak, nonatomic) UIAlertView *lastAlertView;
 @end
 
 @implementation SigninAdminTableViewController
@@ -95,8 +96,8 @@ static NSString *const kCourseSigninScanFormIdentifier = @"CourseSigninScanForm"
     }
     else if([segue.identifier isEqualToString:kCourseSigninScanFormIdentifier]) {
         CourseSigninScanForm *formVC = (CourseSigninScanForm*)segue.destinationViewController;
-        formVC.employee = sender;
-        formVC.courseSignin = self.currentCourseSignin;
+        formVC.employee             = sender;
+        formVC.courseSignin         = self.currentCourseSignin;
         formVC.masterViewController = self;
     }
 }
@@ -171,6 +172,9 @@ static NSString *const kCourseSigninScanFormIdentifier = @"CourseSigninScanForm"
     }
     _lastScanDate = nowInterval;
     
+    if (_lastAlertView) {
+        [_lastAlertView dismissWithClickedButtonIndex:0 animated:YES];
+    }
 
     if(result) {
         NSDictionary *scannedEmployee = nil;
@@ -189,7 +193,9 @@ static NSString *const kCourseSigninScanFormIdentifier = @"CourseSigninScanForm"
         else {
             NSString *message = [NSString stringWithFormat:@"员工(%@)不在报名列表中！", result];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            _lastAlertView = alert;
             [alert show];
+            return;
         }
     }
     else {
@@ -210,27 +216,54 @@ static NSString *const kCourseSigninScanFormIdentifier = @"CourseSigninScanForm"
 - (void)connectionManagerDidUploadExamScannedResult:(NSString *)result withError:(NSError *)error {}
 
 - (void)syncData {
-    [self syncDataWithDownloadEmployeeList:YES];
+    [self syncDataMore];
 }
 
-- (void)syncDataWithDownloadEmployeeList:(BOOL)yeath {
+- (void)syncDataLess {
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    
-    if(yeath) {
-        self.progressHUD.labelText = @"下载报名员工列表";
-        NSDictionary *dict = [DataHelper trainSigninUsers:YES tid:self.trainCourse.ID];
-        _CourseSigninEmployees = dict[@"traineesdata"];
-    }
-    
     self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
-    _dataList = [DataHelper trainSingins:[HttpUtils isNetworkAvailable] courseID:self.trainCourse.ID];
+    
+    _dataList = [DataHelper trainSingins:NO courseID:self.trainCourse.ID];
     [self.tableView reloadData];
-    [self.progressHUD hide:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if([HttpUtils isNetworkAvailable]) {
+            _dataList = [DataHelper trainSingins:YES courseID:self.trainCourse.ID];
+            [self.tableView reloadData];
+        }
+        
+        [self.progressHUD hide:YES];
+    });
+}
+
+- (void)syncDataMore {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    self.progressHUD.labelText = @"下载报名员工列表";
+    
+    NSDictionary *dict = [DataHelper trainSigninUsers:NO tid:self.trainCourse.ID];
+    _CourseSigninEmployees = dict[@"traineesdata"];
+
+    self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    _dataList = [DataHelper trainSingins:NO courseID:self.trainCourse.ID];
+    [self.tableView reloadData];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if([HttpUtils isNetworkAvailable]) {
+            NSDictionary *dict = [DataHelper trainSigninUsers:YES tid:self.trainCourse.ID];
+            _CourseSigninEmployees = dict[@"traineesdata"];
+            
+            self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+            _dataList = [DataHelper trainSingins:YES courseID:self.trainCourse.ID];
+            [self.tableView reloadData];
+        }
+        
+        if((!self.CourseSigninEmployees || [self.CourseSigninEmployees count] == 0)) {
+            [ViewUtils showPopupView:self.listViewController.view Info:@"温馨提示: 培训班员工列表为空！"];
+        }
+        [self.progressHUD hide:YES];
+    });
     
 
-    if(yeath && (!self.CourseSigninEmployees || [self.CourseSigninEmployees count] == 0)) {
-        [ViewUtils showPopupView:self.listViewController.view Info:@"温馨提示: 培训班员工列表为空！"];
-    }
 }
 
 /**
@@ -242,15 +275,14 @@ static NSString *const kCourseSigninScanFormIdentifier = @"CourseSigninScanForm"
 }
 
 - (void)actionEdit {
-    [self syncDataWithDownloadEmployeeList:NO];
-
+    [self syncDataLess];
 }
 - (void)actionSubmit {
-    [self syncDataWithDownloadEmployeeList:NO];
+    [self syncDataLess];
 
 }
 - (void)actionRemove {
-    [self syncDataWithDownloadEmployeeList:NO];
+    [self syncDataLess];
 
 }
 

@@ -156,10 +156,16 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
     
-    _dataList = [DataHelper trainCourses:YES];
+    _dataList = [DataHelper trainCourses:NO];
     [self.tableView reloadData];
     
-    [self.progressHUD hide:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if([HttpUtils isNetworkAvailable]) {
+            _dataList = [DataHelper trainCourses:YES];
+            [self.tableView reloadData];
+        }
+        [self.progressHUD hide:YES];
+    });
 }
 
 
