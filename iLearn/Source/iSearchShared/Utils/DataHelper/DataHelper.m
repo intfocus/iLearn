@@ -246,11 +246,9 @@
         [CacheHelper writeTrainSigninScannedUsers:trainSigninUsers courseID:tid signinID:ciid];
         [CourseSignin serverDataToLocal:trainSigninUsers courseID:tid signinID:ciid];
     }
-    else {
-        // trainSigninUsers = [CacheHelper trainSigninScannedUsers:tid signinID:ciid];
-        dataLits = [CourseSignin scannedUsers:tid signinID:ciid];
-    }
-    
+    // trainSigninUsers = [CacheHelper trainSigninScannedUsers:tid signinID:ciid];
+    dataLits = [CourseSignin scannedUsers:tid signinID:ciid];
+
     return dataLits;
 }
 
