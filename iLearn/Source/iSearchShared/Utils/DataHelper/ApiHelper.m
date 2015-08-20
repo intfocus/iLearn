@@ -139,7 +139,7 @@
  *
  *  @return 签到的员工列表
  */
-+ (HttpResponse *)courseSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid {
++ (HttpResponse *)courseSigninScannedUsers:(NSString *)tid signinID:(NSString *)ciid {
     NSString *urlString = [Url trainSigninScannedUsers:tid ciid:ciid];
     return [HttpUtils httpGet:urlString];
 }

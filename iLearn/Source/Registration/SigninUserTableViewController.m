@@ -15,14 +15,16 @@
 #import "DataHelper.h"
 #import "FileUtils.h"
 #import "const.h"
+#import "CourseSignin.h"
+#import "User.h"
 
 @interface SigninUserTableViewController ()
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *dataList;
 @property (strong, nonatomic) NSMutableArray *stateList;
-@property (strong, nonatomic) NSString *tid;
-@property (strong, nonatomic) NSString *ciid;
+@property (strong, nonatomic) NSString *courseID;
+@property (strong, nonatomic) NSString *signinID;
 @property (nonatomic) ContentTableViewCell *currentCell;
 
 @end
@@ -36,8 +38,8 @@
     _stateList = [NSMutableArray array];
     
     NSDictionary *dict = [FileUtils shareData:@"signin-users"];
-    _tid  = dict[@"tid"];
-    _ciid = dict[@"ciid"];
+    _courseID = dict[@"tid"];
+    _signinID = dict[@"ciid"];
     self.listViewController.centerLabel.text = dict[@"name"];
 }
 
@@ -52,7 +54,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 #pragma mark - UITableViewDataSource
 
@@ -69,8 +70,10 @@
     cell.delegate = self;
     
     NSDictionary *dict = _dataList[indexPath.row];
-    cell.labelUserName.text   = dict[@"UserName"];
-    cell.labelEmployeeID.text = dict[@"EmployeeId"];
+    cell.employeeName  = dict[@"UserName"];
+    cell.employeeID    = dict[@"EmployeeId"];
+    cell.courseID      = self.courseID;
+    cell.signinID      = self.signinID;
     
     if(self.stateList && [self.stateList count] > 0) {
         NSDictionary *temp = [NSDictionary dictionary];
@@ -137,21 +140,25 @@
 }
 
 - (void)syncData {
-    NSDictionary *dict = [DataHelper trainSigninUsers:[HttpUtils isNetworkAvailable] tid:self.tid];
-    _dataList = dict[@"traineesdata"];
-    
-    NSArray *array = [DataHelper trainSigninScannedUsers:[HttpUtils isNetworkAvailable] tid:self.tid ciid:self.ciid];
+    NSDictionary *dict = [DataHelper trainSigninUsers:NO tid:self.courseID];
+    _dataList = (NSArray *)psd(dict[@"traineesdata"], @[]);
+    NSArray *array = [DataHelper trainSigninScannedUsers:NO courseID:self.courseID signinID:self.signinID];
     _stateList = [NSMutableArray arrayWithArray:array];
-    
-    //NSString *scannedFileName = [NSString stringWithFormat:@"%@-%@.scanned", self.tid, self.ciid];
-    //NSString *scannedFilePath = [FileUtils dirPath:CACHE_DIRNAME FileName:scannedFileName];
     [self.tableView reloadData];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if([HttpUtils isNetworkAvailable]) {
+            NSDictionary *dict = [DataHelper trainSigninUsers:YES tid:self.courseID];
+            _dataList = (NSArray *)psd(dict[@"traineesdata"], @[]);
+            
+            [CourseSignin postToServer:self.courseID signinID:self.signinID createrID:[User userID]];
+            NSArray *array = [DataHelper trainSigninScannedUsers:YES courseID:self.courseID signinID:self.signinID];
+            _stateList = [NSMutableArray arrayWithArray:array];
+            
+            [self.tableView reloadData];
+        }
+        [_progressHUD hide:YES];
+    });
 }
 
-/**
- *  创建签到
- */
-- (void)scanQRCode {
-    NSLog(@"Hello create signin");
-}
 @end

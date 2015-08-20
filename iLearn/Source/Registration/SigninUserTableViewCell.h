@@ -9,11 +9,12 @@
 #import "ContentTableViewCell.h"
 
 @interface SigninUserTableViewCell : ContentTableViewCell
-@property (nonatomic, weak) IBOutlet UILabel *labelUserName;
-@property (nonatomic, weak) IBOutlet UILabel *labelEmployeeID;
-@property (nonatomic, weak) IBOutlet UISwitch *oneSwitch;
-@property (nonatomic, weak) IBOutlet UISwitch *twoSwitch;
-@property (nonatomic, weak) IBOutlet UISwitch *threeSwitch;
+
+@property (strong, nonatomic) NSString *employeeID;
+@property (strong, nonatomic) NSString *employeeName;
+@property (strong, nonatomic) NSString *courseID;
+@property (strong, nonatomic) NSString *signinID;
+//@property (strong, nonatomic) NSString *userID; // 签到创建者ID
 
 @property (strong, nonatomic) NSString *choices;
 

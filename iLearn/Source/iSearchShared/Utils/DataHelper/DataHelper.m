@@ -23,6 +23,7 @@
 #import "CoursePackageDetail.h"
 #import "CourseWrap+CoursePackageDetail.h"
 #import "TrainCourse.h"
+#import "CourseSignin.h"
 
 @interface DataHelper()
 @property (nonatomic, strong) NSMutableArray *visitData;
@@ -205,14 +206,14 @@
  *
  *  @return 课程的签到列表
  */
-+ (NSArray *)trainSingins:(BOOL)isNetworkAvailable tid:(NSString *)tid {
++ (NSArray *)trainSingins:(BOOL)isNetworkAvailable courseID:(NSString *)tid {
     NSMutableDictionary *signins = [NSMutableDictionary dictionary];
     
     if(isNetworkAvailable) {
         HttpResponse *response = [ApiHelper courseSignins:tid];;
         signins = response.data;
         
-        [CacheHelper writeTrainSignins:signins tid:tid];
+        [CacheHelper writeTrainSignins:signins courseID:tid];
     }
     else {
         signins = [CacheHelper trainSignins:tid];
@@ -231,20 +232,26 @@
  *
  *  @return 课程的签到列表
  */
-+ (NSArray *)trainSigninScannedUsers:(BOOL)isNetworkAvailable tid:(NSString *)tid ciid:(NSString *)ciid {
++ (NSArray *)trainSigninScannedUsers:(BOOL)isNetworkAvailable
+                            courseID:(NSString *)tid
+                            signinID:(NSString *)ciid {
     NSMutableDictionary *trainSigninUsers = [NSMutableDictionary dictionary];
+    NSArray *dataLits = [NSArray array];
     
     if(isNetworkAvailable) {
-        HttpResponse *response = [ApiHelper courseSigninScannedUsers:tid ciid:ciid];;
+        HttpResponse *response = [ApiHelper courseSigninScannedUsers:tid signinID:ciid];
         trainSigninUsers = response.data;
+        dataLits = trainSigninUsers[@"traineesdata"];
         
-        [CacheHelper writeTrainSigninScannedUsers:trainSigninUsers tid:tid ciid:ciid];
+        [CacheHelper writeTrainSigninScannedUsers:trainSigninUsers courseID:tid signinID:ciid];
+        [CourseSignin serverDataToLocal:trainSigninUsers courseID:tid signinID:ciid];
     }
     else {
-        trainSigninUsers = [CacheHelper trainSigninScannedUsers:tid ciid:ciid];
+        // trainSigninUsers = [CacheHelper trainSigninScannedUsers:tid signinID:ciid];
+        dataLits = [CourseSignin scannedUsers:tid signinID:ciid];
     }
     
-    return trainSigninUsers[@"traineesdata"];
+    return dataLits;
 }
 
 /**
@@ -263,7 +270,7 @@
         HttpResponse *response = [ApiHelper courseSigninUsers:tid];;
         trainSigninUsers = response.data;
         
-        [CacheHelper writeTrainSigninUsers:trainSigninUsers tid:tid];
+        [CacheHelper writeTrainSigninUsers:trainSigninUsers courseID:tid];
     }
     else {
         trainSigninUsers = [CacheHelper trainSigninUsers:tid];
@@ -282,6 +289,8 @@
     param[@"UserId"]     = [User userID];
     param[@"TrainingId"] = TID;
     HttpResponse *response = [ApiHelper courseSignup:param];
+    NSString *log = [NSString stringWithFormat:@"userID: %@, courseID: %@, httpStatusCode:%@, response: %@", param[@"UserId"], param[@"TrainingId"], response.statusCode, response.string];
+    ActionLogRecord(@"课程报名", log);
 }
 
 #pragma mark - assistant methods

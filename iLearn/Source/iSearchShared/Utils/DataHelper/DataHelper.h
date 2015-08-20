@@ -79,7 +79,7 @@
  *
  *  @return 课程的签到列表
  */
-+ (NSArray *)trainSingins:(BOOL)isNetworkAvailable tid:(NSString *)tid;
++ (NSArray *)trainSingins:(BOOL)isNetworkAvailable courseID:(NSString *)tid;
 
 /**
  *  报名POST
@@ -97,7 +97,7 @@
  *
  *  @return 课程的签到列表
  */
-+ (NSArray *)trainSigninScannedUsers:(BOOL)isNetworkAvailable tid:(NSString *)tid ciid:(NSString *)ciid;
++ (NSArray *)trainSigninScannedUsers:(BOOL)isNetworkAvailable courseID:(NSString *)tid signinID:(NSString *)ciid;
 
 /**
  *  某课程的签到学员列表(所有)

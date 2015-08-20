@@ -223,7 +223,7 @@ static NSString *const kCourseSigninScanFormIdentifier = @"CourseSigninScanForm"
     }
     
     self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
-    _dataList = [DataHelper trainSingins:[HttpUtils isNetworkAvailable] tid:self.trainCourse.ID];
+    _dataList = [DataHelper trainSingins:[HttpUtils isNetworkAvailable] courseID:self.trainCourse.ID];
     [self.tableView reloadData];
     [self.progressHUD hide:YES];
     

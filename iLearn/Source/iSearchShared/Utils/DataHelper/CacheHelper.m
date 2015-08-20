@@ -137,7 +137,7 @@
  *  @param trainSignins 某培训班的签到列表
  *  @param tid          某培训班的ID
  */
-+ (void)writeTrainSignins:(NSMutableDictionary *)trainSignins tid:(NSString *)tid {
++ (void)writeTrainSignins:(NSMutableDictionary *)trainSignins courseID:(NSString *)tid {
     if(!trainSignins)  return;
     
     NSString *cachePath = [self cachePath:@"train" Type:@"signins" ID:tid];
@@ -169,7 +169,7 @@
  *  @param tid              培训班ID
  *  @param ciid             签到ID
  */
-+ (void)writeTrainSigninScannedUsers:(NSMutableDictionary *)trainSigninUsers tid:(NSString *)tid ciid:(NSString *)ciid {
++ (void)writeTrainSigninScannedUsers:(NSMutableDictionary *)trainSigninUsers courseID:(NSString *)tid signinID:(NSString *)ciid {
     if(!trainSigninUsers)  return;
     
     NSString *cachePath = [self cachePath:@"train_signin_users" Type:tid ID:ciid];
@@ -184,7 +184,7 @@
  *
  *  @return 课程的签到列表
  */
-+ (NSMutableDictionary *)trainSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid {
++ (NSMutableDictionary *)trainSigninScannedUsers:(NSString *)tid signinID:(NSString *)ciid {
     NSString *cachePath = [self cachePath:@"train_signin_users" Type:tid ID:ciid];
     //cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/users.json"];
     
@@ -201,7 +201,7 @@
  *  @param trainSigninUsers 签到员工列表
  *  @param tid              培训班ID
  */
-+ (void)writeTrainSigninUsers:(NSMutableDictionary *)trainSigninUsers tid:(NSString *)tid {
++ (void)writeTrainSigninUsers:(NSMutableDictionary *)trainSigninUsers courseID:(NSString *)tid {
     if(!trainSigninUsers)  return;
     
     NSString *cachePath = [self cachePath:@"train_signin_users" Type:@"all" ID:tid];

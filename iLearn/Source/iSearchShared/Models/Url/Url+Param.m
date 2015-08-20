@@ -133,7 +133,7 @@
  *  @return 签到列表
  */
 + (NSString *)trainSignins:(NSString *)tid {
-    NSString *urlString  = [[Url alloc] init].trainSignins;
+    NSString *urlString  = [[Url alloc] init].courseSignins;
     NSDictionary *params = @{@"tid":tid};
     
     return [Url UrlConcate:urlString Param:params];
@@ -148,7 +148,7 @@
  *  @return 签到的员工列表
  */
 + (NSString *)trainSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid {
-    NSString *urlString  = [[Url alloc] init].trainSigninScannedUsers;
+    NSString *urlString  = [[Url alloc] init].courseSigninScannedUsers;
     NSDictionary *params = @{@"tid":tid, @"ciid":ciid};
     
     return [Url UrlConcate:urlString Param:params];
@@ -161,7 +161,7 @@
  *  @return 签到的员工列表
  */
 + (NSString *)trainSigninUsers:(NSString *)tid {
-    NSString *urlString  = [[Url alloc] init].trainSigninUsers;
+    NSString *urlString  = [[Url alloc] init].courseSigninUsers;
     NSDictionary *params = @{@"tid":tid};
     
     return [Url UrlConcate:urlString Param:params];

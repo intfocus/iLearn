@@ -125,6 +125,13 @@ BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionNam
 
 #pragma mark - ActionLog
 
+NSString* escape(NSString *source) {
+    NSMutableString *string = [NSMutableString stringWithString:source];
+    [string replaceOccurrencesOfString:@"\\" withString:@" " options:1 range:NSMakeRange(0, string.length)];
+    [string replaceOccurrencesOfString:@"\'" withString:@" " options:1 range:NSMakeRange(0, string.length)];
+    return [NSString stringWithString:string];
+}
+
 /**
  * 需要post的数据为：
  * UserId        用户编号
@@ -137,10 +144,10 @@ BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionNam
 void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSString *actRet) {
     @try {
         NSString *funInfo = [NSString stringWithFormat:@"%@, %s, %i", [[NSString stringWithUTF8String:sourceFile] lastPathComponent], functionName, lineNumber];
-        [[[DatabaseUtils alloc] init] insertActionLog:funInfo
-                                              ActName:actName
-                                               ActObj:actObj
-                                               ActRet:actRet
+        [[[DatabaseUtils alloc] init] insertActionLog:escape(funInfo)
+                                              ActName:escape(actName)
+                                               ActObj:escape(actObj)
+                                               ActRet:escape(actRet)
                                               SlideID:@"0"
                                             SlideType:@""
                                           SlideAction:@""];
@@ -150,4 +157,5 @@ void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *
     @finally {
     }
 }
+
 

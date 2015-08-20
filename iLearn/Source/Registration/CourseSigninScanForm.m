@@ -15,6 +15,8 @@
 #import "DateUtils.h"
 #import "HttpResponse.h"
 #import "HttpUtils.h"
+#import "CourseSignin.h"
+#import "ExtendNSLogFunctionality.h"
 
 typedef NS_ENUM(NSInteger, CourseSigninType) {
     CourseSigninTypeSignin = 0,
@@ -30,7 +32,9 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
 @property (weak, nonatomic) IBOutlet UISwitch *twoSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *threeSwitch;
 
-@property (strong, nonatomic) NSString *scannedFilePath;
+@property (strong, nonatomic) NSString *courseID;
+@property (strong, nonatomic) NSString *signinID;
+@property (strong, nonatomic) NSString *employeeID;
 
 @end
 
@@ -39,34 +43,27 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _courseID = self.courseSignin[@"TrainingId"];
+    _signinID = self.courseSignin[@"Id"];
+    _employee = self.employee[@"EmployeeId"];
+    
     UISwitch *control;
     NSArray *controls = @[_oneSwitch, _twoSwitch, _threeSwitch];
     for(NSInteger i=0; i < [controls count]; i++) {
         control = controls[i];
         control.tag = i;
+        [control addTarget:self action:@selector(actionSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
     }
-    NSString *scannedFileName = [NSString stringWithFormat:@"%@-%@.scanned", self.courseSignin[@"TrainingId"], self.courseSignin[@"Id"]];
-    _scannedFilePath = [FileUtils dirPath:CACHE_DIRNAME FileName:scannedFileName];
-    if([FileUtils checkFileExist:self.scannedFilePath isDir:NO]) {
-        NSMutableDictionary *scannedList = [FileUtils readConfigFile:self.scannedFilePath][@"Data"];
-        for(NSDictionary *dict in scannedList) {
-            if([dict[@"EmployeeId"] isEqualToString:self.employee[@"EmployeeId"]]) {
-                _choices = dict[@"Choices"];
-                
-                if(self.choices && [self.choices length] > 0) {
-                    NSArray *choosed = [self.choices componentsSeparatedByString:@","];
-                    for(control in controls) {
-                        BOOL isChoosed = [choosed containsObject:[NSString stringWithFormat:@"%li", (long)control.tag]];
-                        [control setOn:isChoosed];
-                    }
-                }
-                break;
-            }
-        }
+    
+    self.choices = [CourseSignin findChoices:self.employeeID
+                                    courseID:self.courseID
+                                    signinID:self.signinID];
+    
+    NSArray *choosed = [self.choices componentsSeparatedByString:@","];
+    for(control in controls) {
+        BOOL isChoosed = [choosed containsObject:[NSString stringWithFormat:@"%li", (long)control.tag]];
+        [control setOn:isChoosed];
     }
-    [self.oneSwitch addTarget:self action:@selector(actionSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.twoSwitch addTarget:self action:@selector(actionSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.threeSwitch addTarget:self action:@selector(actionSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,7 +83,6 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
 }
 
 - (IBAction)actionTimer:(id)sender {
-    
 }
 
 - (IBAction)actionDismiss:(id)sender {
@@ -98,7 +94,7 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
     }];
 }
 
-- (void)actionSwitchValueChanged:(UISwitch *)sender {
+- (IBAction)actionSwitchValueChanged:(UISwitch *)sender {
     NSMutableArray *choosed = [NSMutableArray arrayWithArray:[self.choices componentsSeparatedByString:@","]];
     if([sender isOn]) {
         [choosed addObject:[NSString stringWithFormat:@"%li", (long)sender.tag]];
@@ -110,39 +106,11 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
 }
 
 - (void)saveToLocal {
-    NSMutableDictionary *scannedList = [NSMutableDictionary dictionary];
-    NSString *employeeID = self.employee[@"EmployeeId"];
-    NSString *createdAt = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];
-    
-    if([FileUtils checkFileExist:self.scannedFilePath isDir:NO]) {
-        scannedList = [FileUtils readConfigFile:self.scannedFilePath];
-        
-        BOOL isExist = NO;
-        NSMutableDictionary *temp = [NSMutableDictionary dictionary];
-        for(NSInteger i=0; i < [scannedList[@"Data"] count]; i++) {
-            temp = scannedList[@"Data"][i];
-            if([temp[@"EmployeeId"] isEqualToString:employeeID]) {
-                isExist            = YES;
-                temp[@"Choices"]   = self.choices;
-                temp[@"IsUpload"]  = @NO;
-                temp[@"CreatedAt"] = createdAt;
-                scannedList[@"Data"][i] = temp;
-                break;
-            }
-        }
-        if(!isExist) {
-            [scannedList[@"Data"] addObject:@{@"EmployeeId": employeeID, @"Choices": self.choices, @"IsUpload": @NO, @"CreatedAt":createdAt}];
-        }
-        
-    }
-    else {
-        scannedList[@"CourseId"] = self.courseSignin[@"TrainingId"];
-        scannedList[@"SigninId"] = self.courseSignin[@"Id"];
-        scannedList[@"Data"] = @[@{@"EmployeeId": employeeID, @"Choices": self.choices, @"IsUpload": @NO, @"CreatedAt":createdAt}];
-    }
-    [FileUtils writeJSON:scannedList Into:self.scannedFilePath];
+    [CourseSignin saveToLocal:self.employeeID
+                      choices:self.choices
+                     courseID:self.courseID
+                     signinID:self.signinID];
 }
-
 /**
  *  培训班签到点名
  *
@@ -158,42 +126,15 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
  *
  */
 - (void)postToServer {
-    if(![FileUtils checkFileExist:self.scannedFilePath isDir:NO]) {
-        return;
-    }
+    NSString *createrID = [User userID];
+    //NSString *userID = self.courseSignin[@"UserId"];
     
-    NSString *employeeID = self.employee[@"EmployeeId"];
-    NSMutableDictionary *scannedList = [FileUtils readConfigFile:self.scannedFilePath];
+    [CourseSignin postToServer:self.courseID
+                      signinID:self.signinID
+                     createrID:createrID];
     
-    BOOL isChanged = NO;
-    NSMutableDictionary *temp = [NSMutableDictionary dictionary];
-    for(NSInteger i=0; i < [scannedList[@"Data"] count]; i++) {
-        temp = scannedList[@"Data"][i];
-        if([temp[@"EmployeeId"] isEqualToString:employeeID]) {
-            if(![temp[@"IsUpload"] boolValue]) {
-                temp[@"IsUpload"]       = @YES;
-                scannedList[@"Data"][i] = temp;
-                
-                NSMutableDictionary *params = [NSMutableDictionary dictionary];
-                params[@"TrainingId"]  = scannedList[@"CourseId"];
-                params[@"CheckInId"]   = scannedList[@"SigninId"];
-                params[@"CreatedUser"] = [User userID];
-                params[@"Status"]      = @"1";
-                params[@"Reason"]      = temp[@"Choices"];
-                params[@"IssueDate"]   = temp[@"CreatedAt"];
-                params[@"UserId"]      = self.courseSignin[@"UserId"];
-                
-                HttpResponse *response = [ApiHelper courseSigninUser:params];
-                isChanged = ([response.statusCode intValue] == 200);
-            }
-            break;
-        }
-    }
-    if(isChanged) {
-        [FileUtils writeJSON:scannedList Into:self.scannedFilePath];
-    }
-
 }
+
 #pragma mark - rewrite setter
 
 - (void)setEmployee:(NSDictionary *)employee {

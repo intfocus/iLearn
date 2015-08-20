@@ -625,7 +625,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="labelEmployeeID" destination="Fla-AX-okZ" id="cSc-ut-EeX"/>
-                                            <outlet property="labelUserName" destination="TQS-4M-1Gx" id="fA8-75-m9X"/>
+                                            <outlet property="labelEmployeeName" destination="TQS-4M-1Gx" id="Gq1-8n-5oH"/>
                                             <outlet property="oneSwitch" destination="LvW-0T-FKG" id="bbn-Gt-5VT"/>
                                             <outlet property="threeSwitch" destination="2l8-99-YL1" id="vbV-3e-rDw"/>
                                             <outlet property="twoSwitch" destination="5GB-8q-lrw" id="Zdn-eD-BbD"/>

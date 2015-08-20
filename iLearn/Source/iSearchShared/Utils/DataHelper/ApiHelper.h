@@ -107,7 +107,7 @@
  *
  *  @return 签到的员工列表
  */
-+ (HttpResponse *)courseSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid;
++ (HttpResponse *)courseSigninScannedUsers:(NSString *)tid signinID:(NSString *)ciid;
 
 /**
  *  签到的员工列表(所有)

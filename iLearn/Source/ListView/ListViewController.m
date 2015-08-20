@@ -226,7 +226,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
             self.backButton.hidden      = NO;
             self.titleLabel.hidden      = YES;
             self.centerLabel.hidden = NO;
-            self.scanButton.hidden      = NO;
+            self.scanButton.hidden      = YES;
             [self.scanButton setTitle:@"过滤" forState:UIControlStateNormal];
             
             break;
