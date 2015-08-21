@@ -56,7 +56,11 @@ typedef NS_ENUM(NSInteger, FilterType){
     FilterCategory = 11,
     FilterSlide = 12
 };
-
+typedef NS_ENUM(NSInteger, CourseSigninType) {
+    CourseSigninTypeSignin = 0,
+    CourseSigninTypeArriveLate = 1,
+    CourseSigninTypeLeaveEarly = 2
+};
 /**
  *  TextFieldTag
  *

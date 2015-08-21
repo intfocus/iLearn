@@ -18,11 +18,7 @@
 #import "CourseSignin.h"
 #import "ExtendNSLogFunctionality.h"
 
-typedef NS_ENUM(NSInteger, CourseSigninType) {
-    CourseSigninTypeSignin = 0,
-    CourseSigninTypeArriveLate = 1,
-    CourseSigninTypeLeaveEarly = 2
-};
+
 @interface CourseSigninScanForm ()
 @property (weak, nonatomic) IBOutlet UILabel *employeeNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *employeeIDLabel;
@@ -101,14 +97,36 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
         }
     }];
 }
-
+/**
+ *  [签到][迟到][早退]的逻辑关系；
+ *  [迟到]/[早退] => [签到]
+ *  取消[签到] => 取消[迟到][早退]
+ *
+ *  @param sender UISwitch
+ */
 - (IBAction)actionSwitchValueChanged:(UISwitch *)sender {
     NSMutableArray *choosed = [NSMutableArray arrayWithArray:[self.choices componentsSeparatedByString:@","]];
     if([sender isOn]) {
         [choosed addObject:[NSString stringWithFormat:@"%li", (long)sender.tag]];
+        
+        //  [迟到]/[早退] => [签到]
+        if((sender.tag == CourseSigninTypeArriveLate || sender.tag == CourseSigninTypeLeaveEarly) &&
+            ![choosed containsObject:[NSString stringWithFormat:@"%li", (long)CourseSigninTypeSignin]]) {
+            
+            [self.oneSwitch setOn:YES];
+            [choosed addObject:[NSString stringWithFormat:@"%li", (long)CourseSigninTypeSignin]];
+        }
     }
     else {
         [choosed removeObject:[NSString stringWithFormat:@"%li", (long)sender.tag]];
+        
+        // 取消[签到] => 取消[迟到][早退]
+        if(sender.tag == CourseSigninTypeSignin) {
+            [self.twoSwitch setOn:NO];
+            [self.threeSwitch setOn:NO];
+            [choosed removeObject:[NSString stringWithFormat:@"%li", (long)CourseSigninTypeArriveLate]];
+            [choosed removeObject:[NSString stringWithFormat:@"%li", (long)CourseSigninTypeLeaveEarly]];
+        }
     }
     self.choices = [choosed componentsJoinedByString:@","];
 }
