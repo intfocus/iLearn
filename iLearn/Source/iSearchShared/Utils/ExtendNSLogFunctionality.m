@@ -141,13 +141,17 @@ NSString* escape(NSString *source) {
  * ActionReturn  操作结果（包括错误）
  * ActionObject  操作对象（具体到文件）
  */
-void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSString *actRet) {
+void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSDictionary *actRet) {
     @try {
         NSString *funInfo = [NSString stringWithFormat:@"%@, %s, %i", [[NSString stringWithUTF8String:sourceFile] lastPathComponent], functionName, lineNumber];
+        NSMutableArray *actRetArray = [NSMutableArray array];
+        for(id key in actRet) {
+            [actRetArray addObject:[NSString stringWithFormat:@"%@: %@", key, [actRet objectForKey:key]]];
+        }
         [[[DatabaseUtils alloc] init] insertActionLog:escape(funInfo)
                                               ActName:escape(actName)
                                                ActObj:escape(actObj)
-                                               ActRet:escape(actRet)
+                                               ActRet:escape([actRetArray componentsJoinedByString:@", "])
                                               SlideID:@"0"
                                             SlideType:@""
                                           SlideAction:@""];

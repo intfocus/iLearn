@@ -160,7 +160,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
         humanName = @"二维码扫描";
     }
     
-    ActionLogRecordDashboard(humanName);
+    ActionLogRecordDashboard(@{@"板块": humanName});
 }
 
 #pragma mark - Helper Functions
@@ -247,7 +247,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
     [self presentPopupViewController:nav animated:YES completion:^(void) {
         NSLog(@"popup view settingViewController");
-        ActionLogRecordDashboard(@"设置");
+        ActionLogRecordDashboard(@{@"右下角": @"设置"});
     }];
 }
 
@@ -285,7 +285,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     self.imagePickerActionSheet.delegate = self;
     [self.imagePickerActionSheet showInView:self.view];
     
-    ActionLogRecordDashboard(@"点击头像");
+    ActionLogRecordDashboard(@{@"右上角": @"点击头像"});
 }
 
 #pragma mark - UITableViewDataSource
@@ -293,13 +293,11 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 // Charlie 2015/06/20
 // TODO: Adjust notificationi list content
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [_notificationList count];
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNotificationCellIdentifier];
 
     if (cell == nil) {
@@ -414,7 +412,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
             UIImage *avatarImage = [UIImage imageWithData:imagedata];
             [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
             
-            ActionLogRecordDashboard(@"头像设置成功");
+            ActionLogRecordDashboard(@{@"头像设置": @"成功"});
         }
     }];
 }

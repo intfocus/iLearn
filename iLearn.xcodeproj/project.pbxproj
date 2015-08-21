@@ -57,6 +57,7 @@
 		C4A4FDC41B663B1700741BF3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */; };
 		C4A579EB1B62182D0093C98A /* UploadExamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */; };
 		C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */; };
+		C4A927AE1B871B3500775DA3 /* FileUtils+Course.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A927AD1B871B3500775DA3 /* FileUtils+Course.m */; };
 		C4BD421E1B817A6D00083F11 /* SigninAdminTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BD421D1B817A6D00083F11 /* SigninAdminTableViewController.m */; };
 		C4BD42211B817C1E00083F11 /* SigninAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BD42201B817C1E00083F11 /* SigninAdminTableViewCell.m */; };
 		C4BD42241B81902C00083F11 /* SigninUserTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BD42231B81902C00083F11 /* SigninUserTableViewController.m */; };
@@ -213,6 +214,8 @@
 		C4A4FDC31B663B1700741BF3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C4A579EA1B62182D0093C98A /* UploadExamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadExamViewController.xib; sourceTree = "<group>"; };
 		C4A579ED1B622C3C0093C98A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UploadExam.storyboard; sourceTree = "<group>"; };
+		C4A927AC1B871B3500775DA3 /* FileUtils+Course.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FileUtils+Course.h"; sourceTree = "<group>"; };
+		C4A927AD1B871B3500775DA3 /* FileUtils+Course.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FileUtils+Course.m"; sourceTree = "<group>"; };
 		C4BD421C1B817A6D00083F11 /* SigninAdminTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SigninAdminTableViewController.h; path = iLearn/Source/Registration/SigninAdminTableViewController.h; sourceTree = SOURCE_ROOT; };
 		C4BD421D1B817A6D00083F11 /* SigninAdminTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SigninAdminTableViewController.m; path = iLearn/Source/Registration/SigninAdminTableViewController.m; sourceTree = SOURCE_ROOT; };
 		C4BD421F1B817C1E00083F11 /* SigninAdminTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SigninAdminTableViewCell.h; path = iLearn/Source/Registration/SigninAdminTableViewCell.h; sourceTree = SOURCE_ROOT; };
@@ -500,6 +503,8 @@
 			children = (
 				C49731981B6789C40014048B /* FileUtils.h */,
 				C49731991B6789C40014048B /* FileUtils.m */,
+				C4A927AC1B871B3500775DA3 /* FileUtils+Course.h */,
+				C4A927AD1B871B3500775DA3 /* FileUtils+Course.m */,
 			);
 			path = FileUtils;
 			sourceTree = "<group>";
@@ -1255,6 +1260,7 @@
 				C4BD42271B81904100083F11 /* SigninUserTableViewCell.m in Sources */,
 				C48C09B61B4D258500DD4562 /* ViewUpgrade.m in Sources */,
 				CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */,
+				C4A927AE1B871B3500775DA3 /* FileUtils+Course.m in Sources */,
 				C4A4FDC01B66293B00741BF3 /* SettingDataInfo.m in Sources */,
 				CBE0C84C1B072DC2000EA3A7 /* qrencode.c in Sources */,
 				C49731D41B678A210014048B /* Url+Param.m in Sources */,

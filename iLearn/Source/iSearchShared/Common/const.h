@@ -61,6 +61,12 @@ typedef NS_ENUM(NSInteger, CourseSigninType) {
     CourseSigninTypeArriveLate = 1,
     CourseSigninTypeLeaveEarly = 2
 };
+
+static NSString *const kPackageCourse     = @"PackageCourse";
+static NSString *const kPackageQuestion   = @"PackageQuestion";
+static NSString *const kPackageExam       = @"PackageExam";
+static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
+
 /**
  *  TextFieldTag
  *

@@ -46,6 +46,7 @@
 
 // local
 @property (nonatomic, strong) NSDictionary *examDictContent;
+@property (nonatomic, strong) NSDictionary *questionDictContent;
 
 
 // instance methods
@@ -79,6 +80,7 @@
 - (void)recordProgress:(NSDictionary *)dict;
 
 - (BOOL)isExamDownload;
+- (BOOL)isQuestionDownload;
 
 /**
  *  课件状态标签

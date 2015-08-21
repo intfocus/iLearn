@@ -221,8 +221,7 @@
             params[@"UserId"]      = courseSignin.employeeID;
             
             HttpResponse *response = [ApiHelper courseSigninUser:params];
-            NSString *log = [NSString stringWithFormat:@"courseID:%@, singinID:%@, employeeID:%@, status:%@, created_at:%@, http status code: %@, data:%@", courseID, signinID, courseSignin.employeeID, courseSignin.choices, courseSignin.createAt, response.statusCode, response.string];
-            ActionLogRecord(@"课程培训签到点名", log);
+            ActionLogRecord(@"课程签到点名", (@{@"courseID": courseID, @"signinID": signinID, @"employeeID": courseSignin.employeeID, @"status": courseSignin.choices, @"createdAt": courseSignin.createAt, @"httpStatusCode": response.statusCode, @"response": response.string}));
         }
     }
     [FileUtils writeJSON:scannedList Into:scannedFilePath];

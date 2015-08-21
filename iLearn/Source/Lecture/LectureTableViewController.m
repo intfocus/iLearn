@@ -12,7 +12,7 @@
 #import "ExamViewController.h"
 #import "LicenseUtil.h"
 #import "ExamUtil.h"
-#import "FileUtils.h"
+#import "FileUtils+Course.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
 #import <MBProgressHUD.h>
@@ -26,10 +26,12 @@
 #import "DisplayViewController.h"
 #import "LectureTableViewCell.h"
 #import "ExtendNSLogFunctionality.h"
+#import "QuestionnaireViewController.h"
 
-static NSString *const kExamVCStoryBoardID = @"ExamViewController";
-static NSString *const kShowDetailSegue    = @"showDetailPage";
-static NSString *const kShowSettingsSegue  = @"showSettingsPage";
+static NSString *const kExamVCStoryBoardID      = @"ExamViewController";
+static NSString *const kQuestionVCStoryBoardID  = @"QuestionnaireViewController";
+static NSString *const kShowDetailSegue         = @"showDetailPage";
+static NSString *const kShowSettingsSegue       = @"showSettingsPage";
 
 static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
@@ -169,19 +171,20 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     switch (depth) {
         case 1: {
             CoursePackage *coursePackage = (CoursePackage *)obj;
-            if(coursePackage.ID) {
-                [self depthPlus];
-                _dataList = [DataHelper coursePackageContent:NO pid:coursePackage.ID];
-                self.listViewController.titleLabel.hidden = YES;
-                self.listViewController.backButton.hidden = NO;
-                self.listViewController.centerLabel.hidden = NO;
-                self.listViewController.centerLabel.text = coursePackage.name;
-                self.lastCoursePackage = coursePackage;
-                [self.tableView reloadData];
-            }
-            else {
+            
+            if(!coursePackage.ID) {
                 [ViewUtils showPopupView:self.listViewController.view Info:@"请联系管理员，课程ID未设置"];
+                break;
             }
+            
+            [self depthPlus];
+            _dataList = [DataHelper coursePackageContent:NO pid:coursePackage.ID];
+            self.listViewController.titleLabel.hidden = YES;
+            self.listViewController.backButton.hidden = NO;
+            self.listViewController.centerLabel.hidden = NO;
+            self.listViewController.centerLabel.text = coursePackage.name;
+            self.lastCoursePackage = coursePackage;
+            [self.tableView reloadData];
             
             break;
         }
@@ -204,6 +207,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 }
                 else if([packageDetail isExam]) {
                     removeHUD = [self dealWithExam:packageDetail state:btnLabel removeHUD:removeHUD];
+                }
+                else if([packageDetail isQuestion]) {
+                    removeHUD = [self dealWithQuestion:packageDetail state:btnLabel removeHUD:removeHUD];
                 }
             }
             break;
@@ -236,7 +242,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             [_progressHUD hide:YES];
         }
     });
-    NSLog(@"enter - depth: %@", self.depth);
 }
 
 #pragma mark - didSelectAction asisstant methods
@@ -268,7 +273,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
 - (BOOL)dealWithExam:(CoursePackageDetail *)packageDetail state:(NSString *)state removeHUD:(BOOL)removeHUD {
     if([packageDetail isExamDownload]) {
-        if([state isEqualToString:@"查看结果"]) {
+        if([state isEqualToString:@"观看结果"]) {
             [self begin];
         }
         else {
@@ -291,6 +296,28 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     return removeHUD;
 }
 
+- (BOOL)dealWithQuestion:(CoursePackageDetail *)packageDetail state:(NSString *)state removeHUD:(BOOL)removeHUD {
+    if([packageDetail isQuestionDownload]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
+        CoursePackageDetail *packageDetail = [self.dataList objectAtIndex:indexPath.row];
+        NSMutableDictionary *content = [NSMutableDictionary dictionaryWithDictionary:packageDetail.questionDictContent];
+        content[CommonFileName] = packageDetail.questionID;
+        
+        [self enterQuestoinnairePageForContent:content];
+    }
+    else {
+        if([HttpUtils isNetworkAvailable]) {
+            self.progressHUD.labelText = @"下载中...";
+            removeHUD = NO;
+            [_connectionManager downloadQuestionnaireWithId:packageDetail.questionID];
+        }
+        else {
+            [_progressHUD hide:YES];
+            [ViewUtils showPopupView:self.listViewController.view Info:@"无网络，不下载"];
+        }
+    }
+    return removeHUD;
+}
 #pragma mark - IBAction
 
 - (IBAction)actionBack:(id)sender {
@@ -338,7 +365,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *examDBPath = [FileUtils coursePath:content[CommonFileName] Ext:@"db"];
+        NSString *examDBPath = [FileUtils coursePath:content[CommonFileName] Type:kPackageExam Ext:@"db"];
         [ExamUtil parseContentIntoDB:content Path:examDBPath];
         
         NSDictionary *dbContent = [ExamUtil contentFromDBFile:examDBPath];
@@ -346,13 +373,36 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         [dbContent setValue:[NSNumber numberWithInt:ExamTypesPractice] forKey:ExamType];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hide:YES];
             
             UIStoryboard *storyboard   = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             ExamViewController *examVC = (ExamViewController *)[storyboard instantiateViewControllerWithIdentifier:kExamVCStoryBoardID];
-            examVC.examContent         = dbContent;
+            examVC.examContent         = [NSMutableDictionary dictionaryWithDictionary:dbContent];
             [weakSelf presentViewController:examVC animated:YES completion:^{
-                NSLog(@"popup view.");
+                [hud hide:YES];
+            }];
+        });
+    });
+}
+
+- (void)enterQuestoinnairePageForContent:(NSDictionary*)content {
+    __weak LectureTableViewController *weakSelf = self;
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *dbPath = [FileUtils coursePath:content[CommonFileName] Type:kPackageQuestion Ext:@"db"];
+        [QuestionnaireUtil parseContentIntoDB:content dbPath:dbPath];
+        
+        NSDictionary *dbContent = [QuestionnaireUtil contentFromDBFile:dbPath];
+        [dbContent setValue:dbPath forKey:CommonDBPath];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIStoryboard *storyboard   = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            QuestionnaireViewController *questionVC = (QuestionnaireViewController *)[storyboard instantiateViewControllerWithIdentifier:kQuestionVCStoryBoardID];
+            questionVC.questionnaireContent = [NSMutableDictionary dictionaryWithDictionary:dbContent];
+            [weakSelf presentViewController:questionVC animated:YES completion:^{
+                [hud hide:YES];
             }];
         });
     });
@@ -365,8 +415,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     
     if(!error) {
         if([extName isEqualToString:@"zip"]) {
-            NSString *zipPath    = [FileUtils coursePath:courseID Ext:extName UseExt:YES];
-            NSString *coursePath = [FileUtils coursePath:courseID Ext:extName UseExt:NO];
+            NSString *zipPath    = [FileUtils coursePath:courseID Type:kPackageExam Ext:extName UseExt:YES];
+            NSString *coursePath = [FileUtils coursePath:courseID Type:kPackageExam Ext:extName UseExt:NO];
             if([SSZipArchive unzipFileAtPath:zipPath toDestination:coursePath]) {
                 NSFileManager *fileManage = [NSFileManager defaultManager];
                 NSArray *files = [fileManage subpathsAtPath: coursePath];
@@ -404,8 +454,23 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     
     if(!error) {
         NSString *examPath = [ExamUtil examPath:examId];
-        NSString *coursePath = [FileUtils coursePath:examId Ext:[examPath pathExtension]];
+        NSString *coursePath = [FileUtils coursePath:examId Type:kPackageExam Ext:[examPath pathExtension]];
         [FileUtils move:examPath to:coursePath];
+        
+        [self.tableView reloadData];
+    }
+    else {
+        [ViewUtils showPopupView:self.view Info:[error localizedDescription]];
+    }
+}
+
+- (void)connectionManagerDidDownloadQuestionnaire:(NSString *)questionnaireId withError:(NSError *)error {
+    [_progressHUD hide:YES];
+    
+    if(!error) {
+        NSString *questionPath = [NSString stringWithFormat:@"%@/%@.json", [QuestionnaireUtil questionnaireFolderPathInDocument], questionnaireId];
+        NSString *coursePath = [FileUtils coursePath:questionnaireId Type:kPackageQuestion Ext:[questionPath pathExtension]];
+        [FileUtils move:questionPath to:coursePath];
         
         [self.tableView reloadData];
     }
@@ -510,13 +575,13 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     CoursePackageDetail *course = (CoursePackageDetail*)[self.dataList objectAtIndex:indexPath.row];
     
     if([course isExam]) {
-        [FileUtils removeFile:[FileUtils coursePath:course.examID Ext:@"json"]];
-        [FileUtils removeFile:[FileUtils coursePath:course.examID Ext:@"db"]];
+        [FileUtils removeFile:[FileUtils coursePath:course.examID Type:kPackageExam Ext:@"json"]];
+        [FileUtils removeFile:[FileUtils coursePath:course.examID Type:kPackageExam Ext:@"db"]];
     }
     else {
         [ViewUtils showPopupView:self.listViewController.view Info:@"删除中..." while:^{
-            [FileUtils removeFile:[FileUtils coursePath:course.courseID Ext:course.courseExt]];
-            [FileUtils removeFile:[FileUtils courseProgressPath:course.courseID Ext:course.courseExt]];
+            [FileUtils removeFile:[FileUtils coursePath:course.courseID  Type:kPackageCourse Ext:course.courseExt]];
+            [FileUtils removeFile:[FileUtils courseProgressPath:course.courseID Type:kPackageCourse Ext:course.courseExt]];
         }];
     }
 

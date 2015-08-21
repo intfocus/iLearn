@@ -222,23 +222,23 @@ static const BOOL inDeveloping = NO;
 {
     //NSString *docPath = [self applicationDocumentsDirectory];
     //NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
-    NSString *examPath = [self examSourceFolderPath];
-
-    NSFileManager *fileMgr = [NSFileManager defaultManager];
-    BOOL isFolder;
-
-    if (![fileMgr fileExistsAtPath:examPath isDirectory:&isFolder]) {
-        NSLog(@"Folder not exist, create it!");
-        NSError *createFolderError;
-
-        BOOL createFolderSucess = [fileMgr createDirectoryAtPath:examPath withIntermediateDirectories:YES attributes:nil error:&createFolderError];
-
-        if (!createFolderSucess) {
-            NSLog(@"Create folder %@ failed with error: %@", examPath, createFolderError);
-        }
-    }
-    
-    return examPath;
+//    NSString *examPath = [self examSourceFolderPath];
+//
+//    NSFileManager *fileMgr = [NSFileManager defaultManager];
+//    BOOL isFolder;
+//
+//    if (![fileMgr fileExistsAtPath:examPath isDirectory:&isFolder]) {
+//        NSLog(@"Folder not exist, create it!");
+//        NSError *createFolderError;
+//
+//        BOOL createFolderSucess = [fileMgr createDirectoryAtPath:examPath withIntermediateDirectories:YES attributes:nil error:&createFolderError];
+//
+//        if (!createFolderSucess) {
+//            NSLog(@"Create folder %@ failed with error: %@", examPath, createFolderError);
+//        }
+//    }
+//    
+    return [FileUtils dirPath:ExamFolder];
 }
 
 + (NSString*)examSourceFolderPath {

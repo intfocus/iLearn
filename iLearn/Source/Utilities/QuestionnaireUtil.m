@@ -67,7 +67,18 @@ static const BOOL inDeveloping = NO;
         }
     }
     
-    return questionnaires;
+    /**
+     * add#sort jay@2015/08/21
+     * 原因:
+     *     未排序，会导致问卷列表（内容不变）每次进入app[调查问卷],显示顺序都不一致
+     * 排序:
+     *     以问卷结束时间降序，再以问卷标题升序
+     */
+    NSSortDescriptor *firstSort  = [[NSSortDescriptor alloc] initWithKey:QuestionnaireEndDate ascending:NO];
+    NSSortDescriptor *secondSort = [[NSSortDescriptor alloc] initWithKey:QuestionnaireTitle ascending:YES];
+    NSArray *sortQuestionnaires = [questionnaires sortedArrayUsingDescriptors:[NSArray arrayWithObjects:firstSort, secondSort,nil]];
+    
+    return sortQuestionnaires;
 }
 
 + (NSArray*)loadQuestionnairesFromCache
@@ -222,9 +233,9 @@ static const BOOL inDeveloping = NO;
     return [date timeIntervalSince1970];
 }
 
-+ (void)parseContentIntoDB:(NSDictionary*)content
++ (void)parseContentIntoDB:(NSDictionary*)content dbPath:(NSString *)dbPath
 {
-    NSString *dbPath = [self questionnaireDBPathOfFile:content[CommonFileName]];
+    //NSString *dbPath = [self questionnaireDBPathOfFile:content[CommonFileName]];
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;

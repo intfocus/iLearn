@@ -22,7 +22,7 @@
 + (NSString*)questionnaireDBPathOfFile:(NSString*)fileName;
 + (void)cleanQuestionnaireFolder;
 
-+ (void)parseContentIntoDB:(NSDictionary*)content;
++ (void)parseContentIntoDB:(NSDictionary*)content dbPath:(NSString *)dbPath;
 + (NSDictionary*)contentFromDBFile:(NSString*)dbPath;
 + (void)setOptionSelected:(BOOL)selected withQuestionId:(NSString*)questionId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath;
 + (void)saveFilledAnswer:(NSString*)filledAnswer withQuestionId:(NSString*)questionId andDBPath:(NSString*)dbPath;

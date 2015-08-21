@@ -44,10 +44,10 @@ NSString* GenFormat(NSInteger num);
 BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
 
 #pragma mark - ActionLog
-void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSString *actRet);
+void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSDictionary *actRet);
 #define ActionLogRecordLogin(actionResult) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"登录", @"", actionResult);
 #define ActionLogRecordDashboard(actionResult) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"主界面Dashboard", @"", actionResult);
-#define ActionLogRecord(klass, info) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, klass, @"", info);
+#define ActionLogRecord(klass, dict) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, klass, @"", dict);
 
 NSString* escape(NSString *source);
 #endif

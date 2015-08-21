@@ -7,16 +7,13 @@
 //
 
 #import "CoursePackageDetail.h"
-#import "FileUtils.h"
+#import "FileUtils+Course.h"
 #import "ExamUtil.h"
+#import "QuestionnaireUtil.h"
 /**
  *  课程包内容明细
  */
 
-static NSString *const kPackageCourse     = @"PackageCourse";
-static NSString *const kPackageQuestion   = @"PackageQuestion";
-static NSString *const kPackageExam       = @"PackageExam";
-static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
 
 @implementation CoursePackageDetail
 
@@ -114,10 +111,10 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
  */
 - (NSArray *)statusLabelText {
     NSString *labelState, *btnState;
-    if([self.type isEqualToString:kPackageCourse]) {
-        if([FileUtils isCourseReaded:self.courseID Ext:self.courseExt]) {
+    if([self isCourse]) {
+        if([FileUtils isCourseReaded:self.courseID Type:self.type Ext:self.courseExt]) {
             if([self isPDF]) {
-                NSDictionary *dict = [FileUtils readConfigFile:[FileUtils courseProgressPath:self.courseID Ext:self.courseExt]];
+                NSDictionary *dict = [FileUtils readConfigFile:[FileUtils courseProgressPath:self.courseID Type:self.type Ext:self.courseExt]];
                 float ratio = [dict[@"readPercentage"] floatValue];
                 if(ratio < 1.0) {
                     labelState = @"阅读不足1%";
@@ -134,7 +131,7 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
             }
             btnState = @"继续学习";
         }
-        else if ([FileUtils isCourseDownloaded:self.courseID Ext:self.courseExt]) {
+        else if ([FileUtils isCourseDownloaded:self.courseID Type:self.type Ext:self.courseExt]) {
             labelState = @"尚未学习";
             btnState   = @"开始学习";
         }
@@ -143,12 +140,12 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
             btnState   = @"下载";
         }
     }
-    else if([self.type isEqualToString:kPackageExam]) {
+    else if([self isExam]) {
         if([self isExamDownload]) {
             NSNumber *score = self.examDictContent[ExamScore];
             if(score && [score intValue] >= 0) {
                 labelState = [NSString stringWithFormat:NSLocalizedString(@"LIST_SCORE_TEMPLATE", nil), [score longLongValue]];
-                btnState = @"查看结果";
+                btnState = @"观看结果";
             }
             else {
                 labelState = @"未考试";
@@ -160,9 +157,21 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
             btnState   = @"下载";
         }
     }
-    else if([self.type isEqualToString:kPackageQuestion]) {
-        labelState = @"开始填写";
-        btnState   = @"TODO";
+    else if([self isQuestion]) {
+        if([self isQuestionDownload]) {
+            if([self.questionDictContent[QuestionnaireFinished] boolValue]) {
+                labelState = [NSString stringWithFormat:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil)];
+                btnState = @"观看结果";
+            }
+            else {
+                labelState = @"未填写";
+                btnState   = @"开始填写";
+            }
+        }
+        else {
+            labelState = @"未下载";
+            btnState   = @"下载";
+        }
     }
     else {
         labelState = @"unkown type";
@@ -230,7 +239,7 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
 }
 
 - (BOOL)canRemove {
-    return (([self isPDF] || [self isVideo]) && [FileUtils isCourseDownloaded:self.courseID Ext:self.courseExt]) ||
+    return (([self isPDF] || [self isVideo]) && [FileUtils isCourseDownloaded:self.courseID Type:self.type Ext:self.courseExt]) ||
             ([self isExam] && [self isExamDownload]);
 }
 /**
@@ -239,7 +248,7 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
  *  @return float 相对y偏移量
  */
 - (float)pdfProgress {
-    NSDictionary *dict = [FileUtils readConfigFile:[FileUtils courseProgressPath:self.courseID Ext:self.courseExt]];
+    NSDictionary *dict = [FileUtils readConfigFile:[FileUtils courseProgressPath:self.courseID Type:self.type Ext:self.courseExt]];
     return [dict[@"currentHeight"] floatValue];
 }
 /**
@@ -248,23 +257,41 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
  *  @param dict 学习进度
  */
 - (void)recordProgress:(NSDictionary *)dict {
-    [FileUtils recordProgress:dict CourseID:self.courseID Ext:self.courseExt];
+    [FileUtils recordProgress:dict CourseID:self.courseID Type:self.type Ext:self.courseExt];
 }
 
+#pragma mark - Around Questionair
+- (BOOL)isQuestionDownload {
+    NSString *examPath = [FileUtils coursePath:self.questionID Type:self.type Ext:@"json"];
+    return [FileUtils checkFileExist:examPath isDir:NO];
+}
+
+- (NSDictionary *)questionDictContent {
+    NSString *questionDBPath = [FileUtils coursePath:self.questionID Type:self.type Ext:@"db"];
+    if([FileUtils checkFileExist:questionDBPath isDir:NO]) {
+        _questionDictContent = [QuestionnaireUtil contentFromDBFile:questionDBPath];
+    }
+    else {
+        NSString *questionPath = [FileUtils coursePath:self.questionID Type:self.type Ext:@"json"];
+        _questionDictContent = [FileUtils readConfigFile:questionPath];
+    }
+    
+    return _questionDictContent;
+}
 
 #pragma mark - Around Exam
 - (BOOL)isExamDownload {
-    NSString *examPath = [FileUtils coursePath:self.examID Ext:@"json"];
+    NSString *examPath = [FileUtils coursePath:self.examID Type:self.type Ext:@"json"];
     return [FileUtils checkFileExist:examPath isDir:NO];
 }
 
 - (NSDictionary *)examDictContent {
-    NSString *examDBPath = [FileUtils coursePath:self.examID Ext:@"db"];
+    NSString *examDBPath = [FileUtils coursePath:self.examID Type:self.type Ext:@"db"];
     if([FileUtils checkFileExist:examDBPath isDir:NO]) {
         _examDictContent = [ExamUtil contentFromDBFile:examDBPath];
     }
     else {
-        NSString *examPath = [FileUtils coursePath:self.examID Ext:@"json"];
+        NSString *examPath = [FileUtils coursePath:self.examID Type:self.type Ext:@"json"];
         _examDictContent = [FileUtils readConfigFile:examPath];
     }
         
