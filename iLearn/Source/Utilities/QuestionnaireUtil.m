@@ -9,6 +9,7 @@
 #import "QuestionnaireUtil.h"
 #import "Constants.h"
 #import "LicenseUtil.h"
+#import "FileUtils.h"
 #import <FMDB.h>
 
 static const BOOL inDeveloping = NO;
@@ -157,14 +158,14 @@ static const BOOL inDeveloping = NO;
     return path;
 }
 
-+ (NSString*)questionnaireSourceFolderPath
-{
-    if (inDeveloping) {
-        return [self questionnaireFolderPathInBundle];
-    }
-    else {
-        return [self questionnaireFolderPathInDocument];
-    }
++ (NSString*)questionnaireSourceFolderPath {
+    return [FileUtils dirPath:QuestionnaireFolder];
+//    if (inDeveloping) {
+//        return [self questionnaireFolderPathInBundle];
+//    }
+//    else {
+//        return [self questionnaireFolderPathInDocument];
+//    }
 }
 
 + (NSString*)questionnaireDBPathOfFile:(NSString*)fileName

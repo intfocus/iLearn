@@ -7,8 +7,7 @@
 //
 
 #import "ContentViewController.h"
-#import "ContentViewController.h"
-#import "ExamTabelViewCell.h"
+#import "ExamTableViewCell.h"
 /**
  *  培训报名
  */

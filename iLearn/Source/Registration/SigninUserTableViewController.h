@@ -7,7 +7,7 @@
 //
 
 #import "ContentViewController.h"
-#import "ExamTabelViewCell.h"
+#import "ExamTableViewCell.h"
 
 @interface SigninUserTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate>
 

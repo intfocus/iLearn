@@ -7,7 +7,7 @@
 //
 
 #import "ContentViewController.h"
-#import "ExamTabelViewCell.h"
+#import "ExamTableViewCell.h"
 #import "SigninFormViewController.h"
 #import "QRCodeReaderViewController.h"
 

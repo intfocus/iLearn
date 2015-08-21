@@ -74,7 +74,7 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LQe-Jn-Bsg">
                                         <rect key="frame" x="0.0" y="0.0" width="280" height="135"/>
-                                        <state key="normal" image="btnMask">
+                                        <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -3815,7 +3815,6 @@
         <image name="Img_exam" width="174" height="176"/>
         <image name="Spliter" width="340" height="2"/>
         <image name="bgCountDown" width="60" height="44"/>
-        <image name="btnMask" width="284" height="135"/>
         <image name="iconBack" width="22" height="22"/>
         <image name="icon_back" width="32" height="32"/>
         <image name="icon_close" width="48" height="48"/>

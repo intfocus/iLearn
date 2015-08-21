@@ -127,8 +127,13 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"RegistrationTableViewController"];
             newContentViewController.listViewController = self;
             
+            break;
+        }
         case ListViewTypeQuestionnaire: {
-            newContentViewController = _questionnaireTableViewController;
+            storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"QuestionnaireTableViewController"];
+            newContentViewController.listViewController = self;
+            
             break;
         }
         case ListViewTypeSigninAdmin: {

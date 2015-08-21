@@ -9,7 +9,8 @@
 #import "ExamUtil.h"
 #import "Constants.h"
 #import "LicenseUtil.h"
-#import "FMDB.h"
+#import <FMDB.h>
+#import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
 static const BOOL inDeveloping = NO;
@@ -254,14 +255,14 @@ static const BOOL inDeveloping = NO;
     return path;
 }
 
-+ (NSString*)examSourceFolderPath
-{
-    if (inDeveloping) {
-        return [self examFolderPathInBundle];
-    }
-    else {
-        return [self examFolderPathInDocument];
-    }
++ (NSString*)examSourceFolderPath {
+    return [FileUtils dirPath:ExamFolder];
+//    if (inDeveloping) {
+//        return [self examFolderPathInBundle];
+//    }
+//    else {
+//        return [self examFolderPathInDocument];
+//    }
 }
 
 + (void)parseContentIntoDB:(NSDictionary*)content {
