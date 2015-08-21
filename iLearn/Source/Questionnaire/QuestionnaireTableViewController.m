@@ -44,8 +44,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     _connectionManager.delegate = self;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [self refreshContent];
 
     if (!_hasAutoSynced) {
@@ -59,8 +58,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:kShowDetailSegue]) {
 
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;

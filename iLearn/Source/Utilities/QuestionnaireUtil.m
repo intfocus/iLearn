@@ -121,17 +121,11 @@ static const BOOL inDeveloping = NO;
     }
 }
 
-+ (NSString *)applicationDocumentsDirectory
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    return basePath;
-}
-
 + (NSString*)questionnaireFolderPathInDocument
 {
-    NSString *docPath = [self applicationDocumentsDirectory];
-    NSString *questionnairePath = [NSString stringWithFormat:@"%@/%@", docPath, QuestionnaireFolder];
+//    NSString *docPath = [self applicationDocumentsDirectory];
+//    NSString *questionnairePath = [NSString stringWithFormat:@"%@/%@", docPath, QuestionnaireFolder];
+    NSString *questionnairePath = [self questionnaireSourceFolderPath];
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
@@ -148,14 +142,6 @@ static const BOOL inDeveloping = NO;
     }
 
     return questionnairePath;
-}
-
-+ (NSString*)questionnaireFolderPathInBundle
-{
-    NSString *resPath = [[NSBundle mainBundle] resourcePath];
-    NSString *path = [NSString stringWithFormat:@"%@/%@/%@/", resPath, CacheFolder, QuestionnaireFolder];
-
-    return path;
 }
 
 + (NSString*)questionnaireSourceFolderPath {
@@ -202,7 +188,7 @@ static const BOOL inDeveloping = NO;
 
 + (NSString*)descFromContent:(NSDictionary*)content
 {
-    // Exam start date
+    // questionnaire start date
     NSDate *beginDate = [NSDate dateWithTimeIntervalSince1970:[self startDateFromContent:content]];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY/MM/dd HH:mm"];
@@ -720,11 +706,11 @@ static const BOOL inDeveloping = NO;
 
 + (void)cleanQuestionnaireFolder
 {
-    NSString *examPath = [self questionnaireFolderPathInDocument];
+    NSString *questionnairePath = [self questionnaireFolderPathInDocument];
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     NSError *error;
-    [fileMgr removeItemAtPath:examPath error:&error];
+    [fileMgr removeItemAtPath:questionnairePath error:&error];
     
     if (error) {
         NSLog(@"Delete questionnaire folder FAILED with ERROR: %@", [error localizedDescription]);

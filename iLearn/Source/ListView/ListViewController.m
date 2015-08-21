@@ -290,18 +290,12 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (IBAction)questionnaireButtonTouched:(id)sender {
     NSLog(@"questionnaireButtonTouched");
-    if (_listType == ListViewTypeQuestionnaire) {
-        return;
-    }
     self.listType = ListViewTypeQuestionnaire;
     [self refreshContentView];
 }
 
 - (IBAction)examButtonTouched:(id)sender {
     NSLog(@"examButtonTouched");
-    if (_listType == ListViewTypeExam) {
-        return;
-    }
     self.listType = ListViewTypeExam;
     [self refreshContentView];
 }

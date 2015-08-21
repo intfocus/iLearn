@@ -242,11 +242,11 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 #pragma mark - didSelectAction asisstant methods
 - (BOOL)dealWithCourse:(CoursePackageDetail *)packageDetail state:(NSString *)state removeHUD:(BOOL)removeHUD {
     if([state isEqualToString:@"下载"]) {
-        if(packageDetail.courseId && packageDetail.courseExt) {
+        if(packageDetail.courseID && packageDetail.courseExt) {
             if([HttpUtils isNetworkAvailable]) {
                 self.progressHUD.labelText = @"下载中...";
                 removeHUD = NO;
-                [self.connectionManager downloadCourse:packageDetail.courseId Ext:packageDetail.courseExt];
+                [self.connectionManager downloadCourse:packageDetail.courseID Ext:packageDetail.courseExt];
             }
             else {
                 [self.progressHUD removeFromSuperview];
@@ -281,7 +281,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         if([HttpUtils isNetworkAvailable]) {
             self.progressHUD.labelText = @"下载中...";
             removeHUD = NO;
-            [_connectionManager downloadExamWithId:packageDetail.examId];
+            [_connectionManager downloadExamWithId:packageDetail.examID];
         }
         else {
             [_progressHUD hide:YES];
@@ -500,7 +500,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
     CoursePackageDetail *packageDetail = [self.dataList objectAtIndex:indexPath.row];
     NSMutableDictionary *content = [NSMutableDictionary dictionaryWithDictionary:packageDetail.examDictContent];
-    content[CommonFileName] = packageDetail.examId;
+    content[CommonFileName] = packageDetail.examID;
     
     [self enterExamPageForContent:[NSDictionary dictionaryWithDictionary:content]];
 }
@@ -510,13 +510,13 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     CoursePackageDetail *course = (CoursePackageDetail*)[self.dataList objectAtIndex:indexPath.row];
     
     if([course isExam]) {
-        [FileUtils removeFile:[FileUtils coursePath:course.examId Ext:@"json"]];
-        [FileUtils removeFile:[FileUtils coursePath:course.examId Ext:@"db"]];
+        [FileUtils removeFile:[FileUtils coursePath:course.examID Ext:@"json"]];
+        [FileUtils removeFile:[FileUtils coursePath:course.examID Ext:@"db"]];
     }
     else {
         [ViewUtils showPopupView:self.listViewController.view Info:@"删除中..." while:^{
-            [FileUtils removeFile:[FileUtils coursePath:course.courseId Ext:course.courseExt]];
-            [FileUtils removeFile:[FileUtils courseProgressPath:course.courseId Ext:course.courseExt]];
+            [FileUtils removeFile:[FileUtils coursePath:course.courseID Ext:course.courseExt]];
+            [FileUtils removeFile:[FileUtils courseProgressPath:course.courseID Ext:course.courseExt]];
         }];
     }
 

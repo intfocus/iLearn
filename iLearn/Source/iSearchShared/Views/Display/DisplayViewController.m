@@ -32,10 +32,10 @@
     [super viewWillAppear:animated];
     
     NSString *coursePath;
-    if([FileUtils isCourseDownloaded:self.packageDetail.courseId Ext:self.packageDetail.courseExt]) {
+    if([FileUtils isCourseDownloaded:self.packageDetail.courseID Ext:self.packageDetail.courseExt]) {
         if([self.packageDetail isHTML]) {
             NSError *error;
-            coursePath = [FileUtils coursePath:self.packageDetail.courseId Ext:self.packageDetail.courseExt UseExt:NO];
+            coursePath = [FileUtils coursePath:self.packageDetail.courseID Ext:self.packageDetail.courseExt UseExt:NO];
             NSString *htmlPath = [NSString stringWithFormat:@"%@/%@", coursePath, @"index.html"];
             NSString *htmlString = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
             NSURL *baseURL = [NSURL fileURLWithPath:coursePath];
@@ -51,7 +51,7 @@
             }
             [self.webView loadHTMLString:htmlString baseURL:baseURL];
         } else {
-            coursePath = [FileUtils coursePath:self.packageDetail.courseId Ext:self.packageDetail.courseExt UseExt:YES];
+            coursePath = [FileUtils coursePath:self.packageDetail.courseID Ext:self.packageDetail.courseExt UseExt:YES];
             NSURL *targetURL = [NSURL fileURLWithPath:coursePath];
             NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
             [self.webView loadRequest:request];

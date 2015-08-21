@@ -52,19 +52,11 @@ static NSString *const resultUploadFail = @"请返回后,联网刷新重试"; //
     [super viewDidAppear:animated];
 
     if(self.isUploadExamResult) {
-        NSString *docPath  = [self applicationDocumentsDirectory];
-        NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
+        NSString *examPath = [ExamUtil examFolderPathInDocument];
         NSString *filePath = [NSString stringWithFormat:@"%@/%@.result", examPath, self.examID];
         [_connectionManager uploadExamResultWithPath:filePath];
     }
 }
-
-- (NSString *)applicationDocumentsDirectory {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    return basePath;
-}
-
 
 #pragma mark - ConnectionManagerDelegate
 

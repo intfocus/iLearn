@@ -57,12 +57,6 @@ static NSString *const resultUploadFail = @"请返回后刷新重试";
     // Dispose of any resources that can be recreated.
 }
 
-- (NSString *)applicationDocumentsDirectory {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    return basePath;
-}
-
 #pragma mark - ConnectionManagerDelegate
 
 - (void)connectionManagerDidUploadQuestionnaireResult:(NSString*)questionnaireId withError:(NSError *)error

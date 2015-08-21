@@ -395,7 +395,6 @@
 		C42611291B5FA16A006786CD /* StoryBoards */ = {
 			isa = PBXGroup;
 			children = (
-				C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */,
 				CBF867431B810425005559B1 /* UploadQuestionnaire.storyboard */,
 				DCA787FC1B038ED00049098C /* Main.storyboard */,
 				C49ACF541B69FA1C00EB7E40 /* Lecture.storyboard */,

@@ -218,17 +218,11 @@ static const BOOL inDeveloping = NO;
     return [content[ExamEndDate] longLongValue];
 }
 
-+ (NSString *)applicationDocumentsDirectory
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    return basePath;
-}
-
 + (NSString*)examFolderPathInDocument
 {
-    NSString *docPath = [self applicationDocumentsDirectory];
-    NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
+    //NSString *docPath = [self applicationDocumentsDirectory];
+    //NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
+    NSString *examPath = [self examSourceFolderPath];
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
@@ -245,14 +239,6 @@ static const BOOL inDeveloping = NO;
     }
     
     return examPath;
-}
-
-+ (NSString*)examFolderPathInBundle
-{
-    NSString *resPath = [[NSBundle mainBundle] resourcePath];
-    NSString *path = [NSString stringWithFormat:@"%@/%@/%@/", resPath, CacheFolder, ExamFolder];
-
-    return path;
 }
 
 + (NSString*)examSourceFolderPath {

@@ -29,6 +29,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
     if (userId != nil) {
 
         NSString *requestUrl = [NSString stringWithFormat:@"%@/v1/user/%@/exam", kServerAddress, userId];
+        NSLog(@"%@", requestUrl);
         NSString *outputPath = [NSString stringWithFormat:@"%@/%@", [ExamUtil examFolderPathInDocument], @"Exam.json"];
         NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@", [ExamUtil examFolderPathInDocument], @"Exam.json.tmp"];
 
@@ -68,6 +69,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
     if (examId != nil) {
 
         NSString *requestUrl = [NSString stringWithFormat:@"%@/v1/exam/%@", kServerAddress, examId];
+        NSLog(@"%@", requestUrl);
         NSString *outputPath = [NSString stringWithFormat:@"%@/%@.json", [ExamUtil examFolderPathInDocument], examId];
         NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@.json.tmp", [ExamUtil examFolderPathInDocument], examId];
 
@@ -104,6 +106,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 - (void)downloadCourse:(NSString*)courseID Ext:(NSString *)extName
 {
     NSString *requestUrl    = [Url downloadCourse:courseID Ext:extName];
+    NSLog(@"%@", requestUrl);
     NSString *outputPath    = [FileUtils coursePath:courseID Ext:extName];
     NSString *outputPathTmp = [NSString stringWithFormat:@"%@.json.tmp", outputPath];
     
@@ -187,6 +190,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
         NSString *score = components[2];
 
         NSString *requestUrl = [NSString stringWithFormat:@"%@/v1/user/%@/result/%@/offline", kServerAddress, userId, examId];
+        NSLog(@"%@", requestUrl);
         NSDictionary *parameters = @{@"score": score};
 
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
@@ -213,6 +217,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 - (void)downloadQuestionnaires
 {
     NSString *requestUrl = [NSString stringWithFormat:@"%@/Question_Api.php", kServerAddress];
+    NSLog(@"%@", requestUrl);
     NSString *outputPath = [NSString stringWithFormat:@"%@/%@", [QuestionnaireUtil questionnaireFolderPathInDocument], @"Questionnaire.json"];
     NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@", [ExamUtil examFolderPathInDocument], @"Questionnaire.json.tmp"];
 
