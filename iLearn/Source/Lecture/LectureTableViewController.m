@@ -341,8 +341,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         NSString *examDBPath = [FileUtils coursePath:content[CommonFileName] Ext:@"db"];
         [ExamUtil parseContentIntoDB:content Path:examDBPath];
         
-        
-        NSDictionary *dbContent = [ExamUtil examContentFromDBFile:examDBPath];
+        NSDictionary *dbContent = [ExamUtil contentFromDBFile:examDBPath];
         [dbContent setValue:examDBPath forKey:CommonDBPath];
         [dbContent setValue:[NSNumber numberWithInt:ExamTypesPractice] forKey:ExamType];
         

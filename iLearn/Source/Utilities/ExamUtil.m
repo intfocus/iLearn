@@ -198,23 +198,23 @@ static const BOOL inDeveloping = NO;
     NSString *descString;
 
     if (examType == ExamTypesFormal) {
-        descString = [NSString stringWithFormat:@"%@\n%@\n%@", beginString, durationString, content[ExamDesc]];
+        descString = [NSString stringWithFormat:@"%@\n%@\n\n%@", beginString, durationString, content[ExamDesc]];
     }
     else {
-        descString = [NSString stringWithFormat:@"%@\n%@", beginString, content[ExamDesc]];
+        descString = [NSString stringWithFormat:@"%@\n\n%@", beginString, content[ExamDesc]];
     }
 
     return descString;
 }
 
-+ (long long)endDateFromContent:(NSDictionary*)content
-{
-    return [content[ExamEndDate] longLongValue];
-}
-
 + (long long)startDateFromContent:(NSDictionary*)content
 {
     return [content[ExamBeginDate] longLongValue];
+}
+
++ (long long)endDateFromContent:(NSDictionary*)content
+{
+    return [content[ExamEndDate] longLongValue];
 }
 
 + (NSString *)applicationDocumentsDirectory
@@ -289,7 +289,7 @@ static const BOOL inDeveloping = NO;
         }
     }
     else {
-        NSLog(@"DB file already exist: %@", dbPath);
+//        NSLog(@"DB file already exist: %@", dbPath);
 
         FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
 
@@ -364,7 +364,7 @@ static const BOOL inDeveloping = NO;
 + (void)parseSubjectContent:(NSDictionary*)subjectContent count:(NSInteger)count intoDB:(FMDatabase*)db
 {
     NSNumber *subjectId = subjectContent[ExamQuestionId];
-    NSNumber *scorePerSubject = @(100.0/count);
+//    NSNumber *scorePerSubject = @(100.0/count);
 
     NSArray *answers = subjectContent[ExamQuestionAnswer];
     NSString *answer = [answers componentsJoinedByString:@"+"];
@@ -402,7 +402,7 @@ static const BOOL inDeveloping = NO;
     }
 }
 
-+ (NSDictionary*)examContentFromDBFile:(NSString*)dbPath
++ (NSDictionary*)contentFromDBFile:(NSString*)dbPath
 {
     NSMutableDictionary *content = [NSMutableDictionary dictionary];
 
@@ -561,7 +561,7 @@ static const BOOL inDeveloping = NO;
     return questions;
 }
 
-+ (void)setOptionSelected:(BOOL)selected withSubjectId:(NSString*)subjectId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath
++ (void)setOptionSelected:(BOOL)selected withQuestionId:(NSString*)questionId optionId:(NSString*)optionId andDBPath:(NSString*)dbPath
 {
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
@@ -571,10 +571,10 @@ static const BOOL inDeveloping = NO;
 
         if ([db open]) {
 
-            BOOL updateSuccess = [db executeUpdate:@"UPDATE option SET selected=? WHERE subject_id=? AND option_id=?", @(selected), subjectId, optionId];
+            BOOL updateSuccess = [db executeUpdate:@"UPDATE option SET selected=? WHERE subject_id=? AND option_id=?", @(selected), questionId, optionId];
 
             if (!updateSuccess) {
-                NSLog(@"UPDATE FAILED! optionId: %@, subjectId: %@, selected: %d", optionId, subjectId, selected);
+                NSLog(@"UPDATE FAILED! optionId: %@, questionId: %@, selected: %d", optionId, questionId, selected);
             }
 
             [db close];
@@ -825,7 +825,7 @@ static const BOOL inDeveloping = NO;
     return unsubmittedResults;
 }
 
-+ (void)generateExamUploadJsonOfDBPath:(NSString*)dbPath
++ (void)generateUploadJsonFromDBPath:(NSString*)dbPath
 {
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
@@ -877,8 +877,6 @@ static const BOOL inDeveloping = NO;
 
             [db close];
         }
-
-        //NSLog(@"jsonDic: %@", jsonDic);
 
         NSError *jsonError;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDic options:0 error:&jsonError];

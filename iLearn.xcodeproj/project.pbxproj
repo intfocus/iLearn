@@ -83,12 +83,15 @@
 		CB35123B1B47F27E00025B5B /* QuestionOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3512381B47F27E00025B5B /* QuestionOptionCell.m */; };
 		CB35123C1B47F27E00025B5B /* QuestionCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB35123A1B47F27E00025B5B /* QuestionCollectionViewCell.m */; };
 		CB35123F1B47F29700025B5B /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB35123E1B47F29700025B5B /* DetailViewController.m */; };
+		CB3512481B47F6E100025B5B /* QuestionnaireTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3512441B47F6E100025B5B /* QuestionnaireTableViewController.m */; };
+		CB3512491B47F6E100025B5B /* QuestionnaireViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3512461B47F6E100025B5B /* QuestionnaireViewController.m */; };
+		CB35124C1B47F85000025B5B /* QuestionnaireTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB35124B1B47F85000025B5B /* QuestionnaireTableViewCell.m */; };
+		CB7297611B7B8D2500FFB38F /* GroupSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7297601B7B8D2500FFB38F /* GroupSelectionView.m */; };
 		CB7BD7E01B07BD2D002C6DFB /* JsonTemplate in Resources */ = {isa = PBXBuildFile; fileRef = CB7BD7DF1B07BD2D002C6DFB /* JsonTemplate */; };
 		CBC976911B3C6F0A006C104F /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768D1B3C6F0A006C104F /* PasswordViewController.m */; };
-		CBC976921B3C6F0A006C104F /* ExamTabelViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768E1B3C6F0A006C104F /* ExamTabelViewCell.m */; };
+		CBC976921B3C6F0A006C104F /* ExamTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768E1B3C6F0A006C104F /* ExamTableViewCell.m */; };
 		CBC976931B3C6F0A006C104F /* ScoreQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC9768F1B3C6F0A006C104F /* ScoreQRCodeViewController.m */; };
 		CBC976961B3C6F81006C104F /* ExamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976951B3C6F81006C104F /* ExamTableViewController.m */; };
-		CBC976B11B3E78AA006C104F /* CustomFormSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976AA1B3E78AA006C104F /* CustomFormSegue.m */; };
 		CBC976B21B3E78AA006C104F /* CustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976AC1B3E78AA006C104F /* CustomSegue.m */; };
 		CBC976B31B3E78AA006C104F /* ContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976AE1B3E78AA006C104F /* ContentTableViewCell.m */; };
 		CBC976B41B3E78AA006C104F /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC976B01B3E78AA006C104F /* ListViewController.m */; };
@@ -108,6 +111,8 @@
 		CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8441B072DC1000EA3A7 /* rscode.c */; };
 		CBE0C8501B072DC2000EA3A7 /* split.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8461B072DC2000EA3A7 /* split.c */; };
 		CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8491B072DC2000EA3A7 /* UIImage+MDQRCode.m */; };
+		CBF867451B810425005559B1 /* UploadQuestionnaire.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBF867431B810425005559B1 /* UploadQuestionnaire.storyboard */; };
+		CBF867481B8104A2005559B1 /* UploadQuestionnaireViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF867471B8104A2005559B1 /* UploadQuestionnaireViewController.m */; };
 		DC3F8EEB1B176A140007AC56 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DC3F8EEA1B176A140007AC56 /* libsqlite3.0.dylib */; };
 		DCA787F51B038ED00049098C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA787F41B038ED00049098C /* main.m */; };
 		DCA787FE1B038ED00049098C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCA787FC1B038ED00049098C /* Main.storyboard */; };
@@ -260,17 +265,23 @@
 		CB35123A1B47F27E00025B5B /* QuestionCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionCollectionViewCell.m; sourceTree = "<group>"; };
 		CB35123D1B47F29700025B5B /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		CB35123E1B47F29700025B5B /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		CB3512431B47F6E100025B5B /* QuestionnaireTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionnaireTableViewController.h; sourceTree = "<group>"; };
+		CB3512441B47F6E100025B5B /* QuestionnaireTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionnaireTableViewController.m; sourceTree = "<group>"; };
+		CB3512451B47F6E100025B5B /* QuestionnaireViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionnaireViewController.h; sourceTree = "<group>"; };
+		CB3512461B47F6E100025B5B /* QuestionnaireViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionnaireViewController.m; sourceTree = "<group>"; };
+		CB35124A1B47F85000025B5B /* QuestionnaireTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionnaireTableViewCell.h; sourceTree = "<group>"; };
+		CB35124B1B47F85000025B5B /* QuestionnaireTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionnaireTableViewCell.m; sourceTree = "<group>"; };
+		CB72975F1B7B8D2500FFB38F /* GroupSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSelectionView.h; sourceTree = "<group>"; };
+		CB7297601B7B8D2500FFB38F /* GroupSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSelectionView.m; sourceTree = "<group>"; };
 		CB7BD7DF1B07BD2D002C6DFB /* JsonTemplate */ = {isa = PBXFileReference; lastKnownFileType = folder; name = JsonTemplate; path = Source/JsonTemplate; sourceTree = "<group>"; };
 		CBC976891B3C6F0A006C104F /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
-		CBC9768A1B3C6F0A006C104F /* ExamTabelViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamTabelViewCell.h; sourceTree = "<group>"; };
+		CBC9768A1B3C6F0A006C104F /* ExamTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamTableViewCell.h; sourceTree = "<group>"; };
 		CBC9768B1B3C6F0A006C104F /* ScoreQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreQRCodeViewController.h; sourceTree = "<group>"; };
 		CBC9768D1B3C6F0A006C104F /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
-		CBC9768E1B3C6F0A006C104F /* ExamTabelViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamTabelViewCell.m; sourceTree = "<group>"; };
+		CBC9768E1B3C6F0A006C104F /* ExamTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamTableViewCell.m; sourceTree = "<group>"; };
 		CBC9768F1B3C6F0A006C104F /* ScoreQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreQRCodeViewController.m; sourceTree = "<group>"; };
 		CBC976941B3C6F81006C104F /* ExamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamTableViewController.h; sourceTree = "<group>"; };
 		CBC976951B3C6F81006C104F /* ExamTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamTableViewController.m; sourceTree = "<group>"; };
-		CBC976A91B3E78AA006C104F /* CustomFormSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFormSegue.h; sourceTree = "<group>"; };
-		CBC976AA1B3E78AA006C104F /* CustomFormSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFormSegue.m; sourceTree = "<group>"; };
 		CBC976AB1B3E78AA006C104F /* CustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSegue.h; sourceTree = "<group>"; };
 		CBC976AC1B3E78AA006C104F /* CustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSegue.m; sourceTree = "<group>"; };
 		CBC976AD1B3E78AA006C104F /* ContentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentTableViewCell.h; sourceTree = "<group>"; };
@@ -309,6 +320,9 @@
 		CBE0C8471B072DC2000EA3A7 /* split.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = split.h; sourceTree = "<group>"; };
 		CBE0C8481B072DC2000EA3A7 /* UIImage+MDQRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+MDQRCode.h"; sourceTree = "<group>"; };
 		CBE0C8491B072DC2000EA3A7 /* UIImage+MDQRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MDQRCode.m"; sourceTree = "<group>"; };
+		CBF867441B810425005559B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/UploadQuestionnaire.storyboard; sourceTree = "<group>"; };
+		CBF867461B8104A1005559B1 /* UploadQuestionnaireViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadQuestionnaireViewController.h; sourceTree = "<group>"; };
+		CBF867471B8104A2005559B1 /* UploadQuestionnaireViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadQuestionnaireViewController.m; sourceTree = "<group>"; };
 		DC3F8EEA1B176A140007AC56 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		DCA787EF1B038ED00049098C /* iLearn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iLearn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA787F31B038ED00049098C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -381,6 +395,8 @@
 		C42611291B5FA16A006786CD /* StoryBoards */ = {
 			isa = PBXGroup;
 			children = (
+				C4A579EC1B622C3C0093C98A /* UploadExam.storyboard */,
+				CBF867431B810425005559B1 /* UploadQuestionnaire.storyboard */,
 				DCA787FC1B038ED00049098C /* Main.storyboard */,
 				C49ACF541B69FA1C00EB7E40 /* Lecture.storyboard */,
 				C4BFC0991B7DCEE100C1DBEA /* Registration.storyboard */,
@@ -788,10 +804,10 @@
 			children = (
 				CB35122A1B47F0B200025B5B /* ConnectionManager.h */,
 				CB35122B1B47F0B200025B5B /* ConnectionManager.m */,
-				CB35122C1B47F0B200025B5B /* ExamUtil.h */,
-				CB35122D1B47F0B200025B5B /* ExamUtil.m */,
 				CB35122E1B47F0B200025B5B /* LicenseUtil.h */,
 				CB35122F1B47F0B200025B5B /* LicenseUtil.m */,
+				CB35122C1B47F0B200025B5B /* ExamUtil.h */,
+				CB35122D1B47F0B200025B5B /* ExamUtil.m */,
 				CB3512301B47F0B200025B5B /* QuestionnaireUtil.h */,
 				CB3512311B47F0B200025B5B /* QuestionnaireUtil.m */,
 			);
@@ -811,15 +827,33 @@
 			path = Source/QuestionShared;
 			sourceTree = "<group>";
 		};
+		CB3512401B47F6E100025B5B /* Questionnaire */ = {
+			isa = PBXGroup;
+			children = (
+				CB3512431B47F6E100025B5B /* QuestionnaireTableViewController.h */,
+				CB3512441B47F6E100025B5B /* QuestionnaireTableViewController.m */,
+				CB35124A1B47F85000025B5B /* QuestionnaireTableViewCell.h */,
+				CB35124B1B47F85000025B5B /* QuestionnaireTableViewCell.m */,
+				CB3512451B47F6E100025B5B /* QuestionnaireViewController.h */,
+				CB3512461B47F6E100025B5B /* QuestionnaireViewController.m */,
+				CB72975F1B7B8D2500FFB38F /* GroupSelectionView.h */,
+				CB7297601B7B8D2500FFB38F /* GroupSelectionView.m */,
+				CBF867461B8104A1005559B1 /* UploadQuestionnaireViewController.h */,
+				CBF867471B8104A2005559B1 /* UploadQuestionnaireViewController.m */,
+			);
+			name = Questionnaire;
+			path = Source/Questionnaire;
+			sourceTree = "<group>";
+		};
 		CBC976871B3C6EBE006C104F /* Exam */ = {
 			isa = PBXGroup;
 			children = (
-				CB3512261B47F06500025B5B /* ExamViewController.h */,
-				CB3512271B47F06500025B5B /* ExamViewController.m */,
 				CBC976941B3C6F81006C104F /* ExamTableViewController.h */,
 				CBC976951B3C6F81006C104F /* ExamTableViewController.m */,
-				CBC9768A1B3C6F0A006C104F /* ExamTabelViewCell.h */,
-				CBC9768E1B3C6F0A006C104F /* ExamTabelViewCell.m */,
+				CBC9768A1B3C6F0A006C104F /* ExamTableViewCell.h */,
+				CBC9768E1B3C6F0A006C104F /* ExamTableViewCell.m */,
+				CB3512261B47F06500025B5B /* ExamViewController.h */,
+				CB3512271B47F06500025B5B /* ExamViewController.m */,
 				CBC976891B3C6F0A006C104F /* PasswordViewController.h */,
 				CBC9768D1B3C6F0A006C104F /* PasswordViewController.m */,
 				CBC9768B1B3C6F0A006C104F /* ScoreQRCodeViewController.h */,
@@ -839,8 +873,6 @@
 				CBC976B01B3E78AA006C104F /* ListViewController.m */,
 				CB35123D1B47F29700025B5B /* DetailViewController.h */,
 				CB35123E1B47F29700025B5B /* DetailViewController.m */,
-				CBC976A91B3E78AA006C104F /* CustomFormSegue.h */,
-				CBC976AA1B3E78AA006C104F /* CustomFormSegue.m */,
 				CBC976AB1B3E78AA006C104F /* CustomSegue.h */,
 				CBC976AC1B3E78AA006C104F /* CustomSegue.m */,
 				CBC976B51B3E7A52006C104F /* ContentViewController.h */,
@@ -949,6 +981,7 @@
 				C4BFC0921B7DCE0500C1DBEA /* Registration */,
 				C49C54821B550B5D00E2B678 /* Lecture */,
 				CBC976871B3C6EBE006C104F /* Exam */,
+				CB3512401B47F6E100025B5B /* Questionnaire */,
 				CB3512361B47F27E00025B5B /* QuestionShared */,
 				CBE0C8271B072421000EA3A7 /* Settings */,
 				DCA787FF1B038ED00049098C /* Images.xcassets */,
@@ -1090,6 +1123,7 @@
 				DCA7881A1B03A40A0049098C /* Localizable.strings in Resources */,
 				DCA788031B038ED00049098C /* LaunchScreen.xib in Resources */,
 				C497318D1B67889B0014048B /* NotificationCell.xib in Resources */,
+				CBF867451B810425005559B1 /* UploadQuestionnaire.storyboard in Resources */,
 				C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */,
 				C4BFC09A1B7DCEE100C1DBEA /* Registration.storyboard in Resources */,
 				DCA788001B038ED00049098C /* Images.xcassets in Resources */,
@@ -1186,8 +1220,8 @@
 				CB35123B1B47F27E00025B5B /* QuestionOptionCell.m in Sources */,
 				C49731901B67889B0014048B /* NotificationViewController.m in Sources */,
 				CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */,
+				CBC976921B3C6F0A006C104F /* ExamTableViewCell.m in Sources */,
 				C49731B11B6789C40014048B /* DatabaseUtils+ActionLog.m in Sources */,
-				CBC976921B3C6F0A006C104F /* ExamTabelViewCell.m in Sources */,
 				CBE0C8511B072DC2000EA3A7 /* UIImage+MDQRCode.m in Sources */,
 				C4BFC0951B7DCE4900C1DBEA /* RegistrationTableViewController.m in Sources */,
 				C4BD421E1B817A6D00083F11 /* SigninAdminTableViewController.m in Sources */,
@@ -1195,12 +1229,15 @@
 				C41CDE3B1B8341D500DC8882 /* CourseSigninScanForm.m in Sources */,
 				CBE0C84D1B072DC2000EA3A7 /* qrinput.c in Sources */,
 				C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */,
+				CB3512481B47F6E100025B5B /* QuestionnaireTableViewController.m in Sources */,
 				CB3512321B47F0B200025B5B /* ConnectionManager.m in Sources */,
 				CBC976B71B3E7A52006C104F /* ContentViewController.m in Sources */,
 				CB35123F1B47F29700025B5B /* DetailViewController.m in Sources */,
 				C49731B61B6789C40014048B /* ExtendNSLogFunctionality.m in Sources */,
 				CB3512351B47F0B200025B5B /* QuestionnaireUtil.m in Sources */,
 				CB35123C1B47F27E00025B5B /* QuestionCollectionViewCell.m in Sources */,
+				CB35124C1B47F85000025B5B /* QuestionnaireTableViewCell.m in Sources */,
+				CB3512491B47F6E100025B5B /* QuestionnaireViewController.m in Sources */,
 				C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */,
 				CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */,
 				CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */,
@@ -1208,10 +1245,11 @@
 				C49731B81B6789C40014048B /* ViewUtils.m in Sources */,
 				C49731B01B6789C40014048B /* FileUtils.m in Sources */,
 				C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */,
-				CBC976B11B3E78AA006C104F /* CustomFormSegue.m in Sources */,
 				CBC976961B3C6F81006C104F /* ExamTableViewController.m in Sources */,
 				C49731D51B678A210014048B /* Url.m in Sources */,
 				CBE0C8361B0724C5000EA3A7 /* AppInfoViewController.m in Sources */,
+				CB7297611B7B8D2500FFB38F /* GroupSelectionView.m in Sources */,
+				CBF867481B8104A2005559B1 /* UploadQuestionnaireViewController.m in Sources */,
 				C49731D01B678A210014048B /* Version+Self.m in Sources */,
 				C49731AE1B6789C40014048B /* HttpUtils.m in Sources */,
 				C4BFC09E1B7DE69700C1DBEA /* TrainCourse.m in Sources */,
@@ -1255,6 +1293,14 @@
 				C4A579ED1B622C3C0093C98A /* Base */,
 			);
 			name = UploadExam.storyboard;
+			sourceTree = "<group>";
+		};
+		CBF867431B810425005559B1 /* UploadQuestionnaire.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CBF867441B810425005559B1 /* Base */,
+			);
+			name = UploadQuestionnaire.storyboard;
 			sourceTree = "<group>";
 		};
 		DCA787FC1B038ED00049098C /* Main.storyboard */ = {

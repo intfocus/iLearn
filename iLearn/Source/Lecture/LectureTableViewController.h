@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ConnectionManager.h"
-#import "ExamTabelViewCell.h"
+#import "ExamTableViewCell.h"
 #import "ContentViewController.h"
 
 

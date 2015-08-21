@@ -8,6 +8,8 @@
 
 #import "ListViewController.h"
 #import "LicenseUtil.h"
+#import "ExamTableViewController.h"
+#import "QuestionnaireTableViewController.h"
 #import "NotificationViewController.h"
 
 #import "ExamTableViewController.h"
@@ -34,7 +36,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) ContentViewController<ContentViewProtocal> *contentViewController;
-
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
@@ -56,9 +57,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    _questionnaireView.hidden = YES;
-    
+
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
     [_avatarImageView.layer setCornerRadius:width/2.0];
@@ -128,6 +127,8 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"RegistrationTableViewController"];
             newContentViewController.listViewController = self;
             
+        case ListViewTypeQuestionnaire: {
+            newContentViewController = _questionnaireTableViewController;
             break;
         }
         case ListViewTypeSigninAdmin: {
