@@ -79,6 +79,7 @@ static const CGFloat kMinQuestionHeight = 52.0;
 
         for (NSInteger optionIndex = 0; optionIndex < [_options count]; optionIndex++) {
 
+#warning bug:options.count < _options.count then crash
             NSDictionary *option = options[optionIndex];
             BOOL selected = [option[QuestionnaireQuestionOptionSelected] boolValue];
 

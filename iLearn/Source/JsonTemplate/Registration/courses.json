@@ -1,0 +1,39 @@
+{
+"status": 1,
+"count": 1,
+"trainingsdata": [
+{
+"Id": "2",
+"Name": "课程测试2",
+"SpeakerName": "课程测试2",
+"Begin": "2015/07/31",
+"End": "2015/08/31",
+"StartDate": "2015/07/31",
+"EndDate": "2015/08/31",
+"Location": "课程测试2",
+"Memo": "课程测试2",
+"Manager": "课程测试2",
+"Status": "1",
+"ApproreLevel": "3",
+"TraineesStatus": null
+}
+],
+"tmanagerdata": [
+{
+"Id": "2",
+"Name": "课程测试2",
+"SpeakerName": "课程测试2",
+"Begin": "2015/07/31",
+"End": "2015/08/31",
+"StartDate": "2015/07/31",
+"EndDate": "2015/08/31",
+"Location": "课程测试2",
+"Memo": "课程测试2",
+"Manager": "课程测试2",
+"Status": "1",
+"ApproreLevel": "3",
+"TraineesStatus": null
+}
+],
+"result": ""
+}

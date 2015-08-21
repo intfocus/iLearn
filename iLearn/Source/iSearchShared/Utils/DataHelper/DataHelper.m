@@ -22,6 +22,8 @@
 #import "CoursePackageContent.h"
 #import "CoursePackageDetail.h"
 #import "CourseWrap+CoursePackageDetail.h"
+#import "TrainCourse.h"
+#import "CourseSignin.h"
 
 @interface DataHelper()
 @property (nonatomic, strong) NSMutableArray *visitData;
@@ -147,7 +149,7 @@
  *  @return 课程包内容明细
  */
 + (NSArray *)coursePackageContent:(BOOL)isNetworkAvaliable pid:(NSString *)PID {
-    NSMutableDictionary *packages = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *packages = [NSMutableDictionary dictionary];
     
     if(isNetworkAvaliable) {
         HttpResponse *httpResponse = [ApiHelper coursePackageContent:PID];
@@ -161,13 +163,132 @@
 
     NSDictionary *content = packages[COURSE_PACKAGES_FIELD_DATA];
     CoursePackageContent *packageContent = [[CoursePackageContent alloc] initWithData:content];
-    NSArray *dataList = [[NSArray alloc] init];
+    NSArray *dataList = [NSArray array];
     dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadCourses:packageContent.courseList]];
     dataList = [dataList arrayByAddingObjectsFromArray:[CourseWrap loadCourseWraps:packageContent.courseWrapList]];
     dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadExams:packageContent.examList]];
     dataList = [dataList arrayByAddingObjectsFromArray:[CoursePackageDetail loadQuestions:packageContent.questionList]];
     
     return dataList;
+}
+
+/**
+ *  培训班课程列表
+ *
+ *  @param isNetworkAvaliable 网络环境
+ *
+ *  @return 培训班列表
+ */
++ (NSArray *)trainCourses:(BOOL)isNetworkAvaliable {
+    NSMutableDictionary *trainCourses = [NSMutableDictionary dictionary];
+    NSString *uid = [User userID];
+    
+    if(isNetworkAvaliable) {
+        HttpResponse *response = [ApiHelper courseCourses:uid];;
+        trainCourses = response.data;
+        
+        [CacheHelper writeTrainCourses:trainCourses UID:uid];
+    }
+    else {
+        trainCourses = [CacheHelper trainCourses:uid];
+    }
+    NSArray *courses = [TrainCourse loadCourseData:trainCourses[@"trainingsdata"]];
+    NSArray *signins = [TrainCourse loadSigninData:trainCourses[@"tmanagerdata"]];
+    
+    return [courses arrayByAddingObjectsFromArray:signins];
+}
+
+/**
+ *  某课程的签到列表
+ *
+ *  @param isNetworkAvailabel 网络环境
+ *  @param tid                课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSArray *)trainSingins:(BOOL)isNetworkAvailable courseID:(NSString *)tid {
+    NSMutableDictionary *signins = [NSMutableDictionary dictionary];
+    
+    if(isNetworkAvailable) {
+        HttpResponse *response = [ApiHelper courseSignins:tid];;
+        signins = response.data;
+        
+        [CacheHelper writeTrainSignins:signins courseID:tid];
+    }
+    else {
+        signins = [CacheHelper trainSignins:tid];
+    }
+    
+    
+    return signins[@"data"];
+}
+
+/**
+ *  某课程的签到学员列表(含状态)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSArray *)trainSigninScannedUsers:(BOOL)isNetworkAvailable
+                            courseID:(NSString *)tid
+                            signinID:(NSString *)ciid {
+    NSMutableDictionary *trainSigninUsers = [NSMutableDictionary dictionary];
+    NSArray *dataLits = [NSArray array];
+    
+    if(isNetworkAvailable) {
+        HttpResponse *response = [ApiHelper courseSigninScannedUsers:tid signinID:ciid];
+        trainSigninUsers = response.data;
+        dataLits = trainSigninUsers[@"traineesdata"];
+        
+        [CacheHelper writeTrainSigninScannedUsers:trainSigninUsers courseID:tid signinID:ciid];
+        [CourseSignin serverDataToLocal:trainSigninUsers courseID:tid signinID:ciid];
+    }
+    // trainSigninUsers = [CacheHelper trainSigninScannedUsers:tid signinID:ciid];
+    dataLits = [CourseSignin scannedUsers:tid signinID:ciid];
+
+    return dataLits;
+}
+
+/**
+ *  某课程的签到学员列表(所有)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSDictionary *)trainSigninUsers:(BOOL)isNetworkAvailable tid:(NSString *)tid {
+    NSMutableDictionary *trainSigninUsers = [NSMutableDictionary dictionary];
+    
+    if(isNetworkAvailable) {
+        HttpResponse *response = [ApiHelper courseSigninUsers:tid];;
+        trainSigninUsers = response.data;
+        
+        [CacheHelper writeTrainSigninUsers:trainSigninUsers courseID:tid];
+    }
+    else {
+        trainSigninUsers = [CacheHelper trainSigninUsers:tid];
+    }
+    
+    return trainSigninUsers;
+}
+
+/**
+ *  报名POST
+ *
+ *  @param TID 课程ID
+ */
++ (void)trainSignup:(NSString *)TID {
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"UserId"]     = [User userID];
+    param[@"TrainingId"] = TID;
+    HttpResponse *response = [ApiHelper courseSignup:param];
+    NSString *log = [NSString stringWithFormat:@"userID: %@, courseID: %@, httpStatusCode:%@, response: %@", param[@"UserId"], param[@"TrainingId"], response.statusCode, response.string];
+    ActionLogRecord(@"课程报名", log);
 }
 
 #pragma mark - assistant methods

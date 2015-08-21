@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Constants.h"
 #import "ConnectionManager.h"
 #import "ExamTableViewCell.h"
 #import "ContentViewController.h"

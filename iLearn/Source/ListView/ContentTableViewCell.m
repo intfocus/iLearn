@@ -17,7 +17,7 @@
 
 - (void)actionTouched
 {
-    if ([self.delegate respondsToSelector:@selector(didSelectInfoButtonOfCell:)]) {
+    if ([self.delegate respondsToSelector:@selector(didSelectActionButtonOfCell:)]) {
 
         [self.delegate didSelectActionButtonOfCell:self];
     }
@@ -25,7 +25,7 @@
 
 - (void)infoTouched
 {
-    if ([self.delegate respondsToSelector:@selector(didSelectActionButtonOfCell:)]) {
+    if ([self.delegate respondsToSelector:@selector(didSelectInfoButtonOfCell:)]) {
 
         [self.delegate didSelectInfoButtonOfCell:self];
     }

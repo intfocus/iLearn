@@ -1,0 +1,27 @@
+{
+    "status": 1,
+    "count": 1,
+    "data": [
+             {
+             "UID": "1427",
+             "UserName": "RBUtst",
+             "EmployeeID": "E99658600",
+             },
+             {
+             "UID": "1428",
+             "UserName": "CBUtst",
+             "EmployeeID": "E99658601",
+             },
+             {
+             "UID": "1429",
+             "UserName": "RBUtst",
+             "EmployeeID": "E99658602",
+             },
+             {
+             "UID": "1430",
+             "UserName": "RBUtst",
+             "EmployeeID": "E99658603",
+             }
+             ],
+    "result": ""
+}

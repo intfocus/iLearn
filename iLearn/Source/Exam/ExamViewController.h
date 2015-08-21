@@ -10,6 +10,6 @@
 
 @interface ExamViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) NSDictionary *examContent;
+@property (strong, nonatomic) NSMutableDictionary *examContent;
 
 @end

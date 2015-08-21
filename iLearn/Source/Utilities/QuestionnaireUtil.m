@@ -9,6 +9,7 @@
 #import "QuestionnaireUtil.h"
 #import "Constants.h"
 #import "LicenseUtil.h"
+#import "FileUtils.h"
 #import <FMDB.h>
 
 static const BOOL inDeveloping = NO;
@@ -66,7 +67,18 @@ static const BOOL inDeveloping = NO;
         }
     }
     
-    return questionnaires;
+    /**
+     * add#sort jay@2015/08/21
+     * 原因:
+     *     未排序，会导致问卷列表（内容不变）每次进入app[调查问卷],显示顺序都不一致
+     * 排序:
+     *     以问卷结束时间降序，再以问卷标题升序
+     */
+    NSSortDescriptor *firstSort  = [[NSSortDescriptor alloc] initWithKey:QuestionnaireEndDate ascending:NO];
+    NSSortDescriptor *secondSort = [[NSSortDescriptor alloc] initWithKey:QuestionnaireTitle ascending:YES];
+    NSArray *sortQuestionnaires = [questionnaires sortedArrayUsingDescriptors:[NSArray arrayWithObjects:firstSort, secondSort,nil]];
+    
+    return sortQuestionnaires;
 }
 
 + (NSArray*)loadQuestionnairesFromCache
@@ -120,17 +132,11 @@ static const BOOL inDeveloping = NO;
     }
 }
 
-+ (NSString *)applicationDocumentsDirectory
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    return basePath;
-}
-
 + (NSString*)questionnaireFolderPathInDocument
 {
-    NSString *docPath = [self applicationDocumentsDirectory];
-    NSString *questionnairePath = [NSString stringWithFormat:@"%@/%@", docPath, QuestionnaireFolder];
+//    NSString *docPath = [self applicationDocumentsDirectory];
+//    NSString *questionnairePath = [NSString stringWithFormat:@"%@/%@", docPath, QuestionnaireFolder];
+    NSString *questionnairePath = [self questionnaireSourceFolderPath];
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
@@ -149,22 +155,14 @@ static const BOOL inDeveloping = NO;
     return questionnairePath;
 }
 
-+ (NSString*)questionnaireFolderPathInBundle
-{
-    NSString *resPath = [[NSBundle mainBundle] resourcePath];
-    NSString *path = [NSString stringWithFormat:@"%@/%@/%@/", resPath, CacheFolder, QuestionnaireFolder];
-
-    return path;
-}
-
-+ (NSString*)questionnaireSourceFolderPath
-{
-    if (inDeveloping) {
-        return [self questionnaireFolderPathInBundle];
-    }
-    else {
-        return [self questionnaireFolderPathInDocument];
-    }
++ (NSString*)questionnaireSourceFolderPath {
+    return [FileUtils dirPath:QuestionnaireFolder];
+//    if (inDeveloping) {
+//        return [self questionnaireFolderPathInBundle];
+//    }
+//    else {
+//        return [self questionnaireFolderPathInDocument];
+//    }
 }
 
 + (NSString*)questionnaireDBPathOfFile:(NSString*)fileName
@@ -201,7 +199,7 @@ static const BOOL inDeveloping = NO;
 
 + (NSString*)descFromContent:(NSDictionary*)content
 {
-    // Exam start date
+    // questionnaire start date
     NSDate *beginDate = [NSDate dateWithTimeIntervalSince1970:[self startDateFromContent:content]];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY/MM/dd HH:mm"];
@@ -235,9 +233,9 @@ static const BOOL inDeveloping = NO;
     return [date timeIntervalSince1970];
 }
 
-+ (void)parseContentIntoDB:(NSDictionary*)content
++ (void)parseContentIntoDB:(NSDictionary*)content dbPath:(NSString *)dbPath
 {
-    NSString *dbPath = [self questionnaireDBPathOfFile:content[CommonFileName]];
+    //NSString *dbPath = [self questionnaireDBPathOfFile:content[CommonFileName]];
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
@@ -719,11 +717,11 @@ static const BOOL inDeveloping = NO;
 
 + (void)cleanQuestionnaireFolder
 {
-    NSString *examPath = [self questionnaireFolderPathInDocument];
+    NSString *questionnairePath = [self questionnaireFolderPathInDocument];
 
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     NSError *error;
-    [fileMgr removeItemAtPath:examPath error:&error];
+    [fileMgr removeItemAtPath:questionnairePath error:&error];
     
     if (error) {
         NSLog(@"Delete questionnaire folder FAILED with ERROR: %@", [error localizedDescription]);

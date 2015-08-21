@@ -9,7 +9,8 @@
 #import "ExamUtil.h"
 #import "Constants.h"
 #import "LicenseUtil.h"
-#import "FMDB.h"
+#import <FMDB.h>
+#import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
 static const BOOL inDeveloping = NO;
@@ -217,51 +218,37 @@ static const BOOL inDeveloping = NO;
     return [content[ExamEndDate] longLongValue];
 }
 
-+ (NSString *)applicationDocumentsDirectory
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    return basePath;
-}
-
 + (NSString*)examFolderPathInDocument
 {
-    NSString *docPath = [self applicationDocumentsDirectory];
-    NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
-
-    NSFileManager *fileMgr = [NSFileManager defaultManager];
-    BOOL isFolder;
-
-    if (![fileMgr fileExistsAtPath:examPath isDirectory:&isFolder]) {
-        NSLog(@"Folder not exist, create it!");
-        NSError *createFolderError;
-
-        BOOL createFolderSucess = [fileMgr createDirectoryAtPath:examPath withIntermediateDirectories:YES attributes:nil error:&createFolderError];
-
-        if (!createFolderSucess) {
-            NSLog(@"Create folder %@ failed with error: %@", examPath, createFolderError);
-        }
-    }
-    
-    return examPath;
+    //NSString *docPath = [self applicationDocumentsDirectory];
+    //NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
+//    NSString *examPath = [self examSourceFolderPath];
+//
+//    NSFileManager *fileMgr = [NSFileManager defaultManager];
+//    BOOL isFolder;
+//
+//    if (![fileMgr fileExistsAtPath:examPath isDirectory:&isFolder]) {
+//        NSLog(@"Folder not exist, create it!");
+//        NSError *createFolderError;
+//
+//        BOOL createFolderSucess = [fileMgr createDirectoryAtPath:examPath withIntermediateDirectories:YES attributes:nil error:&createFolderError];
+//
+//        if (!createFolderSucess) {
+//            NSLog(@"Create folder %@ failed with error: %@", examPath, createFolderError);
+//        }
+//    }
+//    
+    return [FileUtils dirPath:ExamFolder];
 }
 
-+ (NSString*)examFolderPathInBundle
-{
-    NSString *resPath = [[NSBundle mainBundle] resourcePath];
-    NSString *path = [NSString stringWithFormat:@"%@/%@/%@/", resPath, CacheFolder, ExamFolder];
-
-    return path;
-}
-
-+ (NSString*)examSourceFolderPath
-{
-    if (inDeveloping) {
-        return [self examFolderPathInBundle];
-    }
-    else {
-        return [self examFolderPathInDocument];
-    }
++ (NSString*)examSourceFolderPath {
+    return [FileUtils dirPath:ExamFolder];
+//    if (inDeveloping) {
+//        return [self examFolderPathInBundle];
+//    }
+//    else {
+//        return [self examFolderPathInDocument];
+//    }
 }
 
 + (void)parseContentIntoDB:(NSDictionary*)content {

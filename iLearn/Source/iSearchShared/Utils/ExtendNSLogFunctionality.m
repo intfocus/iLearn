@@ -125,6 +125,13 @@ BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionNam
 
 #pragma mark - ActionLog
 
+NSString* escape(NSString *source) {
+    NSMutableString *string = [NSMutableString stringWithString:source];
+    [string replaceOccurrencesOfString:@"\\" withString:@" " options:1 range:NSMakeRange(0, string.length)];
+    [string replaceOccurrencesOfString:@"\'" withString:@" " options:1 range:NSMakeRange(0, string.length)];
+    return [NSString stringWithString:string];
+}
+
 /**
  * 需要post的数据为：
  * UserId        用户编号
@@ -134,13 +141,17 @@ BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionNam
  * ActionReturn  操作结果（包括错误）
  * ActionObject  操作对象（具体到文件）
  */
-void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSString *actRet) {
+void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSDictionary *actRet) {
     @try {
         NSString *funInfo = [NSString stringWithFormat:@"%@, %s, %i", [[NSString stringWithUTF8String:sourceFile] lastPathComponent], functionName, lineNumber];
-        [[[DatabaseUtils alloc] init] insertActionLog:funInfo
-                                              ActName:actName
-                                               ActObj:actObj
-                                               ActRet:actRet
+        NSMutableArray *actRetArray = [NSMutableArray array];
+        for(id key in actRet) {
+            [actRetArray addObject:[NSString stringWithFormat:@"%@: %@", key, [actRet objectForKey:key]]];
+        }
+        [[[DatabaseUtils alloc] init] insertActionLog:escape(funInfo)
+                                              ActName:escape(actName)
+                                               ActObj:escape(actObj)
+                                               ActRet:escape([actRetArray componentsJoinedByString:@", "])
                                               SlideID:@"0"
                                             SlideType:@""
                                           SlideAction:@""];
@@ -150,4 +161,5 @@ void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *
     @finally {
     }
 }
+
 

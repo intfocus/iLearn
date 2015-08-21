@@ -93,9 +93,9 @@
     // 跳转SSO界面，返回后，再登录
     self.popupText = @"跳转至SSO";
     
-    if([HttpUtils isNetworkAvailable]) {
-        [self checkAppVersionUpgrade];
-    }
+//    if([HttpUtils isNetworkAvailable]) {
+//        [self checkAppVersionUpgrade];
+//    }
 }
 
 #pragma mark memory management
@@ -275,7 +275,7 @@
             
             // 跳至主界面
             
-            ActionLogRecordLogin(@"successfully, online");
+            ActionLogRecordLogin(@{@"network": @"online"});
             [self enterMainViewController];
             return;
         }
@@ -303,7 +303,7 @@
     if(![errors count]) {
         // 跳至主界面
         
-        ActionLogRecordLogin(@"successfully, offline");
+        ActionLogRecordLogin(@{@"network": @"offline"});
         [self enterMainViewController];
         // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
     } else {

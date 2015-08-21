@@ -60,7 +60,7 @@
     hud.margin                    = 10.f;
     hud.removeFromSuperViewOnHide = YES;
     
-    [hud hide:YES afterDelay:1];
+    [hud hide:YES afterDelay:1.5];
 }
 
 + (void)showPopupView:(UIView *)view Info:(NSString*)text while:(void(^)(void))executeBlock {

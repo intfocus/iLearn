@@ -13,7 +13,7 @@
 - (void)begin;
 
 @optional
-- (void)removeCourse;
+- (void)actionRemove;
 
 @end
 

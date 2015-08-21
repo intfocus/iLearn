@@ -56,6 +56,16 @@ typedef NS_ENUM(NSInteger, FilterType){
     FilterCategory = 11,
     FilterSlide = 12
 };
+typedef NS_ENUM(NSInteger, CourseSigninType) {
+    CourseSigninTypeSignin = 0,
+    CourseSigninTypeArriveLate = 1,
+    CourseSigninTypeLeaveEarly = 2
+};
+
+static NSString *const kPackageCourse     = @"PackageCourse";
+static NSString *const kPackageQuestion   = @"PackageQuestion";
+static NSString *const kPackageExam       = @"PackageExam";
+static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
 
 /**
  *  TextFieldTag
@@ -76,9 +86,9 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define BASE_URL                @"http://tsa-china.takeda.com.cn" //
 #define BASE_PATH               @"uat" // 传递给服务器的语言key
 #define CONFIG_DIRNAME          @"Configs" // 所有配置档放置在些文件夹下
-#define DATE_FORMAT             @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
+#define DATE_FORMAT             @"yyyy/MM/dd HH:mm:ss" // 用户验证时，用到时间字符串时的存储格式
 #define DATE_SIMPLE_FORMAT      @"yyyy/MM/dd" // 公告通知api使用及日历控件
-#define NEW_TAG_FORMAT          @"yyMMddHHMMSS" // 创建新标签后新文件名称格式
+#define NEW_TAG_FORMAT          @"yyMMddHHMMss" // 创建新标签后新文件名称格式
 #define LOCAL_OR_SERVER_LOCAL   @"local" // 获取服务器信息或本地缓存
 #define LOCAL_OR_SERVER_SREVER  @"server"// 获取服务器信息或本地缓存
 #define DATABASE_DIRNAME        @"Database" // 数据库文件存放的文件夹名称
@@ -109,7 +119,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define LOGIN_URL_PATH         @"/api/users_api.php" // 用户身份验证的url路径
 #define LOGIN_CONFIG_FILENAME  @"login.json" // 用户验证成功后，信息写入该配置档
 #define LOGIN_KEEP_HOURS       24 // 用户在线登陆成功后，可LOGIN_KEEP_HOURS小时内[离线登陆]
-#define LOGIN_DATE_FORMAT      @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
+#define LOGIN_DATE_FORMAT      @"yyyy/MM/dd HH:mm:ss" // 用户验证时，用到时间字符串时的存储格式
 #define LOGIN_LAST_DEFAULT     @"1970/01/01 00:00:00" // 用户登陆前的默认登陆成功时间
 // API参数
 #define LOGIN_PARAM_UID        @"eid"

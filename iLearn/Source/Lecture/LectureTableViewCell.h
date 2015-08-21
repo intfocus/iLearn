@@ -6,7 +6,6 @@
 //  Copyright (c) 2015年 intFocus. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ContentTableViewCell.h"
 
 @interface LectureTableViewCell : ContentTableViewCell

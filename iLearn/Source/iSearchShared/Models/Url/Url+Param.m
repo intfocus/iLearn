@@ -111,6 +111,62 @@
     return [Url UrlConcate:urlString Param:params];
 }
 
+/**
+ *  培训班报名
+ *
+ *  @param uid 用户ID
+ *
+ *  @return 培训班报名链接
+ */
++ (NSString *)trainCourses:(NSString *)uid {
+    NSString *urlString  = [[Url alloc] init].trainCourses;
+    NSDictionary *params = @{@"uid":uid, @"edate":[DateUtils dateToStr:[NSDate date] Format:DATE_SIMPLE_FORMAT]};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
+
+/**
+ *  获取签到列表
+ *
+ *  @param tid 培训班ID
+ *
+ *  @return 签到列表
+ */
++ (NSString *)trainSignins:(NSString *)tid {
+    NSString *urlString  = [[Url alloc] init].courseSignins;
+    NSDictionary *params = @{@"tid":tid};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
+
+/**
+ *  签到的员工列表(含状态)
+ *
+ *  @param tid  培训班ID
+ *  @param ciid 签到ID
+ *
+ *  @return 签到的员工列表
+ */
++ (NSString *)trainSigninScannedUsers:(NSString *)tid ciid:(NSString *)ciid {
+    NSString *urlString  = [[Url alloc] init].courseSigninScannedUsers;
+    NSDictionary *params = @{@"tid":tid, @"ciid":ciid};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
+/**
+ *  签到的员工列表(所有)
+ *
+ *  @param tid  培训班ID
+ *
+ *  @return 签到的员工列表
+ */
++ (NSString *)trainSigninUsers:(NSString *)tid {
+    NSString *urlString  = [[Url alloc] init].courseSigninUsers;
+    NSDictionary *params = @{@"tid":tid};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
+
 #pragma mark - GET# assistant methods
 + (NSString *)UrlConcate:(NSString *)url Param:(NSDictionary *)params {
     NSString *paramString = [Url _parameters:params];

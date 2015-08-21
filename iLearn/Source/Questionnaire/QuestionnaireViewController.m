@@ -421,9 +421,9 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     NSMutableDictionary *subject = _questionnaireContent[QuestionnaireQuestions][_selectedCellIndex];
     NSString *subjectId = subject[QuestionnaireQuestionId];
-    NSString *fileName = _questionnaireContent[CommonFileName];
+    //NSString *fileName = _questionnaireContent[CommonFileName];
     QuestionnaireQuestionTypes questionType = [subject[QuestionnaireQuestionType] integerValue];
-    NSString *dbPath = [QuestionnaireUtil questionnaireDBPathOfFile:fileName];
+    NSString *dbPath = _questionnaireContent[CommonDBPath];//[QuestionnaireUtil questionnaireDBPathOfFile:fileName];
 
     if (questionType <= QuestionnaireQuestionsTypeMultiple) {
         for (int i = 0; i < [subject[QuestionnaireQuestionOptions] count]; i++) {
@@ -560,8 +560,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
         [weakSelf saveAnswers];
 
-        NSString *fileName = _questionnaireContent[CommonFileName];
-        NSString *dbPath = [QuestionnaireUtil questionnaireDBPathOfFile:fileName];
+        //NSString *fileName = _questionnaireContent[CommonFileName];
+        NSString *dbPath = _questionnaireContent[CommonDBPath];//[QuestionnaireUtil questionnaireDBPathOfFile:fileName];
 
         _questionnaireContent[QuestionnaireFinished] = @1;
         [QuestionnaireUtil setQuestionnaireSubmitDateWithDBPath:dbPath];

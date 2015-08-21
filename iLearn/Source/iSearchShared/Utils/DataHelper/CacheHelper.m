@@ -100,7 +100,131 @@
     return package;
 }
 
+/**
+ *  报名课程列表写入缓存文件
+ *
+ *  @param trainCourses 报名课程列表
+ *  @param UID          用户ID
+ */
++ (void)writeTrainCourses:(NSMutableDictionary*)trainCourses UID:(NSString *)UID {
+    if(!trainCourses)  return;
+    
+    NSString *cachePath = [self cachePath:@"train" Type:@"course" ID:UID];
+    [FileUtils writeJSON:trainCourses Into:cachePath];
+}
+/**
+ *  缓存文件读取报名课程列表
+ *
+ *  @param UID 用户ID
+ *
+ *  @return 报名课程列表
+ */
++ (NSMutableDictionary *)trainCourses:(NSString *)UID {
+    NSString *cachePath = [self cachePath:@"train" Type:@"course" ID:UID];
+   //cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/courses.json"];
+    
+    NSMutableDictionary *trainCourses = [NSMutableDictionary dictionary];
+    if([FileUtils checkFileExist:cachePath isDir:NO]) {
+        trainCourses = [FileUtils readConfigFile:cachePath];
+    }
+    
+    return trainCourses;
+}
 
+/**
+ *  某培训班的签到列表写入缓存
+ *
+ *  @param trainSignins 某培训班的签到列表
+ *  @param tid          某培训班的ID
+ */
++ (void)writeTrainSignins:(NSMutableDictionary *)trainSignins courseID:(NSString *)tid {
+    if(!trainSignins)  return;
+    
+    NSString *cachePath = [self cachePath:@"train" Type:@"signins" ID:tid];
+    [FileUtils writeJSON:trainSignins Into:cachePath];
+}
+/**
+ *  某课程的签到列表
+ *
+ *  @param CID 课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSMutableDictionary *)trainSignins:(NSString *)tid {
+    NSString *cachePath = [self cachePath:@"train" Type:@"signins" ID:tid];
+    //cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/signins.json"];
+    
+    NSMutableDictionary *singins = [NSMutableDictionary dictionary];
+    if([FileUtils checkFileExist:cachePath isDir:NO]) {
+        singins = [FileUtils readConfigFile:cachePath];
+    }
+    
+    return singins;
+}
+
+/**
+ *  签到员工列表写入缓存(含状态)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ */
++ (void)writeTrainSigninScannedUsers:(NSMutableDictionary *)trainSigninUsers courseID:(NSString *)tid signinID:(NSString *)ciid {
+    if(!trainSigninUsers)  return;
+    
+    NSString *cachePath = [self cachePath:@"train_signin_users" Type:tid ID:ciid];
+    [FileUtils writeJSON:trainSigninUsers Into:cachePath];
+}
+
+/**
+ *  某课程的签到学员列表(含状态)
+ *
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSMutableDictionary *)trainSigninScannedUsers:(NSString *)tid signinID:(NSString *)ciid {
+    NSString *cachePath = [self cachePath:@"train_signin_users" Type:tid ID:ciid];
+    //cachePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"JsonTemplate/Registration/users.json"];
+    
+    NSMutableDictionary *trainSigninUsers = [NSMutableDictionary dictionary];
+    if([FileUtils checkFileExist:cachePath isDir:NO]) {
+        trainSigninUsers = [FileUtils readConfigFile:cachePath];
+    }
+    
+    return trainSigninUsers;
+}
+/**
+ *  签到员工列表写入缓存(所有)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ */
++ (void)writeTrainSigninUsers:(NSMutableDictionary *)trainSigninUsers courseID:(NSString *)tid {
+    if(!trainSigninUsers)  return;
+    
+    NSString *cachePath = [self cachePath:@"train_signin_users" Type:@"all" ID:tid];
+    [FileUtils writeJSON:trainSigninUsers Into:cachePath];
+}
+
+/**
+ *  某课程的签到学员列表(所有)
+ *
+ *  @param tid              培训班ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSMutableDictionary *)trainSigninUsers:(NSString *)tid  {
+    NSString *cachePath = [self cachePath:@"train_signin_users" Type:@"all" ID:tid];
+    
+    NSMutableDictionary *trainSigninUsers = [NSMutableDictionary dictionary];
+    if([FileUtils checkFileExist:cachePath isDir:NO]) {
+        trainSigninUsers = [FileUtils readConfigFile:cachePath];
+    }
+    
+    return trainSigninUsers;
+}
 #pragma mark - asisstant methods
 /**
  *  目录信息缓存文件文件路径;

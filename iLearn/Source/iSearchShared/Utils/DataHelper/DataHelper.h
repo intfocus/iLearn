@@ -61,6 +61,54 @@
  *  @return 课程包内容明细
  */
 + (NSArray *)coursePackageContent:(BOOL)isNetworkAvaliable pid:(NSString *)PID;
+
+/**
+ *  培训班课程列表
+ *
+ *  @param isNetworkAvaliable 网络环境
+ *
+ *  @return 培训班列表
+ */
++ (NSArray *)trainCourses:(BOOL)isNetworkAvaliable;
+
+/**
+ *  某课程的签到列表
+ *
+ *  @param isNetworkAvailabel 网络环境
+ *  @param tid                课程ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSArray *)trainSingins:(BOOL)isNetworkAvailable courseID:(NSString *)tid;
+
+/**
+ *  报名POST
+ *
+ *  @param TID 课程ID
+ */
++ (void)trainSignup:(NSString *)TID;
+
+/**
+ *  某课程的签到学员列表(含状态)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSArray *)trainSigninScannedUsers:(BOOL)isNetworkAvailable courseID:(NSString *)tid signinID:(NSString *)ciid;
+
+/**
+ *  某课程的签到学员列表(所有)
+ *
+ *  @param trainSigninUsers 签到员工列表
+ *  @param tid              培训班ID
+ *  @param ciid             签到ID
+ *
+ *  @return 课程的签到列表
+ */
++ (NSDictionary *)trainSigninUsers:(BOOL)isNetworkAvailable tid:(NSString *)tid;
 @end
 
 #endif

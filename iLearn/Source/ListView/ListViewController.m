@@ -17,6 +17,7 @@
 #import "SettingViewController.h"
 #import "UIViewController+CWPopup.h"
 #import "NotificationDetailView.h"
+#import "RegistrationTableViewController.h"
 
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
@@ -35,10 +36,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) ContentViewController<ContentViewProtocal> *contentViewController;
-@property (strong, nonatomic) ExamTableViewController *examTableViewController;
-@property (strong, nonatomic) QuestionnaireTableViewController *questionnaireTableViewController;
-@property (strong, nonatomic) NotificationViewController *notificationViewController;
-
 @property (weak, nonatomic) IBOutlet UIImageView *avartarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
@@ -61,9 +58,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // Do any additional setup after loading the view, typically from a nib.
-    _registrationView.hidden = YES;
-
     // Setup avatar image view
     CGFloat width = _avatarImageView.frame.size.width;
     [_avatarImageView.layer setCornerRadius:width/2.0];
@@ -72,21 +66,7 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _avatarImageView.clipsToBounds = YES;
     
     _userNameLabel.text = [LicenseUtil userName];
-    
     _serviceCallLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"DASHBOARD_SERVICE_CALL", nil), [LicenseUtil serviceNumber]];
-
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main"
-                                                         bundle:nil];
-
-    self.examTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
-    _examTableViewController.listViewController = self;
-
-    self.questionnaireTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"QuestionnaireTableViewController"];
-    _questionnaireTableViewController.listViewController = self;
-
-    self.notificationViewController = [[NotificationViewController alloc] init];
-    self.notificationViewController.masterViewController = self;
-    self.notificationViewController.listViewController = self;
     
     [self refreshContentView];
     
@@ -118,23 +98,58 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (void)switchContentViewToViewController
 {
     ContentViewController<ContentViewProtocal> *newContentViewController;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboard;
     switch (_listType) {
-        case ListViewTypeExam:
+        case ListViewTypeExam: {
+            storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"ExamTableViewController"];
             newContentViewController.listViewController = self;
+            
             break;
-        case ListViewTypeLecture:
+        }
+        case ListViewTypeLecture: {
             storyboard = [UIStoryboard storyboardWithName:@"Lecture" bundle:nil];
             newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"LectureTableViewController"];
             newContentViewController.listViewController = self;
+            
             break;
-        case ListViewTypeQuestionnaire:
-            newContentViewController = _questionnaireTableViewController;
+        }
+        case ListViewTypeNotification: {
+            NotificationViewController *notificationViewController = [[NotificationViewController alloc] init];
+            notificationViewController.masterViewController = self;
+            notificationViewController.listViewController = self;
+            newContentViewController = notificationViewController;
+            
             break;
-        case ListViewTypeNotification:
-            newContentViewController = _notificationViewController;
+        }
+        case ListViewTypeRegistration: {
+            storyboard = [UIStoryboard storyboardWithName:@"Registration" bundle:nil];
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"RegistrationTableViewController"];
+            newContentViewController.listViewController = self;
+            
             break;
+        }
+        case ListViewTypeQuestionnaire: {
+            storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"QuestionnaireTableViewController"];
+            newContentViewController.listViewController = self;
+            
+            break;
+        }
+        case ListViewTypeSigninAdmin: {
+            storyboard = [UIStoryboard storyboardWithName:@"Registration" bundle:nil];
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"SigninAdminTableViewController"];
+            newContentViewController.listViewController = self;
+            
+            break;
+        }
+        case ListViewTypeSigninUser: {
+            storyboard = [UIStoryboard storyboardWithName:@"Registration" bundle:nil];
+            newContentViewController = [storyboard instantiateViewControllerWithIdentifier:@"SigninUserTableViewController"];
+            newContentViewController.listViewController = self;
+            
+            break;
+        }
         default:
             break;
     }
@@ -168,30 +183,65 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
     _syncButton.hidden      = YES;
     _scanButton.hidden      = YES;
     _backButton.hidden      = YES;
-    _courseNameLabel.hidden = YES;
+    _centerLabel.hidden = YES;
     
     switch (_listType) {
-        case ListViewTypeExam:
+        case ListViewTypeExam: {
             self.titleLabel.text = NSLocalizedString(@"LIST_EXAM", nil);
             _syncButton.hidden = NO;
             _scanButton.hidden = NO;
+            
             break;
-        case ListViewTypeLecture:
+        }
+        case ListViewTypeLecture: {
             self.titleLabel.text = NSLocalizedString(@"LIST_LECTURE", nil);
             _syncButton.hidden = NO;
+            
             break;
-        case ListViewTypeQuestionnaire:
+        }
+        case ListViewTypeQuestionnaire: {
             self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
             _syncButton.hidden = NO;
+            
             break;
-        case ListViewTypeNotification:
+        }
+        case ListViewTypeNotification: {
             self.titleLabel.text = NSLocalizedString(@"LIST_NOTIFICATION", nil);
             _syncButton.hidden = NO;
+            
             break;
-        default:
+        }
+        case ListViewTypeRegistration: {
+            self.syncButton.hidden = NO;
+            self.titleLabel.hidden = NO;
+            self.titleLabel.text   = @"培训报名";
+            break;
+        }
+        case ListViewTypeSigninAdmin: {
+            self.syncButton.hidden      = NO;
+            self.backButton.hidden      = NO;
+            self.titleLabel.hidden      = YES;
+            self.centerLabel.hidden = NO;
+            self.scanButton.hidden      = NO;
+            [self.scanButton setTitle:@"创建签到" forState:UIControlStateNormal];
+            
+            break;
+        }
+        case ListViewTypeSigninUser: {
+            self.syncButton.hidden      = NO;
+            self.backButton.hidden      = NO;
+            self.titleLabel.hidden      = YES;
+            self.centerLabel.hidden = NO;
+            self.scanButton.hidden      = YES;
+            [self.scanButton setTitle:@"过滤" forState:UIControlStateNormal];
+            
+            break;
+        }
+        default: {
             self.titleLabel.text = NSLocalizedString(@"LIST_QUESTIONNAIRE", nil);
             _syncButton.hidden = NO;
             break;
+        }
     }
 }
 
@@ -228,9 +278,6 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (IBAction)registrationButtonTouched:(id)sender {
     NSLog(@"registrationButtonTouched");
-    if (_listType == ListViewTypeRegistration) {
-        return;
-    }
     self.listType = ListViewTypeRegistration;
     [self refreshContentView];
 }
@@ -243,18 +290,12 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
 - (IBAction)questionnaireButtonTouched:(id)sender {
     NSLog(@"questionnaireButtonTouched");
-    if (_listType == ListViewTypeQuestionnaire) {
-        return;
-    }
     self.listType = ListViewTypeQuestionnaire;
     [self refreshContentView];
 }
 
 - (IBAction)examButtonTouched:(id)sender {
     NSLog(@"examButtonTouched");
-    if (_listType == ListViewTypeExam) {
-        return;
-    }
     self.listType = ListViewTypeExam;
     [self refreshContentView];
 }

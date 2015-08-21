@@ -44,8 +44,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     _connectionManager.delegate = self;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [self refreshContent];
 
     if (!_hasAutoSynced) {
@@ -59,8 +58,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:kShowDetailSegue]) {
 
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
@@ -266,11 +264,12 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [QuestionnaireUtil parseContentIntoDB:content];
-
         NSString *dbPath = [QuestionnaireUtil questionnaireDBPathOfFile:content[CommonFileName]];
+        [QuestionnaireUtil parseContentIntoDB:content dbPath:dbPath];
+
 
         NSDictionary *dbContent = [QuestionnaireUtil contentFromDBFile:dbPath];
+        [dbContent setValue:dbPath forKey:CommonDBPath];
 //        NSLog(@"dbContent: %@", [QuestionnaireUtil jsonStringOfContent:dbContent]);
 
         dispatch_async(dispatch_get_main_queue(), ^{

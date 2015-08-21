@@ -81,83 +81,6 @@
 }
 
 /**
- *  课件文件路径
- *
- *  @param courseID 课程名称 ID
- *  @param extName  课件文件扩展名
- *  @param UseExt   是否使用扩展名
- *
- *  @return 课件文件路径
- */
-+ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName UseExt:(BOOL)useExt {
-    NSString *courseName;
-    if(useExt) {
-        courseName = [NSString stringWithFormat:@"%@.%@", courseID, extName];
-    }
-    else {
-        courseName = courseID;
-    }
-    return [self dirPath:COURSE_DIRNAME FileName:courseName];
-}
-
-+ (NSString *)coursePath:(NSString *)courseID Ext:(NSString *)extName {
-    return [self coursePath:courseID Ext:extName UseExt:YES];
-}
-/**
- *  课件内容是否下载
- *
- *  @param courseID 课程名称 ID
- *  @param extName  课件文件扩展名
- *
- *  @return BOOL
- */
-+ (BOOL)isCourseDownloaded:(NSString *)courseID Ext:(NSString *)extName {
-    NSString *coursePath = [self coursePath:courseID Ext:extName];
-    
-    if([extName isEqualToString:@"zip"]) {
-        coursePath = [coursePath stringByDeletingPathExtension];
-        return [self checkFileExist:coursePath isDir:YES];
-    }
-    
-    return [self checkFileExist:coursePath isDir:NO];
-}
-
-/**
- *  课件学习进度
- *
- *  @param courseID 课程名称 ID
- *  @param extName  课件文件扩展名
- *
- *  @return BOOL
- */
-+ (NSString *)courseProgressPath:(NSString *)courseID Ext:(NSString *)extName {
-    NSString *coursePath = [self coursePath:courseID Ext:extName];
-    return [NSString stringWithFormat:@"%@.read-progress", coursePath];
-}
-
-/**
- *  课件内容是否被阅读
- *
- *  @param courseID 课程名称 ID
- *  @param extName  课件文件扩展名
- *
- *  @return BOOL
- */
-+ (BOOL)isCourseReaded:(NSString *)courseID Ext:(NSString *)extName {
-    return [self checkFileExist:[self courseProgressPath:courseID Ext:extName] isDir:NO];
-}
-
-/**
- *  记录学习进度
- *
- *  @param dict     学习进度配置档
- *  @param courseID 课程名称 ID
- *  @param extName  课件文件扩展名
- */
-+ (void)recordProgress:(NSDictionary *)dict CourseID:(NSString *)courseID Ext:(NSString *)extName {
-    [dict writeToFile:[self courseProgressPath:courseID Ext:extName] atomically:YES];
-}
-/**
  *  读取配置档，有则读取。
  *  默认为NSMutableDictionary，若读取后为空，则按JSON字符串转NSMutableDictionary处理。
  *
@@ -325,5 +248,25 @@
         folderSize +=  [[fileAttributes objectForKey:NSFileSize] longLongValue];
     }
     return [NSString stringWithFormat:@"%lld", folderSize];
+}
+
+/**
+ *  界面切换时保存数据
+ *
+ *  @param dict 数据
+ *  @param fileName 文件名称
+ */
++ (void)shareData:(NSDictionary *)dict fileName:(NSString *)fileName {
+    fileName = [NSString stringWithFormat:@"data-%@.share", fileName];
+    [FileUtils writeJSON:[NSMutableDictionary dictionaryWithDictionary:dict]
+                    Into:[FileUtils dirPath:CONFIG_DIRNAME FileName:fileName]];
+}
+
+/**
+ *  @param fileName 文件名称
+ */
++ (NSDictionary *)shareData:(NSString *)fileName {
+    fileName = [NSString stringWithFormat:@"data-%@.share", fileName];
+    return [FileUtils readConfigFile:[FileUtils dirPath:CONFIG_DIRNAME FileName:fileName]];
 }
 @end
