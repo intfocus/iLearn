@@ -73,7 +73,6 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 @property (assign, nonatomic) BOOL isAnswerMode; //答案模式
 
 @property (weak, nonatomic) IBOutlet UIView *fakeNavBarView;
-@property (weak, nonatomic) IBOutlet UIButton *submitButton2;
 @property (weak, nonatomic) IBOutlet UIView *squareView;
 
 @property (weak, nonatomic) IBOutlet UIView *countDownView;
@@ -186,8 +185,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         self.countDownViewHeightConstraint.constant = 0;
         self.squareView.backgroundColor = ILDarkRed;
     }
-    
-    self.submitButton2.layer.cornerRadius = 4;
+
+    _submitButton.layer.cornerRadius = 4;
     
     //self.useBlurForPopup = YES;
 }
@@ -226,7 +225,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     QuestionCollectionViewCell *cell = (QuestionCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:kSubjectCollectionCellIdentifier forIndexPath:indexPath];
 
-    cell.numberLabel.text = [NSString stringWithFormat:@"%ld", indexPath.row+1];
+    cell.numberLabel.text = [NSString stringWithFormat:@"%ld", (long)(indexPath.row+1)];
     cell.numberLabel.textColor = [UIColor blackColor];
 
     if (_isAnswerMode) {
@@ -436,7 +435,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     _questionTypeLabel.text = typeString;
     _correctionTypeLabel.text = typeString;
 
-    NSString *title = [NSString stringWithFormat:@"%lu. %@", _selectedCellIndex+1, questionTitle];
+    NSString *title = [NSString stringWithFormat:@"%lu. %@", (unsigned long)_selectedCellIndex+1, questionTitle];
 
     _questionTitleLabel.text = title;
     _correctionTitleLabel.text = title;
@@ -469,18 +468,15 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 {
     if (_isAnswerMode) {
         _submitButton.hidden = YES;
-        self.submitButton2.hidden = YES;
     }
     else {
         for (NSNumber *status in _cellStatus) {
             if ([status isEqualToNumber:@(CellStatusNone)]) {
                 _submitButton.hidden = YES;
-                self.submitButton2.hidden = YES;
                 return;
             }
         }
         _submitButton.hidden = NO;
-        self.submitButton2.hidden = NO;
     }
 }
 
@@ -504,7 +500,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         BOOL selected = [_selectedRowsOfSubject containsObject:@(i)];
 
         option[ExamQuestionOptionSelected] = @(selected);
-        [ExamUtil setOptionSelected:selected withSubjectId:subjectId optionId:optionId andDBPath:dbPath];
+        [ExamUtil setOptionSelected:selected withQuestionId:subjectId optionId:optionId andDBPath:dbPath];
     }
 }
 
@@ -699,7 +695,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
                     [ExamUtil updateExamScore:score ofDBPath:dbPath];
                 }
                 
-                [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+                [ExamUtil generateUploadJsonFromDBPath:dbPath];
                 isUploadExamResult = YES;
             }
         }

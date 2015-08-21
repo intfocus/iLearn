@@ -9,7 +9,6 @@
 #import "ExamTableViewController.h"
 #import "DetailViewController.h"
 #import "PasswordViewController.h"
-#import "QuestionnaireUtil.h"
 #import "ExamViewController.h"
 #import "ScoreQRCodeViewController.h"
 #import "LicenseUtil.h"
@@ -22,7 +21,6 @@
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
 static NSString *const kShowPasswordSegue = @"showPasswordPage";
-static NSString *const kShowSettingsSegue = @"showSettingsPage";
 static NSString *const kShowScoreQRCode = @"showScoreQRCode";
 
 static NSString *const kExamTableViewCellIdentifier = @"ExamTableViewCell";
@@ -93,8 +91,8 @@ static const NSInteger kMinScanInterval = 3;
         }
         
     }
-    if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
-        
+    else if ([segue.identifier isEqualToString:kShowPasswordSegue]) {
+
         PasswordViewController *detailVC = (PasswordViewController*)segue.destinationViewController;
         
         detailVC.titleString = [[ExamUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
@@ -106,7 +104,7 @@ static const NSInteger kMinScanInterval = 3;
         };
     }
     else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
-        //UINavigationController *navController = segue.destinationViewController;
+
         UIViewController *viewController = segue.destinationViewController;
         
         if ([viewController isKindOfClass:[ExamViewController class]]) {
@@ -191,29 +189,9 @@ static const NSInteger kMinScanInterval = 3;
     return [self tableView:tableView cellForExamRowAtIndexPath:indexPath];
 }
 
-//- (UITableViewCell*)tableView:(UITableView *)tableView cellForQuestionnaireRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kQuestionnaireCellIdentifier];
-//    cell.delegate = self;
-//
-//    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
-//
-//    cell.titleLabel.text = [QuestionnaireUtil titleFromContent:content];
-//
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"YYYY/MM/dd"];
-//    NSInteger epochTime = [QuestionnaireUtil expirationDateFromContent:content];
-//    NSDate *date = [NSDate dateWithTimeIntervalSince1970:epochTime];
-//    NSString *expirationDateString = [formatter stringFromDate:date];
-//
-//    cell.expirationDateLabel.text = [NSString stringWithFormat:@"有效日期：%@", expirationDateString];
-//
-//    return cell;
-//}
-
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForExamRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ExamTabelViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kExamTableViewCellIdentifier];
+    ExamTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kExamTableViewCellIdentifier];
     cell.delegate = self;
     
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
@@ -283,10 +261,9 @@ static const NSInteger kMinScanInterval = 3;
                             scoreInt = qualityLine;
                             [ExamUtil updateExamScore:scoreInt ofDBPath:dbPath];
                         }
-                        
-                        [ExamUtil generateExamUploadJsonOfDBPath:dbPath];
+                        [ExamUtil generateUploadJsonFromDBPath:dbPath];
                     }
-                    
+
                 }
             }
         }
@@ -386,10 +363,6 @@ static const NSInteger kMinScanInterval = 3;
 {
     self.showBeginTestInfo = NO;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    
-    //NSLog(@"didSelectInfoButtonOfCell:");
-    //NSLog(@"indexPath.row: %ld", (long)indexPath.row);
-    
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
     [self performSegueWithIdentifier:kShowDetailSegue sender:content];
 }
@@ -399,10 +372,6 @@ static const NSInteger kMinScanInterval = 3;
     self.showBeginTestInfo = YES;
     self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    
-    NSLog(@"didSelectActionButtonOfCell:");
-    NSLog(@"indexPath.row: %ld", (long)indexPath.row);
-    
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
     
     if (cell.actionButtonType == ContentTableViewCellActionDownload) {
@@ -412,7 +381,7 @@ static const NSInteger kMinScanInterval = 3;
     }
     else if (cell.actionButtonType == ContentTableViewCellActionView) {
         
-        ExamTabelViewCell *examTVC = (ExamTabelViewCell *)cell;
+        ExamTableViewCell *examTVC = (ExamTableViewCell *)cell;
         if ([examTVC.actionButton.titleLabel.text isEqual:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil)]) {
             [self beginTest: content];
         }
@@ -471,13 +440,14 @@ static const NSInteger kMinScanInterval = 3;
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
         NSString *dbPath = [ExamUtil examDBPath:content[CommonFileName]];
         [ExamUtil parseContentIntoDB:content Path:dbPath];
         
-        NSDictionary *dbContent = [ExamUtil examContentFromDBFile:dbPath];
+        NSDictionary *dbContent = [ExamUtil contentFromDBFile:dbPath];
         [dbContent setValue:dbPath forKey:CommonDBPath];
         //NSLog(@"dbContent: %@", [ExamUtil jsonStringOfContent:dbContent]);
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
             [weakSelf performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];

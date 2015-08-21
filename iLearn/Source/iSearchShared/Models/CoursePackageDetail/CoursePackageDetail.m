@@ -251,7 +251,7 @@ static NSString *const kPackageCourseWrap = @"PackageCourseWrap";
 - (NSDictionary *)examDictContent {
     NSString *examDBPath = [FileUtils coursePath:self.examId Ext:@"db"];
     if([FileUtils checkFileExist:examDBPath isDir:NO]) {
-        _examDictContent = [ExamUtil examContentFromDBFile:examDBPath];
+        _examDictContent = [ExamUtil contentFromDBFile:examDBPath];
     }
     else {
         NSString *examPath = [FileUtils coursePath:self.examId Ext:@"json"];

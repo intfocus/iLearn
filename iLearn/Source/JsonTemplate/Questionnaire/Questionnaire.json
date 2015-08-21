@@ -1,0 +1,47 @@
+{
+    "status": 1,
+    "count": 4,
+    "data": [
+             {
+             "TemplateId": 1,
+             "Name": "问卷1",
+             "Desc": "问卷1",
+             "StartTime": "2015/07/29 16:48:30",
+             "EndTime": "2015/08/29 16:48:30",
+             "CreatedUser": 1,
+             "Status": 1,
+             "Id": 1
+             },
+             {
+             "TemplateId": 2,
+             "Name": "问卷2",
+             "Desc": "问卷2",
+             "StartTime": "2015/07/29 16:48:30",
+             "EndTime": "2015/08/29 16:48:30",
+             "CreatedUser": 1,
+             "Status": 1,
+             "Id": 2
+             },
+             {
+             "TemplateId": 3,
+             "Name": "问卷3",
+             "Desc": "问卷3",
+             "StartTime": "2015/07/29 16:48:30",
+             "EndTime": "2015/08/29 16:48:30",
+             "CreatedUser": 1,
+             "Status": 1,
+             "Id": 3
+             },
+             {
+             "TemplateId": 4,
+             "Name": "问卷4",
+             "Desc": "问卷4",
+             "StartTime": "2015/07/29 16:48:30",
+             "EndTime": "2015/08/29 16:48:30",
+             "CreatedUser": 1,
+             "Status": 1,
+             "Id": 4
+             }
+             ],
+    "result": ""
+}

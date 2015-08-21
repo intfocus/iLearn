@@ -11,9 +11,9 @@
 
 @protocol ContentViewProtocal <NSObject>
 
-@optional
-
 - (void)syncData;
+
+@optional
 - (void)scanQRCode;
 - (void)actionBack:(id)sender;
 

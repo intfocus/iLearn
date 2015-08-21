@@ -10,6 +10,7 @@
 
 @protocol ConnectionManagerDelegate <NSObject>
 
+@optional
 - (void)connectionManagerDidDownloadExamsForUser:(NSString*)userId withError:(NSError*)error;
 - (void)connectionManagerDidDownloadExam:(NSString*)examId withError:(NSError*)error;
 - (void)connectionManagerDidUploadExamResult:(NSString*)examId withError:(NSError*)error;
@@ -17,18 +18,26 @@
 
 - (void)connectionManagerDidDownloadCourse:(NSString*)courseID Ext:(NSString *)extName withError:(NSError*)error;
 
+- (void)connectionManagerDidDownloadQuestionnairesWithError:(NSError*)error;
+- (void)connectionManagerDidDownloadQuestionnaire:(NSString*)questionnaireId withError:(NSError*)error;
+- (void)connectionManagerDidUploadQuestionnaireResult:(NSString*)questionnaireId withError:(NSError*)error;
+
 @end
 
 @interface ConnectionManager : NSObject
 
 @property (weak, nonatomic) id<ConnectionManagerDelegate> delegate;
 
-//+ (ConnectionManager*)sharedManager;
 - (void)downloadExamsForUser:(NSString*)userId;
 - (void)downloadExamWithId:(NSString*)examId;
 - (void)uploadExamResultWithPath:(NSString*)resultPath;
 - (void)uploadExamScannedResult:(NSString*)result;
 
 - (void)downloadCourse:(NSString*)courseID Ext:(NSString *)extName;
+
+- (void)downloadQuestionnaires;
+- (void)downloadQuestionnaireWithId:(NSString*)questionnaireId;
+- (void)uploadQuestionnaireResultWithPath:(NSString*)resultPath;
+
 
 @end

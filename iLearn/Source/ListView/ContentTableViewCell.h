@@ -20,6 +20,8 @@ typedef NS_ENUM(NSUInteger, ContentTableViewCellAction) {
 
 - (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell;
 - (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell;
+
+@optional
 - (void)didSelectQRCodeButtonOfCell:(ContentTableViewCell*)cell;
 
 @end
