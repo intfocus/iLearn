@@ -59,10 +59,10 @@
 - (void)updateDeletedSlide:(NSString *)slideID
                  SlideType:(NSString *)slideType {
     NSString *sql = [NSString stringWithFormat:@"update %@ set %@ = 1 \
-                     where %@ = '%@' and %@ = '%@' and %@ = 0 and     \
+                     where %@ = '%@' and %@ = 0 and     \
                      %@ = '%@' and %@ = '%@';",
                      ACTIONLOG_TABLE_NAME, ACTIONLOG_COLUMN_DELETED,
-                     LOCAL_COLUMN_ACTION, ACTION_DISPLAY, ACTIONLOG_COLUMN_UID, self.userID, ACTIONLOG_COLUMN_DELETED,
+                     LOCAL_COLUMN_ACTION, ACTION_DISPLAY, ACTIONLOG_COLUMN_DELETED,
                      LOCAL_COLUMN_SLIDE_ID, slideID, LOCAL_COLUMN_SLIDE_TYPE, slideType];
     
     [self executeSQL:sql];
@@ -74,22 +74,26 @@
  *
  *  @return NSMutableArray
  */
-- (NSMutableArray *)unSyncRecords {
+- (NSMutableArray *)records:(BOOL)isOnlyUnSync {
     NSMutableArray *array = [NSMutableArray array];
     
-    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@ from %@ \
-                     where %@ = '%@' and %@ = 0 ;",
+    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@, %@ from %@ ",
                      ACTIONLOG_COLUMN_FUNNAME,
                      ACTIONLOG_COLUMN_ACTOBJ,
                      ACTIONLOG_COLUMN_ACTNAME,
                      ACTIONLOG_COLUMN_ACTRET,
                      DB_COLUMN_CREATED,
-                     ACTIONLOG_TABLE_NAME,
                      ACTIONLOG_COLUMN_UID,
-                     self.userID,
-                     ACTIONLOG_COLUMN_ISSYNC];
+                     ACTIONLOG_TABLE_NAME];
+    if(isOnlyUnSync) {
+        sql = [sql stringByAppendingString:[NSString stringWithFormat:@" where %@ = 0;", ACTIONLOG_COLUMN_ISSYNC]];
+    }
+    else {
+        sql = [sql stringByAppendingString:@";"];
+    }
+
     int ID;
-    NSString *funName, *actObj, *actName, *actRet, *actTime;
+    NSString *funName, *actObj, *actName, *actRet, *actTime, *userID;
     
     FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
@@ -102,10 +106,11 @@
             actName = [s stringForColumnIndex:3];
             actRet  = [s stringForColumnIndex:4];
             actTime = [s stringForColumnIndex:5];
+            userID  = [s stringForColumnIndex:6];
             
             dict    = [NSMutableDictionary dictionaryWithCapacity:0];
             dict[@"id"]                   = [NSNumber numberWithInt:ID];
-            dict[ACTIONLOG_FIELD_UID]     = self.userID;
+            dict[ACTIONLOG_FIELD_UID]     = userID;
             dict[ACTIONLOG_FIELD_FUNNAME] = funName;
             dict[ACTIONLOG_FIELD_ACTOBJ]  = actObj;
             dict[ACTIONLOG_FIELD_ACTNAME] = actName;
@@ -125,11 +130,9 @@
 - (void)updateSyncedRecords:(NSMutableArray *)IDS {
     if([IDS count] == 0) return;
     
-    NSString *updateSQL = [NSString stringWithFormat:@"update %@ set %@ = 1 where %@ = '%@' and %@ = 0 and id in (%@)",
+    NSString *updateSQL = [NSString stringWithFormat:@"update %@ set %@ = 1 where %@ = 0 and id in (%@)",
                            ACTIONLOG_TABLE_NAME,
                            ACTIONLOG_COLUMN_ISSYNC,
-                           ACTIONLOG_COLUMN_UID,
-                           self.userID,
                            ACTIONLOG_COLUMN_ISSYNC,
                            [IDS componentsJoinedByString:@","]];
     [self executeSQL:updateSQL];
@@ -147,14 +150,14 @@
 }
 
 
-- (int)recordCount:(BOOL)isAll {
+- (int)recordCount:(BOOL)isOnlyUnSync {
     NSString *sql = [NSString stringWithFormat:@"select count(id) from %@ ",ACTIONLOG_TABLE_NAME];
     
-    if(isAll) {
-        sql = [NSString stringWithFormat:@"%@ ;", sql];
+    if(isOnlyUnSync) {
+        sql = [sql stringByAppendingString:[NSString stringWithFormat:@" where %@ = 0;", ACTIONLOG_COLUMN_ISSYNC]];
     }
     else {
-        sql = [NSString stringWithFormat:@"%@ where %@ = '%@' ;", sql, ACTIONLOG_COLUMN_UID, self.userID];
+        sql = [sql stringByAppendingString:@";"];
     }
     
     int count = -1;
@@ -177,10 +180,9 @@
  *  @return 最近播放的文档数量/未同步的记录数量/当前个人记录数量/所有记录数量
  */
 - (NSString *)localInfo {
-    NSInteger count2 = [[self unSyncRecords] count];
-    int count3 = [self recordCount:NO];
-    int count4 = [self recordCount:YES];
+    int count1 = [self recordCount:NO];
+    int count2 = [self recordCount:YES];
     
-    return [NSString stringWithFormat:@"%li/%i/%i", (long)count2, count3, count4];
+    return [NSString stringWithFormat:@"%li/%i", (long)count1, count2];
 }
 @end

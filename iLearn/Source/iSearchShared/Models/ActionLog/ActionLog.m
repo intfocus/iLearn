@@ -27,7 +27,7 @@
 }
 
 - (void)syncRecords {
-    NSMutableArray *unSyncRecords = [self.databaseUtils unSyncRecords];
+    NSMutableArray *unSyncRecords = [self.databaseUtils records:YES];
     NSMutableArray *IDS = [DataHelper actionLog:unSyncRecords];
     [self.databaseUtils updateSyncedRecords:IDS];
 }

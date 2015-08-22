@@ -10,6 +10,14 @@
 #define iSearch_SettingMainView_h
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, SettingSectionIndex) {
+    SettingUserInfoIndex  = 0,
+    SettingAppInfoIndex   = 1,
+    SettingAppFilesIndex  = 2,
+    SettingActionLogIndex = 3,
+    SettingUpgradeIndex   = 4
+};
+
 @protocol SettingViewProtocol <NSObject>
 - (void)dismissSettingView;
 @end

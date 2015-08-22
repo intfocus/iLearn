@@ -14,14 +14,9 @@
 #import "SettingDataInfo.h"
 #import "ViewUpgrade.h"
 #import "FileUtils+Setting.h"
+#import "DatabaseUtils+ActionLog.h"
 
-typedef NS_ENUM(NSInteger, SettingSectionIndex) {
-    SettingUserInfoIndex = 0,
-    SettingAppInfoIndex  = 1,
-    SettingAppFilesIndex = 2,
-    SettingUpgradeIndex  = 3,
-    SettingRegularIndex  = 4
-};
+
 
 @interface SettingViewController()<UITableViewDelegate, UITableViewDataSource, ViewUpgradeProtocol, ViewUpgradeProtocol>
 
@@ -52,6 +47,8 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     }
     NSString *fileSize = [NSString stringWithFormat:@"%lli", fileSize1];
     [self.dataList addObject:@[@"本地文件", [FileUtils humanFileSize:fileSize]]];
+    
+    [self.dataList addObject:@[@"本地记录", [[[DatabaseUtils alloc] init] localInfo]]];
     [self.dataList addObject:@[@"版本更新", @""]];
     /**
      *  控件事件
@@ -104,7 +101,8 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     switch ([indexPath row]) {
         case SettingUserInfoIndex:
         case SettingAppInfoIndex:
-        case SettingAppFilesIndex: {
+        case SettingAppFilesIndex:
+        case SettingActionLogIndex:{
             SettingDataInfo *viewController = [[SettingDataInfo alloc] init];
             viewController.indexRow = indexPath.row;
             [self.navigationController pushViewController:viewController animated:YES];

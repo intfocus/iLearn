@@ -34,63 +34,74 @@
 
 - (void)initData {
     NSString *title;
-    if(self.indexRow == 0) {
-        title = @"用户信息";
-        
-        User *user = [[User alloc] init];
-        self.dataList = @[
-                          @[@"用户信息",
-                            @[
-                                @[@"名称", user.name, @0],
-                                @[@"邮箱", user.email, @0],
-                                @[@"员工编号", user.employeeID, @0],
-                                @[@"上次登录时间", user.loginLast, @0]
+    
+    switch (self.indexRow) {
+        case SettingUserInfoIndex: {
+            title = @"用户信息";
+            
+            User *user = [[User alloc] init];
+            self.dataList = @[
+                              @[@"用户信息",
+                                @[
+                                    @[@"名称", user.name, @0],
+                                    @[@"邮箱", user.email, @0],
+                                    @[@"员工编号", user.employeeID, @0],
+                                    @[@"上次登录时间", user.loginLast, @0]
+                                    ]
+                                ],
+                              @[@"本地信息",
+                                @[
+                                    @[@"本地记录", [[[DatabaseUtils alloc] init] localInfo], @0]
+                                    ]
                                 ]
-                            ],
-                          @[@"本地信息",
-                            @[
-                                @[@"本地记录", [[[DatabaseUtils alloc] init] localInfo], @0]
-                                ]
-                            ]
-                          ];
-    }
-    else if(self.indexRow == 1) {
-        title = @"应用信息";
-        
-        Version *version = [[Version alloc] init];
-        self.dataList = @[
-                          @[@"应用信息",
-                            @[
-                                @[@"应用名称", version.appName, @0],
-                                @[@"应用版本", version.current, @0]
-                                ]
-                            ],
-                          @[@"设备信息",
-                            @[
-                                @[@"设备型号", [version machineHuman], @0],
-                                @[@"系统语言", version.lang, @0],
-                                @[@"支持最低IOS版本",version.suport, @0],
-                                @[@"当前IOS版本",  [version.sdkName stringByReplacingOccurrencesOfString:version.platform withString:@""], @0],
-                                @[@"系统空间", [FileUtils humanFileSize:version.fileSystemSize], @0],
-                                @[@"系统可用空间", [FileUtils humanFileSize:version.fileSystemFreeSize], @0]
-                                ]
-                            ]
-                          ];
-    }
-    else if(self.indexRow == 2) {
-        title = @"本地文件";
-        
-        NSMutableArray *array = [NSMutableArray array];
-        NSString *userInfo, *humainSize;
-        User *user;
-        _appFiles = [FileUtils appFiles];
-        for(NSArray *temp in _appFiles) {
-            user = temp[0];
-            userInfo = [NSString stringWithFormat:@"%@(%@)", user.name, user.employeeID];
-            humainSize = [FileUtils humanFileSize:[NSString stringWithFormat:@"%lli", [temp[1] longLongValue]]];
-            [array addObject:@[userInfo, humainSize, @0]];
+                              ];
+            break;
         }
-        self.dataList = @[@[@"文件列表", array]];
+        case SettingAppInfoIndex: {
+            title = @"应用信息";
+            
+            Version *version = [[Version alloc] init];
+            self.dataList = @[
+                              @[@"应用信息",
+                                @[
+                                    @[@"应用名称", version.appName, @0],
+                                    @[@"应用版本", version.current, @0]
+                                    ]
+                                ],
+                              @[@"设备信息",
+                                @[
+                                    @[@"设备型号", [version machineHuman], @0],
+                                    @[@"系统语言", version.lang, @0],
+                                    @[@"支持最低IOS版本",version.suport, @0],
+                                    @[@"当前IOS版本",  [version.sdkName stringByReplacingOccurrencesOfString:version.platform withString:@""], @0],
+                                    @[@"系统空间", [FileUtils humanFileSize:version.fileSystemSize], @0],
+                                    @[@"系统可用空间", [FileUtils humanFileSize:version.fileSystemFreeSize], @0]
+                                    ]
+                                ]
+                              ];
+            break;
+        }
+        case SettingAppFilesIndex: {
+            title = @"本地文件";
+            
+            NSMutableArray *array = [NSMutableArray array];
+            NSString *userInfo, *humainSize;
+            User *user;
+            _appFiles = [FileUtils appFiles];
+            for(NSArray *temp in _appFiles) {
+                user = temp[0];
+                userInfo = [NSString stringWithFormat:@"%@(%@)", user.name, user.employeeID];
+                humainSize = [FileUtils humanFileSize:[NSString stringWithFormat:@"%lli", [temp[1] longLongValue]]];
+                [array addObject:@[userInfo, humainSize, @0]];
+            }
+            self.dataList = @[@[@"文件列表", array]];
+            
+            break;
+        }
+        case SettingActionLogIndex: {
+            self.dataList = @[@[@"本地记录", [[[DatabaseUtils alloc] init] records:NO]]];
+            break;
+        }
     }
     
     self.navigationItem.title = title;
@@ -121,9 +132,16 @@
     NSUInteger section = [indexPath section];
     NSUInteger row = [indexPath row];
     
-    NSArray *array            = self.dataList[section][1][row];
-    cell.textLabel.text       = array[0];
-    cell.detailTextLabel.text = array[1];
+    if(self.indexRow == SettingActionLogIndex) {
+        NSDictionary *dict        = self.dataList[section][1][row];
+        cell.textLabel.text       = dict[ACTIONLOG_FIELD_ACTNAME];
+    }
+    else {
+        NSArray *array            = self.dataList[section][1][row];
+        cell.textLabel.text       = array[0];
+        cell.detailTextLabel.text = array[1];
+    }
+    
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
     return cell;

@@ -10,6 +10,9 @@
 #define iSearch_DatabaseUtils_ActionLog_h
 #import "DatabaseUtils.h"
 
+/**
+ *  数据库存存放在用户空间
+ */
 @interface DatabaseUtils (ActionLog)
 
 /**
@@ -43,8 +46,9 @@
  *
  *  @return NSMutableArray
  */
-- (NSMutableArray *)unSyncRecords;
+- (NSMutableArray *)records:(BOOL)isOnlyUnSync;
 - (void)updateSyncedRecords:(NSMutableArray *)IDS;
+- (int)recordCount;
 
 /**
  *  设置界面中用户信息显示，用以调试
