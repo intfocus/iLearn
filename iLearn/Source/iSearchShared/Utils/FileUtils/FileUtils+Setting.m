@@ -27,8 +27,8 @@
         if([fileManager fileExistsAtPath:filePath isDirectory:&isDir]) {
             dict = [FileUtils readConfigFile:filePath];
             user = [[User alloc] init];
-            user.ID         = dict[USER_ID];
             user.name       = dict[USER_NAME];
+            user.deptID     = dict[USER_DEPTID];
             user.employeeID = dict[USER_EMPLOYEEID];
             
             NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:filePath error:nil];
@@ -39,5 +39,21 @@
     }
     
     return [NSArray arrayWithArray:array];
+}
+
++ (void)removeUser:(User *)user {
+    User *currentUser = [[User alloc] init];
+    
+    if([currentUser.employeeID isEqualToString:user.employeeID]) {
+        NSString *basePath = [currentUser basePath];
+        NSString *cachePath = [basePath stringByAppendingPathComponent:CACHE_DIRNAME];
+        [FileUtils removeFile:cachePath];
+        NSString *downloadPath = [basePath stringByAppendingPathComponent:DOWNLOAD_DIRNAME];
+        [FileUtils removeFile:downloadPath];
+    }
+    else {
+        [FileUtils removeFile:[user basePath]];
+    }
+    
 }
 @end

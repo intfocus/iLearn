@@ -145,15 +145,10 @@
         NSUInteger row = [indexPath row];
         User *user = self.appFiles[row][0];
         
-        User *currentUser = [[User alloc] init];
+        [FileUtils removeUser:user];
         
-        if([user.employeeID isEqualToString: currentUser.employeeID]) {
-            NSLog(@"only delete cache/download");
-        }
-        else {
-            NSLog(@"remove base path %@", [user basePath]);
-            
-        }
+        [self initData];
+        [tableView reloadData];
     }
 }
 @end

@@ -7,7 +7,9 @@
 //
 
 #import "FileUtils.h"
+@class User;
 
 @interface FileUtils (Setting)
 + (NSArray *)appFiles;
++ (void)removeUser:(User *)user;
 @end
