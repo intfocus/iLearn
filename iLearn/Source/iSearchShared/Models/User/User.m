@@ -30,19 +30,9 @@
         _loginUserName    = configDict[USER_LOGIN_USERNAME];
         _loginPassword    = configDict[USER_LOGIN_PASSWORD];
         _loginRememberPWD = [configDict[USER_LOGIN_REMEMBER_PWD] isEqualToString:@"1"];
-        _loginLast   = configDict[USER_LOGIN_LAST];
+        _loginLast        = configDict[USER_LOGIN_LAST];
         
-        // skip login debug
-        if(!self.ID) {
-            _ID = @"0";
-            NSLog(@"User#ID is nil.");
-        } else {
-            _personalPath = [FileUtils dirPath:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-        }
-        if(!self.deptID) {
-            _deptID = @"0";
-            NSLog(@"User#depthID is nil");
-        }
+        _personalPath = [FileUtils dirPath:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
     }
 
     return self;
@@ -73,6 +63,11 @@
 }
 
 #pragma mark - class methods
+
+- (NSString *)basePath {
+    NSString *userSpaceName = [NSString stringWithFormat:@"%@-%@", _deptID, _employeeID];
+    return [[FileUtils basePath] stringByAppendingPathComponent:userSpaceName];
+}
 
 /**
  *  快捷获取用户ID

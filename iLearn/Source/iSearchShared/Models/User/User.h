@@ -32,6 +32,7 @@
 
 // instance methods
 - (void)save;
+- (NSString *)basePath;
 - (void)writeInToPersonal;
 
 // class methods

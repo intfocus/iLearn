@@ -50,6 +50,7 @@
 		C49ACF5B1B6A04E600EB7E40 /* testDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C49ACF5A1B6A04E600EB7E40 /* testDataHelper.m */; };
 		C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54841B550B9000E2B678 /* LectureTableViewController.m */; };
 		C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */; };
+		C4A4813C1B88BEE500E7F571 /* FileUtils+Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4813B1B88BEE500E7F571 /* FileUtils+Setting.m */; };
 		C4A4FDB81B66292000741BF3 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FDB11B66292000741BF3 /* SettingViewController.m */; };
 		C4A4FDBB1B66292000741BF3 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A4FDB71B66292000741BF3 /* SettingViewController.xib */; };
 		C4A4FDC01B66293B00741BF3 /* SettingDataInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FDBE1B66293B00741BF3 /* SettingDataInfo.m */; };
@@ -205,6 +206,8 @@
 		C49C54841B550B9000E2B678 /* LectureTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewController.m; sourceTree = "<group>"; };
 		C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewCell.m; sourceTree = "<group>"; };
 		C49C548D1B5527AC00E2B678 /* LectureTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureTableViewCell.h; sourceTree = "<group>"; };
+		C4A4813A1B88BEE500E7F571 /* FileUtils+Setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FileUtils+Setting.h"; sourceTree = "<group>"; };
+		C4A4813B1B88BEE500E7F571 /* FileUtils+Setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FileUtils+Setting.m"; sourceTree = "<group>"; };
 		C4A4FDB11B66292000741BF3 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		C4A4FDB61B66292000741BF3 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		C4A4FDB71B66292000741BF3 /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
@@ -505,6 +508,8 @@
 				C49731991B6789C40014048B /* FileUtils.m */,
 				C4A927AC1B871B3500775DA3 /* FileUtils+Course.h */,
 				C4A927AD1B871B3500775DA3 /* FileUtils+Course.m */,
+				C4A4813A1B88BEE500E7F571 /* FileUtils+Setting.h */,
+				C4A4813B1B88BEE500E7F571 /* FileUtils+Setting.m */,
 			);
 			path = FileUtils;
 			sourceTree = "<group>";
@@ -1214,6 +1219,7 @@
 				C49731B21B6789C40014048B /* DatabaseUtils.m in Sources */,
 				CBC976931B3C6F0A006C104F /* ScoreQRCodeViewController.m in Sources */,
 				C49731B51B6789C40014048B /* DataHelper.m in Sources */,
+				C4A4813C1B88BEE500E7F571 /* FileUtils+Setting.m in Sources */,
 				C49731D21B678A210014048B /* BaseModel.m in Sources */,
 				C49731D31B678A210014048B /* ActionLog.m in Sources */,
 				C452E1C51B6B82600024A950 /* DisplayViewController.m in Sources */,

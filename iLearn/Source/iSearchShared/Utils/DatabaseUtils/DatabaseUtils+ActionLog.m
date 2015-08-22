@@ -134,7 +134,7 @@
                            [IDS componentsJoinedByString:@","]];
     [self executeSQL:updateSQL];
     
-    [self clearSyncedRecords];
+    //[self clearSyncedRecords];
 }
 
 /**
@@ -146,4 +146,41 @@
     [self executeSQL:deleteSQL];
 }
 
+
+- (int)recordCount:(BOOL)isAll {
+    NSString *sql = [NSString stringWithFormat:@"select count(id) from %@ ",ACTIONLOG_TABLE_NAME];
+    
+    if(isAll) {
+        sql = [NSString stringWithFormat:@"%@ ;", sql];
+    }
+    else {
+        sql = [NSString stringWithFormat:@"%@ where %@ = '%@' ;", sql, ACTIONLOG_COLUMN_UID, self.userID];
+    }
+    
+    int count = -1;
+    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
+    if ([db open]) {
+        FMResultSet *s = [db executeQuery:sql];
+        while([s next]) {
+            count = [s intForColumnIndex:0];
+        }
+        [db close];
+    } else {
+        NSLog(@"%@", [NSString stringWithFormat:@"DatabaseUtils#executeSQL \n%@", sql]);
+    }
+    return count;
+}
+
+/**
+ *  设置界面中用户信息显示，用以调试
+ *
+ *  @return 最近播放的文档数量/未同步的记录数量/当前个人记录数量/所有记录数量
+ */
+- (NSString *)localInfo {
+    NSInteger count2 = [[self unSyncRecords] count];
+    int count3 = [self recordCount:NO];
+    int count4 = [self recordCount:YES];
+    
+    return [NSString stringWithFormat:@"%li/%i/%i", (long)count2, count3, count4];
+}
 @end

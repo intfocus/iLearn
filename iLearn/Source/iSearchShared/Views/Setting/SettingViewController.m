@@ -13,12 +13,14 @@
 #import "DashboardViewController.h"
 #import "SettingDataInfo.h"
 #import "ViewUpgrade.h"
+#import "FileUtils+Setting.h"
 
 typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     SettingUserInfoIndex = 0,
     SettingAppInfoIndex  = 1,
-    SettingUpgradeIndex  = 2,
-    SettingRegularIndex  = 3
+    SettingAppFilesIndex = 2,
+    SettingUpgradeIndex  = 3,
+    SettingRegularIndex  = 4
 };
 
 @interface SettingViewController()<UITableViewDelegate, UITableViewDataSource, ViewUpgradeProtocol, ViewUpgradeProtocol>
@@ -43,6 +45,13 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
     [self.dataList addObject:@[@"用户名称", self.user.name]];
     [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
+    
+    long long fileSize1 = 0.0;
+    for(NSArray *array in [FileUtils appFiles]) {
+        fileSize1 += [array[1] longLongValue];
+    }
+    NSString *fileSize = [NSString stringWithFormat:@"%lli", fileSize1];
+    [self.dataList addObject:@[@"本地文件", [FileUtils humanFileSize:fileSize]]];
     [self.dataList addObject:@[@"版本更新", @""]];
     /**
      *  控件事件
@@ -94,7 +103,8 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch ([indexPath row]) {
         case SettingUserInfoIndex:
-        case SettingAppInfoIndex: {
+        case SettingAppInfoIndex:
+        case SettingAppFilesIndex: {
             SettingDataInfo *viewController = [[SettingDataInfo alloc] init];
             viewController.indexRow = indexPath.row;
             [self.navigationController pushViewController:viewController animated:YES];
