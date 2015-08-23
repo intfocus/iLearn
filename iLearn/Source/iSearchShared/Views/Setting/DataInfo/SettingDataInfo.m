@@ -13,8 +13,11 @@
 #import "Version.h"
 #import "FileUtils+Setting.h"
 #import "DatabaseUtils+ActionLog.h"
+#import "ViewUtils.h"
+#import "ActionLog.h"
 
 @interface SettingDataInfo()<UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *dataList;
 @property (nonatomic, strong) NSArray *appFiles;
 @end
@@ -47,11 +50,6 @@
                                     @[@"邮箱", user.email, @0],
                                     @[@"员工编号", user.employeeID, @0],
                                     @[@"上次登录时间", user.loginLast, @0]
-                                    ]
-                                ],
-                              @[@"本地信息",
-                                @[
-                                    @[@"本地记录", [[[DatabaseUtils alloc] init] localInfo], @0]
                                     ]
                                 ]
                               ];
@@ -99,7 +97,14 @@
             break;
         }
         case SettingActionLogIndex: {
-            self.dataList = @[@[@"本地记录", [[[DatabaseUtils alloc] init] records:NO]]];
+            title = @"本地记录";
+            self.dataList = @[@[@"记录列表", [[[DatabaseUtils alloc] init] records:NO]]];
+            
+            UIBarButtonItem *navBtnRefresh = [[UIBarButtonItem alloc] initWithTitle:@"刷新"
+                                                                            style:UIBarButtonItemStylePlain
+                                                                           target:self
+                                                                           action:@selector(actionNavRefresh:)];
+            self.navigationItem.rightBarButtonItem = navBtnRefresh;
             break;
         }
     }
@@ -107,10 +112,25 @@
     self.navigationItem.title = title;
 }
 
+#pragma mark - controls action
 - (IBAction)actionBackToMain:(id)sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+- (IBAction)actionNavRefresh:(id)sender {
+    if(self.indexRow == SettingActionLogIndex) {
+        if([HttpUtils isNetworkAvailable]) {
+            [ViewUtils showPopupView:self.view Info:@"同步中..." while:^{
+                [ActionLog syncRecords];
+                [self initData];
+                [self.tableView reloadData];
+            }];
+        }
+        else {
+            [ViewUtils showPopupView:self.view Info:@"无网络，不刷新"];
+        }
+    }
+}
 #pragma mark - <UITableViewDelegate, UITableViewDataSource>
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.dataList count];
@@ -134,7 +154,8 @@
     
     if(self.indexRow == SettingActionLogIndex) {
         NSDictionary *dict        = self.dataList[section][1][row];
-        cell.textLabel.text       = dict[ACTIONLOG_FIELD_ACTNAME];
+        cell.textLabel.text       = [NSString stringWithFormat:@"%@/%@", dict[ACTIONLOG_FIELD_ACTNAME], dict[ACTIONLOG_FIELD_ACTOBJ]];
+        cell.detailTextLabel.text = ([dict[ACTIONLOG_COLUMN_ISSYNC] boolValue] ? @"已同步" : @"未同步");
     }
     else {
         NSArray *array            = self.dataList[section][1][row];
@@ -155,7 +176,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (self.indexRow == 2);
+    return (self.indexRow == SettingAppFilesIndex);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -16,8 +16,6 @@
 #import "FileUtils+Setting.h"
 #import "DatabaseUtils+ActionLog.h"
 
-
-
 @interface SettingViewController()<UITableViewDelegate, UITableViewDataSource, ViewUpgradeProtocol, ViewUpgradeProtocol>
 
 @property (nonatomic, nonatomic) IBOutlet UIButton *btnLogout;

@@ -91,7 +91,9 @@
     NSString *ID;
     HttpResponse *httpResponse;
     for(NSMutableDictionary *dict in unSyncRecords) {
-        ID = dict[@"id"]; [dict removeObjectForKey:@"id"];
+        ID = dict[@"id"];
+        [dict removeObjectForKey:@"id"];
+        [dict removeObjectForKey:ACTIONLOG_COLUMN_ISSYNC];
         @try {
             httpResponse = [ApiHelper actionLog:dict];
             if([httpResponse isSuccessfullyPostActionLog]) {
@@ -287,8 +289,7 @@
     param[@"UserId"]     = [User userID];
     param[@"TrainingId"] = TID;
     HttpResponse *response = [ApiHelper courseSignup:param];
-    NSString *log = [NSString stringWithFormat:@"userID: %@, courseID: %@, httpStatusCode:%@, response: %@", param[@"UserId"], param[@"TrainingId"], response.statusCode, response.string];
-    ActionLogRecord(@"课程报名", log);
+    ActionLogRecord(@"课程报名", ([response isValid] ? @"成功" : @"失败"), (@{@"userID": param[@"UserId"], @"courseID": param[@"TrainingId"], @"httpStatusCode": response.statusCode, @"response": response.string}));
 }
 
 #pragma mark - assistant methods

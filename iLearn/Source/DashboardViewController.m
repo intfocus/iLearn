@@ -160,7 +160,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
         humanName = @"二维码扫描";
     }
     
-    ActionLogRecordDashboard(@{@"板块": humanName});
+    ActionLogRecordDashboard(humanName);
 }
 
 #pragma mark - Helper Functions
@@ -247,7 +247,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
     [self presentPopupViewController:nav animated:YES completion:^(void) {
         NSLog(@"popup view settingViewController");
-        ActionLogRecordDashboard(@{@"右下角": @"设置"});
+        ActionLogRecordDashboard(@"设置(右下角)");
     }];
 }
 
@@ -285,7 +285,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     self.imagePickerActionSheet.delegate = self;
     [self.imagePickerActionSheet showInView:self.view];
     
-    ActionLogRecordDashboard(@{@"右上角": @"点击头像"});
+    ActionLogRecordDashboard(@"点击头像(右上角)");
 }
 
 #pragma mark - UITableViewDataSource
@@ -412,7 +412,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
             UIImage *avatarImage = [UIImage imageWithData:imagedata];
             [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
             
-            ActionLogRecordDashboard(@{@"头像设置": @"成功"});
+            ActionLogRecordDashboard(@"头像设置/成功");
         }
     }];
 }

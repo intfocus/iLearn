@@ -48,7 +48,6 @@
  */
 - (NSMutableArray *)records:(BOOL)isOnlyUnSync;
 - (void)updateSyncedRecords:(NSMutableArray *)IDS;
-- (int)recordCount;
 
 /**
  *  设置界面中用户信息显示，用以调试

@@ -77,23 +77,23 @@
 - (NSMutableArray *)records:(BOOL)isOnlyUnSync {
     NSMutableArray *array = [NSMutableArray array];
     
-    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@, %@ from %@ ",
+    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@, %@, %@ from %@ ",
                      ACTIONLOG_COLUMN_FUNNAME,
                      ACTIONLOG_COLUMN_ACTOBJ,
                      ACTIONLOG_COLUMN_ACTNAME,
                      ACTIONLOG_COLUMN_ACTRET,
                      DB_COLUMN_CREATED,
                      ACTIONLOG_COLUMN_UID,
+                     ACTIONLOG_COLUMN_ISSYNC,
                      ACTIONLOG_TABLE_NAME];
     if(isOnlyUnSync) {
-        sql = [sql stringByAppendingString:[NSString stringWithFormat:@" where %@ = 0;", ACTIONLOG_COLUMN_ISSYNC]];
+        sql = [sql stringByAppendingString:[NSString stringWithFormat:@" where %@ = 0 ", ACTIONLOG_COLUMN_ISSYNC]];
     }
-    else {
-        sql = [sql stringByAppendingString:@";"];
-    }
+    sql = [sql stringByAppendingString:[NSString stringWithFormat:@" order by %@ desc;", DB_COLUMN_CREATED]];
 
     int ID;
     NSString *funName, *actObj, *actName, *actRet, *actTime, *userID;
+    BOOL isSync;
     
     FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
@@ -107,6 +107,7 @@
             actRet  = [s stringForColumnIndex:4];
             actTime = [s stringForColumnIndex:5];
             userID  = [s stringForColumnIndex:6];
+            isSync  = [s boolForColumnIndex:7];
             
             dict    = [NSMutableDictionary dictionaryWithCapacity:0];
             dict[@"id"]                   = [NSNumber numberWithInt:ID];
@@ -116,6 +117,7 @@
             dict[ACTIONLOG_FIELD_ACTNAME] = actName;
             dict[ACTIONLOG_FIELD_ACTRET]  = actRet;
             dict[ACTIONLOG_FIELD_ACTTIME] = actTime;
+            dict[ACTIONLOG_COLUMN_ISSYNC] = [NSNumber numberWithBool:isSync];
             
             [array addObject:dict];
         }

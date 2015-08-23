@@ -28,7 +28,6 @@
 
 #import "LoginViewController.h"
 
-#import "const.h"
 #import "message.h"
 #import "User.h"
 #import "HttpResponse.h"
@@ -273,9 +272,13 @@
             [self.user save];
             [self.user writeInToPersonal];
             
-            // 跳至主界面
+            ActionLogRecord(@"登录", @"成功/在线", @{@"network": @"online"});
             
-            ActionLogRecordLogin(@{@"network": @"online"});
+            self.labelPropmt.text = @"上传本地记录...";
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+            [ActionLog syncRecords];
+            
+            // 跳至主界面
             [self enterMainViewController];
             return;
         }
@@ -303,7 +306,7 @@
     if(![errors count]) {
         // 跳至主界面
         
-        ActionLogRecordLogin(@{@"network": @"offline"});
+        ActionLogRecord(@"登录", @"成功/离线", @{@"network": @"offline"});
         [self enterMainViewController];
         // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
     } else {
@@ -321,7 +324,7 @@
  *
  *  @return 不符合离线登陆条件错误信息数组
  */
-- (NSMutableArray *) checkEnableLoginWithoutNetwork:(User *) user {
+- (NSMutableArray *) checkEnableLoginWithoutNetwork:(User *)user {
     NSMutableArray *errors = [[NSMutableArray alloc] init];
     
     if(!user.isEverLogin) {
@@ -369,10 +372,6 @@
 #pragma mark - assistant methods
 
 -(void)enterMainViewController{
-    self.labelPropmt.text = @"上传本地记录...";
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
-    [ActionLog syncRecords];
-    
     [LicenseUtil saveUserAccount:self.user.employeeID];
     [LicenseUtil saveUserId:self.user.ID];
     [LicenseUtil saveUserName:self.user.name];

@@ -44,7 +44,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidDownloadExamsForUser:userId withError:nil];
             }
             
-            ActionLogRecord(@"用户考卷下载", (@{@"userID": userId, @"url": requestUrl, @"status": @"successfully"}));
+            ActionLogRecord(@"用户考卷下载", @"成功", (@{@"userID": userId, @"url": requestUrl, @"status": @"successfully"}));
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Download Exams of UserId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", userId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
@@ -56,7 +56,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidDownloadExamsForUser:userId withError:error];
             }
             
-            ActionLogRecord(@"用户考卷下载", (@{@"userID": userId, @"url": requestUrl, @"error": [error localizedDescription]}));
+            ActionLogRecord(@"用户考卷下载", @"失败", (@{@"userID": userId, @"url": requestUrl, @"error": [error localizedDescription]}));
         }];
 
         op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
@@ -83,7 +83,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidDownloadExam:examId withError:nil];
             }
             
-            ActionLogRecord(@"考卷下载", (@{@"examID": examId, @"url": requestUrl, @"status": @"successfully"}));
+            ActionLogRecord(@"考卷下载", @"成功", (@{@"examID": examId, @"url": requestUrl, @"status": @"successfully"}));
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Download ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
@@ -94,7 +94,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidDownloadExam:examId withError:error];
             }
             
-            ActionLogRecord(@"考卷下载", (@{@"examID": examId, @"url": requestUrl, @"error": [error localizedDescription]}));
+            ActionLogRecord(@"考卷下载", @"失败", (@{@"examID": examId, @"url": requestUrl, @"error": [error localizedDescription]}));
         }];
 
         op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
@@ -119,7 +119,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
             [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
         }
         
-        ActionLogRecord(@"课件下载", (@{@"courseID": courseID, @"extName": extName, @"url": requestUrl,  @"status": @"successfully"}));
+        ActionLogRecord(@"课件下载", @"成功", (@{@"courseID": courseID, @"extName": extName, @"url": requestUrl,  @"status": @"successfully"}));
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Download Course ID: %@ Ext: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", courseID, extName, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
         
@@ -129,7 +129,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
             [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
         }
         
-        ActionLogRecord(@"课件下载", (@{@"courseID": courseID, @"extName": extName, @"url": requestUrl,  @"error": [error localizedDescription]}));
+        ActionLogRecord(@"课件下载", @"失败", (@{@"courseID": courseID, @"extName": extName, @"url": requestUrl,  @"error": [error localizedDescription]}));
     }];
     
     op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
@@ -163,7 +163,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadExamResult:examId withError:nil];
             }
             
-            ActionLogRecord(@"考卷成功上传", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"status": @"successfully"}));
+            ActionLogRecord(@"考卷成功上传", @"成功", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"status": @"successfully"}));
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Upload result of ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
@@ -172,7 +172,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadExamResult:examId withError:error];
             }
             
-            ActionLogRecord(@"考卷成功上传", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"error": [error localizedDescription]}));
+            ActionLogRecord(@"考卷成功上传", @"失败", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"error": [error localizedDescription]}));
         }];
         op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
         [op start];
@@ -202,7 +202,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadExamScannedResult:result withError:nil];
             }
             
-            ActionLogRecord(@"考卷成功上传", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"status": @"successfully"}));
+            ActionLogRecord(@"考卷成功上传", @"成功", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"status": @"successfully"}));
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Upload Scanned Exam Result: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", result, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
@@ -211,7 +211,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadExamScannedResult:result withError:error];
             }
             
-            ActionLogRecord(@"考卷成功上传", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"error": [error localizedDescription]}));
+            ActionLogRecord(@"考卷成功上传", @"失败", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"error": [error localizedDescription]}));
         }];
 
         op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
@@ -236,7 +236,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
             [_delegate connectionManagerDidDownloadQuestionnairesWithError:nil];
         }
         
-        ActionLogRecord(@"用户问卷下载", (@{@"url": requestUrl,  @"status": @"successfully"}));
+        ActionLogRecord(@"用户问卷下载", @"成功", (@{@"url": requestUrl,  @"status": @"successfully"}));
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         [FileUtils removeFile:outputPathTmp];
@@ -245,7 +245,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
             [_delegate connectionManagerDidDownloadQuestionnairesWithError:error];
         }
         
-        ActionLogRecord(@"用户问卷下载", (@{@"url": requestUrl,  @"error": [error localizedDescription]}));
+        ActionLogRecord(@"用户问卷下载", @"失败", (@{@"url": requestUrl,  @"error": [error localizedDescription]}));
     }];
 
     op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
@@ -270,7 +270,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidDownloadQuestionnaire:questionnaireId withError:nil];
             }
             
-            ActionLogRecord(@"问卷下载", (@{@"questionnaireID": questionnaireId, @"url": requestUrl,  @"status": @"successfully"}));
+            ActionLogRecord(@"问卷下载", @"成功", (@{@"questionnaireID": questionnaireId, @"url": requestUrl,  @"status": @"successfully"}));
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             [FileUtils removeFile:outputPathTmp];
@@ -279,7 +279,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidDownloadQuestionnaire:questionnaireId withError:error];
             }
             
-            ActionLogRecord(@"问卷下载", (@{@"questionnaireID": questionnaireId, @"url": requestUrl,  @"error": [error localizedDescription]}));
+            ActionLogRecord(@"问卷下载", @"失败", (@{@"questionnaireID": questionnaireId, @"url": requestUrl,  @"error": [error localizedDescription]}));
         }];
 
         op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
@@ -314,7 +314,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadQuestionnaireResult:questionnaireId withError:nil];
             }
             
-            ActionLogRecord(@"问卷上传", (@{@"url": requestUrl,  @"status": @"successfully"}));
+            ActionLogRecord(@"问卷上传", @"成功", (@{@"url": requestUrl,  @"status": @"successfully"}));
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Upload result of Questionnaire FAILED with statusCode: %lld, responseString: %@, error: %@", (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
@@ -323,7 +323,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadQuestionnaireResult:questionnaireId withError:error];
             }
             
-            ActionLogRecord(@"问卷上传", (@{@"url": requestUrl,  @"error": [error localizedDescription]}));
+            ActionLogRecord(@"问卷上传", @"失败", (@{@"url": requestUrl,  @"error": [error localizedDescription]}));
         }];
 
         op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
