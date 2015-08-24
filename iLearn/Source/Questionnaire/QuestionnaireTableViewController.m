@@ -8,7 +8,6 @@
 
 #import "QuestionnaireTableViewController.h"
 #import "QuestionnaireViewController.h"
-#import "DetailViewController.h"
 #import "ListViewController.h"
 #import "LicenseUtil.h"
 #import "QuestionnaireUtil.h"
@@ -31,6 +30,8 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 
 @property (strong, nonatomic) NSMutableArray *unsubmittedQuestionnaireResults;
 
+@property (assign, nonatomic) BOOL showActionButton;
+@property (nonatomic) ContentTableViewCell *currentCell;
 @end
 
 
@@ -64,6 +65,11 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
         detailVC.titleString = [[QuestionnaireUtil titleFromContent:sender] stringByAppendingString:NSLocalizedString(@"LIST_DETAIL", nil)];
         detailVC.descString = [QuestionnaireUtil descFromContent:sender];
+        detailVC.delegate = self;
+        if(self.showActionButton) {
+            detailVC.showActionButton = self.showActionButton;
+            detailVC.actionString = @"进入问卷";
+        }
     }
     else if ([segue.identifier isEqualToString:kShowSubjectSegue]) {
 
@@ -232,15 +238,16 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
     return 120.0;
 }
 
-- (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell
-{
+- (void)didSelectInfoButtonOfCell:(ContentTableViewCell*)cell {
+    self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+    self.showActionButton = NO;
     [self performSegueWithIdentifier:kShowDetailSegue sender:content];
 }
 
-- (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell
-{
+- (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell {
+    self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
 
@@ -250,10 +257,17 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
         [self downloadQuestionnaireId:questionnaireId];
     }
     else if (cell.actionButtonType == ContentTableViewCellActionView) {
-        [self enterQuestoinnairePageForContent:content];
+        //[self enterQuestoinnairePageForContent:content];
+        self.showActionButton = YES;
+        [self performSegueWithIdentifier:kShowDetailSegue sender:content];
     }
 }
 
+- (void)begin {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:self.currentCell];
+    NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+    [self enterQuestoinnairePageForContent:content];
+}
 #pragma mark - IBAction
 
 - (void)enterQuestoinnairePageForContent:(NSDictionary*)content

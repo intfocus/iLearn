@@ -13,10 +13,10 @@
 @property (nonatomic, strong) NSString *ID;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *lecturer;
-@property (nonatomic, strong) NSString *begin;
-@property (nonatomic, strong) NSString *end;
-@property (nonatomic, strong) NSString *startDate;
-@property (nonatomic, strong) NSString *endDate;
+@property (nonatomic, strong) NSString *begin; // 课程开始时间
+@property (nonatomic, strong) NSString *end; // 课程结束时间
+@property (nonatomic, strong) NSString *startDate; // 报名开始时间
+@property (nonatomic, strong) NSString *endDate; // 报名截止时间
 @property (nonatomic, strong) NSString *location;
 @property (nonatomic, strong) NSString *memo;
 @property (nonatomic, strong) NSString *manager;
@@ -39,4 +39,10 @@
 - (BOOL)isSignin;
 - (NSString *)statusName;
 - (NSString *)actionButtonLabel;
+/**
+ *  报名状态不同，显示截止日期不同
+ *
+ *  @return 截止日期
+ */
+- (NSString *)availabelTime;
 @end

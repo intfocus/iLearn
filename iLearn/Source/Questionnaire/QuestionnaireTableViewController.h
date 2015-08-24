@@ -11,7 +11,8 @@
 #import "ConnectionManager.h"
 #import "QuestionnaireTableViewCell.h"
 #import "ContentViewController.h"
+#import "DetailViewController.h"
 
-@interface QuestionnaireTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate, ConnectionManagerDelegate>
+@interface QuestionnaireTableViewController : ContentViewController <ContentViewProtocal, UITableViewDataSource, UITableViewDelegate, ContentTableViewCellDelegate, ConnectionManagerDelegate, DetailViewControllerProtocol>
 
 @end

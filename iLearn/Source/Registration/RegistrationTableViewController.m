@@ -70,8 +70,9 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
     cell.delegate = self;
 
     TrainCourse *trainCourse = [self.dataList objectAtIndex:indexPath.row];
-    cell.titleLabel.text        = trainCourse.name;
-    cell.statusLabel.text       = trainCourse.statusName;
+    cell.titleLabel.text          = trainCourse.name;
+    cell.statusLabel.text         = trainCourse.statusName;
+    cell.expirationDateLabel.text = [trainCourse availabelTime];
     [cell.actionButton setTitle:trainCourse.actionButtonLabel forState:UIControlStateNormal];
     if([trainCourse isCourse] && [cell.statusLabel.text isEqualToString:@"报名成功"]) {
         [self enabledBtn:cell.actionButton Enabeld:NO];
@@ -85,7 +86,7 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
         DetailViewController *detailVC = (DetailViewController*)segue.destinationViewController;
         detailVC.titleString       = [sender name];
         detailVC.descString        = [sender desc];
-        detailVC.showFromBeginTest = self.showBeginTestInfo;
+        detailVC.showActionButton = self.showBeginTestInfo;
         detailVC.showRemoveButton  = self.showRemoveButton;
     }
 }

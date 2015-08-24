@@ -86,7 +86,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         detailVC.titleString       = [sender name];
         detailVC.descString        = [sender desc];
         detailVC.delegate          = self;
-        detailVC.showFromBeginTest = self.showBeginTestInfo;
+        detailVC.showActionButton = self.showBeginTestInfo;
         detailVC.showRemoveButton  = self.showRemoveButton;
     }
 }

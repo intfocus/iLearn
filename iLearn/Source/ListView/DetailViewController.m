@@ -31,8 +31,11 @@
     self.titleLabel.text   = _titleString;
     self.descTextView.text = _descString;
 
-    self.actionButton.hidden = !self.showFromBeginTest;
+    self.actionButton.hidden = !self.showActionButton;
     self.removeButton.hidden = !self.showRemoveButton;
+    if(self.actionString) {
+        [self.actionButton setTitle:self.actionString forState:UIControlStateNormal];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

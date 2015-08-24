@@ -84,10 +84,10 @@ static const NSInteger kMinScanInterval = 3;
         detailVC.descString = [ExamUtil descFromContent:sender];
         if (self.showBeginTestInfo) {
             detailVC.delegate = self;
-            detailVC.showFromBeginTest = self.showBeginTestInfo;
+            detailVC.showActionButton = self.showBeginTestInfo;
         }
         else {
-            detailVC.showFromBeginTest = self.showBeginTestInfo;
+            detailVC.showActionButton = self.showBeginTestInfo;
         }
         
     }

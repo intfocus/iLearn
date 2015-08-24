@@ -87,6 +87,29 @@
     return status;
 }
 
+/**
+ *  报名状态不同，显示截止日期不同
+ *
+ *  @return 截止日期
+ */
+- (NSString *)availabelTime {
+    NSString *label = @"TODO";
+    
+    if([self isCourse]) {
+        if([self.traineesStatus intValue] == [self.approreLevel intValue]) {
+            label = [NSString stringWithFormat:@"%@: %@", @"课程开始日期", self.begin];
+        }
+        else {
+            label = [NSString stringWithFormat:@"%@: %@", @"报名截止日期", self.endDate];
+        }
+    }
+    else {
+        label = [NSString stringWithFormat:@"%@: %@", @"课程开始日期", self.begin];
+    }
+    
+    return label;
+}
+
 + (NSArray *)loadCourseData:(NSArray *)dataList {
     return [self loadData:dataList type:@"course"];
 }
