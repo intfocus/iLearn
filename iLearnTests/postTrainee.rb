@@ -7,11 +7,13 @@ def postForm(url, param, info)
         response = RestClient.post url, param.to_json
         
         if response.code == 200
+            puts response
             puts "#{info} 成功."
         else
             puts "#{info} 失败."
             puts response.headers
         end
+        puts %Q{curl -l -H "Content-type: application/json" -X POST -d  '#{param.to_json}' #{url}}
     rescue => e
       puts "#{info} 失败 for #{e.message}"
       puts %Q{curl -l -H "Content-type: application/json" -X POST -d  '#{param.to_json}' #{url}}
@@ -53,3 +55,27 @@ hash = {
     TrainingId: "1"#课程编号
 }
 postForm(url, hash, "创建签到")
+
+url = "https://tsa-china.takeda.com.cn/uat/api/logjson.php"
+
+# 创建日志
+hash = {
+    UserId: "1",
+    FunctionName: "functionName",
+    ActionName: "actionName",
+    ActionTime: "2015-06-1 18:18:18",
+    ActionReturn: "actionReturn",
+    ActionObject: "actionObject",
+    AppName: "iLearn"
+}
+
+hash = {
+    ActionName: "\U767b\U5f55",
+    ActionObject: "\U6210\U529f/\U5728\U7ebf",
+    ActionReturn: "network: online",
+    ActionTime: "2015-08-24 11:02:01",
+    AppName: "iLearn",
+    FunctionName: "LoginViewController.m, -[LoginViewController actionOutsideLoginSuccessfully], 275",
+    UserId: "1427"
+}
+postForm(url, hash, "创建日志")

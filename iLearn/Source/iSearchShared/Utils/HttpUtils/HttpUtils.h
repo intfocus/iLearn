@@ -63,6 +63,10 @@
 + (BOOL)isNetworkAvailable2;
 + (NSString *) networkType;
 
++ (void)uploadFileWithURL:(NSURL *)url
+                 filePath:(NSString *)filePath
+                 mimeType:(NSString *)mimeType
+                    block:(void(^)(NSURLResponse *response, NSData *data, NSError *connectionError))completeBlock;
 @end
 
 #endif

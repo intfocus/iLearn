@@ -73,6 +73,7 @@
 		C4D4F7C11B6A42AF00C435C4 /* CoursePackageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */; };
 		C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */; };
 		C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */; };
+		C4D945CC1B8ACDD600744000 /* testPostActionLog.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D945CB1B8ACDD600744000 /* testPostActionLog.m */; };
 		C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */; };
 		C4DC385F1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385E1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
@@ -245,6 +246,7 @@
 		C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoursePackageContent+CoursePackage.m"; sourceTree = "<group>"; };
 		C4D4F7C61B6A493F00C435C4 /* CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackageDetail.h; sourceTree = "<group>"; };
 		C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackageDetail.m; sourceTree = "<group>"; };
+		C4D945CB1B8ACDD600744000 /* testPostActionLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testPostActionLog.m; sourceTree = "<group>"; };
 		C4DC385A1B6DBC6200AC0C20 /* CourseWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseWrap.h; sourceTree = "<group>"; };
 		C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseWrap.m; sourceTree = "<group>"; };
 		C4DC385D1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CourseWrap+CoursePackageDetail.h"; sourceTree = "<group>"; };
@@ -1017,6 +1019,7 @@
 				DCA7880C1B038ED00049098C /* Supporting Files */,
 				C49ACF5A1B6A04E600EB7E40 /* testDataHelper.m */,
 				C4BD422B1B81E6D300083F11 /* postTrainee.rb */,
+				C4D945CB1B8ACDD600744000 /* testPostActionLog.m */,
 			);
 			path = iLearnTests;
 			sourceTree = "<group>";
@@ -1284,6 +1287,7 @@
 			files = (
 				DCA7880F1B038ED00049098C /* iLearnTests.m in Sources */,
 				C49ACF5B1B6A04E600EB7E40 /* testDataHelper.m in Sources */,
+				C4D945CC1B8ACDD600744000 /* testPostActionLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1430,8 +1434,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Shengyin Software Technology Co., Ltd.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Shengyin Software Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1451,8 +1455,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Shengyin Software Technology Co., Ltd.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Shengyin Software Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

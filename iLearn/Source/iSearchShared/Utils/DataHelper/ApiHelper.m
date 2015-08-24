@@ -42,8 +42,15 @@
  *  @return 服务器响应信息
  */
 + (HttpResponse *)actionLog:(NSMutableDictionary *)params {
-    params[@"AppName"] = @"iLearn";
-    return [HttpUtils httpPost:[Url actionLog] Params:params];
+    NSMutableDictionary *logParams = [NSMutableDictionary dictionary];
+    logParams[@"AppName"]              = @"iLearn";
+    logParams[ACTIONLOG_FIELD_UID]     = params[ACTIONLOG_FIELD_UID];
+    logParams[ACTIONLOG_FIELD_FUNNAME] = params[ACTIONLOG_FIELD_FUNNAME];
+    logParams[ACTIONLOG_FIELD_ACTNAME] = params[ACTIONLOG_FIELD_ACTNAME];
+    logParams[ACTIONLOG_FIELD_ACTOBJ]  = params[ACTIONLOG_FIELD_ACTOBJ];
+    logParams[ACTIONLOG_FIELD_ACTRET]  = params[ACTIONLOG_FIELD_ACTRET];
+    logParams[ACTIONLOG_FIELD_ACTTIME] = params[ACTIONLOG_FIELD_ACTTIME];
+    return [HttpUtils httpPost:[Url actionLog] Params:logParams];
 }
 
 /**
