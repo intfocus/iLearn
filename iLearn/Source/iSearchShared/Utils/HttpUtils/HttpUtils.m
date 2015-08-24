@@ -22,6 +22,76 @@
 
 @implementation HttpUtils
 
++ (void)uploadFile {
+    NSURL *filePath = [NSURL fileURLWithPath:@"/Users/lijunjie/Documents/21.db.zip"];
+    NSString *urlStr = @"http://localhost:3000/demo/upload";
+    //urlStr = @"http://tsa-china.takeda.com.cn/uat/api/FileUpload_Api.php";
+                                         
+    //创建Request对象
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:urlStr]];
+    [request setHTTPMethod:@"POST"];
+    NSMutableData *body = [NSMutableData data];
+    
+    //设置表单项分隔符
+    NSString *boundary = @"---------------------------14737809831466499882746641449";
+    
+    //设置内容类型
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+    
+    //写入文件的内容
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"21.db.zip\"\r\n",@"file"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-Type: application/zip\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[NSData dataWithContentsOfURL:filePath]];
+    [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    // 写入 INFO 的内容
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",@"UserId"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"12334" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",@"FileType"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"zip" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    //写入尾部内容
+    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setHTTPBody:body];
+    
+    NSHTTPURLResponse *urlResponese = nil;
+    NSError *error = [[NSError alloc]init];
+    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
+    
+    NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
+    NSLog(@"%@", responseDic);
+}
++ (void)uploadFile2 {
+    AFHTTPRequestOperationManager * httpManager = [AFHTTPRequestOperationManager manager];
+     httpManager.requestSerializer = [AFHTTPRequestSerializer serializer];
+     httpManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+     httpManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    NSURL *filePath = [NSURL fileURLWithPath:@"/Users/lijunjie/Documents/21.db.zip"];
+    AFHTTPRequestOperation *operation = [httpManager POST:@"http://localhost:3000/demo/upload"
+                                               parameters:@{@"hello":@"world"}
+                                constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                                    
+        [formData appendPartWithFileURL:filePath name:@"file" error:nil];
+    }
+      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          NSLog(@"%@", responseObject);
+   }
+      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          NSLog(@"%@", [error localizedDescription]);
+   }];
+    
+    if (!operation) {
+        NSLog(@"Creation of operation failed.");
+    }
+}
 
 /**
  *  Http#Get功能代码封装
@@ -171,7 +241,6 @@ static NSString *uploadID = @"uploadFile"; // 上传(php)脚本中，接收文�
     [strM appendFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\n", uploadID, uploadFile];
     [strM appendFormat:@"Content-Type: %@\n\n", mimeType];
     
-    NSLog(@"%@", strM);
     return [strM copy];
 }
 
@@ -221,11 +290,16 @@ static NSString *uploadID = @"uploadFile"; // 上传(php)脚本中，接收文�
     [request setValue:strContentType forHTTPHeaderField:@"Content-Type"];
     
     // 3> 连接服务器发送请求
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[[NSOperationQueue alloc] init]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        completeBlock(response, data, connectionError);
-    }];
+    NSError *error;
+    NSHTTPURLResponse *response;
+    HttpResponse *httpResponse = [[HttpResponse alloc] init];
+    httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    httpResponse.response = (NSHTTPURLResponse *)response;
+//    [NSURLConnection sendAsynchronousRequest:request
+//                                       queue:[[NSOperationQueue alloc] init]
+//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//        completeBlock(response, data, connectionError);
+//    }];
 }
 
 @end

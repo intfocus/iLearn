@@ -46,16 +46,22 @@
 }
 
 - (void)testUploadFile {
-    NSString *filepath = @"/Users/lijunjie/Documents/21.db.zip";
-    NSString *urlString = @"http://demo.solife.us/uploadfile";
-    NSURL *url = [NSURL URLWithString:urlString];
-    [HttpUtils uploadFileWithURL:url filePath:filepath mimeType:@"application/zip" block:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if(connectionError) {
-            NSLog(@"error: %@", [connectionError localizedDescription]);
-        }
-        else {
-            NSLog(@"response: %@, data: %@", response, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-        }
-    }];
+//    NSString *filepath = @"/Users/lijunjie/Documents/21.db.zip";
+//    NSString *urlString = @"http://demo.solife.us";
+//    //urlString = @"http://tsa-china.takeda.com.cn/uat/api/FileUpload_Api.php?ftype=images";
+//    NSURL *url = [NSURL URLWithString:urlString];
+//    [HttpUtils uploadFileWithURL:url filePath:filepath mimeType:@"application/zip" block:nil];
+//    [HttpUtils uploadFileWithURL:url filePath:filepath mimeType:@"application/zip" block:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//        if(connectionError) {
+//            NSLog(@"error: %@", [connectionError localizedDescription]);
+//        }
+//        else {
+//            NSLog(@"response: %@, data: %@", response, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+//        }
+//    }];
+}
+
+- (void)testAFNetworking {
+    [HttpUtils uploadFile];
 }
 @end
