@@ -21,13 +21,15 @@
         _coursePackageContent = [self concate:COURSE_PACKAGE_CONTENT_URL_PATH];
         _downloadCourse       = [self concate:COURSE_DOWNLOAD_URL_PATH];
 
-        _trainCourses            = @"http://tsa-china.takeda.com.cn/uat/api/Trainings_Api.php";
+        _trainCourses             = @"http://tsa-china.takeda.com.cn/uat/api/Trainings_Api.php";
         _courseSignup             = @"http://tsa-china.takeda.com.cn/uat/api/Trainee_Api.php";
         _courseSignins            = @"http://tsa-china.takeda.com.cn/uat/api/CheckInList_Api.php";
         _courseSignin             = @"http://tsa-china.takeda.com.cn/uat/api/CheckIn_Api.php";
         _courseSigninUsers        = @"http://tsa-china.takeda.com.cn/uat/api/RollCallUserList_Api.php";
         _courseSigninScannedUsers = @"http://tsa-china.takeda.com.cn/uat/api/RollCallOldList_Api.php";
         _courseSigninUser         = @"http://tsa-china.takeda.com.cn/uat/api/RollCall_Api.php";
+        _uploadFile               = @"http://tsa-china.takeda.com.cn/uat/api/FileUpload_Api.php";
+        _downloadFile             = @"http://tsa-china.takeda.com.cn/uat/api/FileDownload_Api.php";
     }
     return self;
 }

@@ -10,6 +10,9 @@
 #import "Constants.h"
 #import "QuestionnaireUtil.h"
 #import "LicenseUtil.h"
+#import "ApiHelper.h"
+#import "User.h"
+#import "HttpResponse.h"
 
 static NSString *const statusUploading  = @"问卷上传服务器中...";
 static NSString *const resultUploading  = @"请等待";
@@ -67,6 +70,14 @@ static NSString *const resultUploadFail = @"请返回后刷新重试";
         
         self.statusLabel.text = statusUploaded;
         self.resultLabel.text = resultUploaded;
+        
+        HttpResponse *response = [ApiHelper uploadFile:dbPath userID:[User userID] type:@"question"];
+        if([response isValid]) {
+            ActionLogRecord(@"问卷db文件上传", @"成功", (@{@"dbPath": dbPath,  @"status": @"successfully"}));
+        }
+        else {
+            ActionLogRecord(@"问卷db文件上传", @"失败", (@{@"dbPath": dbPath,  @"error": response.string}));
+        }
     }
     else {
         self.statusLabel.text = statusUploadFail;

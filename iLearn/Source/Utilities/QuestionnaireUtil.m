@@ -138,19 +138,19 @@ static const BOOL inDeveloping = NO;
 //    NSString *questionnairePath = [NSString stringWithFormat:@"%@/%@", docPath, QuestionnaireFolder];
     NSString *questionnairePath = [self questionnaireSourceFolderPath];
 
-    NSFileManager *fileMgr = [NSFileManager defaultManager];
-    BOOL isFolder;
-
-    if (![fileMgr fileExistsAtPath:questionnairePath isDirectory:&isFolder]) {
-        NSLog(@"Folder not exist, create it!");
-        NSError *createFolderError;
-
-        BOOL createFolderSucess = [fileMgr createDirectoryAtPath:questionnairePath withIntermediateDirectories:YES attributes:nil error:&createFolderError];
-
-        if (!createFolderSucess) {
-            NSLog(@"Create folder %@ failed with error: %@", questionnairePath, createFolderError);
-        }
-    }
+//    NSFileManager *fileMgr = [NSFileManager defaultManager];
+//    BOOL isFolder;
+//
+//    if (![fileMgr fileExistsAtPath:questionnairePath isDirectory:&isFolder]) {
+//        NSLog(@"Folder not exist, create it!");
+//        NSError *createFolderError;
+//
+//        BOOL createFolderSucess = [fileMgr createDirectoryAtPath:questionnairePath withIntermediateDirectories:YES attributes:nil error:&createFolderError];
+//
+//        if (!createFolderSucess) {
+//            NSLog(@"Create folder %@ failed with error: %@", questionnairePath, createFolderError);
+//        }
+//    }
 
     return questionnairePath;
 }

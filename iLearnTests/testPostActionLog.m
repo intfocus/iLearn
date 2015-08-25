@@ -10,6 +10,12 @@
 #import "HttpResponse.h"
 #import "ApiHelper.h"
 #import "HttpUtils.h"
+#import "Constants.h"
+#import "QuestionnaireUtil.h"
+#import "LicenseUtil.h"
+#import "User.h"
+#import "HttpResponse.h"
+#import "FileUtils.h"
 
 @interface testPostActionLog : XCTestCase
 
@@ -62,6 +68,21 @@
 }
 
 - (void)testAFNetworking {
-    [HttpUtils uploadFile];
+//    NSString *dbPath = [QuestionnaireUtil questionnaireDBPathOfFile:@"4"];
+//
+//    HttpResponse *response = [ApiHelper uploadFile:dbPath userID:[User userID] type:@"question"];
+//    if([response isValid]) {
+//        ActionLogRecord(@"问卷db文件上传", @"成功", (@{@"dbPath": dbPath,  @"status": @"successfully"}));
+//    }
+//    else {
+//        ActionLogRecord(@"问卷db文件上传", @"失败", (@{@"dbPath": dbPath,  @"error": response.string}));
+//    }
+}
+
+- (void)testDownload {
+    NSString *userID = [User userID];
+    NSString *fileName = [NSString stringWithFormat:@"%@-%@-%@.db.zip", userID, @"question", @"4"];
+    BOOL state = [ApiHelper downloadFile:fileName userID:userID destDir:[FileUtils dirPath:QuestionnaireFolder]];
+    NSLog(@"%i", state);
 }
 @end

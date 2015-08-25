@@ -99,4 +99,13 @@
  *  @return 签到的员工列表
  */
 + (NSString *)trainSigninUsers:(NSString *)tid;
+
+/**
+ *  http://tsa-china.takeda.com.cn/uat/api/FileDownload_Api.php?fid=uat.sql&ftype=sql&uid=111
+ *
+ *  @param fileName 文件名称
+ *  @param fileType 文件后缀
+ *  @param userID   用户ID
+ */
++ (NSString *)downloadFile:(NSString*)fileName type:(NSString *)fileType userID:(NSString *)userID;
 @end

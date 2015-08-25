@@ -134,4 +134,24 @@
  *  @return 服务器响应
  */
 + (HttpResponse *)courseSigninUser:(NSMutableDictionary *)params;
+
+/**
+ *  上传考试/问卷结果db.zip文件
+ *
+ *  @param filePath 上传文件路径,
+ *  @param type     考试或问卷
+ *  @param userID   用户ID
+ *
+ *  @return 服务器响应结果
+ */
++ (HttpResponse *)uploadFile:(NSString *)filePath userID:(NSString *)userID type:(NSString *)type;
+
+/**
+ *  服务器下载考试/填写过的考试/问卷
+ *
+ *  @param fileName 下载文件名称 1430-exam-21.db.zip => 21.db.zip(直接解压即可)
+ *  @param userID   用户ID
+ *  @param destDir  下载到指定目录下
+ */
++ (BOOL)downloadFile:(NSString *)fileName userID:(NSString *)userID destDir:(NSString *)destDir;
 @end

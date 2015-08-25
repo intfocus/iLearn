@@ -667,7 +667,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bMG-wX-Xar">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bMG-wX-Xar">
                                 <rect key="frame" x="242" y="196" width="540" height="376"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tOV-f8-LQd">
@@ -683,24 +683,10 @@
                                             <action selector="closeTouched:" destination="PaD-Tw-gun" eventType="touchUpInside" id="WqD-6q-QxA"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nUl-LA-YtC">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nUl-LA-YtC">
                                         <rect key="frame" x="20" y="64" width="500" height="292"/>
                                         <subviews>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ref-cs-61C">
-                                                <rect key="frame" x="12" y="38" width="476" height="150"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="194" id="8rp-sj-cmk"/>
-                                                </constraints>
-                                                <string key="text"> 目标对象: 主要针对新入司三个月内的代表。
-考题范围: 公司核心产品知识。
-题目数量: 随机从题库抽选 50 道单选或多选题。
-配分原则: 每题 2 分。
-考试时间: 50 分钟。</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7uW-Rg-Opb">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7uW-Rg-Opb">
                                                 <rect key="frame" x="12" y="244" width="476" height="40"/>
                                                 <color key="backgroundColor" red="1" green="0.023279552039999998" blue="0.002520476383" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -715,13 +701,11 @@
                                                     <action selector="removeTouched:" destination="PaD-Tw-gun" eventType="touchUpInside" id="OLE-5C-MKM"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8HA-Wy-D43">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8HA-Wy-D43">
                                                 <rect key="frame" x="12" y="196" width="476" height="40"/>
                                                 <color key="backgroundColor" red="0.1058823529" green="0.64705882349999999" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="0NO-lE-uib"/>
                                                     <constraint firstAttribute="height" constant="40" id="XhO-bo-goe"/>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="fMm-AL-je6"/>
                                                     <constraint firstAttribute="width" constant="476" id="ru1-Z6-ysG"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -739,20 +723,25 @@
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JNW-pg-fLG">
+                                                <rect key="frame" x="19" y="38" width="462" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="8HA-Wy-D43" secondAttribute="bottom" constant="56" id="3va-XZ-biq"/>
-                                            <constraint firstAttribute="centerX" secondItem="8HA-Wy-D43" secondAttribute="centerX" id="6GL-eE-l7y"/>
-                                            <constraint firstItem="Ref-cs-61C" firstAttribute="leading" secondItem="uK2-eD-b3W" secondAttribute="leading" id="D2x-dh-uFb"/>
+                                            <constraint firstItem="7uW-Rg-Opb" firstAttribute="top" secondItem="8HA-Wy-D43" secondAttribute="bottom" constant="8" id="2Sz-Ys-vzm"/>
+                                            <constraint firstItem="7uW-Rg-Opb" firstAttribute="width" secondItem="8HA-Wy-D43" secondAttribute="width" id="Bv7-QQ-yGB"/>
+                                            <constraint firstAttribute="bottom" secondItem="7uW-Rg-Opb" secondAttribute="bottom" constant="8" id="HLg-jr-Mip"/>
+                                            <constraint firstItem="uK2-eD-b3W" firstAttribute="leading" secondItem="nUl-LA-YtC" secondAttribute="leading" constant="19" id="HYG-1N-xL7"/>
                                             <constraint firstItem="uK2-eD-b3W" firstAttribute="top" secondItem="nUl-LA-YtC" secondAttribute="top" constant="9" id="NG4-nT-kZg"/>
-                                            <constraint firstAttribute="trailing" secondItem="Ref-cs-61C" secondAttribute="trailing" constant="12" id="Thk-Em-juK"/>
-                                            <constraint firstItem="7uW-Rg-Opb" firstAttribute="leading" secondItem="Ref-cs-61C" secondAttribute="leading" id="Ukv-HB-Fp8"/>
-                                            <constraint firstItem="Ref-cs-61C" firstAttribute="top" secondItem="uK2-eD-b3W" secondAttribute="bottom" constant="8" id="ZSx-5O-fzd"/>
-                                            <constraint firstItem="8HA-Wy-D43" firstAttribute="top" secondItem="Ref-cs-61C" secondAttribute="bottom" constant="79" id="e97-js-00K"/>
-                                            <constraint firstItem="Ref-cs-61C" firstAttribute="leading" secondItem="nUl-LA-YtC" secondAttribute="leading" constant="12" id="eO2-aZ-U5e"/>
-                                            <constraint firstItem="7uW-Rg-Opb" firstAttribute="trailing" secondItem="Ref-cs-61C" secondAttribute="trailing" id="knM-3Z-YPT"/>
-                                            <constraint firstItem="7uW-Rg-Opb" firstAttribute="centerY" secondItem="8HA-Wy-D43" secondAttribute="centerY" constant="48" id="z78-3w-Z6d"/>
+                                            <constraint firstItem="JNW-pg-fLG" firstAttribute="leading" secondItem="nUl-LA-YtC" secondAttribute="leading" constant="19" id="OqT-WT-qTs"/>
+                                            <constraint firstItem="7uW-Rg-Opb" firstAttribute="leading" secondItem="8HA-Wy-D43" secondAttribute="leading" id="ZIZ-fu-BQ8"/>
+                                            <constraint firstItem="8HA-Wy-D43" firstAttribute="top" secondItem="JNW-pg-fLG" secondAttribute="bottom" constant="128" id="bDg-3n-q4S"/>
+                                            <constraint firstItem="JNW-pg-fLG" firstAttribute="top" secondItem="uK2-eD-b3W" secondAttribute="bottom" constant="8" id="ccw-ww-8jY"/>
+                                            <constraint firstAttribute="trailing" secondItem="JNW-pg-fLG" secondAttribute="trailing" constant="19" id="pfC-fM-FMr"/>
+                                            <constraint firstAttribute="centerX" secondItem="8HA-Wy-D43" secondAttribute="centerX" id="urs-o3-Cas"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="创建签到" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UEW-pq-N2t">
@@ -781,21 +770,13 @@
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="bMG-wX-Xar" secondAttribute="centerY" id="K7c-Ul-iuC"/>
                             <constraint firstAttribute="centerX" secondItem="bMG-wX-Xar" secondAttribute="centerX" id="wtK-tm-rlb"/>
-                            <constraint firstAttribute="trailing" secondItem="bMG-wX-Xar" secondAttribute="trailing" constant="20" id="yeu-dL-2Do"/>
-                            <constraint firstItem="bMG-wX-Xar" firstAttribute="leading" secondItem="4sq-yE-cVY" secondAttribute="leading" constant="20" id="zTv-R3-280"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="yeu-dL-2Do"/>
-                                <exclude reference="zTv-R3-280"/>
-                            </mask>
-                        </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
                         <outlet property="actionButton" destination="8HA-Wy-D43" id="hDF-BX-WtU"/>
                         <outlet property="closeButton" destination="tOV-f8-LQd" id="Kcb-oU-Omb"/>
-                        <outlet property="nameTextView" destination="Ref-cs-61C" id="3iV-Rm-Lu9"/>
+                        <outlet property="nameTextField" destination="JNW-pg-fLG" id="6Jw-QY-3nm"/>
                         <outlet property="removeButton" destination="7uW-Rg-Opb" id="N0D-bS-aAd"/>
                         <outlet property="titleLabel" destination="UEW-pq-N2t" id="qkv-Fe-2Ip"/>
                     </connections>

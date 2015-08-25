@@ -142,6 +142,9 @@
 - (void)syncData {
     NSDictionary *dict = [DataHelper trainSigninUsers:NO tid:self.courseID];
     _dataList = (NSArray *)psd(dict[@"traineesdata"], @[]);
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"UserName" ascending:YES];
+    _dataList = [_dataList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortDescriptor,nil]];
+    
     NSArray *array = [DataHelper trainSigninScannedUsers:NO courseID:self.courseID signinID:self.signinID];
     _stateList = [NSMutableArray arrayWithArray:array];
     [self.tableView reloadData];

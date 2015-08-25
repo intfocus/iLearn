@@ -23,11 +23,6 @@
  *  @return urlString
  */
 + (NSString *)login:(NSString *)UID {
-    BOOL isParamsValid = CheckParams(GenFormat(1), UID);
-    if(!isParamsValid) {
-        UID = (NSString *)psd(UID, @"null");
-    }
-                              
     NSString *urlString  = [[Url alloc] init].login;
     NSDictionary *params = @{LOGIN_PARAM_UID: UID};
 
@@ -40,12 +35,6 @@
  *  @return urlString
  */
 + (NSString *)notifications:(NSString *)currentDate DeptID:(NSString *)depthID {
-    BOOL isParamsValid = CheckParams(GenFormat(2), currentDate, depthID);
-    if(!isParamsValid) {
-        currentDate = (NSString *)psd(currentDate, @"null");
-        depthID     = (NSString *)psd(depthID, @"null");
-    }
-    
     NSString *urlString  = [[Url alloc] init].notifications;
     NSDictionary *params = @{NOTIFICATION_PARAM_DEPTID: depthID, NOTIFICATION_PARAM_DATESTR:currentDate};
     
@@ -60,11 +49,6 @@
  *  @return 课程包列表
  */
 + (NSString *)coursePackages:(NSString *)UID {
-    BOOL isParamsValid = CheckParams(GenFormat(1), UID);
-    if(!isParamsValid) {
-        UID = (NSString *)psd(UID, @"null");
-    }
-    
     NSString *urlString  = [[Url alloc] init].coursePackages;
     NSDictionary *params = @{COURSE_PACKAGES_PARAMS_UID: UID};
     
@@ -79,11 +63,6 @@
  *  @return 课程内容
  */
 + (NSString *)coursePackageContent:(NSString *)PID {
-    BOOL isParamsValid = CheckParams(GenFormat(1), PID);
-    if(!isParamsValid) {
-        PID = (NSString *)psd(PID, @"null");
-    }
-    
     NSString *urlString  = [[Url alloc] init].coursePackageContent;
     NSDictionary *params = @{COURSE_PACKAGE_CONTENT_PARAMS_PID: PID};
     
@@ -99,12 +78,6 @@
  *  @return 课件下载链接
  */
 + (NSString *)downloadCourse:(NSString *)cid Ext:(NSString *)ext {
-    BOOL isParamsValid = CheckParams(GenFormat(2), cid, ext);
-    if(!isParamsValid) {
-        cid = (NSString *)psd(cid, @"null");
-        ext = (NSString *)psd(ext, @"null");
-    }
-    
     NSString *urlString  = [[Url alloc] init].downloadCourse;
     NSDictionary *params = @{COURSE_DOWNLOAD_PARAMS_CID:cid, COURSE_DOWNLOAD_PARAMS_EXT:ext};
     
@@ -167,6 +140,19 @@
     return [Url UrlConcate:urlString Param:params];
 }
 
+/**
+ *  http://tsa-china.takeda.com.cn/uat/api/FileDownload_Api.php?fid=uat.sql&ftype=sql&uid=111
+ *
+ *  @param fileName 文件名称
+ *  @param fileType 文件后缀
+ *  @param userID   用户ID
+ */
++ (NSString *)downloadFile:(NSString*)fileName type:(NSString *)fileType userID:(NSString *)userID {
+    NSString *urlString  = [[Url alloc] init].downloadFile;
+    NSDictionary *params = @{@"fid":fileName, @"ftype":fileType, @"uid":userID};
+    
+    return [Url UrlConcate:urlString Param:params];
+}
 #pragma mark - GET# assistant methods
 + (NSString *)UrlConcate:(NSString *)url Param:(NSDictionary *)params {
     NSString *paramString = [Url _parameters:params];

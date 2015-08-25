@@ -179,6 +179,7 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_NOT_STARTED", nil);
             [cell.actionButton setTitle:NSLocalizedString(@"LIST_BUTTON_START_ANSWER", nil) forState:UIControlStateNormal];
             cell.actionButtonType = ContentTableViewCellActionView;
+            cell.actionButton.enabled = NO;
         }
         else if ([endDate laterDate:now] == now && questionnaireEndDate == nil) { // Questinnare is ended and not start answering
             cell.statusLabel.text = NSLocalizedString(@"LIST_STATUS_ENDED", nil);

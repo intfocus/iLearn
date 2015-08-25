@@ -22,10 +22,17 @@
 
 @implementation HttpUtils
 
-+ (void)uploadFile {
-    NSURL *filePath = [NSURL fileURLWithPath:@"/Users/lijunjie/Documents/21.db.zip"];
-    NSString *urlStr = @"http://localhost:3000/demo/upload";
-    //urlStr = @"http://tsa-china.takeda.com.cn/uat/api/FileUpload_Api.php";
+/**
+ *  考试/问卷结果db文件上传
+ *
+ *  @param filePath 文件路径
+ *  @param userID   用户ID
+ */
++ (HttpResponse *)uploadFile:(NSString *)filePath userID:(NSString *)userID {
+    NSURL *filePathUrl = [NSURL fileURLWithPath:filePath]; //@"/Users/lijunjie/Documents/21.db.zip"
+    NSString *urlStr = @"http://demo.solife.us/upload";
+    
+    urlStr = @"http://tsa-china.takeda.com.cn/uat/api/FileUpload_Api.php";
                                          
     //创建Request对象
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -44,17 +51,17 @@
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"21.db.zip\"\r\n",@"file"] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Type: application/zip\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[NSData dataWithContentsOfURL:filePath]];
+    [body appendData:[NSData dataWithContentsOfURL:filePathUrl]];
     [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
     
     // 写入 INFO 的内容
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",@"UserId"] dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"12334" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[userID dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",@"FileType"] dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"zip" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[filePath pathExtension] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     
     //写入尾部内容
@@ -64,33 +71,13 @@
     
     NSHTTPURLResponse *urlResponese = nil;
     NSError *error = [[NSError alloc]init];
-    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
-    
-    NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
-    NSLog(@"%@", responseDic);
-}
-+ (void)uploadFile2 {
-    AFHTTPRequestOperationManager * httpManager = [AFHTTPRequestOperationManager manager];
-     httpManager.requestSerializer = [AFHTTPRequestSerializer serializer];
-     httpManager.responseSerializer = [AFHTTPResponseSerializer serializer];
-     httpManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    NSURL *filePath = [NSURL fileURLWithPath:@"/Users/lijunjie/Documents/21.db.zip"];
-    AFHTTPRequestOperation *operation = [httpManager POST:@"http://localhost:3000/demo/upload"
-                                               parameters:@{@"hello":@"world"}
-                                constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                                    
-        [formData appendPartWithFileURL:filePath name:@"file" error:nil];
-    }
-      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-          NSLog(@"%@", responseObject);
-   }
-      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-          NSLog(@"%@", [error localizedDescription]);
-   }];
-    
-    if (!operation) {
-        NSLog(@"Creation of operation failed.");
-    }
+    HttpResponse *httpResonse = [[HttpResponse alloc] init];
+    httpResonse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
+    httpResonse.response = urlResponese;
+    //NSLog(@"%@", [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding]);
+//    NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
+//    NSLog(@"%@", responseDic);
+    return httpResonse;
 }
 
 /**

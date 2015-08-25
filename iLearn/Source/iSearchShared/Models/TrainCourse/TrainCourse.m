@@ -96,7 +96,9 @@
     NSString *label = @"TODO";
     
     if([self isCourse]) {
-        if([self.traineesStatus intValue] == [self.approreLevel intValue]) {
+        if(self.traineesStatus && ![self.traineesStatus isEqual:[NSNull null]] &&
+           [self.traineesStatus intValue] == [self.approreLevel intValue]) {
+            
             label = [NSString stringWithFormat:@"%@: %@", @"课程开始日期", self.begin];
         }
         else {
@@ -127,7 +129,7 @@
 }
 
 - (NSString *)desc {
-    return [NSString stringWithFormat:@"讲师: %@\n地址: %@\n开始时间:%@\n截止时间:%@\n说明:%@\n", _lecturer, _location, _begin, _end, _memo];
+    return [NSString stringWithFormat:@"讲师: %@\n地址: %@\n报名时间:%@ - %@\n培训时间:%@ - %@\n说明:\n%@\n", _lecturer, _location, _startDate, _endDate, _begin, _end, _memo];
 }
 
 @end
