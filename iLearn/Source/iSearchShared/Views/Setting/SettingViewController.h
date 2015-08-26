@@ -24,6 +24,7 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
 @end
 
 @interface SettingViewController : UIViewController
+@property (nonatomic, weak) UIViewController *masterViewController;
 
 @property (nonatomic, weak) id <SettingViewProtocol> delegate;
 @end

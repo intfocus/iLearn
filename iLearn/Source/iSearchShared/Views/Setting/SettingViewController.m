@@ -112,6 +112,7 @@
         case SettingActionLogIndex:{
             SettingDataInfo *viewController = [[SettingDataInfo alloc] init];
             viewController.indexRow = indexPath.row;
+            viewController.masterViewController = self.masterViewController;
             [self.navigationController pushViewController:viewController animated:YES];
             
             break;
@@ -119,6 +120,7 @@
         case SettingUploadedExamsIndex: {
             UploadedExamsViewController *uploadedExamsVC = [[UploadedExamsViewController alloc] init];
             uploadedExamsVC.settingViewController = self;
+            uploadedExamsVC.masterViewController = self.masterViewController;
             [self.navigationController pushViewController:uploadedExamsVC animated:YES];
             break;
         }

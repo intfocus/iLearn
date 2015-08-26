@@ -267,7 +267,8 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
         NSString *requestUrl = [NSString stringWithFormat:@"%@/QuestionT_Api.php?qid=%@", kServerAddress, questionnaireId];
         NSString *outputPath = [NSString stringWithFormat:@"%@/%@.json", [QuestionnaireUtil questionnaireFolderPathInDocument], questionnaireId];
         NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@.json.tmp", [QuestionnaireUtil questionnaireFolderPathInDocument], questionnaireId];
-
+        NSLog(@"%@", requestUrl);
+        
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
 
         AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {

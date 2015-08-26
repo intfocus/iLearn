@@ -242,6 +242,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
     SettingViewController *settingVC = [[SettingViewController alloc] init];
     settingVC.delegate = self;
+    settingVC.masterViewController = self;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingVC];
     nav.view.frame = CGRectMake(0, 0, 400, 500);
 

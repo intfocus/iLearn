@@ -17,12 +17,14 @@
 #import "CacheHelper.h"
 #import "User.h"
 #import "ViewUtils.h"
+#import <MBProgressHUD.h>
 
 @interface UploadedExamsViewController ()
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *uploadedExams;
 @property (nonatomic, strong) ConnectionManager *connectionManager;
 @property (nonatomic, strong) NSMutableDictionary *examsIndexPath;
+@property (strong, nonatomic) MBProgressHUD *progressHUD;
 @end
 
 @implementation UploadedExamsViewController
@@ -47,6 +49,9 @@
 }
 
 - (void)syncData:(BOOL)isNetworkAvailable {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.masterViewController.view animated:YES];
+    _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    
     NSMutableDictionary *dict = [DataHelper uploadedExams:isNetworkAvailable userID:[User userID]];
     if(dict && dict[@"data"] && [dict[@"data"] isKindOfClass:[NSArray class]]) {
         _uploadedExams = [NSMutableArray arrayWithArray:dict[@"data"]];
@@ -69,7 +74,23 @@
         else if(isNetworkAvailable) {
             [_connectionManager downloadExamWithId:examID];
         }
-        
+    }
+    [self checkProgressHUD];
+}
+
+- (void)checkProgressHUD {
+    NSInteger unDownloadNum = 0;
+    for (NSInteger i=0; i<[_uploadedExams count]; i++) {
+        if(!_uploadedExams[i][@"ExamName"]) {
+            unDownloadNum ++;
+        }
+    }
+    
+    if(unDownloadNum == 0) {
+        [_progressHUD hide:YES];
+    }
+    else {
+        _progressHUD.labelText = [NSString stringWithFormat:@"%li/%lu %@", (long)unDownloadNum, (unsigned long)[_uploadedExams count], NSLocalizedString(@"LIST_SYNCING", nil)];
     }
 }
 
@@ -121,6 +142,8 @@
                 break;
             }
         }
+        
+        [self checkProgressHUD];
     }
 }
 

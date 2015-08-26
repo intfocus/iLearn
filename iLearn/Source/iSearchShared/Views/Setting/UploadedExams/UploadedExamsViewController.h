@@ -13,4 +13,5 @@
 
 @interface UploadedExamsViewController : UIViewController<ConnectionManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic,nonatomic) SettingViewController *settingViewController;
+@property (nonatomic, weak) UIViewController *masterViewController;
 @end

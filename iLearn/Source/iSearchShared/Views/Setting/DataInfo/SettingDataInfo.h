@@ -14,6 +14,7 @@
 @interface SettingDataInfo : UIViewController
 @property (nonatomic,assign) NSInteger indexRow;
 @property (nonatomic,nonatomic) SettingViewController *settingViewController;
+@property (nonatomic, weak) UIViewController *masterViewController;
 @end
 
 #endif
