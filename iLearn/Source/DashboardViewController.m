@@ -8,8 +8,8 @@
 
 #import "DashboardViewController.h"
 #import "ListViewController.h"
-#import "QRCodeViewController.h"
 #import "LicenseUtil.h"
+#import "QRCodeViewController.h"
 #import "NotificationViewController.h"
 #import "const.h"
 #import "FileUtils.h"
@@ -20,13 +20,13 @@
 #import "ActionLog.h"
 #import <AVFoundation/AVFoundation.h>
 
-static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
-static NSString *const kShowExamSegue = @"showExamPage";
-static NSString *const kShowRegistrationSegue = @"showRegistrationPage";
-static NSString *const kShowLectureSegue = @"showLecturePage";
-static NSString *const kShowSettingsSegue = @"SettingViewController";//@"showSettingsPage";
-static NSString *const kShowQRCodeSegue = @"showQRCodePage";
-static NSString *const kShowNotificationSegue = @"showNotificationPage";
+static NSString *const kShowQuestionnaireSegue     = @"showQuestionnairePage";
+static NSString *const kShowExamSegue              = @"showExamPage";
+static NSString *const kShowRegistrationSegue      = @"showRegistrationPage";
+static NSString *const kShowLectureSegue           = @"showLecturePage";
+static NSString *const kShowSettingsSegue          = @"SettingViewController";//@"showSettingsPage";
+static NSString *const kShowQRCodeSegue            = @"showQRCodePage";
+static NSString *const kShowNotificationSegue      = @"showNotificationPage";
 
 static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifier";
 

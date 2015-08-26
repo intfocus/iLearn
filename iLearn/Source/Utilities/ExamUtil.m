@@ -13,8 +13,6 @@
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
-static const BOOL inDeveloping = NO;
-
 @implementation ExamUtil
 
 + (NSArray*)loadExams

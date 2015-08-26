@@ -202,10 +202,10 @@
  *  @param tid              培训班ID
  */
 + (void)writeTrainSigninUsers:(NSMutableDictionary *)trainSigninUsers courseID:(NSString *)tid {
-    if(!trainSigninUsers)  return;
-    
-    NSString *cachePath = [self cachePath:@"train_signin_users" Type:@"all" ID:tid];
-    [FileUtils writeJSON:trainSigninUsers Into:cachePath];
+    if(trainSigninUsers) {
+        NSString *cachePath = [self cachePath:@"train_signin_users" Type:@"all" ID:tid];
+        [FileUtils writeJSON:trainSigninUsers Into:cachePath];
+    }
 }
 
 /**
@@ -224,6 +224,65 @@
     }
     
     return trainSigninUsers;
+}
+
+/**
+ *  提交过的考试列表写入缓存。（已有用户空间概念，不需要再指定userID）
+ *
+ *  @param uploadedExams 提交过的考试列表
+ */
++ (void)writeUploadedExams:(NSMutableDictionary *)uploadedExams {
+    if(uploadedExams) {
+        NSString *cachePath = [self cachePath:@"exams" Type:@"uploaded" ID:@"self"];
+        [FileUtils writeJSON:uploadedExams Into:cachePath];
+    }
+}
+
+/**
+ *  缓存中的提交过的考试列表
+ *
+ *  @return 提交过的考试列表
+ */
++ (NSMutableDictionary *)uploadedExams {
+    NSMutableDictionary *uploadedExams = [NSMutableDictionary dictionary];
+    
+    NSString *cachePath = [self cachePath:@"exams" Type:@"uploaded" ID:@"self"];
+    if([FileUtils checkFileExist:cachePath isDir:NO]) {
+        uploadedExams = [FileUtils readConfigFile:cachePath];
+    }
+    
+    return uploadedExams;
+}
+
+/**
+ *  提交过的考试结果写入缓存
+ *
+ *  @param examResult 考试结果
+ *  @param examID     考试ID
+ */
++ (void)writeUploadedExamResult:(NSMutableDictionary *)examResult examID:(NSString *)examID {
+    if(examResult) {
+        NSString *cachePath = [self cachePath:@"exam" Type:@"result" ID:examID];
+        [FileUtils writeJSON:examResult Into:cachePath];
+    }
+}
+
+/**
+ *  缓存中的考试结果
+ *
+ *  @param examID     考试ID
+ *
+ *  @return 考试结果
+ */
++ (NSMutableDictionary *)uploadedExamResult:(NSString *)examID {
+    NSMutableDictionary *examResult = [NSMutableDictionary dictionary];
+    
+    NSString *cachePath = [self cachePath:@"exam" Type:@"result" ID:examID];
+    if([FileUtils checkFileExist:cachePath isDir:NO]) {
+        examResult = [FileUtils readConfigFile:cachePath];
+    }
+    
+    return examResult;
 }
 #pragma mark - asisstant methods
 /**

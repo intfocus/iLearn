@@ -12,9 +12,11 @@
 #import "LoginViewController.h"
 #import "DashboardViewController.h"
 #import "SettingDataInfo.h"
+#import "UploadedExamsViewController.h"
 #import "ViewUpgrade.h"
 #import "FileUtils+Setting.h"
 #import "DatabaseUtils+ActionLog.h"
+#import "CacheHelper.h"
 
 @interface SettingViewController()<UITableViewDelegate, UITableViewDataSource, ViewUpgradeProtocol, ViewUpgradeProtocol>
 
@@ -47,6 +49,13 @@
     [self.dataList addObject:@[@"本地文件", [FileUtils humanFileSize:fileSize]]];
     
     [self.dataList addObject:@[@"本地记录", [[[DatabaseUtils alloc] init] localInfo]]];
+    
+    NSMutableDictionary *cacheDict = [CacheHelper uploadedExams];
+    NSString *uploadedExamNum = @"-";
+    if(cacheDict && cacheDict[@"data"]) {
+        uploadedExamNum = [NSString stringWithFormat:@"%lu", (unsigned long)[cacheDict[@"data"] count]];
+    }
+    [self.dataList addObject:@[@"考试记录", uploadedExamNum]];
     [self.dataList addObject:@[@"版本更新", @""]];
     /**
      *  控件事件
@@ -104,15 +113,23 @@
             SettingDataInfo *viewController = [[SettingDataInfo alloc] init];
             viewController.indexRow = indexPath.row;
             [self.navigationController pushViewController:viewController animated:YES];
-        }
+            
             break;
+        }
+        case SettingUploadedExamsIndex: {
+            UploadedExamsViewController *uploadedExamsVC = [[UploadedExamsViewController alloc] init];
+            uploadedExamsVC.settingViewController = self;
+            [self.navigationController pushViewController:uploadedExamsVC animated:YES];
+            break;
+        }
         case SettingUpgradeIndex:{
             ViewUpgrade *viewController = [[ViewUpgrade alloc] init];
             viewController.settingViewController = self;
             viewController.delegate = (id)self;
             [self.navigationController pushViewController:viewController animated:YES];
-        }
+            
             break;
+        }
         default:
             break;
     }

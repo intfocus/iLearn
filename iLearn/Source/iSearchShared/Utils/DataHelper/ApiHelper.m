@@ -220,4 +220,31 @@
     //[FileUtils removeFile:filePath];
     return state;
 }
+
+/**
+ *  提交过的考试列表。（考试列表中不包含这些考试）
+ *
+ *  @param userID 用户ID
+ *
+ *  @return 考试列表
+ */
++ (HttpResponse *)uploadedExams:(NSString *)userID {
+    NSString *urlString = [Url uploadedExams:userID];
+    
+    return [HttpUtils httpGet:urlString];
+}
+
+/**
+ *  某次提交过的考试各题的用户答案
+ *
+ *  @param userID 用户ID
+ *  @param examID 考试ID
+ *
+ *  @return 用户答案
+ */
++ (HttpResponse *)uploadedExamResult:(NSString *)userID examID:(NSString *)examID {
+    NSString *urlString = [Url uploadedExamResult:userID examID:examID];
+    
+    return [HttpUtils httpGet:urlString];
+}
 @end

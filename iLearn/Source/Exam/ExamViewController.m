@@ -200,7 +200,8 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
         examQuestionScore = @"100";
         examQuestionTitle = @"试题总分";
         self.BackButton.hidden = YES;
-    } else {
+    }
+    else {
         examQuestionScore = [NSString stringWithFormat:@"%@", _examContent[ExamScore]];
         examQuestionTitle = @"考试得分";
         self.BackButton.hidden = NO;
@@ -229,16 +230,7 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
     cell.numberLabel.textColor = [UIColor blackColor];
 
     if (_isAnswerMode) {
-
         NSDictionary *subjectContent = _examContent[ExamQuestions][indexPath.row];
-
-//        if ([subjectContent[ExamQuestionCorrect] isEqualToNumber:@1]) {
-//            cell.numberLabel.textColor = ILLightGreen;
-//            //cell.numberLabel.textColor = [UIColor whiteColor];
-//        }
-//        else {
-//            cell.numberLabel.textColor = ILDarkRed;
-//        }
         
         if (indexPath.row == _selectedCellIndex) {
             //[cell.layer setBorderColor:[UIColor yellowColor].CGColor];
@@ -269,26 +261,14 @@ typedef NS_ENUM(NSUInteger, CellStatus) {
 
     }
     else {
-//        if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
-//            //cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
-//            cell.numberLabel.textColor = ILLightGreen;
-//        }
-//        else {
-//            cell.numberLabel.textColor = [UIColor lightGrayColor];
-//        }
-        
         if (indexPath.row == _selectedCellIndex) {
-            //[cell.layer setBorderColor:[UIColor yellowColor].CGColor];
-            //[cell.layer setBorderWidth:4.0];
             cell.backgroundColor = ILLightGreen;
             cell.numberLabel.textColor = [UIColor whiteColor];
             
         }
         else {
             cell.backgroundColor = [UIColor clearColor];
-            //[cell.layer setBorderWidth:0.0];
             if ([_cellStatus[indexPath.row] isEqualToNumber:@(CellStatusAnswered)]) {
-                //cell.backgroundColor = RGBCOLOR(27.0, 165.0, 158.0);
                 cell.numberLabel.textColor = ILLightGreen;
             }
             else {

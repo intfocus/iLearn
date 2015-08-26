@@ -11,11 +11,12 @@
 #import "ApiHelper.h"
 #import "HttpUtils.h"
 #import "Constants.h"
-#import "QuestionnaireUtil.h"
+#import "ExamUtil.h"
 #import "LicenseUtil.h"
 #import "User.h"
 #import "HttpResponse.h"
 #import "FileUtils.h"
+#import "DataHelper.h"
 
 @interface testPostActionLog : XCTestCase
 
@@ -68,7 +69,8 @@
 }
 
 - (void)testAFNetworking {
-//    NSString *dbPath = [QuestionnaireUtil questionnaireDBPathOfFile:@"4"];
+//    NSString *dbPath = [ExamUtil examDBPath:@"64"];
+//    [ExamUtil generateUploadJsonFromDBPath:dbPath];
 //
 //    HttpResponse *response = [ApiHelper uploadFile:dbPath userID:[User userID] type:@"question"];
 //    if([response isValid]) {
@@ -80,9 +82,9 @@
 }
 
 - (void)testDownload {
-    NSString *userID = [User userID];
-    NSString *fileName = [NSString stringWithFormat:@"%@-%@-%@.db.zip", userID, @"question", @"4"];
-    BOOL state = [ApiHelper downloadFile:fileName userID:userID destDir:[FileUtils dirPath:QuestionnaireFolder]];
-    NSLog(@"%i", state);
+//    NSString *userID = [User userID];
+//    NSString *fileName = [NSString stringWithFormat:@"%@-%@-%@.db.zip", userID, @"question", @"4"];
+//    BOOL state = [ApiHelper downloadFile:fileName userID:userID destDir:[FileUtils dirPath:QuestionnaireFolder]];
+//    NSLog(@"%i", state);
 }
 @end

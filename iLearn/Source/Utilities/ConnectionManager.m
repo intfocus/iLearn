@@ -15,6 +15,8 @@
 #import "FileUtils+Course.h"
 #import "Url+Param.h"
 #import "ExtendNSLogFunctionality.h"
+#import "ApiHelper.h"
+#import "HttpResponse.h"
 
 static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/api";
 
@@ -163,7 +165,16 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadExamResult:examId withError:nil];
             }
             
-            ActionLogRecord(@"考卷成功上传", @"成功", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"status": @"successfully"}));
+            ActionLogRecord(@"考卷上传", @"成功", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"status": @"successfully"}));
+//            NSString *dbPath = [ExamUtil examDBPath:examId];
+//        
+//            HttpResponse *response = [ApiHelper uploadFile:dbPath userID:userId type:@"question"];
+//            if([response isValid]) {
+//                ActionLogRecord(@"考卷db上传", @"成功", (@{@"dbPath": dbPath,  @"status": @"successfully"}));
+//            }
+//            else {
+//                ActionLogRecord(@"考卷db上传", @"失败", (@{@"dbPath": dbPath,  @"error": response.string}));
+//            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Upload result of ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
@@ -172,7 +183,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadExamResult:examId withError:error];
             }
             
-            ActionLogRecord(@"考卷成功上传", @"失败", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"error": [error localizedDescription]}));
+            ActionLogRecord(@"考卷上传", @"失败", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"error": [error localizedDescription]}));
         }];
         op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
         [op start];
@@ -202,7 +213,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadExamScannedResult:result withError:nil];
             }
             
-            ActionLogRecord(@"考卷成功上传", @"成功", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"status": @"successfully"}));
+            ActionLogRecord(@"考卷上传", @"成功", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"status": @"successfully"}));
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Upload Scanned Exam Result: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", result, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
@@ -211,7 +222,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
                 [_delegate connectionManagerDidUploadExamScannedResult:result withError:error];
             }
             
-            ActionLogRecord(@"考卷成功上传", @"失败", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"error": [error localizedDescription]}));
+            ActionLogRecord(@"考卷上传", @"失败", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"error": [error localizedDescription]}));
         }];
 
         op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];

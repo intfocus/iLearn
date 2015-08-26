@@ -11,11 +11,12 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, SettingSectionIndex) {
-    SettingUserInfoIndex  = 0,
-    SettingAppInfoIndex   = 1,
-    SettingAppFilesIndex  = 2,
-    SettingActionLogIndex = 3,
-    SettingUpgradeIndex   = 4
+    SettingUserInfoIndex      = 0,
+    SettingAppInfoIndex       = 1,
+    SettingAppFilesIndex      = 2,
+    SettingActionLogIndex     = 3,
+    SettingUploadedExamsIndex = 4,
+    SettingUpgradeIndex       = 5
 };
 
 @protocol SettingViewProtocol <NSObject>

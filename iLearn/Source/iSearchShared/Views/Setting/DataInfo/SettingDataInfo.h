@@ -9,12 +9,10 @@
 #ifndef iSearch_SettingUserInfo_h
 #define iSearch_SettingUserInfo_h
 #import <UIKit/UIKit.h>
-@class MainViewController;
 @class SettingViewController;
 
 @interface SettingDataInfo : UIViewController
 @property (nonatomic,assign) NSInteger indexRow;
-@property (nonatomic,nonatomic) MainViewController *mainViewController;
 @property (nonatomic,nonatomic) SettingViewController *settingViewController;
 @end
 

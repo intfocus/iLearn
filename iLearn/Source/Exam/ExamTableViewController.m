@@ -333,7 +333,6 @@ static const NSInteger kMinScanInterval = 3;
         }
     }
     else {
-        
         NSDate *now = [NSDate date];
         
         if ([endDate laterDate:now] == now) { // Exam is ended

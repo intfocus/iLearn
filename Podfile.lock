@@ -54,7 +54,7 @@ DEPENDENCIES:
   - ObjectiveSugar (~> 1.1.0)
   - QRCodeReaderViewController (~> 3.5.2)
   - Reachability (~> 3.2)
-  - SCLAlertView-Objective-C
+  - SCLAlertView-Objective-C (~> 0.7.4)
   - SSZipArchive (~> 0.3.2)
 
 SPEC CHECKSUMS:

@@ -30,6 +30,9 @@
         _courseSigninUser         = @"http://tsa-china.takeda.com.cn/uat/api/RollCall_Api.php";
         _uploadFile               = @"http://tsa-china.takeda.com.cn/uat/api/FileUpload_Api.php";
         _downloadFile             = @"http://tsa-china.takeda.com.cn/uat/api/FileDownload_Api.php";
+
+        _uploadedExams            = @"http://tsa-china.takeda.com.cn/uat/api/ExamScore_Api.php";
+        _uploadedExamResult       = @"http://tsa-china.takeda.com.cn/uat/api/ExamAnswer_Api.php";
     }
     return self;
 }

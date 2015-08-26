@@ -154,4 +154,23 @@
  *  @param destDir  下载到指定目录下
  */
 + (BOOL)downloadFile:(NSString *)fileName userID:(NSString *)userID destDir:(NSString *)destDir;
+
+/**
+ *  提交过的考试列表。（考试列表中不包含这些考试）
+ *
+ *  @param userID 用户ID
+ *
+ *  @return 考试列表
+ */
++ (HttpResponse *)uploadedExams:(NSString *)userID;
+
+/**
+ *  某次提交过的考试各题的用户答案
+ *
+ *  @param userID 用户ID
+ *  @param examID 考试ID
+ *
+ *  @return 用户答案
+ */
++ (HttpResponse *)uploadedExamResult:(NSString *)userID examID:(NSString *)examID;
 @end

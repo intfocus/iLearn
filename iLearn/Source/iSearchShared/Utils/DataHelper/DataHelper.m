@@ -25,6 +25,7 @@
 #import "TrainCourse.h"
 #import "CourseSignin.h"
 
+
 @interface DataHelper()
 @property (nonatomic, strong) NSMutableArray *visitData;
 
@@ -288,6 +289,28 @@
     param[@"TrainingId"] = TID;
     HttpResponse *response = [ApiHelper courseSignup:param];
     ActionLogRecord(@"课程报名", ([response isValid] ? @"成功" : @"失败"), (@{@"userID": param[@"UserId"], @"courseID": param[@"TrainingId"], @"httpStatusCode": response.statusCode, @"response": [response string]}));
+}
+
+/**
+ *  提交过的考试列表
+ *
+ *  @param isNetworkAvailable 网络环境
+ *  @param userID             用户ID
+ */
++ (NSMutableDictionary *)uploadedExams:(BOOL)isNetworkAvailable userID:(NSString *)userID {
+    NSMutableDictionary *uploadedExams = [NSMutableDictionary dictionary];
+    
+    if(isNetworkAvailable) {
+        HttpResponse *response = [ApiHelper uploadedExams:userID];
+        uploadedExams = response.data;
+        
+        [CacheHelper writeUploadedExams:uploadedExams];
+    }
+    else {
+        uploadedExams = [CacheHelper uploadedExams];
+    }
+    
+    return uploadedExams;
 }
 
 #pragma mark - assistant methods

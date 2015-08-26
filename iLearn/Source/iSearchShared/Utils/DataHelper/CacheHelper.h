@@ -137,4 +137,35 @@
  *  @return 课程的签到列表
  */
 + (NSMutableDictionary *)trainSigninUsers:(NSString *)tid;
+
+/**
+ *  提交过的考试列表写入缓存。（已有用户空间概念，不需要再指定userID）
+ *
+ *  @param uploadedExams 提交过的考试列表
+ */
++ (void)writeUploadedExams:(NSMutableDictionary *)uploadedExams;
+
+/**
+ *  缓存中的提交过的考试列表
+ *
+ *  @return 提交过的考试列表
+ */
++ (NSMutableDictionary *)uploadedExams;
+
+/**
+ *  提交过的考试结果写入缓存
+ *
+ *  @param examResult 考试结果
+ *  @param examID     考试ID
+ */
++ (void)writeUploadedExamResult:(NSMutableDictionary *)examResult examID:(NSString *)examID;
+
+/**
+ *  缓存中的考试结果
+ *
+ *  @param examID     考试ID
+ *
+ *  @return 考试结果
+ */
++ (NSMutableDictionary *)uploadedExamResult:(NSString *)examID;
 @end

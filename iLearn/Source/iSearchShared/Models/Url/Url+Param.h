@@ -108,4 +108,23 @@
  *  @param userID   用户ID
  */
 + (NSString *)downloadFile:(NSString*)fileName type:(NSString *)fileType userID:(NSString *)userID;
+
+/**
+ *  提交过的考试列表。（考试列表中不包含这些考试）
+ *
+ *  @param userID 用户ID
+ *
+ *  @return 提交过的考试列表
+ */
++ (NSString *)uploadedExams:(NSString *)userID;
+
+/**
+ *  某次提交过的考试各题的用户答案
+ *
+ *  @param userID 用户ID
+ *  @param examID 考试ID
+ *
+ *  @return 链接
+ */
++ (NSString *)uploadedExamResult:(NSString *)userID examID:(NSString *)examID;
 @end

@@ -35,4 +35,7 @@
 
 @property (nonatomic, strong) NSString *uploadFile;
 @property (nonatomic, strong) NSString *downloadFile;
+
+@property (nonatomic, strong) NSString *uploadedExams;
+@property (nonatomic, strong) NSString *uploadedExamResult;
 @end
