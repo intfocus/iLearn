@@ -86,5 +86,11 @@
 //    NSString *fileName = [NSString stringWithFormat:@"%@-%@-%@.db.zip", userID, @"question", @"4"];
 //    BOOL state = [ApiHelper downloadFile:fileName userID:userID destDir:[FileUtils dirPath:QuestionnaireFolder]];
 //    NSLog(@"%i", state);
+    NSString * mystring = @"ABCD";
+    char mychar[mystring.length];
+    strcpy(mychar,(char *)[mystring UTF8String]);
+    for(NSInteger i=0; i < mystring.length; i++) {
+        NSLog(@"%i: %c", i, mychar[i]);
+    }
 }
 @end

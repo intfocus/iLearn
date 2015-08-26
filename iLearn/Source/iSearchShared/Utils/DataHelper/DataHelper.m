@@ -313,6 +313,32 @@
     return uploadedExams;
 }
 
+/**
+ *  提交过的考试答案
+ *
+ *  @param isNetworkAvailable 网络环境
+ *  @param userID             用户ID
+ *  @param examID             考试ID
+ *
+ *  @return 考试答案
+ */
++ (NSMutableDictionary *)uploadedExamResult:(BOOL)isNetworkAvailable userID:(NSString *)userID examID:(NSString *)examID {
+    NSMutableDictionary *uploadedExamResult = [NSMutableDictionary dictionary];
+    
+    if(isNetworkAvailable) {
+        HttpResponse *response = [ApiHelper uploadedExamResult:userID examID:examID];
+        uploadedExamResult = response.data;
+        
+        [CacheHelper writeUploadedExamResult:uploadedExamResult userID:userID examID:examID];
+    }
+    else {
+        uploadedExamResult = [CacheHelper uploadedExamResult:userID examID:examID];
+    }
+    
+    return uploadedExamResult;
+    
+}
+
 #pragma mark - assistant methods
 + (NSString *)dictToParams:(NSMutableDictionary *)dict {
     NSMutableArray *paramArray = [[NSMutableArray alloc] init];

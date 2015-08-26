@@ -131,8 +131,8 @@
  *  @return 是否删除成功的布尔值
  */
 + (BOOL)removeFile:(NSString *)filePath {
-    NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
     BOOL removed = [fileManager removeItemAtPath: filePath error: &error];
     if(error)
         NSLog(@"<# remove file %@ failed: %@", filePath, [error localizedDescription]);

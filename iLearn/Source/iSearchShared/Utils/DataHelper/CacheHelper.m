@@ -258,11 +258,12 @@
  *  提交过的考试结果写入缓存
  *
  *  @param examResult 考试结果
+ *  @param userID     用户ID
  *  @param examID     考试ID
  */
-+ (void)writeUploadedExamResult:(NSMutableDictionary *)examResult examID:(NSString *)examID {
++ (void)writeUploadedExamResult:(NSMutableDictionary *)examResult userID:(NSString *)userID examID:(NSString *)examID {
     if(examResult) {
-        NSString *cachePath = [self cachePath:@"exam" Type:@"result" ID:examID];
+        NSString *cachePath = [self cachePath:@"exam_result" Type:userID ID:examID];
         [FileUtils writeJSON:examResult Into:cachePath];
     }
 }
@@ -270,14 +271,15 @@
 /**
  *  缓存中的考试结果
  *
+ *  @param userID     用户ID
  *  @param examID     考试ID
  *
  *  @return 考试结果
  */
-+ (NSMutableDictionary *)uploadedExamResult:(NSString *)examID {
++ (NSMutableDictionary *)uploadedExamResult:(NSString *)userID examID:(NSString *)examID {
     NSMutableDictionary *examResult = [NSMutableDictionary dictionary];
     
-    NSString *cachePath = [self cachePath:@"exam" Type:@"result" ID:examID];
+    NSString *cachePath = [self cachePath:@"exam_result" Type:userID ID:examID];
     if([FileUtils checkFileExist:cachePath isDir:NO]) {
         examResult = [FileUtils readConfigFile:cachePath];
     }

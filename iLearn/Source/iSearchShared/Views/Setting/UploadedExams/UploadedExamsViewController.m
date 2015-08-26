@@ -41,14 +41,13 @@
                                                                      target:self
                                                                      action:@selector(actionNavRefresh:)];
     self.navigationItem.rightBarButtonItem = navBtnRefresh;
-    
     self.title = @"考试记录";
     
-    [self syncData];
+    [self syncData:[HttpUtils isNetworkAvailable]];
 }
 
-- (void)syncData {
-    NSMutableDictionary *dict = [DataHelper uploadedExams:[HttpUtils isNetworkAvailable] userID:[User userID]];
+- (void)syncData:(BOOL)isNetworkAvailable {
+    NSMutableDictionary *dict = [DataHelper uploadedExams:isNetworkAvailable userID:[User userID]];
     if(dict && dict[@"data"] && [dict[@"data"] isKindOfClass:[NSArray class]]) {
         _uploadedExams = [NSMutableArray arrayWithArray:dict[@"data"]];
     }
@@ -67,7 +66,7 @@
                 _uploadedExams[i] = [NSDictionary dictionaryWithDictionary:tempDict];
             }
         }
-        else {
+        else if(isNetworkAvailable) {
             [_connectionManager downloadExamWithId:examID];
         }
         
@@ -87,7 +86,7 @@
 
 - (IBAction)actionNavRefresh:(id)sender {
     if([HttpUtils isNetworkAvailable]) {
-        [self syncData];
+        [self syncData:YES];
     }
     else {
         [ViewUtils showPopupView:self.view Info:@"请联网后刷新！"];
@@ -101,6 +100,9 @@
         NSMutableDictionary *content = [FileUtils readConfigFile:examPath];
         NSString *dbPath = [ExamUtil examDBPath:examID];
         [ExamUtil parseContentIntoDB:content Path:dbPath];
+        
+        NSMutableDictionary *upladedExamResult = [DataHelper uploadedExamResult:[HttpUtils isNetworkAvailable] userID:[User userID] examID:examID];
+        [ExamUtil parseResultIntoDB:upladedExamResult Path:dbPath];
         
         for(NSInteger i=0; i < [_uploadedExams count]; i++) {
             NSMutableDictionary *dict = _uploadedExams[i];
@@ -122,6 +124,13 @@
     }
 }
 
+
+#pragma mark - UITableViewDataSource
+
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [_uploadedExams count];
 }
@@ -140,5 +149,30 @@
         _examsIndexPath[dict[@"ExamId"]] = indexPath;
     }
     return cell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(editingStyle == UITableViewCellEditingStyleDelete) {
+        NSDictionary *dict = _uploadedExams[indexPath.row];
+        NSString *examID = dict[@"ExamId"];
+        if(examID && [examID intValue] > 0) {
+            NSString *examFolder = [FileUtils dirPath:ExamFolder];
+            NSString *examPath = [NSString stringWithFormat:@"%@/%@.json", examFolder, examID];
+            NSString *examDBPath = [NSString stringWithFormat:@"%@/%@.db", examFolder, examID];
+            [FileUtils removeFile:examPath];
+            [FileUtils removeFile:examDBPath];
+            [_uploadedExams removeObjectAtIndex:indexPath.row];
+            
+            _examsIndexPath = [NSMutableDictionary dictionary];
+            [self.tableView reloadData];
+        }
+        else {
+            [ViewUtils showPopupView:self.view Info:@"请联系开发人员，考试ID不存在！"];
+        }
+    }
 }
 @end

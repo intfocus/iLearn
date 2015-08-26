@@ -44,4 +44,5 @@
 + (NSString *)examDBPath:(NSString *)examID;
 + (NSString *)examBasePath:(NSString *)examID Ext:(NSString *)extName;
 
++ (void)parseResultIntoDB:(NSDictionary*)content Path:(NSString *)dbPath;
 @end

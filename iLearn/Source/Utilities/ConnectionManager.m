@@ -39,7 +39,9 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 
         AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-            [FileUtils removeFile:outputPath];
+            if([FileUtils checkFileExist:outputPath isDir:NO]) {
+                [FileUtils removeFile:outputPath];
+            }
             [FileUtils move:outputPathTmp to:outputPath];
 
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadExamsForUser:withError:)]) {
@@ -78,7 +80,9 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 
         AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-            [FileUtils removeFile:outputPath];
+            if([FileUtils checkFileExist:outputPath isDir:NO]) {
+                [FileUtils removeFile:outputPath];
+            }
             [FileUtils move:outputPathTmp to:outputPath];
             
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadExam:withError:)]) {
@@ -112,13 +116,14 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
     
     AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSError *error;
         
-        [FileUtils removeFile:outputPath];
+        if([FileUtils checkFileExist:outputPath isDir:NO]) {
+            [FileUtils removeFile:outputPath];
+        }
         [FileUtils move:outputPathTmp to:outputPath];
         
         if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadCourse:Ext:withError:)]) {
-            [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:error];
+            [_delegate connectionManagerDidDownloadCourse:courseID Ext:extName withError:nil];
         }
         
         ActionLogRecord(@"课件下载", @"成功", (@{@"courseID": courseID, @"extName": extName, @"url": requestUrl,  @"status": @"successfully"}));
@@ -159,22 +164,13 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 
         AFHTTPRequestOperation *op = [manager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-            [fileMgr removeItemAtPath:resultPath error:nil];
+            //[fileMgr removeItemAtPath:resultPath error:nil];
 
             if ([_delegate respondsToSelector:@selector(connectionManagerDidUploadExamResult:withError:)]) {
                 [_delegate connectionManagerDidUploadExamResult:examId withError:nil];
             }
             
             ActionLogRecord(@"考卷上传", @"成功", (@{@"userID": userId, @"examID": examId, @"url": requestUrl,  @"status": @"successfully"}));
-//            NSString *dbPath = [ExamUtil examDBPath:examId];
-//        
-//            HttpResponse *response = [ApiHelper uploadFile:dbPath userID:userId type:@"question"];
-//            if([response isValid]) {
-//                ActionLogRecord(@"考卷db上传", @"成功", (@{@"dbPath": dbPath,  @"status": @"successfully"}));
-//            }
-//            else {
-//                ActionLogRecord(@"考卷db上传", @"失败", (@{@"dbPath": dbPath,  @"error": response.string}));
-//            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSLog(@"Upload result of ExamId: %@ FAILED with statusCode: %lld, responseString: %@, error: %@", examId, (long long)operation.response.statusCode, operation.responseString, [error localizedDescription]);
@@ -240,7 +236,9 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 
     AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        [FileUtils removeFile:outputPath];
+        if([FileUtils checkFileExist:outputPath isDir:NO]) {
+            [FileUtils removeFile:outputPath];
+        }
         [FileUtils move:outputPathTmp to:outputPath];
         
         if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadQuestionnairesWithError:)]) {
@@ -274,7 +272,9 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 
         AFHTTPRequestOperation *op = [manager GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-            [FileUtils removeFile:outputPath];
+            if([FileUtils checkFileExist:outputPath isDir:NO]) {
+                [FileUtils removeFile:outputPath];
+            }
             [FileUtils move:outputPathTmp to:outputPath];
             
             if ([_delegate respondsToSelector:@selector(connectionManagerDidDownloadQuestionnaire:withError:)]) {
@@ -319,7 +319,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 
         AFHTTPRequestOperation *op = [manager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-            [fileMgr removeItemAtPath:resultPath error:nil];
+            //[fileMgr removeItemAtPath:resultPath error:nil];
 
             if ([_delegate respondsToSelector:@selector(connectionManagerDidUploadQuestionnaireResult:withError:)]) {
                 [_delegate connectionManagerDidUploadQuestionnaireResult:questionnaireId withError:nil];
