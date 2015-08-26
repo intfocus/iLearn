@@ -164,6 +164,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     
     BOOL removeHUD = YES;
     NSInteger depth = [self.depth intValue];
@@ -325,6 +326,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     
     NSInteger depth = [self.depth intValue];
     
@@ -363,6 +365,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *examDBPath = [FileUtils coursePath:content[CommonFileName] Type:kPackageExam Ext:@"db"];
@@ -389,6 +392,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *dbPath = [FileUtils coursePath:content[CommonFileName] Type:kPackageQuestion Ext:@"db"];
@@ -513,6 +517,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (void)syncDataCoreCode {
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
     self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     
     switch ([self.depth intValue]) {
         case 1: {
