@@ -32,6 +32,10 @@
      */
     _dataList = [NSArray array];
     _appFiles = [NSArray array];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     [self initData];
 }

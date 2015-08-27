@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ExtendNSLogFunctionality.h"
 #import "DatabaseUtils+ActionLog.h"
+#import "DataHelper.h"
 
 void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...) {
     @try {
@@ -117,4 +118,11 @@ void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *
     }
     @finally {
     }
+}
+
+void RecordLogSynced() {
+    DatabaseUtils *databaseUtils = [[DatabaseUtils alloc] init];
+    NSMutableArray *unSyncRecords = [databaseUtils records:YES];
+    NSMutableArray *IDS = [DataHelper actionLog:unSyncRecords];
+    [databaseUtils updateSyncedRecords:IDS];
 }

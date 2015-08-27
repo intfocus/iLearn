@@ -18,16 +18,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     self.title = @"记录明细";
-    self.textView.text = [NSString stringWithFormat:@"模块: %@\n行为: %@\n时间: %@\n明细:\n        %@\n\n用户ID: %@\n行为ID: %@\n同步否: %@",
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    self.textView.text = [NSString stringWithFormat:@"模块: %@\n行为: %@\n时间: %@\n明细:\n        %@\n\n用户ID: %@\n行为ID: %@\n同步否: %@\n代码位置: %@",
                           self.actionLog[ACTIONLOG_FIELD_ACTNAME],
                           self.actionLog[ACTIONLOG_FIELD_ACTOBJ],
                           self.actionLog[ACTIONLOG_FIELD_ACTTIME],
                           self.actionLog[ACTIONLOG_FIELD_ACTRET],
                           self.actionLog[ACTIONLOG_FIELD_UID],
                           self.actionLog[@"id"],
-                          self.actionLog[ACTIONLOG_COLUMN_ISSYNC]];;
+                          self.actionLog[ACTIONLOG_COLUMN_ISSYNC],
+                          self.actionLog[ACTIONLOG_FIELD_FUNNAME]];;
 }
 
 - (void)didReceiveMemoryWarning {

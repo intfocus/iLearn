@@ -37,6 +37,21 @@
     self.dataList = [[NSMutableArray alloc] init];
     self.user     = [[User alloc] init];
     
+    
+    /**
+     *  控件事件
+     */
+    UIBarButtonItem *navBtnClose = [[UIBarButtonItem alloc] initWithTitle:@"关闭"
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(actionBtnClose:)];
+    self.navigationItem.rightBarButtonItem = navBtnClose;
+    self.navigationItem.title = @"设置";
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
     NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
     [self.dataList addObject:@[@"用户名称", self.user.name]];
     [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
@@ -54,15 +69,6 @@
     }
     [self.dataList addObject:@[@"考试记录", uploadedExamNum]];
     [self.dataList addObject:@[@"版本更新", @""]];
-    /**
-     *  控件事件
-     */
-    UIBarButtonItem *navBtnClose = [[UIBarButtonItem alloc] initWithTitle:@"关闭"
-                                                                    style:UIBarButtonItemStylePlain
-                                                                   target:self
-                                                                   action:@selector(actionBtnClose:)];
-    self.navigationItem.rightBarButtonItem = navBtnClose;
-    self.navigationItem.title = @"设置";
 }
 
 #pragma mark - controls action

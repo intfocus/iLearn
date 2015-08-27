@@ -344,8 +344,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IcM-i6-MQl">
                                 <rect key="frame" x="664" y="317" width="135" height="135"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cza-SG-UbF">
-                                        <rect key="frame" x="46" y="59" width="45" height="76"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cza-SG-UbF">
+                                        <rect key="frame" x="8" y="59" width="119" height="76"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="76" id="sRi-cx-bPz"/>
                                         </constraints>
@@ -379,8 +379,8 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7hs-wh-qb9">
-                                        <rect key="frame" x="46" y="59" width="45" height="76"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7hs-wh-qb9">
+                                        <rect key="frame" x="8" y="59" width="119" height="76"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="76" id="Wsc-OY-BGK"/>
                                         </constraints>
@@ -402,8 +402,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QgD-Hk-Iti">
                                 <rect key="frame" x="809" y="317" width="135" height="135"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N1j-oT-vl1">
-                                        <rect key="frame" x="46" y="59" width="45" height="76"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N1j-oT-vl1">
+                                        <rect key="frame" x="8" y="59" width="119" height="76"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="76" id="XGS-yH-3tR"/>
                                         </constraints>
@@ -431,8 +431,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HPX-fu-ptt">
                                 <rect key="frame" x="809" y="170" width="135" height="135"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ORY-yz-Jdz">
-                                        <rect key="frame" x="46" y="59" width="45" height="76"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ORY-yz-Jdz">
+                                        <rect key="frame" x="8" y="59" width="119" height="76"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="76" id="ZSq-CY-Bjq"/>
                                         </constraints>
@@ -666,6 +666,10 @@
                         <outlet property="questionnaireButton" destination="jm9-Ci-Z7t" id="Be1-pt-BNB"/>
                         <outlet property="questionnaireLabel" destination="DnC-iL-EYz" id="gfL-rw-L0Z"/>
                         <outlet property="questionnaireView" destination="iPb-EF-ETS" id="HRb-kD-4pf"/>
+                        <outlet property="recordExamLabel" destination="ORY-yz-Jdz" id="HzR-Bs-Tpy"/>
+                        <outlet property="recordLearnLabel" destination="Cza-SG-UbF" id="dZo-7H-OzX"/>
+                        <outlet property="recordQuestionLabel" destination="N1j-oT-vl1" id="avV-tJ-tT0"/>
+                        <outlet property="recordTrainLabel" destination="7hs-wh-qb9" id="Ucj-ui-SXl"/>
                         <outlet property="registrationButton" destination="LQe-Jn-Bsg" id="ewm-PO-6pA"/>
                         <outlet property="serviceCallLabel" destination="oGZ-ZF-1QM" id="GEM-ll-WOx"/>
                         <outlet property="settingsButton" destination="8kk-fB-2X8" id="UTy-QK-O4g"/>

@@ -65,6 +65,12 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 @property (weak, nonatomic) IBOutlet UILabel *weekdayLabel;
 
 
+@property (weak, nonatomic) IBOutlet UILabel *recordTrainLabel;
+@property (weak, nonatomic) IBOutlet UILabel *recordExamLabel;
+@property (weak, nonatomic) IBOutlet UILabel *recordQuestionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *recordLearnLabel;
+
+
 @property (strong, nonatomic) NSDateFormatter *timeFormatter;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSDateFormatter *weekdayFormatter;
@@ -119,6 +125,16 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
         [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
     }
     avatar.layer.masksToBounds = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    ActionLog *actionLog = [[ActionLog alloc] init];
+    self.recordExamLabel.text     = [NSString stringWithFormat:@"%li", (long)[actionLog examNum]];
+    self.recordQuestionLabel.text = [NSString stringWithFormat:@"%li", (long)[actionLog questionNum]];
+    self.recordTrainLabel.text    = [NSString stringWithFormat:@"%li", (long)[actionLog trainNum]];
+    self.recordLearnLabel.text    = [NSString stringWithFormat:@"%li", (long)[actionLog learnNum]];
 }
 
 - (void)didReceiveMemoryWarning {

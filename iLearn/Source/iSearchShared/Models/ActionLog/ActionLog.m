@@ -35,4 +35,17 @@
 + (void)syncRecords {
     [[[ActionLog alloc] init] syncRecords];
 }
+
+- (int)trainNum {
+    return [self.databaseUtils dashboardInfo:@"培训报名"];
+}
+- (int)examNum {
+    return ([self.databaseUtils dashboardInfo:@"练习考试"] + [self.databaseUtils dashboardInfo:@"正式考试"]);
+}
+- (int)questionNum {
+    return ([self.databaseUtils dashboardInfo:@"练习问卷"] + [self.databaseUtils dashboardInfo:@"正式问卷"]);
+}
+- (int)learnNum {
+    return ([self.databaseUtils dashboardInfo:@"练习考试"] + [self.databaseUtils dashboardInfo:@"课件学习"] + [self.databaseUtils dashboardInfo:@"练习问卷"]);
+}
 @end

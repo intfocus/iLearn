@@ -13,6 +13,7 @@
 #import "QuestionnaireUtil.h"
 #import <MBProgressHUD.h>
 
+static NSString *const kActionLogObject = @"调研问卷";
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
 
@@ -288,8 +289,10 @@ static NSString *const kQuestionnaireCellIdentifier = @"QuestionnaireCell";
 //        NSLog(@"dbContent: %@", [QuestionnaireUtil jsonStringOfContent:dbContent]);
 
         dispatch_async(dispatch_get_main_queue(), ^{
+            ActionLogRecord(kActionLogObject, @"正式问卷", (@{@"questionnaire title": [NSString stringWithFormat:@"%@",content[QuestionnaireTitle]]}));
             [hud hide:YES];
             [weakSelf performSegueWithIdentifier:kShowSubjectSegue sender:dbContent];
+            
         });
     });
 }

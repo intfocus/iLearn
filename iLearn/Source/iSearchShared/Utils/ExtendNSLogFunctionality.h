@@ -38,9 +38,12 @@ NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue);
 BOOL isNil(NSObject *propertyValue);
 
 #pragma mark - ActionLog
-void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSDictionary *actRet);
-#define ActionLogRecordDashboard(module) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"主界面Dashboard", module, (@{}));
-#define ActionLogRecord(klass, result, dict) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, klass, result, dict);
 
 NSString* escape(NSString *source);
+void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSDictionary *actRet);
+void RecordLogSynced();
+#define ActionLogRecordDashboard(module) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"主界面Dashboard", module, (@{}));
+#define ActionLogRecord(klass, result, dict) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, klass, result, dict);
+#define ActionLogRecordSync RecordLogSynced();
+
 #endif

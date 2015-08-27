@@ -112,16 +112,16 @@
                            [IDS componentsJoinedByString:@","]];
     [self executeSQL:updateSQL];
     
-    //[self clearSyncedRecords];
+    [self clearSyncedRecords];
 }
 
 /**
  *  删除已上传数据只留播放文档的最近15方记录
  */
 - (void)clearSyncedRecords {
-//    NSString *deleteSQL = [NSString stringWithFormat:@"delete from action_logs where is_synced = 1"];
-//    
-//    [self executeSQL:deleteSQL];
+    NSString *deleteSQL = [NSString stringWithFormat:@"delete from %@ where %@ = 1 and %@ not in ('%@', '%@', '%@', '%@', '%@', '%@')", ACTIONLOG_TABLE_NAME, ACTIONLOG_COLUMN_ISSYNC, ACTIONLOG_COLUMN_ACTOBJ, @"培训报名",@"练习考试",@"正式考试",@"练习问卷",@"正式问卷",@"课件学习"];
+    
+    [self executeSQL:deleteSQL];
 }
 
 
@@ -159,5 +159,20 @@
     int count2 = [self recordCount:YES];
     
     return [NSString stringWithFormat:@"%li/%i", (long)count1, count2];
+}
+
+- (int)dashboardInfo:(NSString *)keyword {
+    NSString *sql = [NSString stringWithFormat:@"select count(id) from %@ where %@ = '%@';",ACTIONLOG_TABLE_NAME, ACTIONLOG_COLUMN_ACTOBJ, keyword];
+    
+    int count = -1;
+    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
+    if ([db open]) {
+        FMResultSet *s = [db executeQuery:sql];
+        while([s next]) {
+            count = [s intForColumnIndex:0];
+        }
+        [db close];
+    }
+    return count;
 }
 @end

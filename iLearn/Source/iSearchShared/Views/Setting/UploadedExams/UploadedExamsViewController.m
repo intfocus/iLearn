@@ -44,6 +44,10 @@
                                                                      action:@selector(actionNavRefresh:)];
     self.navigationItem.rightBarButtonItem = navBtnRefresh;
     self.title = @"考试记录";
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     [self syncData:[HttpUtils isNetworkAvailable]];
 }

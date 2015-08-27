@@ -11,6 +11,7 @@
 #import "LoginViewController.h"
 #import <PgySDK/PgyManager.h>
 #import "Version.h"
+#import "ExtendNSLogFunctionality.h"
 
 @interface AppDelegate ()
 
@@ -38,11 +39,22 @@ void UncaughtExceptionHandler(NSException * exception) {
                              [version simpleDescription],
                              name,reason,[arr componentsJoinedByString:@"<br>"]];
     
-    NSURL *url = [NSURL URLWithString:[mailContent stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    [[UIApplication sharedApplication] openURL:url];
+    ActionLogRecord(@"客户端bug报告", mailContent, (@{}));
+    
+    NSString *urlString =@"TSA://com.TSA";
+    if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlString]]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+    }
+    else {
+        NSURL *url = [NSURL URLWithString:[mailContent stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    ActionLogRecordSync;
 }
 
-
+-(BOOL)application:(UIApplication*)application handleOpenURL:(NSURL*)url {
+    return YES;
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     @try {

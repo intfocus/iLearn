@@ -17,7 +17,6 @@
 #import "ViewUtils.h"
 #import "ApiHelper.h"
 #import "CacheHelper.h"
-#import "ExtendNSLogFunctionality.h"
 #import "CoursePackage.h"
 #import "CoursePackageContent.h"
 #import "CoursePackageDetail.h"

@@ -43,6 +43,7 @@
  *  @return 最近播放的文档数量/未同步的记录数量/当前个人记录数量/所有记录数量
  */
 - (NSString *)localInfo;
+- (int)dashboardInfo:(NSString *)keyword;
 @end
 
 #endif

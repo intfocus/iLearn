@@ -12,7 +12,6 @@
 #import "HttpResponse.h"
 #import "SSZipArchive.h"
 #import "FileUtils.h"
-#import "ExtendNSLogFunctionality.h"
 
 @implementation ApiHelper
 /**

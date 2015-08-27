@@ -89,6 +89,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         detailVC.delegate          = self;
         detailVC.showActionButton = self.showBeginTestInfo;
         detailVC.showRemoveButton  = self.showRemoveButton;
+        
+        ActionLogRecord(kActionLogObject, @"练习考试", (@{@"exam": [sender to_s]}));
     }
 }
 
@@ -292,7 +294,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     else {
         DisplayViewController *displayViewController = [[DisplayViewController alloc] init];
         displayViewController.packageDetail = packageDetail;
-        [self presentViewController:displayViewController animated:YES completion:nil];
+        [self presentViewController:displayViewController animated:YES completion:^{
+            ActionLogRecord(kActionLogObject, @"课件学习", (@{@"course detail": [packageDetail to_s]}));
+        }];
     }
     
     return removeHUD;
@@ -363,6 +367,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         
         [self reloadSelf];
         
+        
+        NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+        ActionLogRecord(kActionLogObject, @"返回/离线", (@{@"depth": self.depth, @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
+        
         return;
     }
     else if(depth == 3) {
@@ -371,9 +379,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         self.listViewController.centerLabel.text   = self.lastCoursePackage.name;
         [self.tableView reloadData];
         [self depthMinus];
+        
+        NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+        ActionLogRecord(kActionLogObject, @"返回/离线", (@{@"depth": self.depth, @"courseName": [NSString stringWithFormat:@"%@", self.lastCoursePackage.name], @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
     }
-    NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
-    ActionLogRecord(kActionLogObject, @"返回/离线", (@{@"depth": self.depth, @"courseName": [NSString stringWithFormat:@"%@", self.lastCoursePackage.name], @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if(depth == 3 && [HttpUtils isNetworkAvailable]) {
@@ -440,6 +449,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             QuestionnaireViewController *questionVC = (QuestionnaireViewController *)[storyboard instantiateViewControllerWithIdentifier:kQuestionVCStoryBoardID];
             questionVC.questionnaireContent = [NSMutableDictionary dictionaryWithDictionary:dbContent];
             [weakSelf presentViewController:questionVC animated:YES completion:^{
+                ActionLogRecord(kActionLogObject, @"练习问卷", (@{@"questionnaire title": [NSString stringWithFormat:@"%@",dbContent[QuestionnaireTitle]]}));
                 [hud hide:YES];
             }];
         });

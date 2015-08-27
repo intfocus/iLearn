@@ -19,6 +19,7 @@
 #import "RegistrationTableViewCell.h"
 #import "ExtendNSLogFunctionality.h"
 
+static NSString *const kActionLogObject = @"培训报名";
 static NSString *const kShowDetailSegue    = @"showDetailPage";
 
 @interface RegistrationTableViewController()
@@ -119,6 +120,7 @@ static NSString *const kShowDetailSegue    = @"showDetailPage";
         if([trainCourse.statusName isEqualToString:@"可接受报名"]) {
             [DataHelper trainSignup:trainCourse.ID];
             [self syncData];
+            ActionLogRecord(kActionLogObject, @"培训报名", (@{@"train course": [trainCourse to_s]}));
         }
         else {
             [ViewUtils showPopupView:self.listViewController.view Info:@"报名审核中，请耐心等候."];
