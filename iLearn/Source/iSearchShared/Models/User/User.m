@@ -15,22 +15,7 @@
 - (User *)init {
     if(self = [super init]) {
         NSString *configPath = [[FileUtils basePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
-        NSMutableDictionary *configDict =[FileUtils readConfigFile:configPath];
-        
-        _configPath = configPath;
-        _configDict = configDict;
-        
-        _ID         = configDict[USER_ID];
-        _name       = configDict[USER_NAME];
-        _email      = configDict[USER_EMAIL];
-        _deptID     = configDict[USER_DEPTID];
-        _employeeID = configDict[USER_EMPLOYEEID];
-
-        // local fields
-        _loginUserName    = configDict[USER_LOGIN_USERNAME];
-        _loginPassword    = configDict[USER_LOGIN_PASSWORD];
-        _loginRememberPWD = [configDict[USER_LOGIN_REMEMBER_PWD] isEqualToString:@"1"];
-        _loginLast        = configDict[USER_LOGIN_LAST];
+        self = [self initWithConfigPath:configPath];
         
         _personalPath = [FileUtils dirPath:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
     }
@@ -38,6 +23,30 @@
     return self;
 }
 
+- (User *)initWithConfigPath:(NSString *)configPath {
+    if(self = [super init]) {
+        NSMutableDictionary *configDict =[FileUtils readConfigFile:configPath];
+        
+        _configPath   = configPath;
+        _personalPath = configPath;
+        _configDict   = configDict;
+        
+        _ID         = configDict[USER_ID];
+        _name       = configDict[USER_NAME];
+        _email      = configDict[USER_EMAIL];
+        _deptID     = configDict[USER_DEPTID];
+        _employeeID = configDict[USER_EMPLOYEEID];
+        
+        // local fields
+        _loginUserName    = configDict[USER_LOGIN_USERNAME];
+        _loginPassword    = configDict[USER_LOGIN_PASSWORD];
+        _loginRememberPWD = [configDict[USER_LOGIN_REMEMBER_PWD] isEqualToString:@"1"];
+        _loginLast        = configDict[USER_LOGIN_LAST];
+        
+    }
+    
+    return self;
+}
 #pragma mark - instance methods
 
 - (void)save {

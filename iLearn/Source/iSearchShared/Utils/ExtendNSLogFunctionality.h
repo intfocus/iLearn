@@ -37,12 +37,6 @@ void actionLogPost(const char *sourceFile, int lineNumber, const char *functionN
 NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue);
 BOOL isNil(NSObject *propertyValue);
 
-#pragma mark - Url+Param.h
-#define UrlParamSparater @"$=$"
-#define CheckParams(format,args...) ExtendCheckParams(__FILE__,__LINE__,__PRETTY_FUNCTION__, format, args);
-NSString* GenFormat(NSInteger num);
-BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
-
 #pragma mark - ActionLog
 void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSDictionary *actRet);
 #define ActionLogRecordDashboard(module) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"主界面Dashboard", module, (@{}));

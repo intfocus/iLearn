@@ -28,6 +28,7 @@
 #import "ExtendNSLogFunctionality.h"
 #import "QuestionnaireViewController.h"
 
+static NSString *const kActionLogObject         = @"武田学院";
 static NSString *const kExamVCStoryBoardID      = @"ExamViewController";
 static NSString *const kQuestionVCStoryBoardID  = @"QuestionnaireViewController";
 static NSString *const kShowDetailSegue         = @"showDetailPage";
@@ -522,8 +523,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     switch ([self.depth intValue]) {
         case 1: {
             _dataList = [DataHelper coursePackages:NO];
-            self.listViewController.backButton.hidden      = YES;
-            self.listViewController.titleLabel.hidden      = NO;
+            self.listViewController.backButton.hidden  = YES;
+            self.listViewController.titleLabel.hidden  = NO;
             self.listViewController.centerLabel.hidden = YES;
             
             break;
@@ -542,23 +543,22 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if([HttpUtils isNetworkAvailable]) {
-            NSArray *array = [NSArray array];
             switch ([self.depth intValue]) {
                 case 1: {
-                    array = [DataHelper coursePackages:YES];
+                    NSDate *start = [NSDate date];
+                    _dataList = [DataHelper coursePackages:YES];
+                    NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+                    //ActionLogRecord(kActionLogObject, <#result#>, <#dict#>)
                     break;
                 }
                 case 2: {
-                    array = [DataHelper coursePackageContent:YES pid:self.lastCoursePackage.ID];
+                    _dataList = [DataHelper coursePackageContent:YES pid:self.lastCoursePackage.ID];
                     break;
                 }
                 default:
                     break;
             }
-            if([array count] > 0) {
-                _dataList = array;
-                [self.tableView reloadData];
-            }
+            [self.tableView reloadData];
         }
         [_progressHUD hide:YES];
     });

@@ -41,12 +41,9 @@
     [self.dataList addObject:@[@"用户名称", self.user.name]];
     [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
     
-    long long fileSize1 = 0.0;
-    for(NSArray *array in [FileUtils appFiles]) {
-        fileSize1 += [array[1] longLongValue];
-    }
-    NSString *fileSize = [NSString stringWithFormat:@"%lli", fileSize1];
-    [self.dataList addObject:@[@"本地文件", [FileUtils humanFileSize:fileSize]]];
+    long long fileSize = [[FileUtils appDocutmentSize] longLongValue];
+    NSString *fileSize2 = [NSString stringWithFormat:@"%lli", fileSize];
+    [self.dataList addObject:@[@"本地文件", [FileUtils humanFileSize:fileSize2]]];
     
     [self.dataList addObject:@[@"本地记录", [[[DatabaseUtils alloc] init] localInfo]]];
     

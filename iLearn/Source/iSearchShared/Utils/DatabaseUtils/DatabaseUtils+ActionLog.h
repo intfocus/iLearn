@@ -26,20 +26,8 @@
 - (void) insertActionLog:(NSString *)FunName
                  ActName:(NSString *)ActName
                   ActObj:(NSString *)ActObj
-                  ActRet:(NSString *)ActRet
-                 SlideID:(NSString *)slideID
-               SlideType:(NSString *)slideType
-             SlideAction:(NSString *)slideAction;
-/**
- *  update #deleted when remove slide
- *
- *  @param FunName <#FunName description#>
- *  @param ActObj  slideID
- *  @param ActName Display/Download/Remove
- *  @param ActRet  Favorite or Slide
- */
-- (void)updateDeletedSlide:(NSString *)slideID
-                 SlideType:(NSString *)slideType;
+                  ActRet:(NSString *)ActRet;
+
 
 /**
  *  未同步数据到服务器的数据列表

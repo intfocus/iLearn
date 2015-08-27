@@ -11,33 +11,27 @@
 
 @implementation FileUtils (Setting)
 
+
 + (NSArray *)appFiles {
-    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *basePath = [FileUtils basePath];
     NSMutableArray *array = [NSMutableArray array];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *files = [fileManager contentsOfDirectoryAtPath:basePath error:nil];
-    NSString *filePath;
+    NSString *filePath, *configDir, *configPath;
     NSDictionary *dict = [NSDictionary dictionary];
     BOOL isDir = NO;
-    User *user;
     for(NSString *fileName in files) {
-        filePath = [basePath stringByAppendingPathComponent:fileName];
-        filePath = [filePath stringByAppendingPathComponent:CONFIG_DIRNAME];
-        filePath = [filePath stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
-        if([fileManager fileExistsAtPath:filePath isDirectory:&isDir]) {
-            dict = [FileUtils readConfigFile:filePath];
-            user = [[User alloc] init];
-            user.name       = dict[USER_NAME];
-            user.deptID     = dict[USER_DEPTID];
-            user.employeeID = dict[USER_EMPLOYEEID];
+        filePath   = [basePath stringByAppendingPathComponent:fileName];
+        configDir  = [filePath stringByAppendingPathComponent:CONFIG_DIRNAME];
+        configPath = [configDir stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
+        if([fileManager fileExistsAtPath:configPath isDirectory:&isDir]) {
+            dict = [FileUtils readConfigFile:configPath];
+            User *user = [[User alloc] initWithConfigPath:configPath];
+            NSNumber *dirSize = [self dirFileSize:filePath];
             
-            NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:filePath error:nil];
-            NSNumber *fileSizeNumber = [fileAttributes objectForKey:NSFileSize];
-
-            [array addObject:@[user, fileSizeNumber]];
+            [array addObject:@[user, dirSize]];
         }
     }
-    
     return [NSArray arrayWithArray:array];
 }
 

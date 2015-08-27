@@ -25,13 +25,7 @@
 - (void) insertActionLog:(NSString *)FunName
                  ActName:(NSString *)ActName
                   ActObj:(NSString *)ActObj
-                  ActRet:(NSString *)ActRet
-                 SlideID:(NSString *)slideID
-               SlideType:(NSString *)slideType
-             SlideAction:(NSString *)slideAction {
-    if([slideAction isEqualToString:ACTION_REMOVE]) {
-        [self updateDeletedSlide:slideID SlideType:slideType];
-    }
+                  ActRet:(NSString *)ActRet {
     NSString *insertSQL = [NSString stringWithFormat:@"insert into %@(%@, %@, %@, %@, %@)   \
                            values('%@', '%@', '%@', '%@', '%@');",
                            ACTIONLOG_TABLE_NAME,
@@ -47,27 +41,6 @@
                            ActRet];
     [self executeSQL:insertSQL];
 }
-
-/**
- *  update #deleted when remove slide
- *
- *  @param FunName <#FunName description#>
- *  @param ActObj  slideID
- *  @param ActName Display/Download/Remove
- *  @param ActRet  Favorite or Slide
- */
-- (void)updateDeletedSlide:(NSString *)slideID
-                 SlideType:(NSString *)slideType {
-    NSString *sql = [NSString stringWithFormat:@"update %@ set %@ = 1 \
-                     where %@ = '%@' and %@ = 0 and     \
-                     %@ = '%@' and %@ = '%@';",
-                     ACTIONLOG_TABLE_NAME, ACTIONLOG_COLUMN_DELETED,
-                     LOCAL_COLUMN_ACTION, ACTION_DISPLAY, ACTIONLOG_COLUMN_DELETED,
-                     LOCAL_COLUMN_SLIDE_ID, slideID, LOCAL_COLUMN_SLIDE_TYPE, slideType];
-    
-    [self executeSQL:sql];
-}
-
 
 /**
  *  未同步数据到服务器的数据列表
@@ -146,9 +119,9 @@
  *  删除已上传数据只留播放文档的最近15方记录
  */
 - (void)clearSyncedRecords {
-    NSString *deleteSQL = [NSString stringWithFormat:@"delete from action_logs where is_synced = 1"];
-    
-    [self executeSQL:deleteSQL];
+//    NSString *deleteSQL = [NSString stringWithFormat:@"delete from action_logs where is_synced = 1"];
+//    
+//    [self executeSQL:deleteSQL];
 }
 
 
