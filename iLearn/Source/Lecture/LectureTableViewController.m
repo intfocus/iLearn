@@ -90,7 +90,6 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         detailVC.showActionButton = self.showBeginTestInfo;
         detailVC.showRemoveButton  = self.showRemoveButton;
         
-        ActionLogRecord(kActionLogObject, @"练习考试", (@{@"exam": [sender to_s]}));
     }
 }
 
@@ -158,6 +157,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     id obj = [self.dataList objectAtIndex:[indexPath row]];
     self.showRemoveButton  = [obj canRemove];
+    
+    ActionLogRecord(kActionLogObject, @"点击[明细]", (@{@"detail": [obj to_s]}));
     [self performSegueWithIdentifier:kShowDetailSegue sender:obj];
 }
 
@@ -305,9 +306,13 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (BOOL)dealWithExam:(CoursePackageDetail *)packageDetail state:(NSString *)state removeHUD:(BOOL)removeHUD {
     if([packageDetail isExamDownload]) {
         if([state isEqualToString:@"观看结果"]) {
+            ActionLogRecord(kActionLogObject, @"考试[观看结果]", (@{@"detail": [packageDetail to_s]}));
+            
             [self begin];
         }
         else {
+            ActionLogRecord(kActionLogObject, @"练习考试", (@{@"detail": [packageDetail to_s]}));
+            
             self.showBeginTestInfo = YES;
             self.showRemoveButton  = NO;
             [self performSegueWithIdentifier:kShowDetailSegue sender:packageDetail];
@@ -449,7 +454,12 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             QuestionnaireViewController *questionVC = (QuestionnaireViewController *)[storyboard instantiateViewControllerWithIdentifier:kQuestionVCStoryBoardID];
             questionVC.questionnaireContent = [NSMutableDictionary dictionaryWithDictionary:dbContent];
             [weakSelf presentViewController:questionVC animated:YES completion:^{
-                ActionLogRecord(kActionLogObject, @"练习问卷", (@{@"questionnaire title": [NSString stringWithFormat:@"%@",dbContent[QuestionnaireTitle]]}));
+                if([FileUtils checkFileExist:dbPath isDir:NO]) {
+                    ActionLogRecord(kActionLogObject, @"问卷[观看结果]", (@{@"questionnaire title": [NSString stringWithFormat:@"%@",dbContent[QuestionnaireTitle]]}));
+                }
+                else {
+                    ActionLogRecord(kActionLogObject, @"练习问卷", (@{@"questionnaire title": [NSString stringWithFormat:@"%@",dbContent[QuestionnaireTitle]]}));
+                }
                 [hud hide:YES];
             }];
         });

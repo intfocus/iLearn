@@ -18,6 +18,7 @@
 #import "UIViewController+CWPopup.h"
 #import "NotificationDetailView.h"
 #import "RegistrationTableViewController.h"
+#import "ViewUtils.h"
 
 static NSString *const kShowSettingsSegue = @"showSettingsPage";
 
@@ -279,7 +280,8 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (IBAction)registrationButtonTouched:(id)sender {
     NSLog(@"registrationButtonTouched");
     self.listType = ListViewTypeRegistration;
-    [self refreshContentView];
+    //[self refreshContentView];
+    [ViewUtils showPopupView:self.view Info:@"培训报名功能暂未开放"];
 }
 
 - (IBAction)lectureButtonTouched:(id)sender {
@@ -291,7 +293,8 @@ static NSString *const kShowSettingsSegue = @"showSettingsPage";
 - (IBAction)questionnaireButtonTouched:(id)sender {
     NSLog(@"questionnaireButtonTouched");
     self.listType = ListViewTypeQuestionnaire;
-    [self refreshContentView];
+    //[self refreshContentView];
+    [ViewUtils showPopupView:self.view Info:@"调研问卷功能暂未开放"];
 }
 
 - (IBAction)examButtonTouched:(id)sender {

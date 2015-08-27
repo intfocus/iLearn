@@ -19,6 +19,7 @@
 #import "UIViewController+CWPopup.h"
 #import "ActionLog.h"
 #import <AVFoundation/AVFoundation.h>
+#import "ViewUtils.h"
 
 static NSString *const kShowQuestionnaireSegue     = @"showQuestionnairePage";
 static NSString *const kShowExamSegue              = @"showExamPage";
@@ -269,7 +270,9 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 }
 
 - (IBAction)registrationTouced:(id)sender {
-    [self performSegueWithIdentifier:kShowRegistrationSegue sender:nil];
+    
+    [ViewUtils showPopupView:self.view Info:@"培训报名功能暂未开放"];
+    //[self performSegueWithIdentifier:kShowRegistrationSegue sender:nil];
 }
 
 - (IBAction)lectureTouched:(id)sender {
@@ -281,7 +284,8 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 }
 
 - (IBAction)questionnaireTouched:(id)sender {
-    [self performSegueWithIdentifier:kShowQuestionnaireSegue sender:nil];
+    [ViewUtils showPopupView:self.view Info:@"调研功能暂未开放"];
+    //[self performSegueWithIdentifier:kShowQuestionnaireSegue sender:nil];
 }
 
 - (IBAction)examTouched:(id)sender {

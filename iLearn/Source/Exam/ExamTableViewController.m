@@ -18,6 +18,7 @@
 #import <MBProgressHUD.h>
 #import "ListViewController.h"
 
+static NSString *const kActionLogObject = @"考试中心";
 static NSString *const kShowSubjectSegue = @"showSubjectPage";
 static NSString *const kShowDetailSegue = @"showDetailPage";
 static NSString *const kShowPasswordSegue = @"showPasswordPage";
@@ -363,6 +364,9 @@ static const NSInteger kMinScanInterval = 3;
     self.showBeginTestInfo = NO;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     NSDictionary *content = [_contents objectAtIndex:indexPath.row];
+    
+    ActionLogRecord(kActionLogObject, @"点击[明细]", (@{@"exam": content[ExamTitle]}));
+    
     [self performSegueWithIdentifier:kShowDetailSegue sender:content];
 }
 
@@ -382,9 +386,13 @@ static const NSInteger kMinScanInterval = 3;
         
         ExamTableViewCell *examTVC = (ExamTableViewCell *)cell;
         if ([examTVC.actionButton.titleLabel.text isEqual:NSLocalizedString(@"LIST_BUTTON_VIEW_RESULT", nil)]) {
+            ActionLogRecord(kActionLogObject, @"考试[观看结果]", (@{@"exam": content[ExamTitle]}));
+            
             [self beginTest: content];
         }
         else {
+            ActionLogRecord(kActionLogObject, @"正式考试", (@{@"exam": content[ExamTitle]}));
+            
             [self performSegueWithIdentifier:kShowDetailSegue sender:content];
         }
     }
@@ -406,6 +414,8 @@ static const NSInteger kMinScanInterval = 3;
     NSString *qrCodeString = [NSString stringWithFormat:@"iLearn+%@+%@+%@", userId, examId, examScore];
     UIImage *qrCodeImage = [UIImage mdQRCodeForString:qrCodeString size:200.0];
     
+    
+    ActionLogRecord(kActionLogObject, @"二维码扫描", (@{@"exam": content[ExamTitle]}));
     [self performSegueWithIdentifier:kShowScoreQRCode sender:qrCodeImage];
 }
 
