@@ -101,9 +101,9 @@
 
 
 #pragma mark - controls action
-- (IBAction)actionBackToMain:(id)sender {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
+//- (IBAction)actionBackToMain:(id)sender {
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+//}
 
 - (IBAction)actionNavRefresh:(id)sender {
     if([HttpUtils isNetworkAvailable]) {

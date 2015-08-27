@@ -15,6 +15,7 @@
 #import "DatabaseUtils+ActionLog.h"
 #import "ViewUtils.h"
 #import "ActionLog.h"
+#import "ActionLogDetailViewController.h"
 
 @interface SettingDataInfo()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, nonatomic) IBOutlet UITableView *tableView;
@@ -113,9 +114,9 @@
 }
 
 #pragma mark - controls action
-- (IBAction)actionBackToMain:(id)sender {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
+//- (IBAction)actionBackToMain:(id)sender {
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+//}
 
 - (IBAction)actionNavRefresh:(id)sender {
     if(self.indexRow == SettingActionLogIndex) {
@@ -155,7 +156,8 @@
     if(self.indexRow == SettingActionLogIndex) {
         NSDictionary *dict        = self.dataList[section][1][row];
         cell.textLabel.text       = [NSString stringWithFormat:@"%@/%@", dict[ACTIONLOG_FIELD_ACTNAME], dict[ACTIONLOG_FIELD_ACTOBJ]];
-        cell.detailTextLabel.text = ([dict[ACTIONLOG_COLUMN_ISSYNC] boolValue] ? @"已同步" : @"未同步");
+        cell.detailTextLabel.text = ([dict[ACTIONLOG_COLUMN_ISSYNC] boolValue] ? @"Y" : @"N");
+        // cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
     }
     else {
         NSArray *array            = self.dataList[section][1][row];
@@ -188,6 +190,15 @@
         
         [self initData];
         [tableView reloadData];
+    }
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.indexRow == SettingActionLogIndex) {
+        NSInteger section = indexPath.section;
+        NSInteger row = indexPath.row;
+        ActionLogDetailViewController *viewController = [[ActionLogDetailViewController alloc] init];
+        viewController.actionLog = self.dataList[section][1][row];
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 @end
