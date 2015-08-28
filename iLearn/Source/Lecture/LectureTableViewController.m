@@ -166,12 +166,11 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     NSDate *start = [NSDate date];
     NSString *actionName = @"Unkown";
     
+    [self showProgressHUD:NSLocalizedString(@"LIST_SYNCING", @"")];
+    
     self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     
     BOOL removeHUD = YES;
     NSInteger depth = [self.depth intValue];
@@ -360,9 +359,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     [sender setEnabled:NO];
     NSDate *start = [NSDate date];
     
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    [self showProgressHUD:NSLocalizedString(@"LIST_SYNCING", @"")];
     
     NSInteger depth = [self.depth intValue];
     
@@ -411,9 +408,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (void)enterExamPageForContent:(NSDictionary*)content {
     __weak LectureTableViewController *weakSelf = self;
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    [self showProgressHUD:NSLocalizedString(@"LIST_LOADING", @"")];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *examDBPath = [FileUtils coursePath:content[CommonFileName] Type:kPackageExam Ext:@"db"];
@@ -429,7 +424,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             ExamViewController *examVC = (ExamViewController *)[storyboard instantiateViewControllerWithIdentifier:kExamVCStoryBoardID];
             examVC.examContent         = [NSMutableDictionary dictionaryWithDictionary:dbContent];
             [weakSelf presentViewController:examVC animated:YES completion:^{
-                [hud hide:YES];
+                [_progressHUD hide:YES];
             }];
         });
     });
@@ -438,9 +433,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (void)enterQuestoinnairePageForContent:(NSDictionary*)content {
     __weak LectureTableViewController *weakSelf = self;
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    [self showProgressHUD:NSLocalizedString(@"LIST_LOADING", @"")];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *dbPath = [FileUtils coursePath:content[CommonFileName] Type:kPackageQuestion Ext:@"db"];
@@ -460,7 +453,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 else {
                     ActionLogRecord(kActionLogObject, @"练习问卷", (@{@"questionnaire title": [NSString stringWithFormat:@"%@",dbContent[QuestionnaireTitle]]}));
                 }
-                [hud hide:YES];
+                [_progressHUD hide:YES];
             }];
         });
     });
@@ -570,9 +563,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
 - (void)syncDataCoreCode {
     NSDate *start = [NSDate date];
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    
+    [self showProgressHUD:NSLocalizedString(@"LIST_SYNCING", nil)];
     
     switch ([self.depth intValue]) {
         case 1: {
@@ -678,4 +670,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     [self.listViewController refreshContentView];
 }
 
+- (void)showProgressHUD:(NSString *)msg {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    self.progressHUD.labelText = msg;
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+}
 @end

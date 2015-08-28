@@ -140,6 +140,9 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
     }];
     
     op.outputStream = [NSOutputStream outputStreamToFileAtPath:outputPathTmp append:NO];
+    
+    //NSTimeInterval timeInterval = [extName isEqualToString:@"mp4"] ? 60*10 : 60;
+    //op.request.timeoutInterval = timeInterval;
 }
 
 - (void)uploadExamResultWithPath:(NSString*)resultPath
