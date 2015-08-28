@@ -32,7 +32,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
         NSString *requestUrl = [NSString stringWithFormat:@"%@/v1/user/%@/exam", kServerAddress, userId];
         NSLog(@"%@", requestUrl);
         NSString *outputPath = [NSString stringWithFormat:@"%@/%@", [ExamUtil examFolderPathInDocument], @"Exam.json"];
-        NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@", [ExamUtil examFolderPathInDocument], @"Exam.json.tmp"];
+        NSString *outputPathTmp = [NSString stringWithFormat:@"%@.tmp", outputPath];
 
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
         manager.requestSerializer.timeoutInterval = 10.0;
@@ -73,7 +73,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
         NSString *requestUrl = [NSString stringWithFormat:@"%@/v1/exam/%@", kServerAddress, examId];
         NSLog(@"%@", requestUrl);
         NSString *outputPath = [NSString stringWithFormat:@"%@/%@.json", [ExamUtil examFolderPathInDocument], examId];
-        NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@.json.tmp", [ExamUtil examFolderPathInDocument], examId];
+        NSString *outputPathTmp = [NSString stringWithFormat:@"%@.tmp", outputPath];
 
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
         manager.requestSerializer.timeoutInterval = 10.0;
@@ -111,7 +111,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
     NSString *requestUrl    = [Url downloadCourse:courseID Ext:extName];
     NSLog(@"%@", requestUrl);
     NSString *outputPath    = [FileUtils coursePath:courseID Type:kPackageCourse Ext:extName];
-    NSString *outputPathTmp = [NSString stringWithFormat:@"%@.json.tmp", outputPath];
+    NSString *outputPathTmp = [NSString stringWithFormat:@"%@.tmp", outputPath];
     
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
     
@@ -269,7 +269,7 @@ static NSString *const kServerAddress = @"https://tsa-china.takeda.com.cn/uat/ap
 
         NSString *requestUrl = [NSString stringWithFormat:@"%@/QuestionT_Api.php?qid=%@", kServerAddress, questionnaireId];
         NSString *outputPath = [NSString stringWithFormat:@"%@/%@.json", [QuestionnaireUtil questionnaireFolderPathInDocument], questionnaireId];
-        NSString *outputPathTmp = [NSString stringWithFormat:@"%@/%@.json.tmp", [QuestionnaireUtil questionnaireFolderPathInDocument], questionnaireId];
+        NSString *outputPathTmp = [NSString stringWithFormat:@"%@.tmp", outputPath];
         NSLog(@"%@", requestUrl);
         
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];

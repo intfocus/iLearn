@@ -53,8 +53,7 @@
 }
 
 - (void)syncData:(BOOL)isNetworkAvailable {
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.masterViewController.view animated:YES];
-    _progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    [self showProgressHUD:NSLocalizedString(@"LIST_SYNCING", nil)];
     
     NSMutableDictionary *dict = [DataHelper uploadedExams:isNetworkAvailable userID:[User userID]];
     if(dict && dict[@"data"] && [dict[@"data"] isKindOfClass:[NSArray class]]) {
@@ -79,10 +78,11 @@
             [_connectionManager downloadExamWithId:examID];
         }
     }
-    [self checkProgressHUD];
+
+    [self checkProgressHUD:isNetworkAvailable];
 }
 
-- (void)checkProgressHUD {
+- (void)checkProgressHUD:(BOOL)isNetworkAvailable {
     NSInteger unDownloadNum = 0;
     for (NSInteger i=0; i<[_uploadedExams count]; i++) {
         if(!_uploadedExams[i][@"ExamName"]) {
@@ -90,7 +90,7 @@
         }
     }
     
-    if(unDownloadNum == 0) {
+    if(!isNetworkAvailable || unDownloadNum == 0) {
         [_progressHUD hide:YES];
     }
     else {
@@ -98,6 +98,11 @@
     }
 }
 
+- (void)showProgressHUD:(NSString *)msg {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.masterViewController.view animated:YES];
+    _progressHUD.labelText = msg;
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -147,7 +152,7 @@
             }
         }
         
-        [self checkProgressHUD];
+        [self checkProgressHUD:[HttpUtils isNetworkAvailable]];
     }
 }
 
@@ -188,7 +193,7 @@
         NSString *examID = dict[@"ExamId"];
         if(examID && [examID intValue] > 0) {
             NSString *examFolder = [FileUtils dirPath:ExamFolder];
-            NSString *examPath = [NSString stringWithFormat:@"%@/%@.json", examFolder, examID];
+            NSString *examPath   = [NSString stringWithFormat:@"%@/%@.json", examFolder, examID];
             NSString *examDBPath = [NSString stringWithFormat:@"%@/%@.db", examFolder, examID];
             [FileUtils removeFile:examPath];
             [FileUtils removeFile:examDBPath];
