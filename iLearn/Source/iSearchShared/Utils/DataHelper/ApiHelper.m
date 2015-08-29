@@ -10,7 +10,8 @@
 #import "Url+Param.h"
 #import "HttpUtils.h"
 #import "HttpResponse.h"
-#import "ExtendNSLogFunctionality.h"
+#import "SSZipArchive.h"
+#import "FileUtils.h"
 
 @implementation ApiHelper
 /**
@@ -42,8 +43,15 @@
  *  @return 服务器响应信息
  */
 + (HttpResponse *)actionLog:(NSMutableDictionary *)params {
-    params[@"AppName"] = @"iLearn";
-    return [HttpUtils httpPost:[Url actionLog] Params:params];
+    NSMutableDictionary *logParams = [NSMutableDictionary dictionary];
+    logParams[@"AppName"]              = @"iLearn";
+    logParams[ACTIONLOG_FIELD_UID]     = params[ACTIONLOG_FIELD_UID];
+    logParams[ACTIONLOG_FIELD_FUNNAME] = params[ACTIONLOG_FIELD_FUNNAME];
+    logParams[ACTIONLOG_FIELD_ACTNAME] = params[ACTIONLOG_FIELD_ACTNAME];
+    logParams[ACTIONLOG_FIELD_ACTOBJ]  = params[ACTIONLOG_FIELD_ACTOBJ];
+    logParams[ACTIONLOG_FIELD_ACTRET]  = params[ACTIONLOG_FIELD_ACTRET];
+    logParams[ACTIONLOG_FIELD_ACTTIME] = params[ACTIONLOG_FIELD_ACTTIME];
+    return [HttpUtils httpPost:[Url actionLog] Params:logParams];
 }
 
 /**
@@ -174,5 +182,68 @@
  */
 + (HttpResponse *)courseSigninUser:(NSMutableDictionary *)params {
     return [HttpUtils httpPost:[[[Url alloc] init] courseSigninUser] Params:params];
+}
+
+/**
+ *  上传考试/问卷结果db.zip文件
+ *
+ *  @param filePath 上传文件路径, 
+ *  @param type     考试或问卷
+ *  @param userID   用户ID
+ *
+ *  @return 服务器响应结果
+ */
++ (HttpResponse *)uploadFile:(NSString *)filePath userID:(NSString *)userID type:(NSString *)type {
+    NSString *zipName = [NSString stringWithFormat:@"%@-%@-%@.zip", userID, type, [filePath lastPathComponent]];
+    NSString *zipPath = [FileUtils dirPath:DOWNLOAD_DIRNAME FileName:zipName];
+    [SSZipArchive createZipFileAtPath:zipPath withFilesAtPaths:@[filePath]];
+    
+    return [HttpUtils uploadFile:zipPath userID:userID];
+}
+
+/**
+ *  服务器下载考试/填写过的考试/问卷
+ *
+ *  @param fileName 下载文件名称 1430-exam-21.db.zip => 21.db.zip(直接解压即可)
+ *  @param userID   用户ID
+ *  @param destDir  下载到指定目录下
+ */
++ (BOOL)downloadFile:(NSString *)fileName userID:(NSString *)userID destDir:(NSString *)destDir {
+    NSString *urlStr   = [Url downloadFile:fileName type:[fileName pathExtension] userID:userID];
+    NSURL *url         = [NSURL URLWithString:urlStr];
+    NSData *data       = [NSData dataWithContentsOfURL:url];
+    NSString *filePath = [destDir stringByAppendingPathComponent:fileName];
+    [data writeToFile:filePath atomically:YES];
+    BOOL state = [SSZipArchive unzipFileAtPath:filePath toDestination:destDir];
+    NSLog(@"解压%@  %@", filePath, state ? @"成功" : @"失败");
+    //[FileUtils removeFile:filePath];
+    return state;
+}
+
+/**
+ *  提交过的考试列表。（考试列表中不包含这些考试）
+ *
+ *  @param userID 用户ID
+ *
+ *  @return 考试列表
+ */
++ (HttpResponse *)uploadedExams:(NSString *)userID {
+    NSString *urlString = [Url uploadedExams:userID];
+    
+    return [HttpUtils httpGet:urlString];
+}
+
+/**
+ *  某次提交过的考试各题的用户答案
+ *
+ *  @param userID 用户ID
+ *  @param examID 考试ID
+ *
+ *  @return 用户答案
+ */
++ (HttpResponse *)uploadedExamResult:(NSString *)userID examID:(NSString *)examID {
+    NSString *urlString = [Url uploadedExamResult:userID examID:examID];
+    
+    return [HttpUtils httpGet:urlString];
 }
 @end

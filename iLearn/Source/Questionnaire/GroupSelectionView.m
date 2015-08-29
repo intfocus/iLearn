@@ -13,7 +13,7 @@ static const CGFloat kFontSize = 15.0;
 static const CGFloat kOptionHeightOffset = 10.0;
 static const CGFloat kQuestionHeightOffset = 16.0;
 static const CGFloat kQuestionWidthOffset = 8.0;
-static const NSInteger kMaxTextNumberPerColumn = 5;
+static const NSInteger kMaxTextNumberPerColumn = 10;
 static const CGFloat kQuestionColumnWidth = 150.0;
 static const CGFloat kOptionColumnWidth = 56.0;
 static const CGFloat kSeparatorWidth = 1.0;
@@ -220,6 +220,7 @@ static const CGFloat kMinQuestionHeight = 52.0;
             optionLabelLeft.font = [UIFont systemFontOfSize:kFontSize];
             optionLabelLeft.lineBreakMode = NSLineBreakByCharWrapping;
             optionLabelLeft.numberOfLines = 0;
+            optionLabelLeft.textAlignment = UITextAlignmentCenter;
 
             [self addSubview:optionLabelLeft];
 

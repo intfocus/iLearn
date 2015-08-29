@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Constants.h"
+#import "ExtendNSLogFunctionality.h"
 
 @protocol ContentViewProtocal <NSObject>
 

@@ -28,8 +28,9 @@
 
 @property (strong, nonatomic) NSString *titleString;
 @property (strong, nonatomic) NSString *descString;
+@property (strong, nonatomic) NSString *actionString;
 
-@property (assign, nonatomic) BOOL showFromBeginTest;
+@property (assign, nonatomic) BOOL showActionButton;
 @property (assign, nonatomic) BOOL showRemoveButton;
 @property (weak, nonatomic) id <DetailViewControllerProtocol> delegate;
 

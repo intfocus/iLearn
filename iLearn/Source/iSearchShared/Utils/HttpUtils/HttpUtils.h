@@ -61,8 +61,15 @@
  *  @return 有网络则为true
  */
 + (BOOL)isNetworkAvailable2;
-+ (NSString *) networkType;
++ (NSString *)networkType;
 
+/**
+ *  考试/问卷结果db文件上传
+ *
+ *  @param filePath 文件路径
+ *  @param userID   用户ID
+ */
++ (HttpResponse *)uploadFile:(NSString *)filePath userID:(NSString *)userID;
 @end
 
 #endif

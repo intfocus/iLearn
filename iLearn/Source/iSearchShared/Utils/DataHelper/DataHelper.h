@@ -109,6 +109,25 @@
  *  @return 课程的签到列表
  */
 + (NSDictionary *)trainSigninUsers:(BOOL)isNetworkAvailable tid:(NSString *)tid;
+
+/**
+ *  提交过的考试列表
+ *
+ *  @param isNetworkAvailable 网络环境
+ *  @param userID             用户ID
+ */
++ (NSMutableDictionary *)uploadedExams:(BOOL)isNetworkAvailable userID:(NSString *)userID;
+
+/**
+ *  提交过的考试答案
+ *
+ *  @param isNetworkAvailable 网络环境
+ *  @param userID             用户ID
+ *  @param examID             考试ID
+ *
+ *  @return 考试答案
+ */
++ (NSMutableDictionary *)uploadedExamResult:(BOOL)isNetworkAvailable userID:(NSString *)userID examID:(NSString *)examID;
 @end
 
 #endif

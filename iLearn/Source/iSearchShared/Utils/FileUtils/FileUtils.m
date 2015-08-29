@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#include "sys/stat.h"
 #import "FileUtils.h"
 #import "const.h"
 #import "ExtendNSLogFunctionality.h"
@@ -131,8 +132,8 @@
  *  @return 是否删除成功的布尔值
  */
 + (BOOL)removeFile:(NSString *)filePath {
-    NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
     BOOL removed = [fileManager removeItemAtPath: filePath error: &error];
     if(error)
         NSLog(@"<# remove file %@ failed: %@", filePath, [error localizedDescription]);
@@ -268,5 +269,32 @@
 + (NSDictionary *)shareData:(NSString *)fileName {
     fileName = [NSString stringWithFormat:@"data-%@.share", fileName];
     return [FileUtils readConfigFile:[FileUtils dirPath:CONFIG_DIRNAME FileName:fileName]];
+}
+
+/**
+ *  遍历文件夹文件，计算文件夹大小
+ *
+ *  @param basePath 文件夹
+ *
+ *  @return 文件夹大小
+ */
++ (NSNumber *)dirFileSize:(NSString *)basePath {
+    //NSString *basePath = [FileUtils basePath];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *subpaths = [fileManager subpathsAtPath:basePath];
+    NSString *filePath;
+    struct stat st;
+    long long fileSize = 0.0;
+    for(NSString *subpath in subpaths) {
+        filePath = [basePath stringByAppendingPathComponent:subpath];
+        if(lstat([filePath cStringUsingEncoding:NSUTF8StringEncoding], &st) == 0) {
+            fileSize += st.st_size;
+        }
+    }
+    return [NSNumber numberWithLongLong:fileSize];
+}
+
++ (NSNumber *)appDocutmentSize {
+    return [self dirFileSize:[self basePath]];
 }
 @end

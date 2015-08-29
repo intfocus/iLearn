@@ -8,8 +8,8 @@
 
 #import "DashboardViewController.h"
 #import "ListViewController.h"
-#import "QRCodeViewController.h"
 #import "LicenseUtil.h"
+#import "QRCodeViewController.h"
 #import "NotificationViewController.h"
 #import "const.h"
 #import "FileUtils.h"
@@ -19,14 +19,15 @@
 #import "UIViewController+CWPopup.h"
 #import "ActionLog.h"
 #import <AVFoundation/AVFoundation.h>
+#import "ViewUtils.h"
 
-static NSString *const kShowQuestionnaireSegue = @"showQuestionnairePage";
-static NSString *const kShowExamSegue = @"showExamPage";
-static NSString *const kShowRegistrationSegue = @"showRegistrationPage";
-static NSString *const kShowLectureSegue = @"showLecturePage";
-static NSString *const kShowSettingsSegue = @"SettingViewController";//@"showSettingsPage";
-static NSString *const kShowQRCodeSegue = @"showQRCodePage";
-static NSString *const kShowNotificationSegue = @"showNotificationPage";
+static NSString *const kShowQuestionnaireSegue     = @"showQuestionnairePage";
+static NSString *const kShowExamSegue              = @"showExamPage";
+static NSString *const kShowRegistrationSegue      = @"showRegistrationPage";
+static NSString *const kShowLectureSegue           = @"showLecturePage";
+static NSString *const kShowSettingsSegue          = @"SettingViewController";//@"showSettingsPage";
+static NSString *const kShowQRCodeSegue            = @"showQRCodePage";
+static NSString *const kShowNotificationSegue      = @"showNotificationPage";
 
 static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifier";
 
@@ -63,6 +64,12 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weekdayLabel;
+
+
+@property (weak, nonatomic) IBOutlet UILabel *recordTrainLabel;
+@property (weak, nonatomic) IBOutlet UILabel *recordExamLabel;
+@property (weak, nonatomic) IBOutlet UILabel *recordQuestionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *recordLearnLabel;
 
 
 @property (strong, nonatomic) NSDateFormatter *timeFormatter;
@@ -121,6 +128,16 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     avatar.layer.masksToBounds = YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    ActionLog *actionLog = [[ActionLog alloc] init];
+    self.recordExamLabel.text     = [NSString stringWithFormat:@"%li", (long)[actionLog examNum]];
+    self.recordQuestionLabel.text = [NSString stringWithFormat:@"%li", (long)[actionLog questionNum]];
+    self.recordTrainLabel.text    = [NSString stringWithFormat:@"%li", (long)[actionLog trainNum]];
+    self.recordLearnLabel.text    = [NSString stringWithFormat:@"%li", (long)[actionLog learnNum]];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -160,7 +177,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
         humanName = @"二维码扫描";
     }
     
-    ActionLogRecordDashboard(@{@"板块": humanName});
+    ActionLogRecordDashboard(humanName);
 }
 
 #pragma mark - Helper Functions
@@ -242,17 +259,20 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 
     SettingViewController *settingVC = [[SettingViewController alloc] init];
     settingVC.delegate = self;
+    settingVC.masterViewController = self;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingVC];
     nav.view.frame = CGRectMake(0, 0, 400, 500);
 
     [self presentPopupViewController:nav animated:YES completion:^(void) {
         NSLog(@"popup view settingViewController");
-        ActionLogRecordDashboard(@{@"右下角": @"设置"});
+        ActionLogRecordDashboard(@"设置(右下角)");
     }];
 }
 
 - (IBAction)registrationTouced:(id)sender {
-    [self performSegueWithIdentifier:kShowRegistrationSegue sender:nil];
+    
+    [ViewUtils showPopupView:self.view Info:@"培训报名功能暂未开放"];
+    //[self performSegueWithIdentifier:kShowRegistrationSegue sender:nil];
 }
 
 - (IBAction)lectureTouched:(id)sender {
@@ -264,7 +284,8 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
 }
 
 - (IBAction)questionnaireTouched:(id)sender {
-    [self performSegueWithIdentifier:kShowQuestionnaireSegue sender:nil];
+    [ViewUtils showPopupView:self.view Info:@"调研功能暂未开放"];
+    //[self performSegueWithIdentifier:kShowQuestionnaireSegue sender:nil];
 }
 
 - (IBAction)examTouched:(id)sender {
@@ -285,7 +306,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
     self.imagePickerActionSheet.delegate = self;
     [self.imagePickerActionSheet showInView:self.view];
     
-    ActionLogRecordDashboard(@{@"右上角": @"点击头像"});
+    ActionLogRecordDashboard(@"点击头像(右上角)");
 }
 
 #pragma mark - UITableViewDataSource
@@ -412,7 +433,7 @@ static NSString *const kNotificationCellIdentifier = @"notificationCellIdentifie
             UIImage *avatarImage = [UIImage imageWithData:imagedata];
             [self.avatarBtn setImage:avatarImage forState:UIControlStateNormal];
             
-            ActionLogRecordDashboard(@{@"头像设置": @"成功"});
+            ActionLogRecordDashboard(@"头像设置/成功");
         }
     }];
 }

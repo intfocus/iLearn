@@ -32,4 +32,10 @@
 @property (nonatomic, strong) NSString *courseSigninUsers; // 培训报表签到员工列表（所有，不含状态）
 @property (nonatomic, strong) NSString *courseSigninScannedUsers; // 培训报表签到员工列表（只含状态的员工列表)
 @property (nonatomic, strong) NSString *courseSigninUser; // 创建点名POST
+
+@property (nonatomic, strong) NSString *uploadFile;
+@property (nonatomic, strong) NSString *downloadFile;
+
+@property (nonatomic, strong) NSString *uploadedExams;
+@property (nonatomic, strong) NSString *uploadedExamResult;
 @end

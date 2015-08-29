@@ -128,6 +128,12 @@
             [choosed removeObject:[NSString stringWithFormat:@"%li", (long)CourseSigninTypeLeaveEarly]];
         }
     }
+    
+    for(NSInteger i= [choosed count]-1; i >= 0; i--) {
+        if([choosed[i] length] == 0) {
+            [choosed removeObjectAtIndex:i];
+        }
+    }
     self.choices = [choosed componentsJoinedByString:@","];
 }
 

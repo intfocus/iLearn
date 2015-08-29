@@ -31,7 +31,9 @@
 @property (nonatomic, strong) NSString *personalPath;
 
 // instance methods
+- (User *)initWithConfigPath:(NSString *)configPath;
 - (void)save;
+- (NSString *)basePath;
 - (void)writeInToPersonal;
 
 // class methods

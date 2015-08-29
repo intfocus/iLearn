@@ -28,6 +28,7 @@
 #import "ExtendNSLogFunctionality.h"
 #import "QuestionnaireViewController.h"
 
+static NSString *const kActionLogObject         = @"武田学院";
 static NSString *const kExamVCStoryBoardID      = @"ExamViewController";
 static NSString *const kQuestionVCStoryBoardID  = @"QuestionnaireViewController";
 static NSString *const kShowDetailSegue         = @"showDetailPage";
@@ -86,8 +87,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         detailVC.titleString       = [sender name];
         detailVC.descString        = [sender desc];
         detailVC.delegate          = self;
-        detailVC.showFromBeginTest = self.showBeginTestInfo;
+        detailVC.showActionButton = self.showBeginTestInfo;
         detailVC.showRemoveButton  = self.showRemoveButton;
+        
     }
 }
 
@@ -155,15 +157,20 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     id obj = [self.dataList objectAtIndex:[indexPath row]];
     self.showRemoveButton  = [obj canRemove];
+    
+    ActionLogRecord(kActionLogObject, @"点击[明细]", (@{@"detail": [obj to_s]}));
     [self performSegueWithIdentifier:kShowDetailSegue sender:obj];
 }
 
 - (void)didSelectActionButtonOfCell:(ContentTableViewCell*)cell {
+    NSDate *start = [NSDate date];
+    NSString *actionName = @"Unkown";
+    
+    [self showProgressHUD:NSLocalizedString(@"LIST_SYNCING", @"")];
+    
     self.currentCell = cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
     
     BOOL removeHUD = YES;
     NSInteger depth = [self.depth intValue];
@@ -186,6 +193,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             self.lastCoursePackage = coursePackage;
             [self.tableView reloadData];
             
+            actionName = [NSString stringWithFormat:@"进入课程包(%@)", coursePackage.name];
             break;
         }
         case 2:
@@ -196,6 +204,8 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 _dataList = courseWrap.courseList;
                 [self.tableView reloadData];
                 self.listViewController.centerLabel.text = courseWrap.name;
+                
+                actionName = [NSString stringWithFormat:@"进入课件包(%@)", courseWrap.name];
             }
             else {
                 LectureTableViewCell *lectureTableViewCell = (LectureTableViewCell *)cell;
@@ -204,12 +214,18 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
                 CoursePackageDetail *packageDetail = (CoursePackageDetail *)obj;
                 if([packageDetail isCourse]) {
                     removeHUD = [self dealWithCourse:packageDetail state:btnLabel removeHUD:removeHUD];
+                    
+                    actionName = @"课件";
                 }
                 else if([packageDetail isExam]) {
                     removeHUD = [self dealWithExam:packageDetail state:btnLabel removeHUD:removeHUD];
+                    
+                    actionName = @"考试";
                 }
                 else if([packageDetail isQuestion]) {
                     removeHUD = [self dealWithQuestion:packageDetail state:btnLabel removeHUD:removeHUD];
+                    
+                    actionName = @"问卷";
                 }
             }
             break;
@@ -217,25 +233,38 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         default:
             break;
     }
+    NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+    actionName = [NSString stringWithFormat:@"%@/离线", actionName];
+    ActionLogRecord(kActionLogObject, actionName, (@{@"depth": [NSNumber numberWithInteger:depth], @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if(depth == 1) {
+        if(depth == 1 && [HttpUtils isNetworkAvailable]) {
+            
+            NSDate *start = [NSDate date];
+            NSString *actionName = @"Unkown";
+            
             if([obj isMemberOfClass:[CoursePackage class]]) {
                 CoursePackage *coursePackage = (CoursePackage *)obj;
-                if([HttpUtils isNetworkAvailable] && coursePackage.ID) {
-                    NSArray *array = [NSArray array];
-                    array = [DataHelper coursePackageContent:YES pid:coursePackage.ID];
+                if(coursePackage.ID) {
+                    _dataList = [DataHelper coursePackageContent:YES pid:coursePackage.ID];
                     self.listViewController.centerLabel.text = coursePackage.name;
                     self.lastCoursePackage = coursePackage;
-                    if([array count]) {
-                        _dataList = array;
-                        [self.tableView reloadData];
-                    }
+                    [self.tableView reloadData];
+                    
+                    actionName = [NSString stringWithFormat:@"进入课程包(%@)", coursePackage.name];
+                }
+                else {
+                    [ViewUtils showPopupView:self.listViewController.view Info:@"请联系管理员，课程ID未设置"];
                 }
             }
             else {
                 [ViewUtils showPopupView:self.listViewController.view Info:@"请联系管理员，一级目录应全为课程包."];
             }
+            
+            NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+            actionName = [NSString stringWithFormat:@"%@/在线", actionName];
+            ActionLogRecord(kActionLogObject, actionName, (@{@"depth": [NSNumber numberWithInteger:depth], @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
+            
         }
         
         if(removeHUD) {
@@ -265,7 +294,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     else {
         DisplayViewController *displayViewController = [[DisplayViewController alloc] init];
         displayViewController.packageDetail = packageDetail;
-        [self presentViewController:displayViewController animated:YES completion:nil];
+        [self presentViewController:displayViewController animated:YES completion:^{
+            ActionLogRecord(kActionLogObject, @"课件学习", (@{@"course detail": [packageDetail to_s]}));
+        }];
     }
     
     return removeHUD;
@@ -274,9 +305,13 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (BOOL)dealWithExam:(CoursePackageDetail *)packageDetail state:(NSString *)state removeHUD:(BOOL)removeHUD {
     if([packageDetail isExamDownload]) {
         if([state isEqualToString:@"观看结果"]) {
+            ActionLogRecord(kActionLogObject, @"考试[观看结果]", (@{@"detail": [packageDetail to_s]}));
+            
             [self begin];
         }
         else {
+            ActionLogRecord(kActionLogObject, @"练习考试", (@{@"detail": [packageDetail to_s]}));
+            
             self.showBeginTestInfo = YES;
             self.showRemoveButton  = NO;
             [self performSegueWithIdentifier:kShowDetailSegue sender:packageDetail];
@@ -322,9 +357,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 
 - (IBAction)actionBack:(id)sender {
     [sender setEnabled:NO];
+    NSDate *start = [NSDate date];
     
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    [self showProgressHUD:NSLocalizedString(@"LIST_SYNCING", @"")];
     
     NSInteger depth = [self.depth intValue];
     
@@ -334,6 +369,10 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         
         [self reloadSelf];
         
+        
+        NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+        ActionLogRecord(kActionLogObject, @"返回/离线", (@{@"depth": self.depth, @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
+        
         return;
     }
     else if(depth == 3) {
@@ -342,12 +381,20 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
         self.listViewController.centerLabel.text   = self.lastCoursePackage.name;
         [self.tableView reloadData];
         [self depthMinus];
+        
+        NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+        ActionLogRecord(kActionLogObject, @"返回/离线", (@{@"depth": self.depth, @"courseName": [NSString stringWithFormat:@"%@", self.lastCoursePackage.name], @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if(depth == 3 && [HttpUtils isNetworkAvailable]) {
+            NSDate *start = [NSDate date];
+            
             _dataList = [DataHelper coursePackageContent:YES pid:self.lastCoursePackage.ID];
             [self.tableView reloadData];
+            
+            NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+            ActionLogRecord(kActionLogObject, @"返回/在线", (@{@"depth": self.depth, @"courseName": [NSString stringWithFormat:@"%@", self.lastCoursePackage.name], @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
         }
         [_progressHUD hide:YES];
     });
@@ -361,8 +408,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (void)enterExamPageForContent:(NSDictionary*)content {
     __weak LectureTableViewController *weakSelf = self;
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
+    [self showProgressHUD:NSLocalizedString(@"LIST_LOADING", @"")];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *examDBPath = [FileUtils coursePath:content[CommonFileName] Type:kPackageExam Ext:@"db"];
@@ -378,7 +424,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             ExamViewController *examVC = (ExamViewController *)[storyboard instantiateViewControllerWithIdentifier:kExamVCStoryBoardID];
             examVC.examContent         = [NSMutableDictionary dictionaryWithDictionary:dbContent];
             [weakSelf presentViewController:examVC animated:YES completion:^{
-                [hud hide:YES];
+                [_progressHUD hide:YES];
             }];
         });
     });
@@ -387,8 +433,7 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 - (void)enterQuestoinnairePageForContent:(NSDictionary*)content {
     __weak LectureTableViewController *weakSelf = self;
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    hud.labelText = NSLocalizedString(@"LIST_LOADING", nil);
+    [self showProgressHUD:NSLocalizedString(@"LIST_LOADING", @"")];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *dbPath = [FileUtils coursePath:content[CommonFileName] Type:kPackageQuestion Ext:@"db"];
@@ -402,7 +447,13 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             QuestionnaireViewController *questionVC = (QuestionnaireViewController *)[storyboard instantiateViewControllerWithIdentifier:kQuestionVCStoryBoardID];
             questionVC.questionnaireContent = [NSMutableDictionary dictionaryWithDictionary:dbContent];
             [weakSelf presentViewController:questionVC animated:YES completion:^{
-                [hud hide:YES];
+                if([FileUtils checkFileExist:dbPath isDir:NO]) {
+                    ActionLogRecord(kActionLogObject, @"问卷[观看结果]", (@{@"questionnaire title": [NSString stringWithFormat:@"%@",dbContent[QuestionnaireTitle]]}));
+                }
+                else {
+                    ActionLogRecord(kActionLogObject, @"练习问卷", (@{@"questionnaire title": [NSString stringWithFormat:@"%@",dbContent[QuestionnaireTitle]]}));
+                }
+                [_progressHUD hide:YES];
             }];
         });
     });
@@ -511,14 +562,15 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
 }
 
 - (void)syncDataCoreCode {
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
-    self.progressHUD.labelText = NSLocalizedString(@"LIST_SYNCING", nil);
+    NSDate *start = [NSDate date];
+    
+    [self showProgressHUD:NSLocalizedString(@"LIST_SYNCING", nil)];
     
     switch ([self.depth intValue]) {
         case 1: {
             _dataList = [DataHelper coursePackages:NO];
-            self.listViewController.backButton.hidden      = YES;
-            self.listViewController.titleLabel.hidden      = NO;
+            self.listViewController.backButton.hidden  = YES;
+            self.listViewController.titleLabel.hidden  = NO;
             self.listViewController.centerLabel.hidden = YES;
             
             break;
@@ -534,26 +586,29 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
             break;
     }
     [self.tableView reloadData];
+    NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+    ActionLogRecord(kActionLogObject, @"刷新/离线", (@{@"depth": self.depth, @"courseName": [NSString stringWithFormat:@"%@", self.lastCoursePackage.name], @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if([HttpUtils isNetworkAvailable]) {
-            NSArray *array = [NSArray array];
+            NSDate *start = [NSDate date];
             switch ([self.depth intValue]) {
                 case 1: {
-                    array = [DataHelper coursePackages:YES];
+                    _dataList = [DataHelper coursePackages:YES];
+                    ;
                     break;
                 }
                 case 2: {
-                    array = [DataHelper coursePackageContent:YES pid:self.lastCoursePackage.ID];
+                    _dataList = [DataHelper coursePackageContent:YES pid:self.lastCoursePackage.ID];
                     break;
                 }
                 default:
                     break;
             }
-            if([array count] > 0) {
-                _dataList = array;
-                [self.tableView reloadData];
-            }
+            [self.tableView reloadData];
+            NSTimeInterval duration = 0.0 - [start timeIntervalSinceNow];
+            
+            ActionLogRecord(kActionLogObject, @"刷新/在线", (@{@"depth": self.depth, @"courseName": [NSString stringWithFormat:@"%@", self.lastCoursePackage.name], @"load-duration(s)": [NSNumber numberWithDouble:duration]}));
         }
         [_progressHUD hide:YES];
     });
@@ -615,4 +670,9 @@ static NSString *const kTableViewCellIdentifier = @"LectureTableViewCell";
     [self.listViewController refreshContentView];
 }
 
+- (void)showProgressHUD:(NSString *)msg {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.listViewController.view animated:YES];
+    self.progressHUD.labelText = msg;
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+}
 @end

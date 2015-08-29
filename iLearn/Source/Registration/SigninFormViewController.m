@@ -12,6 +12,7 @@
 #import "User.h"
 #import <MBProgressHUD.h>
 #import <SCLAlertView.h>
+#import "ViewUtils.h"
 
 typedef NS_ENUM(NSInteger, TrainSigninFormState) {
     TrainSigninFormCreate = 0,
@@ -32,17 +33,17 @@ typedef NS_ENUM(NSInteger, TrainSigninFormState) {
     NSString *title = @"签到明细";
     
     if(self.trainSignin[@"Name"]) {
-        self.nameTextView.text = self.trainSignin[@"Name"];
+        self.nameTextField.text = self.trainSignin[@"Name"];
     }
-    self.nameTextView.editable = NO;
+    self.nameTextField.enabled = NO;
     self.removeButton.hidden = NO;
     self.actionButton.hidden = NO;
     
     if(self.isCreated) {
         self.removeButton.hidden = YES;
         [self.actionButton setTitle:@"提交" forState:UIControlStateNormal];
-        self.nameTextView.editable = YES;
-        self.nameTextView.text = @"请在此处输入签到名称";
+        self.nameTextField.enabled = YES;
+        self.nameTextField.placeholder = @"请输入签到名称";
         title = @"创建签到";
     }
     self.titleLabel.text = title;
@@ -70,9 +71,16 @@ typedef NS_ENUM(NSInteger, TrainSigninFormState) {
  */
 - (IBAction)actionTouched:(id)sender {
     if(self.isEdit || self.isCreated) {
-        self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        self.progressHUD.labelText = @"提交中...";
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+        NSString *input = [self.nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if([input length] > 0) {
+            self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            self.progressHUD.labelText = @"提交中...";
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+        }
+        else {
+            [ViewUtils showPopupView:self.view Info:@"请输入签到名称！"];
+            return;
+        }
     }
     
     if(self.isCreated) {
@@ -97,7 +105,7 @@ typedef NS_ENUM(NSInteger, TrainSigninFormState) {
         [self.actionButton setTitle:@"提交" forState:UIControlStateNormal];
         [self.removeButton setTitle:@"取消" forState:UIControlStateNormal];
         [self.removeButton setBackgroundColor:[UIColor lightGrayColor]];
-        self.nameTextView.editable = YES;
+        self.nameTextField.enabled = YES;
         self.titleLabel.text       = @"编辑签到";
         self.isEdit                = YES;
     }
@@ -135,7 +143,7 @@ typedef NS_ENUM(NSInteger, TrainSigninFormState) {
 - (void)postForm:(NSInteger)postType id:(NSString *)ID {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"UserId"]      = [User userID];
-    params[@"CheckInName"] = self.nameTextView.text;
+    params[@"CheckInName"] = self.nameTextField.text;
     params[@"CheckInId"]   = ID;
     params[@"Status"]      = [NSNumber numberWithInteger:postType];
     params[@"TrainingId"]  = self.trainCourse.ID;

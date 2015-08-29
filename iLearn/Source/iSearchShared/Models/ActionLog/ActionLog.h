@@ -36,6 +36,11 @@
 
 // class methods
 + (void)syncRecords;
+
+- (int)trainNum;
+- (int)examNum;
+- (int)questionNum;
+- (int)learnNum;
 @end
 
 #endif

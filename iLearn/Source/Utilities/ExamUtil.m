@@ -13,8 +13,6 @@
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
-static const BOOL inDeveloping = NO;
-
 @implementation ExamUtil
 
 + (NSArray*)loadExams
@@ -218,38 +216,61 @@ static const BOOL inDeveloping = NO;
     return [content[ExamEndDate] longLongValue];
 }
 
-+ (NSString*)examFolderPathInDocument
-{
-    //NSString *docPath = [self applicationDocumentsDirectory];
-    //NSString *examPath = [NSString stringWithFormat:@"%@/%@", docPath, ExamFolder];
-//    NSString *examPath = [self examSourceFolderPath];
-//
-//    NSFileManager *fileMgr = [NSFileManager defaultManager];
-//    BOOL isFolder;
-//
-//    if (![fileMgr fileExistsAtPath:examPath isDirectory:&isFolder]) {
-//        NSLog(@"Folder not exist, create it!");
-//        NSError *createFolderError;
-//
-//        BOOL createFolderSucess = [fileMgr createDirectoryAtPath:examPath withIntermediateDirectories:YES attributes:nil error:&createFolderError];
-//
-//        if (!createFolderSucess) {
-//            NSLog(@"Create folder %@ failed with error: %@", examPath, createFolderError);
-//        }
-//    }
-//    
++ (NSString*)examFolderPathInDocument{
     return [FileUtils dirPath:ExamFolder];
 }
 
 + (NSString*)examSourceFolderPath {
     return [FileUtils dirPath:ExamFolder];
-//    if (inDeveloping) {
-//        return [self examFolderPathInBundle];
-//    }
-//    else {
-//        return [self examFolderPathInDocument];
-//    }
 }
+
++ (NSMutableArray *)parseStringIntoArray:(NSString *)string {
+    char answerChar[string.length];
+    strcpy(answerChar, (char *)[string UTF8String]);
+    NSMutableArray *answerArr = [NSMutableArray array];
+    for(NSInteger i=0; i < string.length; i++) {
+        [answerArr addObject:[NSString stringWithFormat:@"%c", answerChar[i]]];
+    }
+    return answerArr;
+}
+
++ (void)parseResultIntoDB:(NSDictionary*)content Path:(NSString *)dbPath {
+    if(!content || !content[@"examanswersdata"]) {
+        return;
+    }
+    BOOL isOK = NO;
+    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+    if ([db open]) {
+        NSArray *subjects = content[@"examanswersdata"];
+        for(NSDictionary *dict in subjects) {
+            if(!dict[@"Answer"] || !dict[@"ProblemId"]) {
+                continue;
+            }
+            NSMutableArray *answerArr = [self parseStringIntoArray:dict[@"Answer"]];
+            NSString *sql = [NSString stringWithFormat:@"UPDATE subject SET selected_answer = '%@' where subject_id = %@ ;", [answerArr componentsJoinedByString:@"+"], @([dict[@"ProblemId"] intValue])];
+            isOK = [db executeUpdate:sql];
+            if(!isOK) {
+                NSLog(@"execute failed: %@", sql);
+            }
+            
+            sql = [NSString stringWithFormat:@"UPDATE option set selected = 1 where subject_id = %@ and option_id in ('nil' ", @([dict[@"ProblemId"] intValue])];
+            for(NSInteger i=0; i < answerArr.count; i ++) {
+                sql = [sql stringByAppendingString:[NSString stringWithFormat:@",'%@'", answerArr[i]]];
+            }
+            sql = [sql stringByAppendingString:@");"];
+            isOK = [db executeUpdate:sql];
+            if(!isOK) {
+                NSLog(@"execute failed: %@", sql);
+            }
+        }
+        [db executeUpdate:@"UPDATE info set submit = 1"];
+        
+        [self calculateExamScoreOfDB:db];
+        [db close];
+        
+    }
+}
+
 
 + (void)parseContentIntoDB:(NSDictionary*)content {
     NSString *dbPath = [self examDBPath:content[CommonFileName]];
@@ -257,7 +278,6 @@ static const BOOL inDeveloping = NO;
 }
 
 + (void)parseContentIntoDB:(NSDictionary*)content Path:(NSString *)dbPath {
-
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     BOOL isFolder;
 
@@ -276,18 +296,11 @@ static const BOOL inDeveloping = NO;
         }
     }
     else {
-//        NSLog(@"DB file already exist: %@", dbPath);
-
         FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
-
         if ([db open]) {
-
             FMResultSet *result = [db executeQuery:@"SELECT * FROM info LIMIT 1"];
-
             if ([result next]) {
-
                 NSDate *now = [NSDate date];
-
                 if ([result columnIsNull:@"exam_start"]) {
                     long long nowInteger = [now timeIntervalSince1970];
                     [db executeUpdate:@"UPDATE info SET exam_start=?", @(nowInteger)];
@@ -303,7 +316,6 @@ static const BOOL inDeveloping = NO;
                     [db executeUpdate:@"UPDATE info SET exam_end=?", @(deadlineInteger)];
                 }
             }
-
             [db close];
         }
     }

@@ -221,7 +221,7 @@
             params[@"UserId"]      = courseSignin.employeeID;
             
             HttpResponse *response = [ApiHelper courseSigninUser:params];
-            ActionLogRecord(@"课程签到点名", (@{@"courseID": courseID, @"signinID": signinID, @"employeeID": courseSignin.employeeID, @"status": courseSignin.choices, @"createdAt": courseSignin.createAt, @"httpStatusCode": response.statusCode, @"response": response.string}));
+            ActionLogRecord(@"课程签到点名", ([response isValid] ? @"成功" : @"失败"),  (@{@"courseID": courseID, @"signinID": signinID, @"employeeID": courseSignin.employeeID, @"status": courseSignin.choices, @"createdAt": courseSignin.createAt, @"httpStatusCode": response.statusCode, @"response": [response string]}));
         }
     }
     [FileUtils writeJSON:scannedList Into:scannedFilePath];

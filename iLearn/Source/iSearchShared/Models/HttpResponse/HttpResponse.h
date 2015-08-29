@@ -27,7 +27,7 @@
 
 // instance methods
 - (BOOL)isValid;
-- (NSString *)receivedString;
+- (NSString *)string;
 
 // suit for Url+Param.h
 - (BOOL)isSuccessfullyPostActionLog;

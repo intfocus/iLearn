@@ -22,6 +22,63 @@
 
 @implementation HttpUtils
 
+/**
+ *  考试/问卷结果db文件上传
+ *
+ *  @param filePath 文件路径
+ *  @param userID   用户ID
+ */
++ (HttpResponse *)uploadFile:(NSString *)filePath userID:(NSString *)userID {
+    NSURL *filePathUrl = [NSURL fileURLWithPath:filePath]; //@"/Users/lijunjie/Documents/21.db.zip"
+    NSString *urlStr = @"http://demo.solife.us/upload";
+    
+    urlStr = @"http://tsa-china.takeda.com.cn/uat/api/FileUpload_Api.php";
+                                         
+    //创建Request对象
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:urlStr]];
+    [request setHTTPMethod:@"POST"];
+    NSMutableData *body = [NSMutableData data];
+    
+    //设置表单项分隔符
+    NSString *boundary = @"---------------------------14737809831466499882746641449";
+    
+    //设置内容类型
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+    
+    //写入文件的内容
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"21.db.zip\"\r\n",@"file"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-Type: application/zip\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[NSData dataWithContentsOfURL:filePathUrl]];
+    [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    // 写入 INFO 的内容
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",@"UserId"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[userID dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",@"FileType"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[filePath pathExtension] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    //写入尾部内容
+    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setHTTPBody:body];
+    
+    NSHTTPURLResponse *urlResponese = nil;
+    NSError *error = [[NSError alloc]init];
+    HttpResponse *httpResonse = [[HttpResponse alloc] init];
+    httpResonse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
+    httpResonse.response = urlResponese;
+    //NSLog(@"%@", [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding]);
+//    NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
+//    NSLog(@"%@", responseDic);
+    return httpResonse;
+}
 
 /**
  *  Http#Get功能代码封装
@@ -78,7 +135,7 @@
     //params     = [params stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url
-                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                               cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                            timeoutInterval:3.0];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -153,4 +210,83 @@
     
     return _netWorkType;
 }
+
+
+#pragma mark - upload file
+
+static NSString *boundaryStr = @"--"; // 分隔字符串
+static NSString *randomIDStr = @"iLearn_iSearch"; // 本次上传标示字符串
+static NSString *uploadID = @"uploadFile"; // 上传(php)脚本中，接收文件字段
+
+
+#pragma mark - 私有方法
++ (NSString *)topStringWithMimeType:(NSString *)mimeType uploadFile:(NSString *)uploadFile
+{
+    NSMutableString *strM = [NSMutableString string];
+    
+    [strM appendFormat:@"%@%@\n", boundaryStr, randomIDStr];
+    [strM appendFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\n", uploadID, uploadFile];
+    [strM appendFormat:@"Content-Type: %@\n\n", mimeType];
+    
+    return [strM copy];
+}
+
++ (NSString *)bottomString
+{
+    NSMutableString *strM = [NSMutableString string];
+    
+    [strM appendFormat:@"%@%@\n", boundaryStr, randomIDStr];
+    [strM appendString:@"Content-Disposition: form-data; name=\"submit\"\n\n"];
+    [strM appendString:@"Submit\n"];
+    [strM appendFormat:@"%@%@--\n", boundaryStr, randomIDStr];
+    
+    NSLog(@"%@", strM);
+    return [strM copy];
+}
+
+#pragma mark - 上传文件
++ (void)uploadFileWithURL:(NSURL *)url
+                 filePath:(NSString *)filePath
+                 mimeType:(NSString *)mimeType
+                    block:(void(^)(NSURLResponse *response, NSData *data, NSError *connectionError))completeBlock {
+    // 1> 数据体
+    NSString *topStr = [self topStringWithMimeType:mimeType uploadFile:[filePath lastPathComponent]];
+    NSString *bottomStr = [self bottomString];
+    
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    NSMutableData *dataM = [NSMutableData data];
+    [dataM appendData:[topStr dataUsingEncoding:NSUTF8StringEncoding]];
+    [dataM appendData:data];
+    [dataM appendData:[bottomStr dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    // 1. Request
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:6.0f];
+    
+    // dataM出了作用域就会被释放,因此不用copy
+    request.HTTPBody = dataM;
+    
+    // 2> 设置Request的头属性
+    request.HTTPMethod = @"POST";
+    
+    // 3> 设置Content-Length
+    NSString *strLength = [NSString stringWithFormat:@"%ld", (long)dataM.length];
+    [request setValue:strLength forHTTPHeaderField:@"Content-Length"];
+    
+    // 4> 设置Content-Type
+    NSString *strContentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", randomIDStr];
+    [request setValue:strContentType forHTTPHeaderField:@"Content-Type"];
+    
+    // 3> 连接服务器发送请求
+    NSError *error;
+    NSHTTPURLResponse *response;
+    HttpResponse *httpResponse = [[HttpResponse alloc] init];
+    httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    httpResponse.response = (NSHTTPURLResponse *)response;
+//    [NSURLConnection sendAsynchronousRequest:request
+//                                       queue:[[NSOperationQueue alloc] init]
+//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//        completeBlock(response, data, connectionError);
+//    }];
+}
+
 @end

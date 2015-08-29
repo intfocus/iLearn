@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ExtendNSLogFunctionality.h"
 #import "DatabaseUtils+ActionLog.h"
+#import "DataHelper.h"
 
 void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...) {
     @try {
@@ -83,46 +84,6 @@ NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue) {
     }
     return propertyValue;
 }
-
-#pragma mark - Url+Param.h
-NSString* GenFormat(NSInteger num) {
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    for(NSInteger i=0; i < num; i++) [array addObject:@"%@"];
-    return [array componentsJoinedByString:UrlParamSparater];
-}
-
-BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionName, NSString *format, ...) {
-    @try {
-        // Type to hold information about variable arguments.
-        va_list ap;
-        // Initialize a variable argument list.
-        va_start (ap, format);
-        NSString *params = [[NSString alloc] initWithFormat:format arguments:ap];
-        // End using variable argument list.
-        va_end (ap);
-        
-        NSArray *array = [params componentsSeparatedByString:UrlParamSparater];
-        BOOL isAllValid = YES;
-        for(NSString *item in array) {
-            if([item isEqualToString:@"nil"]) {
-                isAllValid = NO;
-                break;
-            }
-        }
-        if(!isAllValid) {
-            NSString *fileName = [[NSString stringWithUTF8String:file] lastPathComponent];
-            fprintf(stderr, "(%s) (%s:%d) %s",
-                    functionName, [fileName UTF8String],lineNumber, [params UTF8String]);
-        }
-        return isAllValid;
-    }
-    @catch (NSException *exception) {
-        return NO;
-    }
-    @finally {
-    }
-}
-
 #pragma mark - ActionLog
 
 NSString* escape(NSString *source) {
@@ -151,10 +112,7 @@ void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *
         [[[DatabaseUtils alloc] init] insertActionLog:escape(funInfo)
                                               ActName:escape(actName)
                                                ActObj:escape(actObj)
-                                               ActRet:escape([actRetArray componentsJoinedByString:@", "])
-                                              SlideID:@"0"
-                                            SlideType:@""
-                                          SlideAction:@""];
+                                               ActRet:escape([actRetArray componentsJoinedByString:@", "])];
     }
     @catch (NSException *exception) {
     }
@@ -162,4 +120,9 @@ void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *
     }
 }
 
-
+void RecordLogSynced() {
+    DatabaseUtils *databaseUtils = [[DatabaseUtils alloc] init];
+    NSMutableArray *unSyncRecords = [databaseUtils records:YES];
+    NSMutableArray *IDS = [DataHelper actionLog:unSyncRecords];
+    [databaseUtils updateSyncedRecords:IDS];
+}

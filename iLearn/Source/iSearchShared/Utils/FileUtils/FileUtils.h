@@ -127,6 +127,18 @@
  *  @param fileName 文件名称
  */
 + (NSDictionary *)shareData:(NSString *)fileName;
+
+
+/**
+ *  遍历文件夹文件，计算文件夹大小
+ *
+ *  @param basePath 文件夹
+ *
+ *  @return 文件夹大小
+ */
++ (NSNumber *)dirFileSize:(NSString *)basePath;
+
++ (NSNumber *)appDocutmentSize;
 @end
 
 

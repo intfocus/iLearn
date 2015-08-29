@@ -10,11 +10,21 @@
 #define iSearch_SettingMainView_h
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, SettingSectionIndex) {
+    SettingUserInfoIndex      = 0,
+    SettingAppInfoIndex       = 1,
+    SettingAppFilesIndex      = 2,
+    SettingActionLogIndex     = 3,
+    SettingUploadedExamsIndex = 4,
+    SettingUpgradeIndex       = 5
+};
+
 @protocol SettingViewProtocol <NSObject>
 - (void)dismissSettingView;
 @end
 
 @interface SettingViewController : UIViewController
+@property (nonatomic, weak) UIViewController *masterViewController;
 
 @property (nonatomic, weak) id <SettingViewProtocol> delegate;
 @end

@@ -17,13 +17,13 @@
 #import "ViewUtils.h"
 #import "ApiHelper.h"
 #import "CacheHelper.h"
-#import "ExtendNSLogFunctionality.h"
 #import "CoursePackage.h"
 #import "CoursePackageContent.h"
 #import "CoursePackageDetail.h"
 #import "CourseWrap+CoursePackageDetail.h"
 #import "TrainCourse.h"
 #import "CourseSignin.h"
+
 
 @interface DataHelper()
 @property (nonatomic, strong) NSMutableArray *visitData;
@@ -91,7 +91,7 @@
     NSString *ID;
     HttpResponse *httpResponse;
     for(NSMutableDictionary *dict in unSyncRecords) {
-        ID = dict[@"id"]; [dict removeObjectForKey:@"id"];
+        ID = dict[@"id"];
         @try {
             httpResponse = [ApiHelper actionLog:dict];
             if([httpResponse isSuccessfullyPostActionLog]) {
@@ -287,8 +287,55 @@
     param[@"UserId"]     = [User userID];
     param[@"TrainingId"] = TID;
     HttpResponse *response = [ApiHelper courseSignup:param];
-    NSString *log = [NSString stringWithFormat:@"userID: %@, courseID: %@, httpStatusCode:%@, response: %@", param[@"UserId"], param[@"TrainingId"], response.statusCode, response.string];
-    ActionLogRecord(@"课程报名", log);
+    ActionLogRecord(@"课程报名", ([response isValid] ? @"成功" : @"失败"), (@{@"userID": param[@"UserId"], @"courseID": param[@"TrainingId"], @"httpStatusCode": response.statusCode, @"response": [response string]}));
+}
+
+/**
+ *  提交过的考试列表
+ *
+ *  @param isNetworkAvailable 网络环境
+ *  @param userID             用户ID
+ */
++ (NSMutableDictionary *)uploadedExams:(BOOL)isNetworkAvailable userID:(NSString *)userID {
+    NSMutableDictionary *uploadedExams = [NSMutableDictionary dictionary];
+    
+    if(isNetworkAvailable) {
+        HttpResponse *response = [ApiHelper uploadedExams:userID];
+        uploadedExams = response.data;
+        
+        [CacheHelper writeUploadedExams:uploadedExams];
+    }
+    else {
+        uploadedExams = [CacheHelper uploadedExams];
+    }
+    
+    return uploadedExams;
+}
+
+/**
+ *  提交过的考试答案
+ *
+ *  @param isNetworkAvailable 网络环境
+ *  @param userID             用户ID
+ *  @param examID             考试ID
+ *
+ *  @return 考试答案
+ */
++ (NSMutableDictionary *)uploadedExamResult:(BOOL)isNetworkAvailable userID:(NSString *)userID examID:(NSString *)examID {
+    NSMutableDictionary *uploadedExamResult = [NSMutableDictionary dictionary];
+    
+    if(isNetworkAvailable) {
+        HttpResponse *response = [ApiHelper uploadedExamResult:userID examID:examID];
+        uploadedExamResult = response.data;
+        
+        [CacheHelper writeUploadedExamResult:uploadedExamResult userID:userID examID:examID];
+    }
+    else {
+        uploadedExamResult = [CacheHelper uploadedExamResult:userID examID:examID];
+    }
+    
+    return uploadedExamResult;
+    
 }
 
 #pragma mark - assistant methods

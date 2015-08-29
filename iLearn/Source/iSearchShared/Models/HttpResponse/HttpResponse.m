@@ -24,10 +24,6 @@
     return (!self.errors || [self.errors count] == 0);
 }
 
-- (NSString *)receivedString {
-    return [[NSString alloc]initWithData:self.received encoding:NSUTF8StringEncoding];
-}
-
 #pragma mark - rewrite setter
 - (void)setReceived:(NSData *)received {
     if(!received) { return; }
@@ -78,5 +74,14 @@
 #pragma mark - suit for Url+Param.h
 - (BOOL)isSuccessfullyPostActionLog {
     return (self.data && self.data[@"status"] && (int)self.data[@"status"] >= 0);
+}
+
+#pragma mark - make sure not nil
+
+- (NSString *)string {
+    if(!_string) {
+        return @"nil";
+    }
+    return _string;
 }
 @end

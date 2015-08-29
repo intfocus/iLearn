@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
@@ -29,36 +28,20 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="140-tD-41K">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="119"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OBL 培训后问卷 " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2DQ-vX-q86">
-                                                            <rect key="frame" x="18" y="43" width="366" height="27"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="课程包名称课程包名称" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2DQ-vX-q86">
+                                                            <rect key="frame" x="18" y="22" width="354" height="48"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yip-RO-EuF">
-                                                            <rect key="frame" x="392" y="22" width="120" height="40"/>
-                                                            <color key="backgroundColor" red="0.14901960780000001" green="0.65490196079999996" blue="0.63529411759999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="120" id="Ysc-fg-W8R"/>
-                                                                <constraint firstAttribute="height" constant="40" id="tg0-Mg-myB"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                            <state key="normal" title=" 开始填写 ">
-                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                            </state>
-                                                            <connections>
-                                                                <action selector="actionTouched:" destination="fZf-dj-4sX" eventType="touchUpInside" id="wTc-Vn-P0e"/>
-                                                            </connections>
-                                                        </button>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text=" 尚未填写 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNn-Lq-PkZ">
-                                                            <rect key="frame" x="78" y="91" width="83" height="22"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="课程包" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNn-Lq-PkZ">
+                                                            <rect key="frame" x="60" y="91" width="54" height="22"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text=" 状态：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOg-hb-FYy">
-                                                            <rect key="frame" x="18" y="91" width="60" height="22"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="类型:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOg-hb-FYy">
+                                                            <rect key="frame" x="18" y="91" width="42" height="22"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="50" id="ngm-b9-CgL"/>
                                                             </constraints>
@@ -71,20 +54,7 @@
                                                                 </mask>
                                                             </variation>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wR9-Pc-UZh">
-                                                            <rect key="frame" x="528" y="10" width="64" height="64"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="64" id="b82-NN-6Oz"/>
-                                                                <constraint firstAttribute="width" constant="64" id="lBX-rs-Rvh"/>
-                                                            </constraints>
-                                                            <state key="normal" image="icon_info">
-                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                            </state>
-                                                            <connections>
-                                                                <action selector="infoTouched:" destination="fZf-dj-4sX" eventType="touchUpInside" id="8RO-Ll-DKK"/>
-                                                            </connections>
-                                                        </button>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text=" 有效日期: 2015/04/29" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBy-ap-u6l">
+                                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text=" 有效日期: 2015/04/29" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBy-ap-u6l">
                                                             <rect key="frame" x="410" y="91" width="180" height="22"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -131,33 +101,60 @@
                                                                 </mask>
                                                             </variation>
                                                         </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yip-RO-EuF">
+                                                            <rect key="frame" x="390" y="40" width="120" height="40"/>
+                                                            <color key="backgroundColor" red="0.14901960780000001" green="0.65490196079999996" blue="0.63529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="120" id="Ysc-fg-W8R"/>
+                                                                <constraint firstAttribute="height" constant="40" id="tg0-Mg-myB"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                            <state key="normal" title=" 开始填写 ">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="actionTouched:" destination="fZf-dj-4sX" eventType="touchUpInside" id="wTc-Vn-P0e"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wR9-Pc-UZh">
+                                                            <rect key="frame" x="526" y="28" width="64" height="64"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="64" id="b82-NN-6Oz"/>
+                                                                <constraint firstAttribute="width" constant="64" id="lBX-rs-Rvh"/>
+                                                            </constraints>
+                                                            <state key="normal" image="icon_info">
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="infoTouched:" destination="fZf-dj-4sX" eventType="touchUpInside" id="8RO-Ll-DKK"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="vBy-ap-u6l" secondAttribute="bottom" constant="7" id="24d-BT-tqm"/>
+                                                        <constraint firstItem="2DQ-vX-q86" firstAttribute="top" secondItem="140-tD-41K" secondAttribute="top" constant="22" id="3MT-jb-oqm"/>
                                                         <constraint firstItem="oj5-9w-EC5" firstAttribute="leading" secondItem="CWU-Ig-I6P" secondAttribute="trailing" id="8VQ-i4-Dow"/>
                                                         <constraint firstItem="mNn-Lq-PkZ" firstAttribute="leading" secondItem="FOg-hb-FYy" secondAttribute="trailing" id="IWk-6k-BGN"/>
                                                         <constraint firstItem="CWU-Ig-I6P" firstAttribute="leading" secondItem="mNn-Lq-PkZ" secondAttribute="trailing" constant="8" id="L2S-nv-Sbt"/>
                                                         <constraint firstItem="2DQ-vX-q86" firstAttribute="leading" secondItem="140-tD-41K" secondAttribute="leading" constant="18" id="OOM-Sa-d8H"/>
                                                         <constraint firstItem="Yip-RO-EuF" firstAttribute="centerY" secondItem="wR9-Pc-UZh" secondAttribute="centerY" id="OdD-e5-4zj"/>
-                                                        <constraint firstItem="Yip-RO-EuF" firstAttribute="leading" secondItem="2DQ-vX-q86" secondAttribute="trailing" constant="8" id="S8c-dq-i41"/>
+                                                        <constraint firstItem="Yip-RO-EuF" firstAttribute="leading" secondItem="2DQ-vX-q86" secondAttribute="trailing" constant="18" id="S8c-dq-i41"/>
                                                         <constraint firstAttribute="bottom" secondItem="CWU-Ig-I6P" secondAttribute="bottom" constant="7" id="XWl-wv-Mu7"/>
                                                         <constraint firstAttribute="trailing" secondItem="vBy-ap-u6l" secondAttribute="trailing" constant="11" id="bFM-Ah-exm"/>
-                                                        <constraint firstItem="Yip-RO-EuF" firstAttribute="leading" secondItem="2DQ-vX-q86" secondAttribute="trailing" constant="10" id="bZW-Cx-kpa"/>
                                                         <constraint firstItem="oj5-9w-EC5" firstAttribute="centerY" secondItem="CWU-Ig-I6P" secondAttribute="centerY" id="jqc-eF-qkY"/>
+                                                        <constraint firstAttribute="centerY" secondItem="wR9-Pc-UZh" secondAttribute="centerY" id="mPX-V4-UDP"/>
                                                         <constraint firstItem="FOg-hb-FYy" firstAttribute="leading" secondItem="140-tD-41K" secondAttribute="leading" constant="18" id="mre-JF-fmV"/>
                                                         <constraint firstAttribute="bottom" secondItem="oj5-9w-EC5" secondAttribute="bottom" constant="8" id="sN7-Xh-2YG"/>
                                                         <constraint firstAttribute="bottom" secondItem="FOg-hb-FYy" secondAttribute="bottom" constant="7" id="tUb-Zp-99r"/>
                                                         <constraint firstAttribute="trailing" secondItem="wR9-Pc-UZh" secondAttribute="trailing" constant="8" id="u0r-7t-PdT"/>
                                                         <constraint firstAttribute="bottom" secondItem="mNn-Lq-PkZ" secondAttribute="bottom" constant="7" id="vqS-Vn-ftj"/>
-                                                        <constraint firstItem="wR9-Pc-UZh" firstAttribute="top" secondItem="140-tD-41K" secondAttribute="top" constant="10" id="xXw-ZS-hCc"/>
                                                         <constraint firstItem="wR9-Pc-UZh" firstAttribute="leading" secondItem="Yip-RO-EuF" secondAttribute="trailing" constant="16" id="zCD-vE-o5y"/>
-                                                        <constraint firstItem="wR9-Pc-UZh" firstAttribute="centerY" secondItem="2DQ-vX-q86" secondAttribute="centerY" constant="-14" id="zQW-G7-cqB"/>
                                                     </constraints>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="sN7-Xh-2YG"/>
-                                                            <exclude reference="bZW-Cx-kpa"/>
                                                         </mask>
                                                     </variation>
                                                 </view>

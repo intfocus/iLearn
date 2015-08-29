@@ -13,6 +13,9 @@
 		C452E1C51B6B82600024A950 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C452E1BD1B6B82600024A950 /* DisplayViewController.m */; };
 		C452E1C61B6B82600024A950 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C452E1BE1B6B82600024A950 /* DisplayViewController.xib */; };
 		C458917C1B7376F400B66A91 /* PgySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C458917B1B7376F400B66A91 /* PgySDK.framework */; };
+		C46373F91B8D6B7D0040A8F5 /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C46373F01B8D6B7D0040A8F5 /* QRCodeViewController.m */; };
+		C46373FE1B8D86350040A8F5 /* UploadedExamsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C46373FD1B8D86350040A8F5 /* UploadedExamsViewController.m */; };
+		C46374001B8D86530040A8F5 /* UploadedExamsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46373FF1B8D86530040A8F5 /* UploadedExamsViewController.xib */; };
 		C484E0281B735ECD00AFBF45 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E0271B735ECD00AFBF45 /* SystemConfiguration.framework */; };
 		C484E02A1B735EDF00AFBF45 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E0291B735EDF00AFBF45 /* AudioToolbox.framework */; };
 		C484E02C1B735EEC00AFBF45 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C484E02B1B735EEC00AFBF45 /* CoreMotion.framework */; };
@@ -45,11 +48,14 @@
 		C49731D41B678A210014048B /* Url+Param.m in Sources */ = {isa = PBXBuildFile; fileRef = C49731C91B678A210014048B /* Url+Param.m */; };
 		C49731D51B678A210014048B /* Url.m in Sources */ = {isa = PBXBuildFile; fileRef = C49731CB1B678A210014048B /* Url.m */; };
 		C49731D61B678A210014048B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C49731CE1B678A210014048B /* User.m */; };
+		C497E1DF1B8ECCEE0049EB2D /* ActionLogDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C497E1DE1B8ECCEE0049EB2D /* ActionLogDetailViewController.xib */; };
+		C497E1E21B8ECD290049EB2D /* ActionLogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C497E1E11B8ECD290049EB2D /* ActionLogDetailViewController.m */; };
 		C49ACF551B69FA1C00EB7E40 /* Lecture.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C49ACF541B69FA1C00EB7E40 /* Lecture.storyboard */; };
 		C49ACF591B6A024600EB7E40 /* CoursePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C49ACF581B6A024600EB7E40 /* CoursePackage.m */; };
 		C49ACF5B1B6A04E600EB7E40 /* testDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C49ACF5A1B6A04E600EB7E40 /* testDataHelper.m */; };
 		C49C54851B550B9000E2B678 /* LectureTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C54841B550B9000E2B678 /* LectureTableViewController.m */; };
 		C49C548E1B5527AC00E2B678 /* LectureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */; };
+		C4A4813C1B88BEE500E7F571 /* FileUtils+Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4813B1B88BEE500E7F571 /* FileUtils+Setting.m */; };
 		C4A4FDB81B66292000741BF3 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FDB11B66292000741BF3 /* SettingViewController.m */; };
 		C4A4FDBB1B66292000741BF3 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A4FDB71B66292000741BF3 /* SettingViewController.xib */; };
 		C4A4FDC01B66293B00741BF3 /* SettingDataInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A4FDBE1B66293B00741BF3 /* SettingDataInfo.m */; };
@@ -72,6 +78,7 @@
 		C4D4F7C11B6A42AF00C435C4 /* CoursePackageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C01B6A42AF00C435C4 /* CoursePackageContent.m */; };
 		C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */; };
 		C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */; };
+		C4D945CC1B8ACDD600744000 /* testPostActionLog.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D945CB1B8ACDD600744000 /* testPostActionLog.m */; };
 		C4DC385C1B6DBC6200AC0C20 /* CourseWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */; };
 		C4DC385F1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DC385E1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.m */; };
 		CB2BAB1A1B348C9800D523EB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2BAB111B348C9800D523EB /* LoginViewController.m */; };
@@ -100,10 +107,6 @@
 		CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8221B072421000EA3A7 /* AppDelegate.m */; };
 		CBE0C82B1B072421000EA3A7 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8241B072421000EA3A7 /* Constants.m */; };
 		CBE0C82C1B072421000EA3A7 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8261B072421000EA3A7 /* DashboardViewController.m */; };
-		CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8291B072421000EA3A7 /* SettingsViewController.m */; };
-		CBE0C8301B072483000EA3A7 /* PersonalInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C82F1B072483000EA3A7 /* PersonalInfoViewController.m */; };
-		CBE0C8331B0724A4000EA3A7 /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8321B0724A4000EA3A7 /* QRCodeViewController.m */; };
-		CBE0C8361B0724C5000EA3A7 /* AppInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C8351B0724C5000EA3A7 /* AppInfoViewController.m */; };
 		CBE0C84A1B072DC2000EA3A7 /* bitstream.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C83A1B072DC1000EA3A7 /* bitstream.c */; };
 		CBE0C84B1B072DC2000EA3A7 /* mask.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C83C1B072DC1000EA3A7 /* mask.c */; };
 		CBE0C84C1B072DC2000EA3A7 /* qrencode.c in Sources */ = {isa = PBXBuildFile; fileRef = CBE0C83E1B072DC1000EA3A7 /* qrencode.c */; };
@@ -143,6 +146,11 @@
 		C452E1BD1B6B82600024A950 /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
 		C452E1BE1B6B82600024A950 /* DisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayViewController.xib; sourceTree = "<group>"; };
 		C458917B1B7376F400B66A91 /* PgySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PgySDK.framework; path = Frameworks/PgySDK.framework; sourceTree = "<group>"; };
+		C46373EF1B8D6B7D0040A8F5 /* QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeViewController.h; path = ../Settings/QRCodeViewController.h; sourceTree = "<group>"; };
+		C46373F01B8D6B7D0040A8F5 /* QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QRCodeViewController.m; path = ../Settings/QRCodeViewController.m; sourceTree = "<group>"; };
+		C46373FC1B8D86350040A8F5 /* UploadedExamsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadedExamsViewController.h; sourceTree = "<group>"; };
+		C46373FD1B8D86350040A8F5 /* UploadedExamsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadedExamsViewController.m; sourceTree = "<group>"; };
+		C46373FF1B8D86530040A8F5 /* UploadedExamsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadedExamsViewController.xib; sourceTree = "<group>"; };
 		C484E0271B735ECD00AFBF45 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C484E0291B735EDF00AFBF45 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C484E02B1B735EEC00AFBF45 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -197,6 +205,9 @@
 		C49731CB1B678A210014048B /* Url.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Url.m; sourceTree = "<group>"; };
 		C49731CD1B678A210014048B /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		C49731CE1B678A210014048B /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		C497E1DE1B8ECCEE0049EB2D /* ActionLogDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionLogDetailViewController.xib; sourceTree = "<group>"; };
+		C497E1E01B8ECD290049EB2D /* ActionLogDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionLogDetailViewController.h; sourceTree = "<group>"; };
+		C497E1E11B8ECD290049EB2D /* ActionLogDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionLogDetailViewController.m; sourceTree = "<group>"; };
 		C49ACF541B69FA1C00EB7E40 /* Lecture.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Lecture.storyboard; sourceTree = "<group>"; };
 		C49ACF571B6A024600EB7E40 /* CoursePackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackage.h; sourceTree = "<group>"; };
 		C49ACF581B6A024600EB7E40 /* CoursePackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackage.m; sourceTree = "<group>"; };
@@ -205,6 +216,8 @@
 		C49C54841B550B9000E2B678 /* LectureTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewController.m; sourceTree = "<group>"; };
 		C49C548C1B5527AC00E2B678 /* LectureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LectureTableViewCell.m; sourceTree = "<group>"; };
 		C49C548D1B5527AC00E2B678 /* LectureTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LectureTableViewCell.h; sourceTree = "<group>"; };
+		C4A4813A1B88BEE500E7F571 /* FileUtils+Setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FileUtils+Setting.h"; sourceTree = "<group>"; };
+		C4A4813B1B88BEE500E7F571 /* FileUtils+Setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FileUtils+Setting.m"; sourceTree = "<group>"; };
 		C4A4FDB11B66292000741BF3 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		C4A4FDB61B66292000741BF3 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		C4A4FDB71B66292000741BF3 /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
@@ -242,6 +255,7 @@
 		C4D4F7C31B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoursePackageContent+CoursePackage.m"; sourceTree = "<group>"; };
 		C4D4F7C61B6A493F00C435C4 /* CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursePackageDetail.h; sourceTree = "<group>"; };
 		C4D4F7C71B6A493F00C435C4 /* CoursePackageDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursePackageDetail.m; sourceTree = "<group>"; };
+		C4D945CB1B8ACDD600744000 /* testPostActionLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testPostActionLog.m; sourceTree = "<group>"; };
 		C4DC385A1B6DBC6200AC0C20 /* CourseWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseWrap.h; sourceTree = "<group>"; };
 		C4DC385B1B6DBC6200AC0C20 /* CourseWrap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseWrap.m; sourceTree = "<group>"; };
 		C4DC385D1B6DC11500AC0C20 /* CourseWrap+CoursePackageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CourseWrap+CoursePackageDetail.h"; sourceTree = "<group>"; };
@@ -299,14 +313,6 @@
 		CBE0C8241B072421000EA3A7 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Constants.m; path = Source/Constants.m; sourceTree = "<group>"; };
 		CBE0C8251B072421000EA3A7 /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DashboardViewController.h; path = Source/DashboardViewController.h; sourceTree = "<group>"; };
 		CBE0C8261B072421000EA3A7 /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DashboardViewController.m; path = Source/DashboardViewController.m; sourceTree = "<group>"; };
-		CBE0C8281B072421000EA3A7 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		CBE0C8291B072421000EA3A7 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		CBE0C82E1B072483000EA3A7 /* PersonalInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalInfoViewController.h; sourceTree = "<group>"; };
-		CBE0C82F1B072483000EA3A7 /* PersonalInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfoViewController.m; sourceTree = "<group>"; };
-		CBE0C8311B0724A4000EA3A7 /* QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeViewController.h; sourceTree = "<group>"; };
-		CBE0C8321B0724A4000EA3A7 /* QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeViewController.m; sourceTree = "<group>"; };
-		CBE0C8341B0724C5000EA3A7 /* AppInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppInfoViewController.h; sourceTree = "<group>"; };
-		CBE0C8351B0724C5000EA3A7 /* AppInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppInfoViewController.m; sourceTree = "<group>"; };
 		CBE0C83A1B072DC1000EA3A7 /* bitstream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitstream.c; sourceTree = "<group>"; };
 		CBE0C83B1B072DC1000EA3A7 /* bitstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitstream.h; sourceTree = "<group>"; };
 		CBE0C83C1B072DC1000EA3A7 /* mask.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mask.c; sourceTree = "<group>"; };
@@ -436,6 +442,16 @@
 			path = Display;
 			sourceTree = "<group>";
 		};
+		C46373FB1B8D86020040A8F5 /* UploadedExams */ = {
+			isa = PBXGroup;
+			children = (
+				C46373FC1B8D86350040A8F5 /* UploadedExamsViewController.h */,
+				C46373FD1B8D86350040A8F5 /* UploadedExamsViewController.m */,
+				C46373FF1B8D86530040A8F5 /* UploadedExamsViewController.xib */,
+			);
+			path = UploadedExams;
+			sourceTree = "<group>";
+		};
 		C48C09B11B4D258500DD4562 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -505,6 +521,8 @@
 				C49731991B6789C40014048B /* FileUtils.m */,
 				C4A927AC1B871B3500775DA3 /* FileUtils+Course.h */,
 				C4A927AD1B871B3500775DA3 /* FileUtils+Course.m */,
+				C4A4813A1B88BEE500E7F571 /* FileUtils+Setting.h */,
+				C4A4813B1B88BEE500E7F571 /* FileUtils+Setting.m */,
 			);
 			path = FileUtils;
 			sourceTree = "<group>";
@@ -609,6 +627,16 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		C497E1DD1B8ECCEE0049EB2D /* ActionLogDetail */ = {
+			isa = PBXGroup;
+			children = (
+				C497E1E01B8ECD290049EB2D /* ActionLogDetailViewController.h */,
+				C497E1E11B8ECD290049EB2D /* ActionLogDetailViewController.m */,
+				C497E1DE1B8ECCEE0049EB2D /* ActionLogDetailViewController.xib */,
+			);
+			path = ActionLogDetail;
+			sourceTree = "<group>";
+		};
 		C49ACF561B6A022C00EB7E40 /* CoursePackage */ = {
 			isa = PBXGroup;
 			children = (
@@ -633,10 +661,12 @@
 		C4A4FD921B6616B400741BF3 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				C4A4FDBC1B66293B00741BF3 /* DataInfo */,
 				C4A4FDB61B66292000741BF3 /* SettingViewController.h */,
 				C4A4FDB11B66292000741BF3 /* SettingViewController.m */,
 				C4A4FDB71B66292000741BF3 /* SettingViewController.xib */,
+				C497E1DD1B8ECCEE0049EB2D /* ActionLogDetail */,
+				C46373FB1B8D86020040A8F5 /* UploadedExams */,
+				C4A4FDBC1B66293B00741BF3 /* DataInfo */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -806,6 +836,8 @@
 		CB3512291B47F0B200025B5B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				C46373EF1B8D6B7D0040A8F5 /* QRCodeViewController.h */,
+				C46373F01B8D6B7D0040A8F5 /* QRCodeViewController.m */,
 				CB35122A1B47F0B200025B5B /* ConnectionManager.h */,
 				CB35122B1B47F0B200025B5B /* ConnectionManager.m */,
 				CB35122E1B47F0B200025B5B /* LicenseUtil.h */,
@@ -886,22 +918,6 @@
 			);
 			name = ListView;
 			path = Source/ListView;
-			sourceTree = "<group>";
-		};
-		CBE0C8271B072421000EA3A7 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				CBE0C8281B072421000EA3A7 /* SettingsViewController.h */,
-				CBE0C8291B072421000EA3A7 /* SettingsViewController.m */,
-				CBE0C82E1B072483000EA3A7 /* PersonalInfoViewController.h */,
-				CBE0C82F1B072483000EA3A7 /* PersonalInfoViewController.m */,
-				CBE0C8311B0724A4000EA3A7 /* QRCodeViewController.h */,
-				CBE0C8321B0724A4000EA3A7 /* QRCodeViewController.m */,
-				CBE0C8341B0724C5000EA3A7 /* AppInfoViewController.h */,
-				CBE0C8351B0724C5000EA3A7 /* AppInfoViewController.m */,
-			);
-			name = Settings;
-			path = Source/Settings;
 			sourceTree = "<group>";
 		};
 		CBE0C8371B072DC1000EA3A7 /* Library */ = {
@@ -987,7 +1003,6 @@
 				CBC976871B3C6EBE006C104F /* Exam */,
 				CB3512401B47F6E100025B5B /* Questionnaire */,
 				CB3512361B47F27E00025B5B /* QuestionShared */,
-				CBE0C8271B072421000EA3A7 /* Settings */,
 				DCA787FF1B038ED00049098C /* Images.xcassets */,
 				DCA788011B038ED00049098C /* LaunchScreen.xib */,
 				DCA787F21B038ED00049098C /* Supporting Files */,
@@ -1012,6 +1027,7 @@
 				DCA7880C1B038ED00049098C /* Supporting Files */,
 				C49ACF5A1B6A04E600EB7E40 /* testDataHelper.m */,
 				C4BD422B1B81E6D300083F11 /* postTrainee.rb */,
+				C4D945CB1B8ACDD600744000 /* testPostActionLog.m */,
 			);
 			path = iLearnTests;
 			sourceTree = "<group>";
@@ -1128,8 +1144,10 @@
 				DCA788031B038ED00049098C /* LaunchScreen.xib in Resources */,
 				C497318D1B67889B0014048B /* NotificationCell.xib in Resources */,
 				CBF867451B810425005559B1 /* UploadQuestionnaire.storyboard in Resources */,
+				C497E1DF1B8ECCEE0049EB2D /* ActionLogDetailViewController.xib in Resources */,
 				C4A579EE1B622C3C0093C98A /* UploadExam.storyboard in Resources */,
 				C4BFC09A1B7DCEE100C1DBEA /* Registration.storyboard in Resources */,
+				C46374001B8D86530040A8F5 /* UploadedExamsViewController.xib in Resources */,
 				DCA788001B038ED00049098C /* Images.xcassets in Resources */,
 				C48C09B71B4D258500DD4562 /* ViewUpgrade.xib in Resources */,
 				C49ACF551B69FA1C00EB7E40 /* Lecture.storyboard in Resources */,
@@ -1192,9 +1210,9 @@
 				CBC976B31B3E78AA006C104F /* ContentTableViewCell.m in Sources */,
 				CBC976B21B3E78AA006C104F /* CustomSegue.m in Sources */,
 				C49731D11B678A210014048B /* Version.m in Sources */,
-				CBE0C8301B072483000EA3A7 /* PersonalInfoViewController.m in Sources */,
 				C497318C1B67889B0014048B /* NotificationCell.m in Sources */,
 				C4BD422A1B81CA2B00083F11 /* SigninFormViewController.m in Sources */,
+				C497E1E21B8ECD290049EB2D /* ActionLogDetailViewController.m in Sources */,
 				CBE0C82A1B072421000EA3A7 /* AppDelegate.m in Sources */,
 				C4A4FDB81B66292000741BF3 /* SettingViewController.m in Sources */,
 				DCA787F51B038ED00049098C /* main.m in Sources */,
@@ -1207,13 +1225,13 @@
 				C49731B41B6789C40014048B /* CacheHelper.m in Sources */,
 				C4BFC0981B7DCEAE00C1DBEA /* RegistrationTableViewCell.m in Sources */,
 				CBE0C84F1B072DC2000EA3A7 /* rscode.c in Sources */,
-				CBE0C82D1B072421000EA3A7 /* SettingsViewController.m in Sources */,
 				C4BD42241B81902C00083F11 /* SigninUserTableViewController.m in Sources */,
 				CBE0C84E1B072DC2000EA3A7 /* qrspec.c in Sources */,
 				C4D4F7C81B6A493F00C435C4 /* CoursePackageDetail.m in Sources */,
 				C49731B21B6789C40014048B /* DatabaseUtils.m in Sources */,
 				CBC976931B3C6F0A006C104F /* ScoreQRCodeViewController.m in Sources */,
 				C49731B51B6789C40014048B /* DataHelper.m in Sources */,
+				C4A4813C1B88BEE500E7F571 /* FileUtils+Setting.m in Sources */,
 				C49731D21B678A210014048B /* BaseModel.m in Sources */,
 				C49731D31B678A210014048B /* ActionLog.m in Sources */,
 				C452E1C51B6B82600024A950 /* DisplayViewController.m in Sources */,
@@ -1238,6 +1256,7 @@
 				CBC976B71B3E7A52006C104F /* ContentViewController.m in Sources */,
 				CB35123F1B47F29700025B5B /* DetailViewController.m in Sources */,
 				C49731B61B6789C40014048B /* ExtendNSLogFunctionality.m in Sources */,
+				C46373F91B8D6B7D0040A8F5 /* QRCodeViewController.m in Sources */,
 				CB3512351B47F0B200025B5B /* QuestionnaireUtil.m in Sources */,
 				CB35123C1B47F27E00025B5B /* QuestionCollectionViewCell.m in Sources */,
 				CB35124C1B47F85000025B5B /* QuestionnaireTableViewCell.m in Sources */,
@@ -1249,9 +1268,9 @@
 				C49731B81B6789C40014048B /* ViewUtils.m in Sources */,
 				C49731B01B6789C40014048B /* FileUtils.m in Sources */,
 				C4D4F7C41B6A470E00C435C4 /* CoursePackageContent+CoursePackage.m in Sources */,
+				C46373FE1B8D86350040A8F5 /* UploadedExamsViewController.m in Sources */,
 				CBC976961B3C6F81006C104F /* ExamTableViewController.m in Sources */,
 				C49731D51B678A210014048B /* Url.m in Sources */,
-				CBE0C8361B0724C5000EA3A7 /* AppInfoViewController.m in Sources */,
 				CB7297611B7B8D2500FFB38F /* GroupSelectionView.m in Sources */,
 				CBF867481B8104A2005559B1 /* UploadQuestionnaireViewController.m in Sources */,
 				C49731D01B678A210014048B /* Version+Self.m in Sources */,
@@ -1264,7 +1283,6 @@
 				C4A4FDC01B66293B00741BF3 /* SettingDataInfo.m in Sources */,
 				CBE0C84C1B072DC2000EA3A7 /* qrencode.c in Sources */,
 				C49731D41B678A210014048B /* Url+Param.m in Sources */,
-				CBE0C8331B0724A4000EA3A7 /* QRCodeViewController.m in Sources */,
 				CB3512331B47F0B200025B5B /* ExamUtil.m in Sources */,
 				CBC976B41B3E78AA006C104F /* ListViewController.m in Sources */,
 				C49731CF1B678A210014048B /* HttpResponse.m in Sources */,
@@ -1278,6 +1296,7 @@
 			files = (
 				DCA7880F1B038ED00049098C /* iLearnTests.m in Sources */,
 				C49ACF5B1B6A04E600EB7E40 /* testDataHelper.m in Sources */,
+				C4D945CC1B8ACDD600744000 /* testPostActionLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1424,8 +1443,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1445,8 +1464,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Junjie Li (XT5L9SE2VY)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
